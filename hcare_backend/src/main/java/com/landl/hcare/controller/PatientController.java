@@ -16,12 +16,18 @@ public class PatientController {
     private PatientService patientService;
 
     @GetMapping("/patients")
-    public List<Patient> retrieveAllStudents() {
+    public List<Patient> retrieveAllPatients() {
         return patientService.findAll();
     }
 
+    @GetMapping("/patients/{patientId}")
+    public Patient retrieveByPatientId(@PathVariable Long patientId) {
+        Patient patient = patientService.findById(patientId).get();
+        return patient;
+    }
+
     @PostMapping("/patients")
-    public Patient createQuestion(@Valid @RequestBody Patient patient) {
+    public Patient createPatient(@Valid @RequestBody Patient patient) {
         return patientService.save(patient);
     }
 
@@ -34,6 +40,7 @@ public class PatientController {
                     patient.setDocumentType(patientRequest.getDocumentType());
                     patient.setFirstName(patientRequest.getFirstName());
                     patient.setLastName(patientRequest.getLastName());
+                    patient.setEmailAddress(patientRequest.getEmailAddress());
                     patient.setPatientCode(patientRequest.getPatientCode());
                     return patientService.save(patient);
                 }).orElseThrow(() -> new ResourceNotFoundException("Patient not found with id " + patientId));

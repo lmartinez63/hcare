@@ -37,7 +37,18 @@ public class Patient extends AuditModel {
     @Column(name="birthday")
     private Date birthday;
 
+    @Column(name="email_address")
+    private String emailAddress;
+
     public Patient() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getPatientCode() {
@@ -86,5 +97,13 @@ public class Patient extends AuditModel {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 }

@@ -17,8 +17,8 @@ public class RecentSurgery extends AuditModel {
     )
     private Long id;
 
-    @Column(name="clinic_history_id")
-    private Long clinicHistoryId;
+    @Column(name="medical_history_id")
+    private Long medicalHistoryId;
 
     @Column(name="date_surgery")
     private Date dateSurgery;
@@ -29,12 +29,12 @@ public class RecentSurgery extends AuditModel {
     public RecentSurgery() {
     }
 
-    public Long getClinicHistoryId() {
-        return clinicHistoryId;
+    public Long getmedicalHistoryId() {
+        return medicalHistoryId;
     }
 
-    public void setClinicHistoryId(Long clinicHistoryId) {
-        this.clinicHistoryId = clinicHistoryId;
+    public void setmedicalHistoryId(Long medicalHistoryId) {
+        this.medicalHistoryId = medicalHistoryId;
     }
 
     public Date getDateSurgery() {
