@@ -27,23 +27,8 @@ public class PatientController {
     }
 
     @PostMapping("/patients")
-    public Patient createPatient(@Valid @RequestBody Patient patient) {
+    public Patient savePatient(@Valid @RequestBody Patient patient) {
         return patientService.save(patient);
-    }
-
-    @PutMapping("/patients/{patientId}")
-    public Patient updatePatient(@PathVariable Long patientId,
-                                   @Valid @RequestBody Patient patientRequest) {
-        return patientService.findById(patientId)
-                .map(patient -> {
-                    patient.setDocumentNumber(patientRequest.getDocumentNumber());
-                    patient.setDocumentType(patientRequest.getDocumentType());
-                    patient.setFirstName(patientRequest.getFirstName());
-                    patient.setLastName(patientRequest.getLastName());
-                    patient.setEmailAddress(patientRequest.getEmailAddress());
-                    patient.setPatientCode(patientRequest.getPatientCode());
-                    return patientService.save(patient);
-                }).orElseThrow(() -> new ResourceNotFoundException("Patient not found with id " + patientId));
     }
 
 }

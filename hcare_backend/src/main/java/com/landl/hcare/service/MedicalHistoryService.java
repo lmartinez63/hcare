@@ -12,6 +12,6 @@ public interface MedicalHistoryService {
 
     public List<MedicalHistory> findAll();
 
-    public Optional<MedicalHistory> findById(Long clinicHistoryId);
+    public Optional<MedicalHistory> findById(Long medicalHistoryId);
 
 }

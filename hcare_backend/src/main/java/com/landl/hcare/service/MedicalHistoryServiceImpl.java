@@ -22,7 +22,7 @@ public class MedicalHistoryServiceImpl implements MedicalHistoryService {
         return medicalHistoryRepository.findAll();
     }
 
-    public Optional<MedicalHistory> findById(Long clinicHistoryId){
-        return medicalHistoryRepository.findById(clinicHistoryId);
+    public Optional<MedicalHistory> findById(Long medicalHistoryId){
+        return medicalHistoryRepository.findById(medicalHistoryId);
     }
 }

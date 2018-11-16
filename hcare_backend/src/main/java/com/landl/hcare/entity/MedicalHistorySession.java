@@ -20,6 +20,9 @@ public class MedicalHistorySession extends AuditModel {
     @Column(name="medical_history_id")
     private Long medicalHistoryId;
 
+    @Column(name="medical_history_id")
+    private Long medialAppointmentId;
+
     @Column(name="session_date")
     private Date sessionDate;
 
@@ -30,6 +33,14 @@ public class MedicalHistorySession extends AuditModel {
     private String diagnostic;
 
     public MedicalHistorySession() {
+    }
+
+    public Long getMedialAppointmentId() {
+        return medialAppointmentId;
+    }
+
+    public void setMedialAppointmentId(Long medialAppointmentId) {
+        this.medialAppointmentId = medialAppointmentId;
     }
 
     public Long getMedicalHistoryId() {
