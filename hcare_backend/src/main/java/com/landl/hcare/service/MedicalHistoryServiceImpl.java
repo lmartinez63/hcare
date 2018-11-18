@@ -25,4 +25,8 @@ public class MedicalHistoryServiceImpl implements MedicalHistoryService {
     public Optional<MedicalHistory> findById(Long medicalHistoryId){
         return medicalHistoryRepository.findById(medicalHistoryId);
     }
+
+    public List<MedicalHistory> findByPatientId(Long patientId){
+        return medicalHistoryRepository.findByPatientId(patientId);
+    }
 }

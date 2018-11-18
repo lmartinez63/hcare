@@ -14,4 +14,6 @@ public interface MedicalHistoryService {
 
     public Optional<MedicalHistory> findById(Long medicalHistoryId);
 
+    public List<MedicalHistory> findByPatientId(Long patientId);
+
 }

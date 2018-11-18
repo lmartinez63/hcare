@@ -25,7 +25,7 @@ public class MedicalAppointmentController {
         return medicalAppointment;
     }
 
-    @PostMapping("/medicalHistories")
+    @PostMapping("/medicalAppointments")
     public MedicalAppointment saveMedicalAppointment(@Valid @RequestBody MedicalAppointment medicalAppointment) {
         return medicalAppointmentService.save(medicalAppointment);
     }

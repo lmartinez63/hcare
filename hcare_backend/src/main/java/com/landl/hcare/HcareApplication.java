@@ -28,6 +28,14 @@ public class HcareApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/patients").allowedOrigins("http://localhost:8081");
 				registry.addMapping("/patients/*").allowedOrigins("http://localhost:8081");
+				registry.addMapping("/medicalHistories").allowedOrigins("http://localhost:8081");
+				registry.addMapping("/medicalHistories/*").allowedOrigins("http://localhost:8081");
+				registry.addMapping("/medicalHistory").allowedOrigins("http://localhost:8081");
+				registry.addMapping("/medicalHistory/*").allowedOrigins("http://localhost:8081");
+				registry.addMapping("/attachment").allowedOrigins("http://localhost:8081");
+				registry.addMapping("/uploadAttachment").allowedOrigins("http://localhost:8081");
+				registry.addMapping("/downloadAttachment").allowedOrigins("http://localhost:8081");
+				registry.addMapping("/downloadAttachment/*").allowedOrigins("http://localhost:8081");
 			}
 		};
 	}

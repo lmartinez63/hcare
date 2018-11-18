@@ -20,7 +20,7 @@ public class MedicalHistorySession extends AuditModel {
     @Column(name="medical_history_id")
     private Long medicalHistoryId;
 
-    @Column(name="medical_history_id")
+    @Column(name="medical_appointment_id")
     private Long medialAppointmentId;
 
     @Column(name="session_date")

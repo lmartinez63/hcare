@@ -3,6 +3,7 @@ package com.landl.hcare.entity;
 import com.landl.hcare.model.AuditModel;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="medical_history")
@@ -16,14 +17,28 @@ public class MedicalHistory extends AuditModel {
     )
     private Long id;
 
-    @Column(name="clinic_history_code")
-    private String clinicHistoryCode;
+    @Column(name="medical_history_code")
+    private String medicalHistoryCode;
 
     @Column(name="patientId")
     private Long patientId;
 
     @Column(name="fileNumber")
     private String fileNumber;
+
+    //record
+    @Column(name="previous_surgeries")
+    private String previousSurgeries;
+
+    @Column(name="previous_diseases")
+    private String previousDiseases;
+
+    @Column(name="hospitalizations")
+    private String hospitalizations;
+
+    @Column(name="medication_allergies")
+    private String medicationAllergies;
+
 
     @Column(name="smoke")
     private String smoke;
@@ -55,16 +70,29 @@ public class MedicalHistory extends AuditModel {
     @Column(name="use_any_subtance_freq")
     private String use_any_subtance_freq;
 
+    @Transient
+    private Patient patient;
+
+    @Transient
+    private List<Attachment> attachmentList;
+
     public MedicalHistory() {
     }
 
-
-    public String getClinicHistoryCode() {
-        return clinicHistoryCode;
+    public Long getId() {
+        return id;
     }
 
-    public void setClinicHistoryCode(String clinicHistoryCode) {
-        this.clinicHistoryCode = clinicHistoryCode;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getMedicalHistoryCode() {
+        return medicalHistoryCode;
+    }
+
+    public void setMedicalHistoryCode(String medicalHistoryCode) {
+        this.medicalHistoryCode = medicalHistoryCode;
     }
 
     public Long getPatientId() {
@@ -161,5 +189,53 @@ public class MedicalHistory extends AuditModel {
 
     public void setUse_any_subtance_freq(String use_any_subtance_freq) {
         this.use_any_subtance_freq = use_any_subtance_freq;
+    }
+
+    public String getPreviousSurgeries() {
+        return previousSurgeries;
+    }
+
+    public void setPreviousSurgeries(String previousSurgeries) {
+        this.previousSurgeries = previousSurgeries;
+    }
+
+    public String getPreviousDiseases() {
+        return previousDiseases;
+    }
+
+    public void setPreviousDiseases(String previousDiseases) {
+        this.previousDiseases = previousDiseases;
+    }
+
+    public String getHospitalizations() {
+        return hospitalizations;
+    }
+
+    public void setHospitalizations(String hospitalizations) {
+        this.hospitalizations = hospitalizations;
+    }
+
+    public String getMedicationAllergies() {
+        return medicationAllergies;
+    }
+
+    public void setMedicationAllergies(String medicationAllergies) {
+        this.medicationAllergies = medicationAllergies;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public List<Attachment> getAttachmentList() {
+        return attachmentList;
+    }
+
+    public void setAttachmentList(List<Attachment> attachmentList) {
+        this.attachmentList = attachmentList;
     }
 }
