@@ -3,13 +3,13 @@
       <section data-ui-view="" class="view-container animate-fade-up">
         <section class="page">
           <div class="titleForm">
-            Listado de Pacientes
+            {{title}}
           </div>
           <div class="row ui-section">
             <div class="formBox">
               <div class="btnOptions">
                 <div class="boxOpt">
-                  <button v-on:click="viewObjectDetails('null')" class="md-button md-primary" type="button" >Nueva Paciente</button>
+                  <button v-on:click="viewObjectDetails('null')" class="md-button md-primary" type="button" >{{newButtonTitle}}</button>
                 </div>
               </div>
               <table id="browseDataTable" class="display responsive nowrap" style="width:100%">
@@ -31,7 +31,7 @@
     </div>
 </template>
 <script>
-    
+
 import axios from 'axios'
 import moment from 'moment'
 
@@ -39,24 +39,28 @@ export default {
   name: 'BrowseComponent',
   data () {
     return {
+        title: '',
+        newButtonTitle: '',
         displayObjects: [],
         detailFunction: '',
-        browseurl: ''
+        browseurl: '',
     }
   },
   mounted: function () {
     console.log('BrowseComponent')
     var browseDataTable = $('#browseDataTable').DataTable({responsive: true, columnDefs: [{ targets: [ 0 ], visible: false, searchable: false }],})
-    
+
     switch(this.$route.params.browseType) {
         case 'allPatients':
             this.browseurl = this.$parent.backendUrl+'patients'
             this.detailComponent = 'PatientComponent'
+            this.title = 'Listado de Pacientes'
+            this.newButtonTitle = 'Añadir Paciente'
             break;
         default:
             break;
     }
-    //Assing this vue compnent to self to don't lose reference  
+    //Assing this vue compnent to self to don't lose reference
     let self = this
     axios.get(this.browseurl).then(response => {
         const objectsModel = response.data
@@ -72,7 +76,7 @@ export default {
             objectItem.lastName,
             objectItem.emailAddress,
             self.frontEndDateFormat(objectItem.birthday),
-            
+
           ])
         })
         let selfinside = self

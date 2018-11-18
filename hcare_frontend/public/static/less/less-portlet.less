@@ -22,14 +22,14 @@ body {
 	.logo {
 		color: #fafafa;
 		border: 0;
-		width: 220px;
+		width: 300px;
 		position: absolute;
 		height: 64px;
 		line-height: 64px;
 		text-align: center;
 		-webkit-transition: width .25s ease-in-out;
 		transition: width .25s ease-in-out;
-		background-color: #009688;
+		background-color: #597db7;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -42,7 +42,7 @@ body {
 		background-color: #fff;
 	}
 	.top-nav {
-		padding: 0 0 0 220px;
+		padding: 0 0 0 300px;
 		width: 100%;
 		height: 64px;
 		-webkit-transition: padding .25s ease-in-out;
@@ -59,7 +59,6 @@ body {
 }
 
 .main-container {
-	padding-top: 64px;
 	position: relative;
     min-height: 100%;
     padding-bottom: 0;
@@ -69,7 +68,7 @@ body {
 		z-index: 11;
 		position: static;
 		float: left;
-		width: 220px;
+		width: 300px;
 		-webkit-transition: width .25s ease-in-out;
 		transition: width .25s ease-in-out;
 		box-shadow: 2px 0 2px 0 rgba(0,0,0,0.12);
@@ -130,9 +129,12 @@ body {
 			text-transform: none;
 			border-radius: 0;
 		}
+        @media @mobile {
+            display: none;
+        }
 	}
 	.content-container {
-		margin-left: 220px;
+		margin-left: 300px;
 		overflow: hidden;
 		min-height: 100%;
 		-webkit-transition: margin-left .25s ease-in-out;
@@ -144,9 +146,12 @@ body {
 				font-weight: normal;
 				line-height: 32px;
 				margin: .6em 0;
-				color: #009688;
+				color: #597db7;
 			}
-		}	
+		}
+        @media @mobile {
+            margin-left: 0px;
+        }
 	}
 }
 .boxLoginPortlet {
@@ -168,7 +173,7 @@ body {
 				bottom: 0;
 				left: 0;
 				right: 0;
-				background-color: #009688;
+				background-color: #597db7;
 				height: 220px;
 			}
 			.card {
@@ -189,11 +194,11 @@ body {
 					text-align: center;
 					text-transform: uppercase;
 					font-weight: bold;
-					color: #009688;
+					color: #597db7;
 				}
 				.text-right {
 					text-transform: uppercase;
-					color: #009688;
+					color: #597db7;
 					padding: 10px 0;
 					text-align: right;
 					margin-top: 20px;
@@ -216,8 +221,8 @@ body {
 	display: flex;
     flex: 0 1 100%;
     font-size: 16px;
-    border-bottom: 1px solid #009688;
-    color: #009688;
+    border-bottom: 1px solid #597db7;
+    color: #597db7;
     font-weight: bold;
 	margin: 10px 0;
 }
@@ -372,6 +377,12 @@ body {
             .flexWrap(wrap);
         }
     }
+    @media @tablet {
+        margin: 0 40px;
+    }
+    @media @mobile {
+        margin: 0 10px;
+    }
 }
 .mdl-textfield {
 	width: 100% !important;
@@ -390,7 +401,7 @@ input[type="time"], textarea, option {
     border: 0;
     padding: 10px 0px;
     background: white no-repeat;
-    background-image: linear-gradient(to bottom, #1abc9c, #1abc9c), linear-gradient(to bottom, silver, silver);
+    background-image: linear-gradient(to bottom, #597db7, #597db7), linear-gradient(to bottom, silver, silver);
     background-size: 0 2px, 100% 1px;
     background-position: 50% 100%, 50% 100%;
     transition: background-size 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
@@ -851,7 +862,106 @@ input:focus ~ .highlight {
 			}
 		}
 	}
+    @media @tablet {
+		margin-left: 8px;
+        right: 10px;
+        top: 10px;
+	}
 	@media @mobile {
 		margin-left: 8px;
+        right: 5px;
+        top: 5px;
+	}
+}
+
+
+/*************************************************************************/
+a {
+	text-decoration: none;
+	color:#fff;
+}
+
+.btn-menu {
+	display: none;
+	padding: 20px;
+	background: #0d2c44;
+	color:#fff;
+}
+
+.btn-menu .icono {
+	float: right;
+}
+
+.contenedor-menu {
+	width: 100%;
+	display: inline-block;
+	font-family: 'Roboto', sans-serif;
+	line-height: 18px;
+}
+
+.contenedor-menu .menu {
+	width: 100%;
+}
+
+.contenedor-menu ul {
+	list-style: none;
+}
+
+.contenedor-menu .menu li a {
+	color:#ffffff;
+	display: block;
+	padding: 15px 20px;
+	text-align: left;
+}
+
+.contenedor-menu .menu li a:hover {
+	background: #1a95d5;
+	color:#fff;
+}
+
+.contenedor-menu .menu .icono {
+	font-size: 12px;
+	line-height: 18px;
+}
+
+.contenedor-menu .menu .icono.izquierda {
+	float: left;
+	margin-right: 10px; 
+}
+
+.contenedor-menu .menu .icono.derecha {
+	float: right;
+	margin-left: 10px; 
+}
+
+.contenedor-menu .menu ul {
+	display: none;
+}
+
+.contenedor-menu .menu ul li a {
+	color:#ffffff;
+    background: #455A64;
+}
+
+.contenedor-menu .menu .activado > a {
+	background: #37474F;
+	color:#fff;
+}
+
+@media screen and (max-width: 450px) {
+	.contenedor-menu {
+		margin: 0;
+		width: 100%;
+		position: fixed;
+		top:0;
+		z-index: 1000;
+	}
+
+	.btn-menu {
+		display: block;
+	}
+
+	.contenedor-menu .menu {
+		display: none;
 	}
 }
