@@ -90,6 +90,7 @@ export default {
       formData.append('entityId', this.attachment.entityId);
       //Make the request to the POST /single-file URL
       var urlAttachmentInfo = this.$parent.backendUrl + 'uploadAttachment'
+      let selfVue = this
       axios({
           method: 'post',
           url: urlAttachmentInfo,
@@ -98,6 +99,7 @@ export default {
         })
         .then(function(response) {
           //handle success
+          selfVue.$parent.sucessMessage()
           console.log(response);
         })
         .catch(function(response) {

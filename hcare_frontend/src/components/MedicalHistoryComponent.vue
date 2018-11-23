@@ -101,6 +101,24 @@
               </div>
               <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <input class="mdl-textfield__input" type="text" name="medicalHistory-drink" id="medicalHistory-drink" v-model="medicalHistory.drink" />
+                  <label class="labelText" for="medicalHistory-drink">Bebe S/N</label>
+                </div>
+              </div>
+              <div class="group">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <input class="mdl-textfield__input" type="text" name="medicalHistory-howOftenDrink" id="medicalHistory-howOftenDrink" v-model="medicalHistory.howOftenDrink" />
+                  <label class="labelText" for="medicalHistory-howOftenDrink">Con que frequencia?</label>
+                </div>
+              </div>
+              <div class="groupFull">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <input class="mdl-textfield__input" type="text" name="medicalHistory-preferentialDiet" id="medicalHistory-preferentialDiet" v-model="medicalHistory.preferentialDiet" />
+                  <label class="labelText" for="medicalHistory-preferentialDiet">Dieta preferencial( por ejemplo: vegetariana )</label>
+                </div>
+              </div>
+              <div class="group">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" name="medicalHistory-hepBResult" id="medicalHistory-hepBResult" v-model="medicalHistory.hepBResult" />
                   <label class="labelText" for="medicalHistory-hepBResult">Hepatitis B resulado</label>
                 </div>
@@ -142,7 +160,7 @@
               Documentos Adjuntos
             </div>
             <div class="twoCol">
-              <ul id="attachment-list">
+              <ul class="boxLinks" id="attachment-list">
                 <li v-for="attachment in medicalHistory.attachmentList">
                   <div v-on:click="downloadAttachment(attachment)">
                     <span>{{ attachment.fileName }}</span>
@@ -180,11 +198,16 @@ export default {
   },
   created: function() {
     console.log("MedicalHistoryComponent");
+    let selfVue = this
     if (this.$route.params.patientId !== 'null') {
       var urlMedicalHistoryInfo = this.$parent.backendUrl + 'medicalHistory/' + this.$route.params.patientId
       axios.get(urlMedicalHistoryInfo)
         .then(response => {
           this.medicalHistory = response.data
+          if (selfVue.medicalHistory.id == null) {
+            this.medicalHistory.patientId = response.data.patient.id
+            this.medicalHistory.patientCode = response.data.patient.patientCode
+          }
         })
         .catch(error => {
           console.log(error)
@@ -200,9 +223,11 @@ export default {
     saveObjectState: function() {
       const url = this.$parent.backendUrl + 'medicalHistories'
       //Add patientId to medicalHistory
+      let selfVue = this
       axios.post(url, this.medicalHistory)
         .then(response => {
-          this.medicalHistory = response.data
+          selfVue.medicalHistory = response.data
+          selfVue.$parent.sucessMessage()
         })
         .catch(error => {
           console.log(error)
@@ -242,9 +267,10 @@ export default {
     },
     viewMedicalAppointmets: function() {
       this.$router.push({
-        name: 'MedicalHistoryComponent',
+        name: 'BrowseComponent',
         params: {
-          patientId
+          browseType: 'medicalAppointmentsByPatient',
+          entityId: this.medicalHistory.patient.id,
         }
       })
     },

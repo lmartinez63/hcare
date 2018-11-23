@@ -3,7 +3,12 @@ import Router from 'vue-router'
 import BrowseComponent from '@/components/BrowseComponent'
 import PatientComponent from '@/components/PatientComponent'
 import MedicalHistoryComponent from '@/components/MedicalHistoryComponent'
+import MedicalAppointmentComponent from '@/components/MedicalAppointmentComponent'
+import MedicalAreaComponent from '@/components/MedicalAreaComponent'
+import EmployeeComponent from '@/components/EmployeeComponent'
 import AttachmentComponent from '@/components/AttachmentComponent'
+import DashboardComponent from '@/components/DashboardComponent'
+
 Vue.use(Router)
 
 const router = new Router({
@@ -14,19 +19,39 @@ const router = new Router({
       component: AttachmentComponent
     },
     {
-      path: '/browse/:browseType',
+      path: '/browse/:browseType/:entityId',
       name: 'BrowseComponent',
       component: BrowseComponent
     },
     {
-      path: '/patient/:id',
+      path: '/patient/:patientId',
       name: 'PatientComponent',
       component: PatientComponent
     },
     {
-      path: '/MedicalHistory/:patientId',
+      path: '/medicalHistory/:patientId',
       name: 'MedicalHistoryComponent',
       component: MedicalHistoryComponent
+    },
+    {
+      path: '/medicalAppointment/:medicalAppointmentId/:patientId',
+      name: 'MedicalAppointmentComponent',
+      component: MedicalAppointmentComponent
+    },
+    {
+      path: '/medicalArea/:medicalAreaId',
+      name: 'MedicalAreaComponent',
+      component: MedicalAreaComponent
+    },
+    {
+      path: '/employee/:employeeId',
+      name: 'EmployeeComponent',
+      component: EmployeeComponent
+    },
+    {
+      path: '/',
+      name: 'DashboardComponent',
+      component: DashboardComponent
     }
   ]
 })

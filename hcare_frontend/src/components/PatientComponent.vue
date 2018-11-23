@@ -34,6 +34,12 @@
               </div>
               <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <datepicker v-model="patient.birthday"></datepicker>
+                  <label class="labelText" for="patient-birthday">Fecha de Nacimiento</label>
+                </div>
+              </div>
+              <div class="group">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" name="patient-firstName" id="patient-firstName" v-model="patient.firstName" />
                   <label class="labelText" for="patient-firstName">Nombres</label>
                 </div>
@@ -46,14 +52,52 @@
               </div>
               <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="patient-birthday" id="patient-birthday" v-model="patient.birthday" />
-                  <label class="labelText" for="patient-birthday">Fecha de Nacimiento</label>
+                  <select v-model="patient.documentType">
+                    <option v-for="documentType in $parent.documentTypes" v-bind:value="documentType.key">
+                      {{ documentType.value }}
+                    </option>
+                  </select>
+                  <label class="labelText" for="patient-documentType">Tipo de Doc de Identidad</label>
+                </div>
+              </div>
+              <div class="group">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <input class="mdl-textfield__input" type="text" name="patient-documentNumber" id="patient-documentNumber" v-model="patient.documentNumber" />
+                  <label class="labelText" for="patient-documentNumber"> Numero de Doc de Identidad</label>
+                </div>
+              </div>
+              <div class="group">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <select v-model="patient.civilStatus">
+                    <option v-for="civilStatus in $parent.civilStatus" v-bind:value="civilStatus.key">
+                      {{ civilStatus.value }}
+                    </option>
+                  </select>
+                  <label class="labelText" for="patient-civilStatus">Estado Civil</label>
+                </div>
+              </div>
+              <div class="group">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <input class="mdl-textfield__input" type="text" name="patient-phoneNumber" id="patient-phoneNumber" v-model="patient.phoneNumber" />
+                  <label class="labelText" for="patient-phoneNumber">Numero Telefonico</label>
+                </div>
+              </div>
+              <div class="group">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <input class="mdl-textfield__input" type="text" name="patient-celPhoneNumber" id="patient-celPhoneNumber" v-model="patient.celPhoneNumber" />
+                  <label class="labelText" for="patient-celPhoneNumber">Celular</label>
                 </div>
               </div>
               <div class="groupFull">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" name="patient-emailAddress" id="patient-emailAddress" v-model="patient.emailAddress" />
                   <label class="labelText" for="patient-emailAddress">Correo Electronico</label>
+                </div>
+              </div>
+              <div class="groupFull">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <input class="mdl-textfield__input" type="text" name="patient-address" id="patient-address" v-model="patient.address" />
+                  <label class="labelText" for="patient-address">Direccion</label>
                 </div>
               </div>
             </div>
@@ -69,6 +113,7 @@
 import axios from 'axios'
 import moment from 'moment'
 import round from 'vue-round-filter'
+import Datepicker from 'vuejs-datepicker';
 
 let installed = false
 
@@ -79,6 +124,9 @@ export default {
       patient: {},
     }
   },
+  components: {
+    Datepicker,
+  },
   created: function() {
 
     if (this.$route.params.id !== 'null') {
@@ -86,7 +134,7 @@ export default {
       axios.get(url)
         .then(response => {
           this.patient = response.data
-          this.patient.birthday = this.frontEndDateFormat(this.patient.birthday)
+          //this.patient.birthday = this.frontEndDateFormat(this.patient.birthday)
         })
         .catch(error => {
           console.log(error)
@@ -101,14 +149,16 @@ export default {
     },
     saveObjectState: function() {
       const url = this.$parent.backendUrl + 'patients'
-      this.patient.birthday = this.backEndDateFormat(this.patient.birthday)
+      //this.patient.birthday = this.backEndDateFormat(this.patient.birthday)
+      let selfVue = this
       axios.post(url, this.patient)
         .then(response => {
-          this.patient = response.data
-          this.patient.birthday = this.frontEndDateFormat(this.patient.birthday)
+          selfVue.patient = response.data
+          selfVue.$parent.sucessMessage()
+          //this.patient.birthday = this.frontEndDateFormat(this.patient.birthday)
         })
         .catch(error => {
-          this.patient.birthday = this.frontEndDateFormat(this.patient.birthday)
+          //this.patient.birthday = this.frontEndDateFormat(this.patient.birthday)
           console.log(error)
         })
       // this.$router.push({ name: '/'})
@@ -117,7 +167,7 @@ export default {
       this.$router.push({
         name: 'MedicalHistoryComponent',
         params: {
-          patientId
+          patientId: patientId
         }
       })
     },

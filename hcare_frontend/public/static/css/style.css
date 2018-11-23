@@ -539,7 +539,6 @@ body {
   background-color: #fff;
 }
 .header-container .top-nav {
-  padding: 0 0 0 300px;
   width: 100%;
   height: 64px;
   -webkit-transition: padding 0.25s ease-in-out;
@@ -547,7 +546,7 @@ body {
 }
 .header-container .top-nav .username {
   display: flex;
-  margin-right: 240px;
+  margin-right: 20px;
   justify-content: flex-end;
   line-height: 60px;
   font-weight: bold;
@@ -1692,6 +1691,183 @@ a {
   .contenedor-menu .menu {
     display: none;
   }
+}
+.boxLinks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.boxLinks li {
+  margin: 0;
+  padding: 10px 0;
+  border-bottom: 1px dashed #ccc;
+  cursor: pointer;
+}
+.boxLinks li i {
+  padding: 0 10px;
+  width: 24px;
+}
+.boxLinks li div {
+  display: box;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-pack: space-between;
+  -ms-flex-pack: space-between;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+ul {
+  padding-left: 0;
+  list-style: none;
+}
+.groupMsgBox {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 11;
+  width: 350px;
+  -webkit-animation: showNotify 3500ms ease-in;
+  animation: showNotify 3500ms ease-in;
+}
+.groupMsgBox .msgbox {
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-align-content: center;
+  align-content: center;
+  position: relative;
+  box-flex: 1 1 100%;
+  -webkit-box-flex: 1 1 100%;
+  -moz-box-flex: 1 1 100%;
+  -webkit-flex: 1 1 100%;
+  -moz-flex: 1 1 100%;
+  -ms-flex: 1 1 100%;
+  flex: 1 1 100%;
+  color: #03356c;
+  padding: 10px;
+  background: #cde0f6;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border: 1px solid #b9d4f2;
+  margin: 10px auto;
+  width: 75%;
+  display: none;
+}
+.groupMsgBox .msgbox.active {
+  display: box;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+.groupMsgBox .msgbox.info {
+  color: #03356c;
+  background-color: #cde0f6;
+  border-color: 1px solid #b9d4f2;
+}
+.groupMsgBox .msgbox.success {
+  color: #1c6356;
+  background-color: #d7f2ed;
+  border-color: 1px solid #c7ede6;
+}
+.groupMsgBox .msgbox.warning {
+  color: #85621b;
+  background-color: #fff2d6;
+  border-color: #ffecc6;
+}
+.groupMsgBox .msgbox.error {
+  color: #80172a;
+  background-color: #fdd5dc;
+  border-color: #fcc4ce;
+}
+.groupMsgBox .msgbox .iconMsg {
+  font-size: 16px;
+  margin-right: 10px;
+}
+.groupMsgBox .msgbox .iconClose {
+  font-size: 16px;
+  position: absolute;
+  right: 0;
+  top: 5px;
+  width: 32px;
+  height: 24px;
+  cursor: pointer;
+  text-align: center;
+}
+.groupMsgBox .msgbox .descrip {
+  margin-right: 20px;
+  line-height: 18px;
+}
+select {
+  align-items: center;
+  cursor: pointer;
+  height: 36px;
+  position: relative;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  outline: none;
+  background: #fff;
+}
+.chart {
+  max-height: 400px;
+  background: #fff;
+  margin: 20px;
+}
+.contPortlet {
+  max-height: 400px;
+  background: #fff;
+  margin: 85px 20px 20px 20px;
+  display: flex;
+  padding: 20px;
+  justify-content: space-between;
+}
+.contPortlet .portBox {
+  background: #f1f1f1;
+  flex: 1 1 20%;
+  padding: 50px 20px;
+  margin-right: 20px;
+}
+.contPortlet .portBox:last-child {
+  margin-right: 0px;
+}
+svg {
+  font: 10px sans-serif;
+}
+.y.axis path {
+  display: none;
+}
+.y.axis line {
+  stroke: #fff;
+  stroke-opacity: .2;
+  shape-rendering: crispEdges;
+}
+.y.axis .zero line {
+  stroke: #000;
+  stroke-opacity: 1;
+}
+.title {
+  font: 300 78px Helvetica Neue;
+  fill: #666;
+}
+.birthyear,
+.age {
+  text-anchor: middle;
+}
+.birthyear {
+  fill: #fff;
+}
+rect {
+  fill-opacity: .6;
+  fill: #e377c2;
+}
+rect:first-child {
+  fill: #42a5f4;
 }
 /* This to make sure all browses (even pop-up browse) obtain the sizing classes (not on mobile) */
 @media (min-width: 991px) {
