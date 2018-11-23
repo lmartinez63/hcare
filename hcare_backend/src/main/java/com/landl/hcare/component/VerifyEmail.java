@@ -32,8 +32,16 @@ public class VerifyEmail {
             //for(EmailQueue emailQueue : emailQueueRepository.findByIStatus(0)){
             for (Email email : emailService.findByStatus(0)) {
                 LOGGER.info("Processing emails" + email.toString());
-                emailService.sendSimpleMessage(email);
+                try {
+                    emailService.sendSimpleMessage(email);
+                }
+                catch (Exception innerException) {
+                    email.setStatus(99);
+                    email.setDescriptionStatus("Error: "+innerException.getMessage());
+                    throw innerException;
+                }
                 email.setStatus(10);
+                email.setDescriptionStatus("Sucessfully sent");
                 emailService.save(email);
             }
         }

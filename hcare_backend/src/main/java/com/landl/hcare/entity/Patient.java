@@ -40,6 +40,19 @@ public class Patient extends AuditModel {
     @Column(name="email_address")
     private String emailAddress;
 
+    @Column(name="address")
+    private String address;
+
+    @Column(name="civil_status")
+    private String civilStatus;
+
+    @Column(name="phone_number")
+    private String phoneNumber;
+
+    @Column(name="cel_phone_number")
+    private String celPhoneNumber;
+
+
     public Patient() {
     }
 
@@ -105,5 +118,37 @@ public class Patient extends AuditModel {
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
+    }
+
+    public String getCivilStatus() {
+        return civilStatus;
+    }
+
+    public void setCivilStatus(String civilStatus) {
+        this.civilStatus = civilStatus;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getCelPhoneNumber() {
+        return celPhoneNumber;
+    }
+
+    public void setCelPhoneNumber(String celPhoneNumber) {
+        this.celPhoneNumber = celPhoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

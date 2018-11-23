@@ -31,6 +31,9 @@ public class Email  extends AuditModel {
     @Column(name="body")
     private String body;
 
+    @Column(name="description_status")
+    private String descriptionStatus;
+
     @Column(name="status")
     private Integer status;
 
@@ -134,5 +137,21 @@ public class Email  extends AuditModel {
 
     public List<Attachment> getAttachmentList() {
         return attachmentList;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDescriptionStatus() {
+        return descriptionStatus;
+    }
+
+    public void setDescriptionStatus(String descriptionStatus) {
+        this.descriptionStatus = descriptionStatus;
     }
 }

@@ -4,6 +4,7 @@ import com.landl.hcare.model.AuditModel;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="medical_appointment")
@@ -17,6 +18,12 @@ public class MedicalAppointment  extends AuditModel {
     )
     private Long id;
 
+    @Column(name="patient_id")
+    private Long patientId;
+
+    @Column(name="patient_code")
+    private String patientCode;
+
     @Column(name="date_appointment")
     private Date dateAppointment;
 
@@ -25,6 +32,21 @@ public class MedicalAppointment  extends AuditModel {
 
     @Column(name="medical_area_id")
     private Long medicalAreaId;
+
+    @Column(name="doctor_id")
+    private Long doctorId;
+
+    @Column(name="visit_reason")
+    private String visitReason;
+
+    @Column(name="dianostic")
+    private String diagnostic;
+
+    @Transient
+    private Patient patient;
+
+    @Transient
+    private List<Attachment> attachmentList;
 
     public MedicalAppointment() {
     }
@@ -51,5 +73,69 @@ public class MedicalAppointment  extends AuditModel {
 
     public void setMedicalAreaId(Long medicalAreaId) {
         this.medicalAreaId = medicalAreaId;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getVisitReason() {
+        return visitReason;
+    }
+
+    public void setVisitReason(String visitReason) {
+        this.visitReason = visitReason;
+    }
+
+    public String getDiagnostic() {
+        return diagnostic;
+    }
+
+    public void setDiagnostic(String diagnostic) {
+        this.diagnostic = diagnostic;
+    }
+
+    public Long getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(Long patientId) {
+        this.patientId = patientId;
+    }
+
+    public String getPatientCode() {
+        return patientCode;
+    }
+
+    public void setPatientCode(String patientCode) {
+        this.patientCode = patientCode;
+    }
+
+    public Long getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(Long doctorId) {
+        this.doctorId = doctorId;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public List<Attachment> getAttachmentList() {
+        return attachmentList;
+    }
+
+    public void setAttachmentList(List<Attachment> attachmentList) {
+        this.attachmentList = attachmentList;
     }
 }

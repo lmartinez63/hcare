@@ -5,6 +5,9 @@ import com.landl.hcare.repository.MedicalAppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,4 +28,29 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
     public Optional<MedicalAppointment> findById(Long medicalAppointmentId){
         return medicalAppointmentRepository.findById(medicalAppointmentId);
     }
+
+    public List<MedicalAppointment> findByPatientId(Long patientId){
+        return medicalAppointmentRepository.findByPatientId(patientId);
+    }
+
+    public List<MedicalAppointment> findByToday(){
+        Date today = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(today);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        today = cal.getTime();
+
+        Date tomorrow = new Date();
+        cal.setTime(today);
+        cal.add(Calendar.DATE, 1);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        tomorrow = cal.getTime();
+        return medicalAppointmentRepository.findByDateAppointmentBetween(today,tomorrow);
+    };
 }

@@ -2,6 +2,7 @@ package com.landl.hcare.controller;
 
 import com.landl.hcare.entity.Attachment;
 import com.landl.hcare.entity.MedicalHistory;
+import com.landl.hcare.entity.Patient;
 import com.landl.hcare.exception.ResourceNotFoundException;
 import com.landl.hcare.service.MedicalHistoryService;
 import com.landl.hcare.service.PatientService;
@@ -32,12 +33,23 @@ public class MedicalHistoryController {
     @GetMapping("/medicalHistories/{medicalHistoryId}")
     public MedicalHistory retrieveByMedicalHistoryId(@PathVariable Long medicalHistoryId) {
         MedicalHistory medicalHistory = medicalHistoryService.findById(medicalHistoryId).get();
+        if (medicalHistory.getId() != null) {
+            Patient patient = patientService.findById(medicalHistory.getPatientId()).get();
+            medicalHistory.setPatient(patient);
+        }
+        medicalHistory.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalHistory", medicalHistory.getId()));
         return medicalHistory;
     }
 
     @PostMapping("/medicalHistories")
     public MedicalHistory saveMedicalHistory(@Valid @RequestBody MedicalHistory medicalHistory) {
-        return medicalHistoryService.save(medicalHistory);
+        MedicalHistory medicalHistorySaved = medicalHistoryService.save(medicalHistory);
+        if (medicalHistory.getId() != null) {
+            Patient patient = patientService.findById(medicalHistorySaved.getPatientId()).get();
+            medicalHistorySaved.setPatient(patient);
+            medicalHistorySaved.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalHistory", medicalHistorySaved.getId()));
+        }
+        return medicalHistorySaved;
     }
 
     @GetMapping("/medicalHistory/{patientId}")
@@ -46,7 +58,8 @@ public class MedicalHistoryController {
         if (medicalHistoryService.findByPatientId(patientId).size() > 0){
             medicalHistory =  medicalHistoryService.findByPatientId(patientId).get(0);
         }
-        medicalHistory.setPatient(patientService.findById(patientId).get());
+        Patient patient = patientService.findById(patientId).get();
+        medicalHistory.setPatient(patient);
         medicalHistory.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalHistory", medicalHistory.getId()));
         return medicalHistory;
     }

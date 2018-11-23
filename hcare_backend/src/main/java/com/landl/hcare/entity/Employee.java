@@ -5,19 +5,19 @@ import com.landl.hcare.model.AuditModel;
 import javax.persistence.*;
 
 @Entity
-@Table(name="user")
-public class User extends AuditModel {
+@Table(name="employee")
+public class Employee extends AuditModel {
     @Id
-    @GeneratedValue(generator = "user_generator")
+    @GeneratedValue(generator = "employee_generator")
     @SequenceGenerator(
-            name = "user_generator",
-            sequenceName = "user_sequence",
+            name = "employee_generator",
+            sequenceName = "employee_sequence",
             initialValue = 1000
     )
     private Long id;
 
-    @Column(name="user_code")
-    private String userCode;
+    @Column(name="employee_code")
+    private String employeeCode;
 
     @Column(name="password")
     private String password;
@@ -28,6 +28,9 @@ public class User extends AuditModel {
     @Column(name="first_name")
     private String firstName;
 
+    @Column(name="last_name")
+    private String lastName;
+
     @Column(name="phone_number")
     private String phoneNumber;
 
@@ -37,23 +40,31 @@ public class User extends AuditModel {
     @Column(name="title")
     private String title;
 
-    public User() {
+    public Employee() {
     }
 
     public Long getId() {
         return id;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getUserCode() {
-        return userCode;
+    public String getEmployeeCode() {
+        return employeeCode;
     }
 
-    public void setUserCode(String userCode) {
-        this.userCode = userCode;
+    public void setEmployeeCode(String employeeCode) {
+        this.employeeCode = employeeCode;
     }
 
     public String getPassword() {

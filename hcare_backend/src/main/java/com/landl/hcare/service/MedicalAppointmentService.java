@@ -14,4 +14,8 @@ public interface MedicalAppointmentService {
 
     public Optional<MedicalAppointment> findById(Long medicalAppointmentId);
 
+    public List<MedicalAppointment> findByPatientId(Long patientId);
+
+    public List<MedicalAppointment> findByToday();
+
 }

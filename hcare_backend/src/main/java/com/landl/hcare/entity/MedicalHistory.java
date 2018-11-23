@@ -20,8 +20,11 @@ public class MedicalHistory extends AuditModel {
     @Column(name="medical_history_code")
     private String medicalHistoryCode;
 
-    @Column(name="patientId")
+    @Column(name="patient_id")
     private Long patientId;
+
+    @Column(name="patient_code")
+    private String patientCode;
 
     @Column(name="fileNumber")
     private String fileNumber;
@@ -39,12 +42,20 @@ public class MedicalHistory extends AuditModel {
     @Column(name="medication_allergies")
     private String medicationAllergies;
 
-
     @Column(name="smoke")
     private String smoke;
 
     @Column(name="packages_cigarettes_pday")
     private Integer packagesCigarettesPday;
+
+    @Column(name="drink")
+    private String drink;
+
+    @Column(name="how_often_drink")
+    private String howOftenDrink;
+
+    @Column(name="preferential_diet")
+    private String preferentialDiet;
 
     @Column(name="hep_b_result")
     private String hepBResult;
@@ -237,5 +248,37 @@ public class MedicalHistory extends AuditModel {
 
     public void setAttachmentList(List<Attachment> attachmentList) {
         this.attachmentList = attachmentList;
+    }
+
+    public String getPatientCode() {
+        return patientCode;
+    }
+
+    public void setPatientCode(String patientCode) {
+        this.patientCode = patientCode;
+    }
+
+    public String getDrink() {
+        return drink;
+    }
+
+    public void setDrink(String drink) {
+        this.drink = drink;
+    }
+
+    public String getHowOftenDrink() {
+        return howOftenDrink;
+    }
+
+    public void setHowOftenDrink(String howOftenDrink) {
+        this.howOftenDrink = howOftenDrink;
+    }
+
+    public String getPreferentialDiet() {
+        return preferentialDiet;
+    }
+
+    public void setPreferentialDiet(String preferentialDiet) {
+        this.preferentialDiet = preferentialDiet;
     }
 }

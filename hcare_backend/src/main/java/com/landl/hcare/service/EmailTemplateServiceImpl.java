@@ -14,15 +14,19 @@ public class EmailTemplateServiceImpl implements EmailTemplateService{
     @Autowired
     EmailTemplateRepository emailTemplateRepository;
 
-    public EmailTemplate save(EmailTemplate emailTemplate){
+    public EmailTemplate save(EmailTemplate emailTemplate) throws Exception{
         return emailTemplateRepository.save(emailTemplate);
     }
 
-    public List<EmailTemplate> findAll(){
+    public List<EmailTemplate> findAll() throws Exception{
         return emailTemplateRepository.findAll();
     }
 
-    public Optional<EmailTemplate> findById(Long emailTemplateId){
+    public EmailTemplate findByTemplateType(String templateType) throws Exception{
+        return emailTemplateRepository.findByTemplateType(templateType).get(0);
+    }
+
+    public Optional<EmailTemplate> findById(Long emailTemplateId) throws Exception{
         return emailTemplateRepository.findById(emailTemplateId);
     }
 }
