@@ -9,25 +9,17 @@ import java.util.List;
 @Table(name="medical_history")
 public class MedicalHistory extends AuditModel {
     @Id
-    @GeneratedValue(generator = "medical_history_generator")
-    @SequenceGenerator(
-            name = "medical_history_generator",
-            sequenceName = "medical_history_sequence",
-            initialValue = 1000
-    )
-    private Long id;
+    private Long historyCode;
 
-    @Column(name="medical_history_code")
-    private String medicalHistoryCode;
+    @Column(name="old_history_code")
+    private String oldHistoryCode;
 
-    @Column(name="patient_id")
-    private Long patientId;
 
-    @Column(name="patient_code")
-    private String patientCode;
-
-    @Column(name="fileNumber")
+    @Column(name="file_number")
     private String fileNumber;
+
+    @Column(name="status")
+    private String status;
 
     //record
     @Column(name="previous_surgeries")
@@ -79,7 +71,7 @@ public class MedicalHistory extends AuditModel {
     private String useAnySubtance;
 
     @Column(name="use_any_subtance_freq")
-    private String use_any_subtance_freq;
+    private String useAnySubtanceFreq;
 
     @Transient
     private Patient patient;
@@ -88,30 +80,6 @@ public class MedicalHistory extends AuditModel {
     private List<Attachment> attachmentList;
 
     public MedicalHistory() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getMedicalHistoryCode() {
-        return medicalHistoryCode;
-    }
-
-    public void setMedicalHistoryCode(String medicalHistoryCode) {
-        this.medicalHistoryCode = medicalHistoryCode;
-    }
-
-    public Long getPatientId() {
-        return patientId;
-    }
-
-    public void setPatientId(Long patientId) {
-        this.patientId = patientId;
     }
 
     public String getFileNumber() {
@@ -194,12 +162,12 @@ public class MedicalHistory extends AuditModel {
         this.useAnySubtance = useAnySubtance;
     }
 
-    public String getUse_any_subtance_freq() {
-        return use_any_subtance_freq;
+    public String getUseAnySubtanceFreq() {
+        return useAnySubtanceFreq;
     }
 
-    public void setUse_any_subtance_freq(String use_any_subtance_freq) {
-        this.use_any_subtance_freq = use_any_subtance_freq;
+    public void setUseAnySubtanceFreq(String useAnySubtanceFreq) {
+        this.useAnySubtanceFreq = useAnySubtanceFreq;
     }
 
     public String getPreviousSurgeries() {
@@ -250,14 +218,6 @@ public class MedicalHistory extends AuditModel {
         this.attachmentList = attachmentList;
     }
 
-    public String getPatientCode() {
-        return patientCode;
-    }
-
-    public void setPatientCode(String patientCode) {
-        this.patientCode = patientCode;
-    }
-
     public String getDrink() {
         return drink;
     }
@@ -281,4 +241,29 @@ public class MedicalHistory extends AuditModel {
     public void setPreferentialDiet(String preferentialDiet) {
         this.preferentialDiet = preferentialDiet;
     }
+
+    public Long getHistoryCode() {
+        return historyCode;
+    }
+
+    public void setHistoryCode(Long historyCode) {
+        this.historyCode = historyCode;
+    }
+
+    public String getOldHistoryCode() {
+        return oldHistoryCode;
+    }
+
+    public void setOldHistoryCode(String oldHistoryCode) {
+        this.oldHistoryCode = oldHistoryCode;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
 }

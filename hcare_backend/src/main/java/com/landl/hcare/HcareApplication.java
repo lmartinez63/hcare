@@ -32,6 +32,7 @@ public class HcareApplication {
 				registry.addMapping("/employeesByTitle/*").allowedOrigins("http://localhost:8081");
 				registry.addMapping("/patients").allowedOrigins("http://localhost:8081");
 				registry.addMapping("/patients/*").allowedOrigins("http://localhost:8081");
+				registry.addMapping("/retrievePatientByDocumentNumber/*").allowedOrigins("http://localhost:8081");
 				registry.addMapping("/medicalHistories").allowedOrigins("http://localhost:8081");
 				registry.addMapping("/medicalHistories/*").allowedOrigins("http://localhost:8081");
 				registry.addMapping("/medicalHistory").allowedOrigins("http://localhost:8081");

@@ -30,38 +30,25 @@ public class MedicalHistoryController {
         return medicalHistoryService.findAll();
     }
 
-    @GetMapping("/medicalHistories/{medicalHistoryId}")
-    public MedicalHistory retrieveByMedicalHistoryId(@PathVariable Long medicalHistoryId) {
-        MedicalHistory medicalHistory = medicalHistoryService.findById(medicalHistoryId).get();
-        if (medicalHistory.getId() != null) {
-            Patient patient = patientService.findById(medicalHistory.getPatientId()).get();
+    @GetMapping("/medicalHistories/{historyCode}")
+    public MedicalHistory retrieveByHistoryCode(@PathVariable Long historyCode) {
+        MedicalHistory medicalHistory = medicalHistoryService.findById(historyCode).get();
+        if (medicalHistory.getHistoryCode() != null) {
+            Patient patient = patientService.findById(medicalHistory.getHistoryCode()).get();
             medicalHistory.setPatient(patient);
         }
-        medicalHistory.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalHistory", medicalHistory.getId()));
+        medicalHistory.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalHistory", medicalHistory.getHistoryCode()));
         return medicalHistory;
     }
 
     @PostMapping("/medicalHistories")
     public MedicalHistory saveMedicalHistory(@Valid @RequestBody MedicalHistory medicalHistory) {
         MedicalHistory medicalHistorySaved = medicalHistoryService.save(medicalHistory);
-        if (medicalHistory.getId() != null) {
-            Patient patient = patientService.findById(medicalHistorySaved.getPatientId()).get();
+        if (medicalHistory.getHistoryCode() != null) {
+            Patient patient = patientService.findById(medicalHistorySaved.getHistoryCode()).get();
             medicalHistorySaved.setPatient(patient);
-            medicalHistorySaved.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalHistory", medicalHistorySaved.getId()));
+            medicalHistorySaved.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalHistory", medicalHistorySaved.getHistoryCode()));
         }
         return medicalHistorySaved;
     }
-
-    @GetMapping("/medicalHistory/{patientId}")
-    public MedicalHistory retrieveByPatientId(@PathVariable Long patientId) {
-        MedicalHistory medicalHistory = new MedicalHistory();
-        if (medicalHistoryService.findByPatientId(patientId).size() > 0){
-            medicalHistory =  medicalHistoryService.findByPatientId(patientId).get(0);
-        }
-        Patient patient = patientService.findById(patientId).get();
-        medicalHistory.setPatient(patient);
-        medicalHistory.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalHistory", medicalHistory.getId()));
-        return medicalHistory;
-    }
-
 }

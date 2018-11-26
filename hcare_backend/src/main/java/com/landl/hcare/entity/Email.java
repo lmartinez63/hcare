@@ -15,7 +15,8 @@ public class Email  extends AuditModel {
     @SequenceGenerator(
             name = "email_generator",
             sequenceName = "email_sequence",
-            initialValue = 1000
+            initialValue = 1000,
+            allocationSize = 1
     )
     private Long id;
 
@@ -28,7 +29,7 @@ public class Email  extends AuditModel {
     @Column(name="subject")
     private String subject;
 
-    @Column(name="body")
+    @Column(name="body",length = 10485760)
     private String body;
 
     @Column(name="description_status")

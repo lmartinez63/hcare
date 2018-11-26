@@ -1,9 +1,6 @@
 package com.landl.hcare.controller;
 
-import com.landl.hcare.entity.Email;
-import com.landl.hcare.entity.EmailTemplate;
-import com.landl.hcare.entity.MedicalAppointment;
-import com.landl.hcare.entity.Patient;
+import com.landl.hcare.entity.*;
 import com.landl.hcare.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +28,9 @@ public class MedicalAppointmentController {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private MedicalHistoryService medicalHistoryService;
+
     @GetMapping("/medicalAppointments")
     public List<MedicalAppointment> retrieveAllMedicalAppointments(){
         return medicalAppointmentService.findAll();
@@ -43,10 +43,10 @@ public class MedicalAppointmentController {
 
 
     @GetMapping("/medicalAppointments/{medicalAppointmentId}")
-    public MedicalAppointment retrieveByMedicalHistoryId(@PathVariable Long medicalAppointmentId) {
+    public MedicalAppointment retrieveByMedicalAppointmentId(@PathVariable Long medicalAppointmentId) throws Exception{
         MedicalAppointment medicalAppointment = medicalAppointmentService.findById(medicalAppointmentId).get();
-        if(medicalAppointment.getPatientId() != null){
-            medicalAppointment.setPatient(patientService.findById(medicalAppointment.getPatientId()).get());
+        if(medicalAppointment.getDocumentType() != null){
+            medicalAppointment.setPatient(patientService.findByDocumentNumber(medicalAppointment.getDocumentNumber()));
         }
         medicalAppointment.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalAppointment", medicalAppointment.getId()));
         return medicalAppointment;
@@ -55,31 +55,33 @@ public class MedicalAppointmentController {
     @PostMapping("/medicalAppointments")
     public MedicalAppointment saveMedicalAppointment(@Valid @RequestBody MedicalAppointment medicalAppointment)  throws Exception{
         //If is a new medical appointment send a reminder email
-        if (medicalAppointment.getId() == null && medicalAppointment.getStatus().compareTo("0") == 0) {
-            EmailTemplate emailTemplate = emailTemplateService.findByTemplateType("new_medicalAppointment");
-            Email email = new Email();
-            email.setStatus(0);
-            email.setEmailTemplate(emailTemplate);
-            //Get Data source
-            Map<String,Object> dataSource = new HashMap<String, Object>();
-            Patient patient = patientService.findById(medicalAppointment.getPatientId()).get();
-            dataSource.put("Patient", patient);
-            dataSource.put("MedicalAppointment", medicalAppointment);
-            email.setDataSource(dataSource);
-            emailService.buildEmailFromEmailTemplate(email);
-            emailService.save(email);
+        if (medicalAppointment.getId() == null) {
+            //If is a new medical appointment send a reminder email
+            int emailPatientStatus = emailService.sendEmailToPatient(medicalAppointment);
+            int emailDoctorStatus = emailService.sendEmailToDoctor(medicalAppointment);
+            medicalAppointment.setStatus("5");
         }
+        Patient patient = patientService.findByDocumentNumber(medicalAppointment.getDocumentNumber());
+        //Create patient if doesn't exits
+        if(patient == null || patient.getHistoryCode() == null){
+            patient = patientService.createPatient(medicalAppointment);
+            MedicalHistory medicalHistory = medicalHistoryService.createMedicalHistory(patient);
+            medicalAppointment.setHistoryCode(patient.getHistoryCode());
+        } else
+        {
+            patient = patientService.updatePatient(patient,medicalAppointment);
+        }
+        //Cita agendada
         MedicalAppointment medicalAppointmentSaved = medicalAppointmentService.save(medicalAppointment);
-        if(medicalAppointmentSaved.getId() != null){
-            medicalAppointmentSaved.setPatient(patientService.findById(medicalAppointmentSaved.getPatientId()).get());
-            medicalAppointmentSaved.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalAppointment", medicalAppointmentSaved.getId()));
-        }
-        return medicalAppointmentService.save(medicalAppointment);
+
+        medicalAppointmentSaved.setPatient(patient);
+        medicalAppointmentSaved.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalAppointment", medicalAppointmentSaved.getId()));
+        return medicalAppointmentSaved;
     }
 
-    @GetMapping("/medicalAppointmentsByPatientId/{patientId}")
-    public List<MedicalAppointment> retrieveByPatientId(@PathVariable Long patientId) {
-        return medicalAppointmentService.findByPatientId(patientId);
+    @GetMapping("/medicalAppointmentsByHistoryCode/{historyCode}")
+    public List<MedicalAppointment> retrieveByHistoryCode(@PathVariable Long historyCode) {
+        return medicalAppointmentService.findByHistoryCode(historyCode);
     }
 
 }

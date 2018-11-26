@@ -13,11 +13,13 @@ public class UtilityTools {
     public static String getFormatedValue(String value, Map<String,Object> dataSource) throws Exception{
         String formatedValue = "";
         formatedValue = value;
-        Pattern p3 = Pattern.compile("\\{\\{(.*?)\\}\\}");
-        Matcher m3 = p3.matcher(formatedValue);
-        while (m3.find()) {
-            String dinamicValue = m3.group(1);
-            formatedValue = value.replace("{{"+dinamicValue+"}}",getReflectedValue(dinamicValue,dataSource).toString());
+        if (!isEmpty(formatedValue)) {
+            Pattern p3 = Pattern.compile("\\{\\{(.*?)\\}\\}");
+            Matcher m3 = p3.matcher(formatedValue);
+            while (m3.find()) {
+                String dinamicValue = m3.group(1);
+                formatedValue = formatedValue.replace("{{" + dinamicValue + "}}", getReflectedValue(dinamicValue, dataSource).toString());
+            }
         }
         return  formatedValue;
     }
@@ -29,6 +31,14 @@ public class UtilityTools {
         Class classInstance = objectSource.getClass();
         Method targetMethod = classInstance.getMethod("get"+methodName.substring(0,1).toUpperCase() + methodName.substring(1),null);
         return targetMethod.invoke(objectSource,null);
+    }
+
+    public static String isNull(String value){
+        return (value == null) ? "" : value;
+    }
+
+    public static boolean isEmpty(String value){
+        return (value == null || value.trim() == "") ? true : false;
     }
 
 }

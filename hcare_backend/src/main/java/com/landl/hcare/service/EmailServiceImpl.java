@@ -2,9 +2,7 @@ package com.landl.hcare.service;
 
 
 import com.landl.hcare.common.UtilityTools;
-import com.landl.hcare.entity.Attachment;
-import com.landl.hcare.entity.Email;
-import com.landl.hcare.entity.EmailTemplate;
+import com.landl.hcare.entity.*;
 import com.landl.hcare.repository.EmailRepository;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -15,6 +13,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -32,6 +31,18 @@ public class EmailServiceImpl implements EmailService {
 
     @Autowired
     public UtilityTools utilityTools;
+
+    @Autowired
+    public EmailTemplateService emailTemplateService;
+
+    @Autowired
+    public PatientService patientService;
+
+    @Autowired
+    public EmployeeService employeeService;
+
+    @Autowired
+    public PropertyService propertyService;
 
     @Autowired
     EmailRepository emailRepository;
@@ -90,5 +101,57 @@ public class EmailServiceImpl implements EmailService {
 
     public Optional<Email> findById(Long emailId){
         return emailRepository.findById(emailId);
+    }
+
+    public int sendEmailToPatient(MedicalAppointment medicalAppointment) throws Exception{
+        // email to Patient
+        EmailTemplate emailTemplate = null;
+        switch (medicalAppointment.getStatus()){
+            case "0":
+                emailTemplate = emailTemplateService.findByTemplateType("newMedicalAppointmentToPatient");
+                break;
+            default:
+                return 50;
+        }
+        Email email = new Email();
+        email.setStatus(0);
+        email.setEmailTemplate(emailTemplate);
+        //Get Data source
+        Map<String,Object> dataSource = new HashMap<String, Object>();
+        Map<String, Object> propertiesMap =  propertyService.getPropertiesMap();
+        Employee doctor = employeeService.findById(medicalAppointment.getDoctorId()).get();
+        dataSource.put("Properties", propertiesMap);
+        dataSource.put("Doctor", doctor);
+        dataSource.put("MedicalAppointment", medicalAppointment);
+        email.setDataSource(dataSource);
+        buildEmailFromEmailTemplate(email);
+        save(email);
+        return 100;
+    }
+
+    public int sendEmailToDoctor(MedicalAppointment medicalAppointment) throws Exception{
+        // email to Patient
+        EmailTemplate emailTemplate = null;
+        switch (medicalAppointment.getStatus()){
+            case "0":
+                emailTemplate = emailTemplateService.findByTemplateType("newMedicalAppointmentToDoctor");
+                break;
+            default:
+                return 50;
+        }
+        Email email = new Email();
+        email.setStatus(0);
+        email.setEmailTemplate(emailTemplate);
+        //Get Data source
+        Map<String,Object> dataSource = new HashMap<String, Object>();
+        Employee doctor = employeeService.findById(medicalAppointment.getDoctorId()).get();
+        Map<String, Object> propertiesMap =  propertyService.getPropertiesMap();
+        dataSource.put("Properties", propertiesMap);
+        dataSource.put("Doctor", doctor);
+        dataSource.put("MedicalAppointment", medicalAppointment);
+        email.setDataSource(dataSource);
+        buildEmailFromEmailTemplate(email);
+        save(email);
+        return 100;
     }
 }

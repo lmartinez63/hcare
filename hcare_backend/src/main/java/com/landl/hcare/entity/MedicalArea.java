@@ -13,7 +13,8 @@ public class MedicalArea  extends AuditModel {
     @SequenceGenerator(
             name = "med_area_generator",
             sequenceName = "med_area_sequence",
-            initialValue = 1000
+            initialValue = 1000,
+            allocationSize = 1
     )
     private Long id;
 

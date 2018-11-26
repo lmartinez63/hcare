@@ -1,6 +1,7 @@
 package com.landl.hcare.service;
 
 import com.landl.hcare.entity.Email;
+import com.landl.hcare.entity.MedicalAppointment;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,4 +18,8 @@ public interface EmailService {
     public List<Email> findByStatus(Integer status);
 
     public Optional<Email> findById(Long emailId);
+
+    public int sendEmailToPatient(MedicalAppointment medicalAppointment) throws Exception;
+
+    public int sendEmailToDoctor(MedicalAppointment medicalAppointment) throws Exception;
 }

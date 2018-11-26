@@ -29,8 +29,8 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
         return medicalAppointmentRepository.findById(medicalAppointmentId);
     }
 
-    public List<MedicalAppointment> findByPatientId(Long patientId){
-        return medicalAppointmentRepository.findByPatientId(patientId);
+    public List<MedicalAppointment> findByHistoryCode(Long historyCode){
+        return medicalAppointmentRepository.findByHistoryCode(historyCode);
     }
 
     public List<MedicalAppointment> findByToday(){

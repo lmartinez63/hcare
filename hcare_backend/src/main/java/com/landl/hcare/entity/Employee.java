@@ -1,5 +1,6 @@
 package com.landl.hcare.entity;
 
+import com.landl.hcare.common.UtilityTools;
 import com.landl.hcare.model.AuditModel;
 
 import javax.persistence.*;
@@ -12,7 +13,8 @@ public class Employee extends AuditModel {
     @SequenceGenerator(
             name = "employee_generator",
             sequenceName = "employee_sequence",
-            initialValue = 1000
+            initialValue = 1000,
+            allocationSize = 1
     )
     private Long id;
 
@@ -30,6 +32,9 @@ public class Employee extends AuditModel {
 
     @Column(name="last_name")
     private String lastName;
+
+    @Transient
+    private String fullName;
 
     @Column(name="phone_number")
     private String phoneNumber;
@@ -114,4 +119,9 @@ public class Employee extends AuditModel {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public String getFullName() {
+        return UtilityTools.isNull(this.firstName) + " " + UtilityTools.isNull(this.lastName);
+    }
+
 }

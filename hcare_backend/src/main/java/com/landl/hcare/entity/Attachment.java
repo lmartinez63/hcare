@@ -14,7 +14,8 @@ public class Attachment extends AuditModel {
     @SequenceGenerator(
             name = "attachment_generator",
             sequenceName = "attachment_sequence",
-            initialValue = 1000
+            initialValue = 1000,
+            allocationSize = 1
     )
     private Long id;
 

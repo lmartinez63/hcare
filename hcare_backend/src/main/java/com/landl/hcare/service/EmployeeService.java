@@ -1,6 +1,7 @@
 package com.landl.hcare.service;
 
 import com.landl.hcare.entity.Employee;
+import com.landl.hcare.entity.MedicalAppointment;
 
 import java.util.List;
 import java.util.Optional;

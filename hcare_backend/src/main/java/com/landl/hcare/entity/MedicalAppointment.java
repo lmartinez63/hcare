@@ -1,8 +1,10 @@
 package com.landl.hcare.entity;
 
 import com.landl.hcare.model.AuditModel;
+import com.landl.hcare.common.UtilityTools;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -14,18 +16,43 @@ public class MedicalAppointment  extends AuditModel {
     @SequenceGenerator(
             name = "med_app_generator",
             sequenceName = "med_app_sequence",
+            allocationSize = 1,
             initialValue = 1000
     )
     private Long id;
 
-    @Column(name="patient_id")
-    private Long patientId;
+    @Column(name="history_code")
+    private Long historyCode;
 
-    @Column(name="patient_code")
-    private String patientCode;
+    @Column(name="first_name")
+    private String firstName;
+
+    @Column(name="last_name")
+    private String lastName;
+
+    @Transient
+    private String fullName;
+
+    @Column(name="document_type")
+    private String documentType;
+
+    @Column(name="document_number")
+    private String documentNumber;
+
+    @Column(name="email_address")
+    private String emailAddress;
+
+    @Column(name="cel_phone_number")
+    private String celPhoneNumber;
 
     @Column(name="date_appointment")
     private Date dateAppointment;
+
+    @Transient
+    private String dateAppointmentDateFormatted;
+
+    @Transient
+    private String dateAppointmentTimeFormatted;
 
     @Column(name="status")
     private String status;
@@ -42,6 +69,12 @@ public class MedicalAppointment  extends AuditModel {
     @Column(name="dianostic")
     private String diagnostic;
 
+    @Column(name="preferential_diagnostic")
+    private String preferentialDiagnostic;
+
+    @Column(name="medical_appointment_type")
+    private String medicalAppointmentType;
+
     @Transient
     private Patient patient;
 
@@ -49,6 +82,62 @@ public class MedicalAppointment  extends AuditModel {
     private List<Attachment> attachmentList;
 
     public MedicalAppointment() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getDocumentType() {
+        return documentType;
+    }
+
+    public void setDocumentType(String documentType) {
+        this.documentType = documentType;
+    }
+
+    public String getDocumentNumber() {
+        return documentNumber;
+    }
+
+    public void setDocumentNumber(String documentNumber) {
+        this.documentNumber = documentNumber;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public String getCelPhoneNumber() {
+        return celPhoneNumber;
+    }
+
+    public void setCelPhoneNumber(String celPhoneNumber) {
+        this.celPhoneNumber = celPhoneNumber;
     }
 
     public Date getDateAppointment() {
@@ -75,12 +164,12 @@ public class MedicalAppointment  extends AuditModel {
         this.medicalAreaId = medicalAreaId;
     }
 
-    public Long getId() {
-        return id;
+    public Long getDoctorId() {
+        return doctorId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setDoctorId(Long doctorId) {
+        this.doctorId = doctorId;
     }
 
     public String getVisitReason() {
@@ -99,28 +188,12 @@ public class MedicalAppointment  extends AuditModel {
         this.diagnostic = diagnostic;
     }
 
-    public Long getPatientId() {
-        return patientId;
+    public String getMedicalAppointmentType() {
+        return medicalAppointmentType;
     }
 
-    public void setPatientId(Long patientId) {
-        this.patientId = patientId;
-    }
-
-    public String getPatientCode() {
-        return patientCode;
-    }
-
-    public void setPatientCode(String patientCode) {
-        this.patientCode = patientCode;
-    }
-
-    public Long getDoctorId() {
-        return doctorId;
-    }
-
-    public void setDoctorId(Long doctorId) {
-        this.doctorId = doctorId;
+    public void setMedicalAppointmentType(String medicalAppointmentType) {
+        this.medicalAppointmentType = medicalAppointmentType;
     }
 
     public Patient getPatient() {
@@ -137,5 +210,35 @@ public class MedicalAppointment  extends AuditModel {
 
     public void setAttachmentList(List<Attachment> attachmentList) {
         this.attachmentList = attachmentList;
+    }
+
+    public Long getHistoryCode() {
+        return historyCode;
+    }
+
+    public void setHistoryCode(Long historyCode) {
+        this.historyCode = historyCode;
+    }
+
+    public String getFullName() {
+        return UtilityTools.isNull(this.firstName) + " " + UtilityTools.isNull(this.lastName);
+    }
+
+    public String getDateAppointmentDateFormatted() {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        return format.format(dateAppointment);
+    }
+
+    public String getDateAppointmentTimeFormatted() {
+        SimpleDateFormat format = new SimpleDateFormat("hh:mm a");
+        return format.format(dateAppointment);
+    }
+
+    public String getPreferentialDiagnostic() {
+        return preferentialDiagnostic;
+    }
+
+    public void setPreferentialDiagnostic(String preferentialDiagnostic) {
+        this.preferentialDiagnostic = preferentialDiagnostic;
     }
 }

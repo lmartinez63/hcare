@@ -1,6 +1,7 @@
 package com.landl.hcare.service;
 
 import com.landl.hcare.entity.Employee;
+import com.landl.hcare.entity.MedicalAppointment;
 import com.landl.hcare.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,4 +31,5 @@ public class EmployeeServiceImpl implements EmployeeService{
     public Optional<Employee> findById(Long employeeId){
         return employeeRepository.findById(employeeId);
     }
+
 }

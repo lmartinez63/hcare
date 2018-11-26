@@ -2,6 +2,7 @@ package com.landl.hcare.service;
 
 
 import com.landl.hcare.entity.MedicalHistory;
+import com.landl.hcare.entity.Patient;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,8 +13,8 @@ public interface MedicalHistoryService {
 
     public List<MedicalHistory> findAll();
 
-    public Optional<MedicalHistory> findById(Long medicalHistoryId);
+    public Optional<MedicalHistory> findById(Long historyCode);
 
-    public List<MedicalHistory> findByPatientId(Long patientId);
+    public MedicalHistory createMedicalHistory(Patient patient);
 
 }

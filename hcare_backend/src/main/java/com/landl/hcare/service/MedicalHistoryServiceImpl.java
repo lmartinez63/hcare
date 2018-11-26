@@ -1,6 +1,7 @@
 package com.landl.hcare.service;
 
 import com.landl.hcare.entity.MedicalHistory;
+import com.landl.hcare.entity.Patient;
 import com.landl.hcare.repository.MedicalHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,11 +23,14 @@ public class MedicalHistoryServiceImpl implements MedicalHistoryService {
         return medicalHistoryRepository.findAll();
     }
 
-    public Optional<MedicalHistory> findById(Long medicalHistoryId){
-        return medicalHistoryRepository.findById(medicalHistoryId);
+    public Optional<MedicalHistory> findById(Long historyCode){
+        return medicalHistoryRepository.findById(historyCode);
     }
 
-    public List<MedicalHistory> findByPatientId(Long patientId){
-        return medicalHistoryRepository.findByPatientId(patientId);
+    public MedicalHistory createMedicalHistory(Patient patient){
+        MedicalHistory medicalHistory = new MedicalHistory();
+        medicalHistory.setHistoryCode(patient.getHistoryCode());
+        medicalHistory.setStatus("true");
+        return save(medicalHistory);
     }
 }
