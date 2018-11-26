@@ -2,7 +2,7 @@
 <div class="content-container">
   <section data-ui-view="" class="view-container animate-fade-up">
     <section class="page">
-      <div class="titleForm">Paciente {{patient.patientCode}}</div>
+      <div class="titleForm">Paciente {{patient.historyCode}}</div>
       <div class="row ui-section contentMain">
         <div class="btnMoreActions" onClick="openThreePoint()">
           <div class="btnMore">
@@ -15,9 +15,13 @@
                 <div class="text">Guardar</div>
               </div>
               <!-- specialButtons -->
-              <div v-on:click="viewMedicalHistory(patient.id)" class="link">
+              <div v-on:click="viewMedicalHistory(patient.historyCode)" class="link">
                 <div class="icon"><i class="fas fa-save"></i></div>
                 <div class="text">Historial medico</div>
+              </div>
+              <div v-on:click="viewMedicalAppointmentHistory(patient.historyCode)" class="link">
+                <div class="icon"><i class="fas fa-save"></i></div>
+                <div class="text">Historial de Citas</div>
               </div>
             </div>
           </div>
@@ -26,12 +30,6 @@
           <div class="headerFacNew">
             <div class="subTitle">Datos del Paciente</div>
             <div class="twoCol">
-              <div class="group">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="patient-patientCode" id="patient-patientCode" v-model="patient.patientCode" />
-                  <label class="labelText" for="patient-patientCode">Codigo del Paciente</label>
-                </div>
-              </div>
               <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <datepicker v-model="patient.birthday"></datepicker>
@@ -57,13 +55,13 @@
                       {{ documentType.value }}
                     </option>
                   </select>
-                  <label class="labelText" for="patient-documentType">Tipo de Doc de Identidad</label>
+                  <label class="labelText" for="patient-documentType">Tipo de Documento</label>
                 </div>
               </div>
               <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" name="patient-documentNumber" id="patient-documentNumber" v-model="patient.documentNumber" />
-                  <label class="labelText" for="patient-documentNumber"> Numero de Doc de Identidad</label>
+                  <label class="labelText" for="patient-documentNumber"> Numero de Documento</label>
                 </div>
               </div>
               <div class="group">
@@ -88,10 +86,20 @@
                   <label class="labelText" for="patient-celPhoneNumber">Celular</label>
                 </div>
               </div>
-              <div class="groupFull">
+              <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" name="patient-emailAddress" id="patient-emailAddress" v-model="patient.emailAddress" />
                   <label class="labelText" for="patient-emailAddress">Correo Electronico</label>
+                </div>
+              </div>
+              <div class="group">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <select v-model="patient.addressDistrict">
+                    <option v-for="district in $parent.districts" v-bind:value="district.key">
+                      {{ district.value }}
+                    </option>
+                  </select>
+                  <label class="labelText" for="patient-addressDistrict">Distrito</label>
                 </div>
               </div>
               <div class="groupFull">
@@ -130,7 +138,7 @@ export default {
   created: function() {
 
     if (this.$route.params.id !== 'null') {
-      const url = this.$parent.backendUrl + 'patients/' + this.$route.params.id
+      const url = this.$parent.backendUrl + 'patients/' + this.$route.params.historyCode
       axios.get(url)
         .then(response => {
           this.patient = response.data
@@ -163,11 +171,20 @@ export default {
         })
       // this.$router.push({ name: '/'})
     },
-    viewMedicalHistory: function(patientId) {
+    viewMedicalHistory: function(historyCode) {
       this.$router.push({
         name: 'MedicalHistoryComponent',
         params: {
-          patientId: patientId
+          historyCode: historyCode
+        }
+      })
+    },
+    viewMedicalAppointmentHistory: function(historyCode) {
+      this.$router.push({
+        name: 'BrowseComponent',
+        params: {
+          browseType: 'medicalAppointmentsByPatient',
+          entityId: historyCode,
         }
       })
     },

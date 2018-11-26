@@ -24,17 +24,17 @@ const router = new Router({
       component: BrowseComponent
     },
     {
-      path: '/patient/:patientId',
+      path: '/patient/:historyCode',
       name: 'PatientComponent',
       component: PatientComponent
     },
     {
-      path: '/medicalHistory/:patientId',
+      path: '/medicalHistory/:historyCode',
       name: 'MedicalHistoryComponent',
       component: MedicalHistoryComponent
     },
     {
-      path: '/medicalAppointment/:medicalAppointmentId/:patientId',
+      path: '/medicalAppointment/:medicalAppointmentId/:historyCode',
       name: 'MedicalAppointmentComponent',
       component: MedicalAppointmentComponent
     },

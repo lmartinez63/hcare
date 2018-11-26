@@ -2,13 +2,13 @@
   <div class="content-container">
     <section class="contPortlet">
       <div class="portBox">
-        VISIT TODAY: 10k
+        CITAS DEL DIA: 10
       </div>
       <div class="portBox">
-        VISIT TODAY: 10k
+        PACIENTES REGISTRADOS: 10
       </div>
       <div class="portBox">
-        VISIT TODAY: 10k
+        PACIENTES NUEVOS: 10k
       </div>
       <div class="portBox">
         VISIT TODAY: 10k

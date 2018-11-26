@@ -3,7 +3,7 @@
   <section data-ui-view="" class="view-container animate-fade-up">
     <section class="page">
       <div class="titleForm">
-        Cita Medica de Paciente {{medicalAppointment.patient.patientCode}}
+        Cita Medica
       </div>
       <div class="row ui-section contentMain">
         <div class="btnMoreActions" onClick="openThreePoint()">
@@ -28,14 +28,54 @@
             <div class="twoCol">
               <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalAppointment-patient-firstName" id="medicalAppointment-patient-firstName" v-model="medicalAppointment.patient.firstName" />
-                  <label class="labelText" for="medicalAppointment-patient-firstName">Nombres</label>
+                  <select v-model="medicalAppointment.medicalAppointmentType">
+                    <option v-for="medicalAppointmentType in medicalAppointmentTypes" v-bind:value="medicalAppointmentType.id">
+                      {{ medicalAppointmentType.type }}
+                    </option>
+                  </select>
+                  <label class="labelText" for="medicalAppointment-medicalAppointmentType">Tipo de Cita</label>
+                </div>
+              </div>
+              <div class="group">
+              </div>
+              <div class="group">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <select v-model="medicalAppointment.documentType">
+                    <option v-for="documentType in $parent.documentTypes" v-bind:value="documentType.key">
+                      {{ documentType.value }}
+                    </option>
+                  </select>
+                  <label class="labelText" for="medicalAppointment-documentType">Tipo de Documento</label>
                 </div>
               </div>
               <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalAppointment-patient-lastName" id="medicalAppointment-patient-lastName" v-model="medicalAppointment.patient.lastName" />
-                  <label class="labelText" for="medicalAppointment-patient-lastName">Codigo del Paciente</label>
+                  <input class="mdl-textfield__input" type="text" name="medicalAppointment-documentNumber" id="medicalAppointment-documentNumber" v-model="medicalAppointment.documentNumber" @change="getPatientInfo()" />
+                  <label class="labelText" for="medicalAppointment-documentNumber">Numero de Documento</label>
+                </div>
+              </div>
+              <div class="group">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <input class="mdl-textfield__input" type="text" name="medicalAppointment-firstName" id="medicalAppointment-firstName" v-model="medicalAppointment.firstName" />
+                  <label class="labelText" for="medicalAppointment-firstName">Nombres</label>
+                </div>
+              </div>
+              <div class="group">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <input class="mdl-textfield__input" type="text" name="medicalAppointment-lastName" id="medicalAppointment-lastName" v-model="medicalAppointment.lastName" />
+                  <label class="labelText" for="medicalAppointment-lastName">Apellidos</label>
+                </div>
+              </div>
+              <div class="group">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <input class="mdl-textfield__input" type="text" name="medicalAppointment-celPhoneNumber" id="medicalAppointment-celPhoneNumber" v-model="medicalAppointment.celPhoneNumber" />
+                  <label class="labelText" for="medicalAppointment-celPhoneNumber">Numero de Celular</label>
+                </div>
+              </div>
+              <div class="group">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <input class="mdl-textfield__input" type="text" name="medicalAppointment-emailAddress" id="medicalAppointment-emailAddress" v-model="medicalAppointment.emailAddress" />
+                  <label class="labelText" for="medicalAppointment-emailAddress">Correo Electronico</label>
                 </div>
               </div>
             </div>
@@ -76,16 +116,20 @@
                   <label class="labelText" for="medicalAppointment-doctorId">Especialista</label>
                 </div>
               </div>
-              <div class="groupFull">
+              <div class="groupFull" v-if="medicalAppointment.status == '10'">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalAppointment-visitReason" id="medicalAppointment-visitReason" v-model="medicalAppointment.visitReason" />
-                  <label class="labelText" for="medicalAppointment-visitReason">Rason de la Visita</label>
+                  <select v-model="medicalAppointment.preferentialDiagnostic">
+                    <option v-for="preferentialDiagnostic in preferentialDiagnostics" v-bind:value="preferentialDiagnostic.key">
+                      {{ preferentialDiagnostic.value }}
+                    </option>
+                  </select>
+                  <label class="labelText" for="medicalAppointment-visitReason">Diagnostico Preferencial</label>
                 </div>
               </div>
-              <div class="groupFull" v-if="medicalAppointment.status > 0">
+              <div class="groupFull" v-if="medicalAppointment.status == '10'">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" name="medicalAppointment-diagnostic" id="medicalAppointment-diagnostic" v-model="medicalAppointment.diagnostic" />
-                  <label class="labelText" for="medicalAppointment-diagnostic">Diagnostico</label>
+                  <label class="labelText" for="medicalAppointment-diagnostic">Detalle de Diagnostico</label>
                 </div>
               </div>
             </div>
@@ -138,7 +182,18 @@ export default {
       ],
       doctors:[
       ],
-
+      medicalAppointmentTypes:[
+        {id:1,type:'Nueva Consulta'},
+        {id:2,type:'Control Cirugia Estetica'},
+        {id:3,type:'Control Cirugia Ocular'},
+        {id:4,type:'Control Cirugia Rinoplastia'},
+        {id:4,type:'Otros Control'},
+      ],
+      preferentialDiagnostics:[
+        {key:1,value:'Cirugia de Rinoplastia'},
+        {key:2,value:'Cirugia de Liposuccion'},
+        {key:3,value:'Otros'},
+      ]
     }
   },
   components: {
@@ -157,17 +212,6 @@ export default {
             selfVue.medicalAppointment.dateAppointment = (new Date()).toISOString()
             selfVue.medicalAppointment.status = 0
           }
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    } else {
-      var urlPatientInfo = this.$parent.backendUrl + 'patients/' + this.$route.params.patientId
-      axios.get(urlPatientInfo)
-        .then(response => {
-          selfVue.medicalAppointment.patient = response.data
-          selfVue.medicalAppointment.patientId = response.data.id
-          selfVue.medicalAppointment.patientCode = response.data.patientCode
         })
         .catch(error => {
           console.log(error)
@@ -191,6 +235,24 @@ export default {
         })
   },
   methods: {
+    getPatientInfo: function() {
+      let selfVue = this
+      axios.get(this.$parent.backendUrl + 'retrievePatientByDocumentNumber/' + this.medicalAppointment.documentNumber)
+        .then(response => {
+          if(response.data != null){
+            selfVue.medicalAppointment.firstName = response.data.firstName
+            selfVue.medicalAppointment.lastName = response.data.lastName
+            selfVue.medicalAppointment.celPhoneNumber = response.data.celPhoneNumber
+            selfVue.medicalAppointment.emailAddress = response.data.emailAddress
+            selfVue.medicalAppointment.documentType = response.data.documentType
+            selfVue.medicalAppointment.historyCode = response.data.historyCode
+          }
+          //this.patient.birthday = this.frontEndDateFormat(this.patient.birthday)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
     goBackBrowse: function() {
       this.$router.push({
         name: 'BrowseComponent'

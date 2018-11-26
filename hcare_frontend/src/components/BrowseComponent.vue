@@ -79,16 +79,10 @@ export default {
         break;
       case 'allPatients':
         this.columnDefinitionNames = [{
-          columnName: 'Id',
-          visible: false
-        }, {
-          columnName: 'Codigo del paciente',
+          columnName: 'HistoryCode',
           visible: true
         }, {
-          columnName: 'Nombres',
-          visible: true
-        }, {
-          columnName: 'Apellidos',
+          columnName: 'Nombres y Apellidos',
           visible: true
         }, {
           columnName: 'Email',
@@ -103,9 +97,12 @@ export default {
             columnName: 'Id',
             visible: false
           }, {
-            columnName: 'Codigo de Paciente',
+            columnName: 'Codigo de Historia',
             visible: true
           }, {
+            columnName: 'Nombre y Apellido',
+            visible: true
+          },{
             columnName: 'Fecha de cita',
             visible: true
           }, {
@@ -118,9 +115,12 @@ export default {
           columnName: 'Id',
           visible: false
         }, {
-          columnName: 'Codigo de Paciente',
+          columnName: 'Codigo de Historia',
           visible: true
         }, {
+          columnName: 'Nombre y Apellido',
+          visible: true
+        },{
           columnName: 'Fecha de cita',
           visible: true
         }, {
@@ -129,22 +129,17 @@ export default {
         }, ]
         break;
       case 'allMedicalHistories':
-        this.columnDefinitionNames = [{
-          columnName: 'Id',
-          visible: false
-        }, {
-          columnName: 'Id Paciente',
-          visible: false
-        }, {
-          columnName: 'Codigo de Paciente',
-          visible: true
-        }, {
+        this.columnDefinitionNames = [
+        {
           columnName: 'Codigo de Historia',
           visible: true
         }, {
           columnName: 'Numero de Archivo',
           visible: true
-        }, ]
+        }, {
+          columnName: 'Estado',
+          visible: true
+        }]
         break;
       case 'medicalAppointmentsByPatient':
         this.columnDefinitionNames = [{
@@ -204,11 +199,11 @@ export default {
         this.newButtonTitle = 'Añadir Paciente'
         this.newButtonVisible = true
         this.parametersArray = [{
-          "key": "id",
+          "key": "historyCode",
           "value": 0,
           "newEntityValue": null
         }, ]
-        this.columnDefinitionValues = '[objectItem.id, objectItem.patientCode,objectItem.firstName,objectItem.lastName,objectItem.emailAddress,self.frontEndDateFormat(objectItem.birthday),]'
+        this.columnDefinitionValues = '[objectItem.historyCode, objectItem.fullName,objectItem.emailAddress,self.frontEndDateFormat(objectItem.birthday),]'
         break;
       case 'allMedicalAreas':
         this.browseurl = this.$parent.backendUrl + 'medicalAreas'
@@ -230,37 +225,37 @@ export default {
         this.newButtonVisible = false
         this.newButtonTitle = 'Añadir Historia Medica'
         this.parametersArray = [{
-          "key": "patientId",
-          "value": 1,
+          "key": "historyCode",
+          "value": 0,
           "newEntityValue": null
         }, ]
-        this.columnDefinitionValues = '[objectItem.id, objectItem.patientId, objectItem.patientCode, objectItem.medicalHistoryCode, objectItem.fileNumber,]'
+        this.columnDefinitionValues = '[objectItem.historyCode, objectItem.fileNumber, self.$parent.medicalHistoryStatus[objectItem.status],]'
         break;
       case 'allMedicalAppointments':
         this.browseurl = this.$parent.backendUrl + 'medicalAppointments'
         this.detailComponent = 'MedicalAppointmentComponent'
         this.title = 'Listado de Citas'
-        this.newButtonVisible = false
+        this.newButtonVisible = true
         this.newButtonTitle = 'Añadir Cita'
         this.parametersArray = [{
           "key": "medicalAppointmentId",
           "value": 0,
           "newEntityValue": null
         }, ]
-        this.columnDefinitionValues = '[objectItem.id, objectItem.patientCode,self.frontEndDateFormat(objectItem.dateAppointment),self.$parent.medicalAppointmentStatus[objectItem.status],]'
+        this.columnDefinitionValues = '[objectItem.id, objectItem.historyCode,objectItem.fullName,self.frontEndDateFormat(objectItem.dateAppointment),self.$parent.medicalAppointmentStatus[objectItem.status],]'
         break;
       case 'medicalAppointmentsToday':
         this.browseurl = this.$parent.backendUrl + 'medicalAppointmentsToday'
         this.detailComponent = 'MedicalAppointmentComponent'
         this.title = 'Listado de Citas del Dia'
-        this.newButtonVisible = false
+        this.newButtonVisible = true
         this.newButtonTitle = 'Añadir Cita'
         this.parametersArray = [{
           "key": "medicalAppointmentId",
           "value": 0,
           "newEntityValue": null
         }, ]
-        this.columnDefinitionValues = '[objectItem.id, objectItem.patientCode,self.frontEndDatetimeFormat(objectItem.dateAppointment),self.$parent.medicalAppointmentStatus[objectItem.status],]'
+        this.columnDefinitionValues = '[objectItem.id, objectItem.historyCode,objectItem.fullName,self.frontEndDatetimeFormat(objectItem.dateAppointment),self.$parent.medicalAppointmentStatus[objectItem.status],]'
         break;
         v
       case 'medicalAppointmentsByPatient':
@@ -280,7 +275,7 @@ export default {
             "newEntityValue": "entityId"
           },
         ]
-        this.columnDefinitionValues = '[objectItem.id, objectItem.patientId, objectItem.patientCode,self.frontEndDateFormat(objectItem.dateAppointment),objectItem.status,]'
+        this.columnDefinitionValues = '[objectItem.id, objectItem.historyCode, self.frontEndDateFormat(objectItem.dateAppointment),objectItem.status,]'
         break;
       default:
         break;
@@ -332,7 +327,7 @@ export default {
       return moment(date, 'YYYY-MM-DDTHH:mm:ss.fff Z').format('DD/MM/YYYY')
     },
     frontEndDatetimeFormat: function(date) {
-      return moment(date, 'YYYY-MM-DDTHH:mm:ss.fff Z').format('DD/MM/YYYY HH:mm')
+      return moment(date, 'YYYY-MM-DDTHH:mm:ss.fff Z').format('DD/MM/YYYY hh:mm a')
     },
   }
 }

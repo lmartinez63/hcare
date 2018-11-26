@@ -26,11 +26,13 @@
               Datos del Colaborador
             </div>
             <div class="twoCol">
-              <div class="groupFull">
+              <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" name="employee-employeeCode" id="employee-employeeCode" v-model="employee.employeeCode" />
                   <label class="labelText" for="employee-employeeCode">Codigo de Colaborador</label>
                 </div>
+              </div>
+              <div class="group">
               </div>
               <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">

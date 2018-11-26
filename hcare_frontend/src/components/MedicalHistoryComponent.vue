@@ -3,7 +3,7 @@
   <section data-ui-view="" class="view-container animate-fade-up">
     <section class="page">
       <div class="titleForm">
-        Historia Medica {{medicalHistory.medicalHistoryCode}}
+        Historia Medica {{medicalHistory.historyCode}}
       </div>
       <div class="row ui-section contentMain">
         <div class="btnMoreActions" onClick="openThreePoint()">
@@ -17,11 +17,11 @@
                 <div class="text">Guardar</div>
               </div>
               <!-- specialButtons -->
-              <div v-on:click="viewMedicalAppointmets(medicalHistory.id)" class="link">
+              <div v-on:click="viewMedicalAppointmets(medicalHistory.historyCode)" class="link">
                 <div class="icon"><i class="fas fa-save"></i></div>
                 <div class="text">Citas</div>
               </div>
-              <div v-on:click="uploadAttachment('medicalHistory', medicalHistory.id, medicalHistory.medicalHistoryCode)" class="link">
+              <div v-on:click="uploadAttachment('medicalHistory', medicalHistory.historyCode, medicalHistory.historyCode)" class="link">
                 <div class="icon"><i class="fas fa-save"></i></div>
                 <div class="text">Adjuntar Archivo</div>
               </div>
@@ -36,26 +36,21 @@
             <div class="twoCol">
               <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalHistory-medicalHistoryCode" id="medicalHistory-medicalHistoryCode" v-model="medicalHistory.medicalHistoryCode" />
-                  <label class="labelText" for="medicalHistory-medicalHistoryCode">Codigo del Historial medico</label>
-                </div>
-              </div>
-              <div class="group">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="patient-patientCode" id="medicalHistory-patient-patientCode" v-model="medicalHistory.patient.patientCode" />
-                  <label class="labelText" for="medicalHistory-patient-patientCode">Codigo del Paciente</label>
-                </div>
-              </div>
-              <div class="group">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="patient-firstName" id="medicalHistory-patient-firstName" v-model="medicalHistory.patient.firstName" />
-                  <label class="labelText" for="medicalHistory-patient-firstName">Nombre de Paciente</label>
-                </div>
-              </div>
-              <div class="group">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" name="medicalHistory-fileNumber" id="medicalHistory-fileNumber" v-model="medicalHistory.fileNumber" />
                   <label class="labelText" for="medicalHistory-fileNumber">Numero de Archivo</label>
+                </div>
+              </div>
+              <div class="group">
+                <input type="checkbox" name="medicalHistory-status" id="medicalHistory-status" v-model="medicalHistory.status" class="switch-input" />
+                <label for="medicalHistory-status" class="switch-label">Estado
+                  <span class="toggle--on">Activa</span>
+                  <span class="toggle--off">Pasiva</span>
+                </label>
+              </div>
+              <div class="groupFull">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <label class="mdl-textfield__input labelNoEdit" id="medicalAppointment-patient-fullName">{{medicalHistory.patient.fullName}}</label>
+                  <label class="labelText" for="medicalHistory-patient-fullName">Nombre de Paciente</label>
                 </div>
               </div>
             </div>
@@ -111,12 +106,6 @@
                   <label class="labelText" for="medicalHistory-howOftenDrink">Con que frequencia?</label>
                 </div>
               </div>
-              <div class="groupFull">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalHistory-preferentialDiet" id="medicalHistory-preferentialDiet" v-model="medicalHistory.preferentialDiet" />
-                  <label class="labelText" for="medicalHistory-preferentialDiet">Dieta preferencial( por ejemplo: vegetariana )</label>
-                </div>
-              </div>
               <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" name="medicalHistory-hepBResult" id="medicalHistory-hepBResult" v-model="medicalHistory.hepBResult" />
@@ -153,13 +142,17 @@
                   <label class="labelText" for="medicalHistory-vihYear">Año</label>
                 </div>
               </div>
-
-
+              <div class="groupFull">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <input class="mdl-textfield__input" type="text" name="medicalHistory-preferentialDiet" id="medicalHistory-preferentialDiet" v-model="medicalHistory.preferentialDiet" />
+                  <label class="labelText" for="medicalHistory-preferentialDiet">Dieta preferencial( por ejemplo: vegetariana )</label>
+                </div>
+              </div>
             </div>
-            <div class="subTitle">
+            <div v-if="medicalHistory.attachmentList.length > 0" class="subTitle">
               Documentos Adjuntos
             </div>
-            <div class="twoCol">
+            <div v-if="medicalHistory.attachmentList.length > 0" class="twoCol">
               <ul class="boxLinks" id="attachment-list">
                 <li v-for="attachment in medicalHistory.attachmentList">
                   <div v-on:click="downloadAttachment(attachment)">
@@ -199,15 +192,11 @@ export default {
   created: function() {
     console.log("MedicalHistoryComponent");
     let selfVue = this
-    if (this.$route.params.patientId !== 'null') {
-      var urlMedicalHistoryInfo = this.$parent.backendUrl + 'medicalHistory/' + this.$route.params.patientId
+    if (this.$route.params.historyCode !== 'null') {
+      var urlMedicalHistoryInfo = this.$parent.backendUrl + 'medicalHistories/' + this.$route.params.historyCode
       axios.get(urlMedicalHistoryInfo)
         .then(response => {
-          this.medicalHistory = response.data
-          if (selfVue.medicalHistory.id == null) {
-            this.medicalHistory.patientId = response.data.patient.id
-            this.medicalHistory.patientCode = response.data.patient.patientCode
-          }
+          selfVue.medicalHistory = response.data
         })
         .catch(error => {
           console.log(error)
@@ -235,9 +224,13 @@ export default {
       // this.$router.push({ name: '/'})
     },
     downloadAttachment: function(attachment) {
-      axios.get(this.$parent.backendUrl + 'downloadAttachment/' + attachment.id, {responseType: 'blob',}).then(response => {
+      axios.get(this.$parent.backendUrl + 'downloadAttachment/' + attachment.id, {
+          responseType: 'blob',
+        }).then(response => {
           //Download File directly
-          const url = window.URL.createObjectURL(new Blob([response.data], {type: attachment.contentType}))
+          const url = window.URL.createObjectURL(new Blob([response.data], {
+            type: attachment.contentType
+          }))
           const link = document.createElement('a')
           link.href = url
           link.setAttribute('download', attachment.fileName)
