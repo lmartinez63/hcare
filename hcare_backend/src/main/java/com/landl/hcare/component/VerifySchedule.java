@@ -1,11 +1,7 @@
 package com.landl.hcare.component;
 
-import com.landl.hcare.entity.Email;
-import com.landl.hcare.entity.EmailTemplate;
-import com.landl.hcare.entity.Patient;
-import com.landl.hcare.service.EmailService;
-import com.landl.hcare.service.EmailTemplateService;
-import com.landl.hcare.service.PatientService;
+import com.landl.hcare.entity.*;
+import com.landl.hcare.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +23,12 @@ public class VerifySchedule {
 
     @Autowired
     PatientService patientService;
+
+    @Autowired
+    EmployeeService employeeService;
+
+    @Autowired
+    MedicalAppointmentService medicalAppointmentService;
 
     public void executeTask(){
         LOGGER.debug("Executing task");
@@ -60,6 +62,36 @@ public class VerifySchedule {
                             emailService.save(email);
                         }
                         break;
+                    case "medicalAppointmentReportByDoctor":
+                    LOGGER.info("Processing medicalAppointmentReportByDoctor Template" + emailTemplate.toString());
+                    List<Employee> doctorsList = employeeService.findByTitle("1");
+                    for(Employee doctor:doctorsList){
+
+                        Calendar cal = Calendar.getInstance();
+                        Date tomorrow = new Date();
+                        cal.setTime(tomorrow);
+                        cal.add(Calendar.DATE, 1);
+                        cal.set(Calendar.HOUR_OF_DAY, 0);
+                        cal.set(Calendar.MINUTE, 0);
+                        cal.set(Calendar.SECOND, 0);
+                        cal.set(Calendar.MILLISECOND, 0);
+                        tomorrow = cal.getTime();
+                        List<MedicalAppointment> medicalAppointmentList = medicalAppointmentService.findByDateAppointmentAndDoctorId(tomorrow, doctor.getId());
+                        Email email = new Email();
+                        email.setStatus(0);
+                        email.setEmailTemplate(emailTemplate);
+                        //Get Data source
+                        Map<String,Object> dataSource = new HashMap<String, Object>();
+                        dataSource.put("doctor", doctor);
+                        dataSource.put("mal", medicalAppointmentList);
+                        LOGGER.info("Getting datasource");
+                        email.setDataSource(dataSource);
+                        LOGGER.info("Building Email");
+                        emailService.buildEmailFromEmailTemplate(email);
+                        LOGGER.info("Email Saved");
+                        emailService.save(email);
+                    }
+                    break;
                     default:
                         break;
                 }

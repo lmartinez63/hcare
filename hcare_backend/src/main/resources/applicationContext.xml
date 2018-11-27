@@ -32,7 +32,7 @@
     <bean id="cronScheduleTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="scheduleJobDetail" />
         <!--<property name="cronExpression" value="0/5 * * ? * SAT-SUN" />-->
-        <property name="cronExpression" value="0 35 19 * * ?" />
+        <property name="cronExpression" value="0 30 13 * * ?" />
     </bean>
     <bean id="cronEmailTrigger"  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="emailJobDetail" />

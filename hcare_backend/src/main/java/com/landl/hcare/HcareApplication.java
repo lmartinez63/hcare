@@ -1,5 +1,7 @@
 package com.landl.hcare;
 
+import com.landl.hcare.service.PropertyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -23,36 +25,42 @@ public class HcareApplication {
 
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
+
 		return new WebMvcConfigurerAdapter() {
+			@Autowired
+			PropertyService propertyService;
+
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/employees").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/employees/*").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/employeesByTitle").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/employeesByTitle/*").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/patients").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/patients/*").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/retrievePatientByDocumentNumber/*").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/medicalHistories").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/medicalHistories/*").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/medicalHistory").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/medicalHistory/*").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/medicalArea").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/medicalArea/*").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/medicalAreas").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/medicalAreas/*").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/medicalAppointmentsToday").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/medicalAppointmentsToday/*").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/medicalAppointments").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/medicalAppointments/*").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/medicalAppointmentsByPatientId").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/medicalAppointmentsByPatientId/*").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/medicalAppointment").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/medicalAppointment/*").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/attachment").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/uploadAttachment").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/downloadAttachment").allowedOrigins("http://localhost:8081");
-				registry.addMapping("/downloadAttachment/*").allowedOrigins("http://localhost:8081");
+
+				String frontEndUrl = (String)propertyService.getPropertiesMap().get("frontEndUrl");
+				registry.addMapping("/employees").allowedOrigins(frontEndUrl);
+				registry.addMapping("/employees/*").allowedOrigins(frontEndUrl);
+				registry.addMapping("/employeesByTitle").allowedOrigins(frontEndUrl);
+				registry.addMapping("/employeesByTitle/*").allowedOrigins(frontEndUrl);
+				registry.addMapping("/patients").allowedOrigins(frontEndUrl);
+				registry.addMapping("/patients/*").allowedOrigins(frontEndUrl);
+				registry.addMapping("/retrievePatientByDocumentNumber/*").allowedOrigins(frontEndUrl);
+				registry.addMapping("/medicalHistories").allowedOrigins(frontEndUrl);
+				registry.addMapping("/medicalHistories/*").allowedOrigins(frontEndUrl);
+				registry.addMapping("/medicalHistory").allowedOrigins(frontEndUrl);
+				registry.addMapping("/medicalHistory/*").allowedOrigins(frontEndUrl);
+				registry.addMapping("/medicalArea").allowedOrigins(frontEndUrl);
+				registry.addMapping("/medicalArea/*").allowedOrigins(frontEndUrl);
+				registry.addMapping("/medicalAreas").allowedOrigins(frontEndUrl);
+				registry.addMapping("/medicalAreas/*").allowedOrigins(frontEndUrl);
+				registry.addMapping("/medicalAppointmentsToday").allowedOrigins(frontEndUrl);
+				registry.addMapping("/medicalAppointmentsToday/*").allowedOrigins(frontEndUrl);
+				registry.addMapping("/medicalAppointments").allowedOrigins(frontEndUrl);
+				registry.addMapping("/medicalAppointments/*").allowedOrigins(frontEndUrl);
+				registry.addMapping("/medicalAppointmentsByPatientId").allowedOrigins(frontEndUrl);
+				registry.addMapping("/medicalAppointmentsByPatientId/*").allowedOrigins(frontEndUrl);
+				registry.addMapping("/medicalAppointment").allowedOrigins(frontEndUrl);
+				registry.addMapping("/medicalAppointment/*").allowedOrigins(frontEndUrl);
+				registry.addMapping("/attachment").allowedOrigins(frontEndUrl);
+				registry.addMapping("/uploadAttachment").allowedOrigins(frontEndUrl);
+				registry.addMapping("/downloadAttachment").allowedOrigins(frontEndUrl);
+				registry.addMapping("/downloadAttachment/*").allowedOrigins(frontEndUrl);
 			}
 		};
 	}

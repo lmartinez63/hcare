@@ -51,6 +51,49 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
         tomorrow = cal.getTime();
-        return medicalAppointmentRepository.findByDateAppointmentBetween(today,tomorrow);
+        return medicalAppointmentRepository.findByDateAppointmentBetweenOrderByDateAppointmentAsc(today,tomorrow);
+    };
+
+    public List<MedicalAppointment> findByDateAppointment(Date date){
+        Date targetDate = date;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(targetDate);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        targetDate = cal.getTime();
+
+        Date dayAfterTargetDate = new Date();
+        cal.setTime(targetDate);
+        cal.add(Calendar.DATE, 1);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        dayAfterTargetDate = cal.getTime();
+        return medicalAppointmentRepository.findByDateAppointmentBetweenOrderByDateAppointmentAsc(targetDate,dayAfterTargetDate);
+    };
+
+    public List<MedicalAppointment> findByDateAppointmentAndDoctorId(Date date,Long doctorId){
+        Date targetDate = date;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(targetDate);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        targetDate = cal.getTime();
+
+        Date dayAfterTargetDate = new Date();
+        cal.setTime(targetDate);
+        cal.add(Calendar.DATE, 1);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        dayAfterTargetDate = cal.getTime();
+
+        return medicalAppointmentRepository.findByDoctorIdAndDateAppointmentBetweenOrderByDateAppointmentAsc(doctorId,targetDate,dayAfterTargetDate);
     };
 }

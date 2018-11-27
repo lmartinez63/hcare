@@ -5,6 +5,7 @@ import com.landl.hcare.common.UtilityTools;
 import com.landl.hcare.entity.*;
 import com.landl.hcare.repository.EmailRepository;
 import freemarker.template.Configuration;
+import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -66,19 +67,19 @@ public class EmailServiceImpl implements EmailService {
     public void buildEmailFromEmailTemplate(Email email) throws Exception {
         EmailTemplate emailTemplate = email.getEmailTemplate();
         Map<String, Object> dataSource = email.getDataSource();
-        if (emailTemplate.getSendTo().contains("{{")) {
+        if (emailTemplate.getSendTo() != null && emailTemplate.getSendTo().contains("{{")) {
             email.setSendTo(UtilityTools.getFormatedValue(emailTemplate.getSendTo(), dataSource));
         }
-        if (emailTemplate.getSendFrom().contains("{{")) {
+        if (emailTemplate.getSendFrom() != null && emailTemplate.getSendFrom().contains("{{")) {
             email.setSendFrom(UtilityTools.getFormatedValue(emailTemplate.getSendFrom(), dataSource));
         }
-        if (emailTemplate.getSubject().contains("{{")) {
+        if (emailTemplate.getSubject() != null && emailTemplate.getSubject().contains("{{")) {
             email.setSubject(UtilityTools.getFormatedValue(emailTemplate.getSubject(), dataSource));
         }
 
         // Using a subfolder such as /templates here
         freemarkerConfig.setClassForTemplateLoading(this.getClass(), "/templates");
-
+        freemarkerConfig.setObjectWrapper( new DefaultObjectWrapper() );
         Map<String, Object> datasource = email.getDataSource();
         Template t = freemarkerConfig.getTemplate(emailTemplate.getTemplateFileName());
         String textTemplate = FreeMarkerTemplateUtils.processTemplateIntoString(t, datasource);
