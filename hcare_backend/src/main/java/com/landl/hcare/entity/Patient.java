@@ -1,32 +1,32 @@
 package com.landl.hcare.entity;
 
+import com.landl.hcare.common.UtilityTools;
 import com.landl.hcare.model.AuditModel;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
 @Table(name="patient")
 public class Patient extends AuditModel {
     @Id
-    @GeneratedValue(generator = "patient_generator")
+    @GeneratedValue(generator = "history_code_generator")
     @SequenceGenerator(
-            name = "patient_generator",
-            sequenceName = "patient_sequence",
-            initialValue = 1000
+            name = "history_code_generator",
+            sequenceName = "history_code_sequence",
+            initialValue = 2500,
+            allocationSize = 1
     )
-    private Long id;
-
-    @Column(name="patient_code")
-    private String patientCode;
+    private Long historyCode;
 
     @Column(name="first_name")
     private String firstName;
 
     @Column(name="last_name")
     private String lastName;
+
+    @Transient
+    private String fullName;
 
     @Column(name="document_number")
     private String documentNumber;
@@ -40,23 +40,23 @@ public class Patient extends AuditModel {
     @Column(name="email_address")
     private String emailAddress;
 
+    @Column(name="address")
+    private String address;
+
+    @Column(name="address_district")
+    private String addressDistrict;
+
+    @Column(name="civil_status")
+    private String civilStatus;
+
+    @Column(name="phone_number")
+    private String phoneNumber;
+
+    @Column(name="cel_phone_number")
+    private String celPhoneNumber;
+
+
     public Patient() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getPatientCode() {
-        return patientCode;
-    }
-
-    public void setPatientCode(String patientCode) {
-        this.patientCode = patientCode;
     }
 
     public String getFirstName() {
@@ -105,5 +105,57 @@ public class Patient extends AuditModel {
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
+    }
+
+    public String getCivilStatus() {
+        return civilStatus;
+    }
+
+    public void setCivilStatus(String civilStatus) {
+        this.civilStatus = civilStatus;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getCelPhoneNumber() {
+        return celPhoneNumber;
+    }
+
+    public void setCelPhoneNumber(String celPhoneNumber) {
+        this.celPhoneNumber = celPhoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAddressDistrict() {
+        return addressDistrict;
+    }
+
+    public void setAddressDistrict(String addressDistrict) {
+        this.addressDistrict = addressDistrict;
+    }
+
+    public Long getHistoryCode() {
+        return historyCode;
+    }
+
+    public void setHistoryCode(Long historyCode) {
+        this.historyCode = historyCode;
+    }
+
+    public String getFullName() {
+        return UtilityTools.isNull(this.firstName) + " " + UtilityTools.isNull(this.lastName);
     }
 }

@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Long>{
     List<Patient> findByBirthday(Date birthday);
+    List<Patient> findByDocumentNumber(String documentNumber);
 }

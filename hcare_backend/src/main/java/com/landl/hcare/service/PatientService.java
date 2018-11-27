@@ -1,6 +1,8 @@
 package com.landl.hcare.service;
 
 
+import com.landl.hcare.entity.Employee;
+import com.landl.hcare.entity.MedicalAppointment;
 import com.landl.hcare.entity.Patient;
 
 import java.util.Date;
@@ -15,6 +17,11 @@ public interface PatientService {
 
     public List<Patient> findByBirthday(Date birthday);
 
+    public Patient findByDocumentNumber(String documentNumber) throws Exception;
+
     public Optional<Patient> findById(Long patientId);
+
+    public Patient createPatient(MedicalAppointment medicalAppointment) throws Exception;
+    public Patient updatePatient(Patient patient, MedicalAppointment medicalAppointment) throws Exception;
 
 }
