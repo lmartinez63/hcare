@@ -25,6 +25,7 @@ public class MedicalAppointmentController {
     @Autowired
     private EmailTemplateService emailTemplateService;
 
+
     @Autowired
     private EmailService emailService;
 
