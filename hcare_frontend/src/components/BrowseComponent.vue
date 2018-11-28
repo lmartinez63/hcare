@@ -259,7 +259,7 @@ export default {
         break;
         v
       case 'medicalAppointmentsByPatient':
-        this.browseurl = this.$parent.backendUrl + 'medicalAppointmentsByPatientId/' + this.entityId
+        this.browseurl = this.$parent.backendUrl + 'medicalAppointmentsByHistoryCode/' + this.entityId
         this.detailComponent = 'MedicalAppointmentComponent'
         this.title = 'Listado de Citas del Paciente ' + this.entityId
         this.newButtonVisible = true
@@ -275,7 +275,7 @@ export default {
             "newEntityValue": "entityId"
           },
         ]
-        this.columnDefinitionValues = '[objectItem.id, objectItem.historyCode, self.frontEndDateFormat(objectItem.dateAppointment),objectItem.status,]'
+        this.columnDefinitionValues = '[objectItem.id, objectItem.historyCode, self.frontEndDateFormat(objectItem.dateAppointment),self.$parent.medicalAppointmentStatus[objectItem.status],]'
         break;
       default:
         break;
