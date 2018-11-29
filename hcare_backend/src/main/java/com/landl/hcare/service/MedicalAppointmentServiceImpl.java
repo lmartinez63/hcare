@@ -17,20 +17,24 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
     @Autowired
     MedicalAppointmentRepository medicalAppointmentRepository;
 
-    public MedicalAppointment save(MedicalAppointment medicalAppointment){
+    public MedicalAppointment save(MedicalAppointment medicalAppointment) throws Exception{
         return medicalAppointmentRepository.save(medicalAppointment);
     }
 
-    public List<MedicalAppointment> findAll(){
+    public List<MedicalAppointment> findAll() throws Exception{
         return medicalAppointmentRepository.findAll();
     }
 
-    public Optional<MedicalAppointment> findById(Long medicalAppointmentId){
+    public Optional<MedicalAppointment> findById(Long medicalAppointmentId) throws Exception{
         return medicalAppointmentRepository.findById(medicalAppointmentId);
     }
 
-    public List<MedicalAppointment> findByHistoryCode(Long historyCode){
+    public List<MedicalAppointment> findByHistoryCode(Long historyCode) throws Exception{
         return medicalAppointmentRepository.findByHistoryCode(historyCode);
+    }
+
+    public List<MedicalAppointment> findByDocumentNumber(String documentNumber) throws Exception{
+        return medicalAppointmentRepository.findByDocumentNumber(documentNumber);
     }
 
     public List<MedicalAppointment> findByToday(){
@@ -96,4 +100,46 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
 
         return medicalAppointmentRepository.findByDoctorIdAndDateAppointmentBetweenOrderByDateAppointmentAsc(doctorId,targetDate,dayAfterTargetDate);
     };
+
+    public Long countByDateAppointment(Date date){
+        Date targetDate = date;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(targetDate);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        targetDate = cal.getTime();
+
+        Date dayAfterTargetDate = new Date();
+        cal.setTime(targetDate);
+        cal.add(Calendar.DATE, 1);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        dayAfterTargetDate = cal.getTime();
+        return medicalAppointmentRepository.countByDateAppointmentBetweenOrderByDateAppointmentAsc(targetDate,dayAfterTargetDate);
+    }
+
+    public Long countByStatusAndDateAppointment(String status, Date date){
+        Date targetDate = date;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(targetDate);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        targetDate = cal.getTime();
+
+        Date dayAfterTargetDate = new Date();
+        cal.setTime(targetDate);
+        cal.add(Calendar.DATE, 1);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        dayAfterTargetDate = cal.getTime();
+        return medicalAppointmentRepository.countByStatusAndDateAppointmentBetweenOrderByDateAppointmentAsc(status,targetDate,dayAfterTargetDate);
+    }
 }

@@ -16,6 +16,8 @@ public interface PropertyService {
 
     public Property findByPropertyCode(String propertyCode);
 
-    public Optional<Property> findById(Long employeeId);
+    public Optional<Property> findById(Long propertyId);
+
+    public String getPropertyValue(String propertyCode);
 
 }

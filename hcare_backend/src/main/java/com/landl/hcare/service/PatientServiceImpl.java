@@ -48,7 +48,7 @@ public class PatientServiceImpl implements PatientService{
         patient.setFirstName(medicalAppointment.getFirstName());
         patient.setCelPhoneNumber(medicalAppointment.getCelPhoneNumber());
         patient.setEmailAddress(medicalAppointment.getEmailAddress());
-        return save(patient);
+        return patient;
     }
 
     public Patient updatePatient(Patient patient, MedicalAppointment medicalAppointment) throws Exception{
@@ -58,6 +58,6 @@ public class PatientServiceImpl implements PatientService{
         patient.setFirstName(medicalAppointment.getFirstName());
         patient.setCelPhoneNumber(medicalAppointment.getCelPhoneNumber());
         patient.setEmailAddress(medicalAppointment.getEmailAddress());
-        return save(patient);
+        return patient;
     }
 }

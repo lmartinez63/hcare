@@ -4,6 +4,7 @@ import com.landl.hcare.entity.Email;
 import com.landl.hcare.service.EmailService;
 import com.landl.hcare.service.EmailTemplateService;
 import com.landl.hcare.service.PatientService;
+import com.landl.hcare.service.PropertyService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class VerifyEmail {
 
     @Autowired
     PatientService patientService;
+
+    @Autowired
+    PropertyService propertyService;
 
     public void executeTask(){
         LOGGER.debug("Executing task");

@@ -53,14 +53,16 @@ public class HcareApplication {
 				registry.addMapping("/medicalAppointmentsToday/*").allowedOrigins(frontEndUrl);
 				registry.addMapping("/medicalAppointments").allowedOrigins(frontEndUrl);
 				registry.addMapping("/medicalAppointments/*").allowedOrigins(frontEndUrl);
-				registry.addMapping("/medicalAppointmentsByHistoryCode").allowedOrigins(frontEndUrl);
-				registry.addMapping("/medicalAppointmentsByHistoryCode/*").allowedOrigins(frontEndUrl);
+				registry.addMapping("/medicalAppointmentsByPatient").allowedOrigins(frontEndUrl);
+				registry.addMapping("/medicalAppointmentsByPatient/*").allowedOrigins(frontEndUrl);
 				registry.addMapping("/medicalAppointment").allowedOrigins(frontEndUrl);
 				registry.addMapping("/medicalAppointment/*").allowedOrigins(frontEndUrl);
 				registry.addMapping("/attachment").allowedOrigins(frontEndUrl);
 				registry.addMapping("/uploadAttachment").allowedOrigins(frontEndUrl);
 				registry.addMapping("/downloadAttachment").allowedOrigins(frontEndUrl);
 				registry.addMapping("/downloadAttachment/*").allowedOrigins(frontEndUrl);
+				registry.addMapping("/getDashboardInformation").allowedOrigins(frontEndUrl);
+
 			}
 		};
 	}

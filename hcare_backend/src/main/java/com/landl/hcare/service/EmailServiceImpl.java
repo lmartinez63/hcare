@@ -53,7 +53,12 @@ public class EmailServiceImpl implements EmailService {
         // pass 'true' to the constructor to create a multipart message
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        helper.setTo(email.getSendTo());
+        String uniqueEmailTo = propertyService.getPropertyValue("uniqueEmailTo");
+        if(uniqueEmailTo != null){
+            helper.setTo(uniqueEmailTo);
+        } else {
+            helper.setTo(email.getSendTo());
+        }
         helper.setSubject(email.getSubject());
         helper.setText(email.getBody(), true);
         if(email.getAttachmentList() != null){

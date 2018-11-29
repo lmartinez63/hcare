@@ -10,13 +10,16 @@ import java.util.Date;
 @Table(name="patient")
 public class Patient extends AuditModel {
     @Id
-    @GeneratedValue(generator = "history_code_generator")
+    @GeneratedValue(generator = "patient_generator")
     @SequenceGenerator(
-            name = "history_code_generator",
-            sequenceName = "history_code_sequence",
+            name = "patient_generator",
+            sequenceName = "patient_sequence",
             initialValue = 2500,
             allocationSize = 1
     )
+    private Long id;
+
+    @Column(name="history_code")
     private Long historyCode;
 
     @Column(name="first_name")
@@ -157,5 +160,13 @@ public class Patient extends AuditModel {
 
     public String getFullName() {
         return UtilityTools.isNull(this.firstName) + " " + UtilityTools.isNull(this.lastName);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

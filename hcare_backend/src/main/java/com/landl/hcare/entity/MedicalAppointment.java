@@ -36,7 +36,7 @@ public class MedicalAppointment  extends AuditModel {
     @Column(name="document_type")
     private String documentType;
 
-    @Column(name="document_number")
+    @Column(name="document_number",unique=true)
     private String documentNumber;
 
     @Column(name="email_address")
