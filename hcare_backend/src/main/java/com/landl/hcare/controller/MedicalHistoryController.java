@@ -26,23 +26,25 @@ public class MedicalHistoryController {
     private AttachmentService attachmentService;
 
     @GetMapping("/medicalHistories")
-    public List<MedicalHistory> retrieveAllMedicalHistories() {
+    public List<MedicalHistory> retrieveAllMedicalHistories() throws Exception{
         return medicalHistoryService.findAll();
     }
 
     @GetMapping("/medicalHistories/{historyCode}")
-    public MedicalHistory retrieveByHistoryCode(@PathVariable Long historyCode) {
-        MedicalHistory medicalHistory = medicalHistoryService.findById(historyCode).get();
-        if (medicalHistory.getHistoryCode() != null) {
-            Patient patient = patientService.findById(medicalHistory.getHistoryCode()).get();
-            medicalHistory.setPatient(patient);
+    public MedicalHistory retrieveByHistoryCode(@PathVariable Long historyCode) throws Exception{
+        MedicalHistory medicalHistory = medicalHistoryService.findById(historyCode);
+        if (medicalHistory != null) {
+            if (medicalHistory.getHistoryCode() != null) {
+                Patient patient = patientService.findById(medicalHistory.getHistoryCode()).get();
+                medicalHistory.setPatient(patient);
+            }
+            medicalHistory.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalHistory", medicalHistory.getHistoryCode()));
         }
-        medicalHistory.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalHistory", medicalHistory.getHistoryCode()));
         return medicalHistory;
     }
 
     @PostMapping("/medicalHistories")
-    public MedicalHistory saveMedicalHistory(@Valid @RequestBody MedicalHistory medicalHistory) {
+    public MedicalHistory saveMedicalHistory(@Valid @RequestBody MedicalHistory medicalHistory) throws Exception{
         MedicalHistory medicalHistorySaved = medicalHistoryService.save(medicalHistory);
         if (medicalHistory.getHistoryCode() != null) {
             Patient patient = patientService.findById(medicalHistorySaved.getHistoryCode()).get();

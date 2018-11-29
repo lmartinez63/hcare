@@ -45,4 +45,13 @@ public class PropertyServiceImpl implements PropertyService{
         return propertyRepository.findById(employeeId);
     }
 
+    public String getPropertyValue(String propertyCode){
+        Map<String, Object> propertiesMap = getPropertiesMap();
+        if(propertiesMap.containsKey(propertyCode)) {
+            return propertiesMap.get(propertyCode).toString();
+        } else {
+            return null;
+        }
+    }
+
 }

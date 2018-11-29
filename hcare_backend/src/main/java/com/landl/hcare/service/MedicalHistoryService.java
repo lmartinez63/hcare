@@ -9,12 +9,12 @@ import java.util.Optional;
 
 public interface MedicalHistoryService {
 
-    public MedicalHistory save(MedicalHistory medicalHistory);
+    public MedicalHistory save(MedicalHistory medicalHistory)  throws Exception;
 
-    public List<MedicalHistory> findAll();
+    public List<MedicalHistory> findAll()  throws Exception;
 
-    public Optional<MedicalHistory> findById(Long historyCode);
+    public MedicalHistory findById(Long historyCode) throws Exception;
 
-    public MedicalHistory createMedicalHistory(Patient patient);
+    public MedicalHistory createMedicalHistory(Patient patient) throws Exception;
 
 }

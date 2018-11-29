@@ -9,6 +9,13 @@ import java.util.List;
 @Table(name="medical_history")
 public class MedicalHistory extends AuditModel {
     @Id
+    @GeneratedValue(generator = "history_code_generator")
+    @SequenceGenerator(
+            name = "history_code_generator",
+            sequenceName = "history_code_sequence",
+            initialValue = 2500,
+            allocationSize = 1
+    )
     private Long historyCode;
 
     @Column(name="old_history_code")
@@ -20,6 +27,9 @@ public class MedicalHistory extends AuditModel {
 
     @Column(name="status")
     private String status;
+
+    @Column(name="history_activity")
+    private Boolean historyActivity;
 
     //record
     @Column(name="previous_surgeries")
@@ -266,4 +276,11 @@ public class MedicalHistory extends AuditModel {
         this.status = status;
     }
 
+    public Boolean getHistoryActivity() {
+        return historyActivity;
+    }
+
+    public void setHistoryActivity(Boolean historyActivity) {
+        this.historyActivity = historyActivity;
+    }
 }

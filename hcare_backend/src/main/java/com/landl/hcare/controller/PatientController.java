@@ -39,13 +39,15 @@ public class PatientController {
 
     @PostMapping("/patients")
     public Patient savePatient(@Valid @RequestBody Patient patient) {
-        Patient patientSaved = patientService.save(patient);
+        /*
         //Create MedicalHistory with historyCode if doesn't exits
-        Optional<MedicalHistory> optMedicalHistory = medicalHistoryService.findById(patient.getHistoryCode());
-        if(!optMedicalHistory.isPresent()){
+        MedicalHistory optMedicalHistory = medicalHistoryService.findById(patient.getHistoryCode());
+        if(optMedicalHistory != null){
             MedicalHistory medicalHistory = medicalHistoryService.createMedicalHistory(patient);
         }
-        return patientSaved;
+        Patient patientSaved = patientService.save(patient);
+        */
+        return patientService.save(patient);
     }
 
 }

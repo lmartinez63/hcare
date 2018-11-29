@@ -9,18 +9,24 @@ import java.util.Optional;
 
 public interface MedicalAppointmentService {
 
-    public MedicalAppointment save(MedicalAppointment medicalAppointment);
+    public MedicalAppointment save(MedicalAppointment medicalAppointment) throws Exception;
 
-    public List<MedicalAppointment> findAll();
+    public List<MedicalAppointment> findAll() throws Exception;
 
-    public Optional<MedicalAppointment> findById(Long medicalAppointmentId);
+    public Optional<MedicalAppointment> findById(Long medicalAppointmentId) throws Exception;
 
-    public List<MedicalAppointment> findByHistoryCode(Long historyCode);
+    public List<MedicalAppointment> findByHistoryCode(Long historyCode) throws Exception;
 
-    public List<MedicalAppointment> findByToday();
+    public List<MedicalAppointment> findByDocumentNumber(String documentNumber) throws Exception;
 
-    public List<MedicalAppointment> findByDateAppointment(Date date);
+    public List<MedicalAppointment> findByToday() throws Exception;
 
-    public List<MedicalAppointment> findByDateAppointmentAndDoctorId(Date date,Long doctorId);
+    public List<MedicalAppointment> findByDateAppointment(Date date) throws Exception;
+
+    public List<MedicalAppointment> findByDateAppointmentAndDoctorId(Date date,Long doctorId) throws Exception;
+
+    public Long countByDateAppointment(Date date) throws Exception;
+
+    public Long countByStatusAndDateAppointment(String status, Date date) throws Exception;
 
 }

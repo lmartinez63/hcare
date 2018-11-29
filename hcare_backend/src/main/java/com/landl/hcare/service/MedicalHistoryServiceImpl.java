@@ -15,22 +15,28 @@ public class MedicalHistoryServiceImpl implements MedicalHistoryService {
     @Autowired
     MedicalHistoryRepository medicalHistoryRepository;
 
-    public MedicalHistory save(MedicalHistory medicalHistory){
+    public MedicalHistory save(MedicalHistory medicalHistory)  throws Exception{
         return medicalHistoryRepository.save(medicalHistory);
     }
 
-    public List<MedicalHistory> findAll(){
+    public List<MedicalHistory> findAll() throws Exception{
         return medicalHistoryRepository.findAll();
     }
 
-    public Optional<MedicalHistory> findById(Long historyCode){
-        return medicalHistoryRepository.findById(historyCode);
+    public MedicalHistory findById(Long historyCode) throws Exception{
+        return medicalHistoryRepository.findById(historyCode).orElse(null);
     }
 
-    public MedicalHistory createMedicalHistory(Patient patient){
+    public MedicalHistory createMedicalHistory(Patient patient) throws Exception{
         MedicalHistory medicalHistory = new MedicalHistory();
-        medicalHistory.setHistoryCode(patient.getHistoryCode());
-        medicalHistory.setStatus("true");
-        return save(medicalHistory);
+        medicalHistory.setHistoryActivity(true);
+        medicalHistory.setStatus("0");
+        MedicalHistory medicalHistorySaved = save(medicalHistory);
+        Long historyCode = medicalHistorySaved.getHistoryCode();
+        if(patient.getHistoryCode() == null){
+            patient.setHistoryCode(historyCode);
+
+        }
+        return medicalHistorySaved;
     }
 }
