@@ -24,7 +24,7 @@ const router = new Router({
       component: BrowseComponent
     },
     {
-      path: '/patient/:historyCode',
+      path: '/patient/:id',
       name: 'PatientComponent',
       component: PatientComponent
     },
@@ -55,6 +55,7 @@ const router = new Router({
     }
   ]
 })
+//Temporal to redirect to Secretary view
 /*if (this.requreAuthentication) {
   router.beforeEach((to, from, next) => {
     if (sessionStorage.getItem('authToken') !== null || to.path === '/auth') {

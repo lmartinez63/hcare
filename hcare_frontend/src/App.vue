@@ -72,6 +72,10 @@ export default {
       displayMessage:false,
       backendUrl: 'http://127.0.0.1:8080/',
       medicalHistoryStatus: {
+        '0':'Encontrada',
+        '99':'Perdida',
+      },
+      medicalHistoryActivities: {
         'true':'Activa',
         'false':'Pasiva',
       },
@@ -80,7 +84,8 @@ export default {
         5:'Agendada',
         10:'En atencion',
         15:'Pendiente Resultados',
-        20:'Auxiliar'
+        20:'Auxiliar',
+        90:'No se presento',
       },
       documentTypes: [
         {"key":1,"value":'DNI'},

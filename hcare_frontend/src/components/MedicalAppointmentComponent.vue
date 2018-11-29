@@ -16,6 +16,14 @@
                 <div class="icon"><i class="fas fa-save"></i></div>
                 <div class="text">Guardar</div>
               </div>
+              <div  v-if="medicalAppointment.status == '5'" v-on:click="updateStatus('10')" class="link">
+                <div class="icon"><i class="fas fa-save"></i></div>
+                <div class="text">En Atencion</div>
+              </div>
+              <div v-if="medicalAppointment.status == '5'" v-on:click="updateStatus('90')" class="link">
+                <div class="icon"><i class="fas fa-save"></i></div>
+                <div class="text">No se presento</div>
+              </div>
               <!-- specialButtons -->
             </div>
           </div>
@@ -175,7 +183,11 @@ export default {
       medicalAppointment: {
         dateAppointment: (new Date()).toISOString(),
         status: 0,
-        patient: {},
+        emailAddress:'',
+        documentType:'1',
+        medicalAppointmentType:'1',
+        patient: {
+        },
         attachmentList: [],
       },
       medicalAreas: [
@@ -184,10 +196,14 @@ export default {
       ],
       medicalAppointmentTypes:[
         {id:1,type:'Nueva Consulta'},
-        {id:2,type:'Control Cirugia Estetica'},
-        {id:3,type:'Control Cirugia Ocular'},
-        {id:4,type:'Control Cirugia Rinoplastia'},
-        {id:4,type:'Otros Control'},
+        {id:2,type:'Control'},
+        {id:3,type:'Analisis de Laboratorio'},
+        {id:4,type:'Riego Quirurgico'},
+        {id:5,type:'Ecografia'},
+        {id:6,type:'Eco Dopler'},
+        {id:7,type:'Cirugia Ambulatoria'},
+        {id:8,type:'Cirugia con Hospitalacion'},
+        {id:8,type:'Ambulancia'},
       ],
       preferentialDiagnostics:[
         {key:1,value:'Cirugia de Rinoplastia'},
@@ -244,7 +260,6 @@ export default {
             selfVue.medicalAppointment.lastName = response.data.lastName
             selfVue.medicalAppointment.celPhoneNumber = response.data.celPhoneNumber
             selfVue.medicalAppointment.emailAddress = response.data.emailAddress
-            selfVue.medicalAppointment.documentType = response.data.documentType
             selfVue.medicalAppointment.historyCode = response.data.historyCode
           }
           //this.patient.birthday = this.frontEndDateFormat(this.patient.birthday)
@@ -258,9 +273,17 @@ export default {
         name: 'BrowseComponent'
       })
     },
+    updateStatus: function(newStatus) {
+      this.medicalAppointment.status = newStatus
+      this.saveObjectState();
+      // this.$router.push({ name: '/'})
+    },
     saveObjectState: function() {
       const url = this.$parent.backendUrl + 'medicalAppointments'
       //Add patientId to medicalHistory
+      if (this.medicalAppointment.emailAddress == ''){
+        this.medicalAppointment.emailAddress = 'novaclinicarequipa@gmail.com'
+      }
       let selfVue = this
       axios.post(url, this.medicalAppointment)
         .then(response => {
