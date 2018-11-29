@@ -79,6 +79,9 @@ export default {
         break;
       case 'allPatients':
         this.columnDefinitionNames = [{
+          columnName: 'Id',
+          visible: false
+        }, {
           columnName: 'HistoryCode',
           visible: true
         }, {
@@ -146,11 +149,8 @@ export default {
           columnName: 'Id',
           visible: false
         }, {
-          columnName: 'Id de Paciente',
+          columnName: 'History Code',
           visible: false
-        }, {
-          columnName: 'Codigo de Paciente',
-          visible: true
         }, {
           columnName: 'Fecha de cita',
           visible: true
@@ -199,11 +199,11 @@ export default {
         this.newButtonTitle = 'Añadir Paciente'
         this.newButtonVisible = true
         this.parametersArray = [{
-          "key": "historyCode",
+          "key": "id",
           "value": 0,
           "newEntityValue": null
         }, ]
-        this.columnDefinitionValues = '[objectItem.historyCode, objectItem.fullName,objectItem.emailAddress,self.frontEndDateFormat(objectItem.birthday),]'
+        this.columnDefinitionValues = '[objectItem.id, objectItem.historyCode, objectItem.fullName,objectItem.emailAddress,self.frontEndDateFormat(objectItem.birthday),]'
         break;
       case 'allMedicalAreas':
         this.browseurl = this.$parent.backendUrl + 'medicalAreas'
@@ -259,10 +259,10 @@ export default {
         break;
         v
       case 'medicalAppointmentsByPatient':
-        this.browseurl = this.$parent.backendUrl + 'medicalAppointmentsByHistoryCode/' + this.entityId
+        this.browseurl = this.$parent.backendUrl + 'medicalAppointmentsByPatient/' + this.entityId
         this.detailComponent = 'MedicalAppointmentComponent'
         this.title = 'Listado de Citas del Paciente ' + this.entityId
-        this.newButtonVisible = true
+        this.newButtonVisible = false
         this.newButtonTitle = 'Añadir Cita'
         this.parametersArray = [{
             "key": "medicalAppointmentId",
@@ -270,8 +270,8 @@ export default {
             "newEntityValue": null
           },
           {
-            "key": "patientId",
-            "value": 1,
+            "key": "id",
+            "value": 0,
             "newEntityValue": "entityId"
           },
         ]

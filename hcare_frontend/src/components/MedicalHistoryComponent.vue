@@ -34,20 +34,21 @@
               Datos de Historia Medica
             </div>
             <div class="twoCol">
-              <div class="group">
+              <!--<div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" name="medicalHistory-fileNumber" id="medicalHistory-fileNumber" v-model="medicalHistory.fileNumber" />
                   <label class="labelText" for="medicalHistory-fileNumber">Numero de Archivo</label>
                 </div>
               </div>
+              -->
               <div class="group">
-                <input type="checkbox" name="medicalHistory-status" id="medicalHistory-status" v-model="medicalHistory.status" class="switch-input" />
-                <label for="medicalHistory-status" class="switch-label">Estado
+                <input type="checkbox" name="medicalHistory-historyActivity" id="medicalHistory-historyActivity" v-model="medicalHistory.historyActivity" class="switch-input" />
+                <label for="medicalHistory-historyActivity" class="switch-label">Estado
                   <span class="toggle--on">Activa</span>
                   <span class="toggle--off">Pasiva</span>
                 </label>
               </div>
-              <div class="groupFull">
+              <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <label class="mdl-textfield__input labelNoEdit" id="medicalAppointment-patient-fullName">{{medicalHistory.patient.fullName}}</label>
                   <label class="labelText" for="medicalHistory-patient-fullName">Nombre de Paciente</label>

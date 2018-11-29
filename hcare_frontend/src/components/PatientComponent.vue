@@ -15,11 +15,11 @@
                 <div class="text">Guardar</div>
               </div>
               <!-- specialButtons -->
-              <div v-on:click="viewMedicalHistory(patient.historyCode)" class="link">
+              <div v-if="patient.historyCode != null "v-on:click="viewMedicalHistory(patient.historyCode)" class="link">
                 <div class="icon"><i class="fas fa-save"></i></div>
                 <div class="text">Historial medico</div>
               </div>
-              <div v-on:click="viewMedicalAppointmentHistory(patient.historyCode)" class="link">
+              <div v-on:click="viewMedicalAppointmentHistory(patient.documentNumber)" class="link">
                 <div class="icon"><i class="fas fa-save"></i></div>
                 <div class="text">Historial de Citas</div>
               </div>
@@ -136,12 +136,13 @@ export default {
     Datepicker,
   },
   created: function() {
-
+    console.log("PatientComponent");
     if (this.$route.params.id !== 'null') {
-      const url = this.$parent.backendUrl + 'patients/' + this.$route.params.historyCode
+      const url = this.$parent.backendUrl + 'patients/' + this.$route.params.id
+      let selfVue = this
       axios.get(url)
         .then(response => {
-          this.patient = response.data
+          selfVue.patient = response.data
           //this.patient.birthday = this.frontEndDateFormat(this.patient.birthday)
         })
         .catch(error => {
@@ -179,12 +180,12 @@ export default {
         }
       })
     },
-    viewMedicalAppointmentHistory: function(historyCode) {
+    viewMedicalAppointmentHistory: function(documentNumber) {
       this.$router.push({
         name: 'BrowseComponent',
         params: {
           browseType: 'medicalAppointmentsByPatient',
-          entityId: historyCode,
+          entityId: documentNumber,
         }
       })
     },

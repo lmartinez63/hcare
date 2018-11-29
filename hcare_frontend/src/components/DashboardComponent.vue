@@ -2,16 +2,13 @@
   <div class="content-container">
     <section class="contPortlet">
       <div class="portBox">
-        CITAS DEL DIA: 10
+        CITAS DEL DIA: {{dashboardInfo.qtyMedAppPerDay}}
       </div>
       <div class="portBox">
-        PACIENTES REGISTRADOS: 10
+        CITAS ATENDIDAS DEL DIA: {{dashboardInfo.qtyMedAppAttendedPerDay}}
       </div>
       <div class="portBox">
-        PACIENTES NUEVOS: 10k
-      </div>
-      <div class="portBox">
-        VISIT TODAY: 10k
+        CITAS PERDIDAS DEL DIA: {{dashboardInfo.qtyMedAppNotAttendedPerDay}}
       </div>
     </section>
     <section class="contentGraph">
@@ -31,11 +28,23 @@ export default {
   name: 'DashboardComponent',
   data() {
     return {
-
+      dashboardInfo:{
+        qtyMedAppPerDay:0,
+        qtyMedAppAttendedPerDay:0,
+        qtyMedAppNotAttendedPerDay:0,
+      }
     }
   },
   created: function() {
     console.log('created-' + 'DashboardComponent')
+    var dashboardUrl = this.$parent.backendUrl + 'getDashboardInformation'
+    let selfVue = this
+    axios.get(dashboardUrl).then(response => {
+        selfVue.dashboardInfo = response.data
+      })
+      .catch(error => {
+        console.log(error)
+      })
   },
   mounted: function() {
     console.log('mounted-' + 'DashboardComponent')

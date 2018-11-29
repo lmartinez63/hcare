@@ -28,24 +28,36 @@
             <div class="twoCol">
               <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <select v-model="employee.title">
+                    <option v-for="title in titles" v-bind:value="title.titleId">
+                      {{ title.titleName }}
+                    </option>
+                  </select>
+                  <label class="labelText" for="employee-title">Especialidad</label>
+                </div>
+              </div>
+              <!--
+              <div class="group">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" name="employee-employeeCode" id="employee-employeeCode" v-model="employee.employeeCode" />
                   <label class="labelText" for="employee-employeeCode">Codigo de Colaborador</label>
                 </div>
               </div>
-              <div class="group">
-              </div>
+            -->
               <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" name="employee-emailAddress" id="employee-emailAddress" v-model="employee.emailAddress" />
                   <label class="labelText" for="employee-emailAddress">Email</label>
                 </div>
               </div>
+              <!--
               <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="password" name="employee-password" id="employee-password" v-model="employee.password" />
                   <label class="labelText" for="employee-password">Password</label>
                 </div>
               </div>
+              -->
               <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" name="employee-firstName" id="employee-firstName" v-model="employee.firstName" />
@@ -62,16 +74,6 @@
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" name="employee-phoneNumber" id="employee-phoneNumber" v-model="employee.phoneNumber" />
                   <label class="labelText" for="employee-phoneNumber">Telefono</label>
-                </div>
-              </div>
-              <div class="group">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <select v-model="employee.title">
-                    <option v-for="title in titles" v-bind:value="title.titleId">
-                      {{ title.titleName }}
-                    </option>
-                  </select>
-                  <label class="labelText" for="employee-title">Especialidad</label>
                 </div>
               </div>
             </div>
@@ -96,13 +98,15 @@ export default {
   data() {
     return {
       employee: {
+        title:1,
       },
       titles: [
         {titleId:1,titleName:'Doctor(a)'},
-        {titleId:2,titleName:'Enfermer(a)'},
-        {titleId:3,titleName:'Tecnico(a)'},
-        {titleId:4,titleName:'Personal Administrativo'},
-        {titleId:5,titleName:'Auxiliar'},
+        {titleId:2,titleName:'Terapista'},
+        {titleId:3,titleName:'Enfermer(a)'},
+        {titleId:4,titleName:'Tecnico(a)'},
+        {titleId:5,titleName:'Personal Administrativo'},
+        {titleId:6,titleName:'Auxiliar'},
       ],
     }
   },
@@ -148,7 +152,8 @@ export default {
     },
     backEndDateFormat: function(date) {
       return moment(date, 'DD/MM/YYYY').format('YYYY-MM-DDTHH:mm:ss.sssZ')
-    }
+    },
+
   },
   filters: {
     capitalize: function(value) {
