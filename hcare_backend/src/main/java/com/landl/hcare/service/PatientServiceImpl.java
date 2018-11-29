@@ -39,6 +39,14 @@ public class PatientServiceImpl implements PatientService{
     public Optional<Patient> findById(Long patientId){
         return patientRepository.findById(patientId);
     }
+    public Patient findByHistoryCode(Long historyCode) throws Exception{
+        Patient patient = null;
+        List<Patient> patientList  =  patientRepository.findByHistoryCode(historyCode);
+        if( patientList.size() > 0 ){
+            patient = patientList.get(0);
+        }
+        return patient;
+    }
 
     public Patient createPatient(MedicalAppointment medicalAppointment) throws Exception{
         Patient patient = new Patient();
