@@ -125,7 +125,7 @@
                 <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <select v-model="$v.medicalAppointment.doctorId.$model">
                     <option v-for="doctor in doctors" v-bind:value="doctor.id">
-                      {{ doctor.firstName }}
+                      {{ doctor.fullName }}
                     </option>
                   </select>
                   <label class="form__label labelText" for="medicalAppointment-doctorId">Especialista</label>
