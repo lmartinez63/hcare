@@ -62,7 +62,7 @@ public class HcareApplication {
 				registry.addMapping("/downloadAttachment").allowedOrigins(frontEndUrl);
 				registry.addMapping("/downloadAttachment/*").allowedOrigins(frontEndUrl);
 				registry.addMapping("/getDashboardInformation").allowedOrigins(frontEndUrl);
-
+				registry.addMapping("/medicalAppointmentsHeaderView").allowedOrigins(frontEndUrl);
 			}
 		};
 	}
