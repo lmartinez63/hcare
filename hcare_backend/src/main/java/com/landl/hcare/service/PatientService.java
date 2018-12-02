@@ -21,6 +21,8 @@ public interface PatientService {
 
     public Optional<Patient> findById(Long patientId);
 
+    public Patient findByHistoryCode(Long historyCode) throws Exception;
+
     public Patient createPatient(MedicalAppointment medicalAppointment) throws Exception;
     public Patient updatePatient(Patient patient, MedicalAppointment medicalAppointment) throws Exception;
 

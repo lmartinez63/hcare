@@ -35,7 +35,7 @@ public class MedicalHistoryController {
         MedicalHistory medicalHistory = medicalHistoryService.findById(historyCode);
         if (medicalHistory != null) {
             if (medicalHistory.getHistoryCode() != null) {
-                Patient patient = patientService.findById(medicalHistory.getHistoryCode()).get();
+                Patient patient = patientService.findByHistoryCode(medicalHistory.getHistoryCode());
                 medicalHistory.setPatient(patient);
             }
             medicalHistory.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalHistory", medicalHistory.getHistoryCode()));

@@ -36,7 +36,7 @@ public class MedicalAppointment  extends AuditModel {
     @Column(name="document_type")
     private String documentType;
 
-    @Column(name="document_number",unique=true)
+    @Column(name="document_number")
     private String documentNumber;
 
     @Column(name="email_address")
@@ -66,10 +66,13 @@ public class MedicalAppointment  extends AuditModel {
     @Column(name="visit_reason")
     private String visitReason;
 
-    @Column(name="dianostic")
+    @Column(name="notes",length = 4000, nullable = true)
+    private String notes;
+
+    @Column(name="dianostic", nullable = true)
     private String diagnostic;
 
-    @Column(name="preferential_diagnostic")
+    @Column(name="preferential_diagnostic", nullable = true)
     private String preferentialDiagnostic;
 
     @Column(name="medical_appointment_type")
@@ -240,5 +243,13 @@ public class MedicalAppointment  extends AuditModel {
 
     public void setPreferentialDiagnostic(String preferentialDiagnostic) {
         this.preferentialDiagnostic = preferentialDiagnostic;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }
