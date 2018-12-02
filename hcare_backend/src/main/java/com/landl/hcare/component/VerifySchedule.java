@@ -77,19 +77,21 @@ public class VerifySchedule {
                         cal.set(Calendar.MILLISECOND, 0);
                         tomorrow = cal.getTime();
                         List<MedicalAppointment> medicalAppointmentList = medicalAppointmentService.findByDateAppointmentAndDoctorId(tomorrow, doctor.getId());
-                        Email email = new Email();
-                        email.setStatus(0);
-                        email.setEmailTemplate(emailTemplate);
-                        //Get Data source
-                        Map<String,Object> dataSource = new HashMap<String, Object>();
-                        dataSource.put("doctor", doctor);
-                        dataSource.put("mal", medicalAppointmentList);
-                        LOGGER.info("Getting datasource");
-                        email.setDataSource(dataSource);
-                        LOGGER.info("Building Email");
-                        emailService.buildEmailFromEmailTemplate(email);
-                        LOGGER.info("Email Saved");
-                        emailService.save(email);
+                        if (medicalAppointmentList != null && medicalAppointmentList.size() > 0) {
+                            Email email = new Email();
+                            email.setStatus(0);
+                            email.setEmailTemplate(emailTemplate);
+                            //Get Data source
+                            Map<String, Object> dataSource = new HashMap<String, Object>();
+                            dataSource.put("doctor", doctor);
+                            dataSource.put("mal", medicalAppointmentList);
+                            LOGGER.info("Getting datasource");
+                            email.setDataSource(dataSource);
+                            LOGGER.info("Building Email");
+                            emailService.buildEmailFromEmailTemplate(email);
+                            LOGGER.info("Email Saved");
+                            emailService.save(email);
+                        }
                     }
                     break;
                     default:

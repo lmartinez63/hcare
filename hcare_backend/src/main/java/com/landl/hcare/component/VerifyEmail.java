@@ -38,15 +38,17 @@ public class VerifyEmail {
                 LOGGER.info("Processing emails" + email.toString());
                 try {
                     emailService.sendSimpleMessage(email);
+                    email.setStatus(10);
+                    email.setDescriptionStatus("Sucessfully sent");
                 }
                 catch (Exception innerException) {
                     email.setStatus(99);
                     email.setDescriptionStatus("Error: "+innerException.getMessage());
                     throw innerException;
                 }
-                email.setStatus(10);
-                email.setDescriptionStatus("Sucessfully sent");
-                emailService.save(email);
+                finally {
+                    emailService.save(email);
+                }
             }
         }
         catch (Exception exception) {
