@@ -27,10 +27,11 @@
             </div>
             <div class="twoCol">
               <div class="group">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalArea-areaName" id="medicalArea-areaName" v-model="medicalArea.areaName" />
-                  <label class="labelText" for="medicalArea-areaName">Nombre del Area</label>
+                <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.medicalArea.areaName.$error }">
+                  <input class="form__input mdl-textfield__input" type="text" name="medicalArea-areaName" id="medicalArea-areaName" v-model.trim="$v.medicalArea.areaName.$model" />
+                  <label class="form__label labelText" for="medicalArea-areaName">Nombre del Area</label>
                 </div>
+                <div class="error" v-if="!$v.medicalArea.areaName.required">Nombre del Area requerido</div>
               </div>
             </div>
           </div>
@@ -47,6 +48,15 @@ import moment from 'moment'
 import round from 'vue-round-filter'
 import Datepicker from 'vuejs-datepicker';
 
+import {
+  required,
+  minLength,
+  between,
+  email,
+  maxLength
+} from 'vuelidate/lib/validators'
+
+
 let installed = false
 
 export default {
@@ -54,6 +64,14 @@ export default {
   data() {
     return {
       medicalArea: {
+        areaName:''
+      },
+    }
+  },
+  validations: {
+    medicalArea:{
+      areaName: {
+        required,
       },
     }
   },
@@ -83,14 +101,25 @@ export default {
       const url = this.$parent.backendUrl + 'medicalAreas'
       //Add patientId to medicalHistory
       let selfVue = this
-      axios.post(url, this.medicalArea)
-        .then(response => {
-          this.medicalArea = response.data
-          selfVue.$parent.sucessMessage()
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        selfVue.$parent.errorMessage("Por favor complete los campos requeridos")
+      } else {
+        axios.post(url, this.medicalArea)
+          .then(response => {
+            this.medicalArea = response.data
+            selfVue.$parent.sucessMessage()
+            setTimeout(() => {
+              this.$router.push({
+                name: 'BrowseComponent',
+                params: { browseType: 'allMedicalAreas', entityId: 'null' }
+              })
+            },1000)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
       // this.$router.push({ name: '/'})
     },
     frontEndDateFormat: function(date) {

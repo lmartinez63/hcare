@@ -16,7 +16,7 @@
                 <div class="icon"><i class="fas fa-save"></i></div>
                 <div class="text">Guardar</div>
               </div>
-              <div  v-if="medicalAppointment.status == '5'" v-on:click="updateStatus('10')" class="link">
+              <div v-if="medicalAppointment.status == '5'" v-on:click="updateStatus('10')" class="link">
                 <div class="icon"><i class="fas fa-save"></i></div>
                 <div class="text">En Atencion</div>
               </div>
@@ -35,13 +35,13 @@
             </div>
             <div class="twoCol">
               <div class="group">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label form-group">
                   <select v-model="medicalAppointment.medicalAppointmentType">
                     <option v-for="medicalAppointmentType in medicalAppointmentTypes" v-bind:value="medicalAppointmentType.id">
                       {{ medicalAppointmentType.type }}
                     </option>
                   </select>
-                  <label class="labelText" for="medicalAppointment-medicalAppointmentType">Tipo de Cita</label>
+                  <label class="labelText form__label" for="medicalAppointment-medicalAppointmentType">Tipo de Cita</label>
                 </div>
               </div>
               <div class="group">
@@ -57,34 +57,40 @@
                 </div>
               </div>
               <div class="group">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalAppointment-documentNumber" id="medicalAppointment-documentNumber" v-model="medicalAppointment.documentNumber" @change="getPatientInfo()" />
-                  <label class="labelText" for="medicalAppointment-documentNumber">Numero de Documento</label>
+                <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.medicalAppointment.documentNumber.$error }">
+                  <input class="form__input mdl-textfield__input" type="text" name="medicalAppointment-documentNumber" id="medicalAppointment-documentNumber" v-model.trim="$v.medicalAppointment.documentNumber.$model" @change="getPatientInfo()" />
+                  <label class="form__label labelText" for="medicalAppointment-documentNumber">Numero de Documento</label>
                 </div>
+                <div class="error" v-if="!$v.medicalAppointment.documentNumber.required">Numero de Documento requerido</div>
               </div>
               <div class="group">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalAppointment-firstName" id="medicalAppointment-firstName" v-model="medicalAppointment.firstName" />
-                  <label class="labelText" for="medicalAppointment-firstName">Nombres</label>
+                <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.medicalAppointment.firstName.$error }">
+                  <input class="form__input mdl-textfield__input" type="text" name="medicalAppointment-firstName" id="medicalAppointment-firstName" v-model.trim="$v.medicalAppointment.firstName.$model" />
+                  <label class="form__label labelText" for="medicalAppointment-firstName">Nombres</label>
                 </div>
+                <div class="error" v-if="!$v.medicalAppointment.firstName.required">Nombres requeridos</div>
               </div>
               <div class="group">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalAppointment-lastName" id="medicalAppointment-lastName" v-model="medicalAppointment.lastName" />
-                  <label class="labelText" for="medicalAppointment-lastName">Apellidos</label>
+                <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.medicalAppointment.lastName.$error }">
+                  <input class="form__input mdl-textfield__input" type="text" name="medicalAppointment-lastName" id="medicalAppointment-lastName" v-model.trim="$v.medicalAppointment.lastName.$model" />
+                  <label class="form__label labelText" for="medicalAppointment-lastName">Apellidos</label>
                 </div>
+                <div class="error" v-if="!$v.medicalAppointment.lastName.required">Apellidos requeridos</div>
               </div>
               <div class="group">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalAppointment-celPhoneNumber" id="medicalAppointment-celPhoneNumber" v-model="medicalAppointment.celPhoneNumber" />
-                  <label class="labelText" for="medicalAppointment-celPhoneNumber">Numero de Celular</label>
+                <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.medicalAppointment.celPhoneNumber.$error }">
+                  <input class="form__input mdl-textfield__input" type="text" name="medicalAppointment-celPhoneNumber" id="medicalAppointment-celPhoneNumber" v-model="$v.medicalAppointment.celPhoneNumber.$model" />
+                  <label class="form__label labelText" for="medicalAppointment-celPhoneNumber">Numero de Celular</label>
                 </div>
+                <div class="error" v-if="!$v.medicalAppointment.celPhoneNumber.required">Numero Celular requerido</div>
               </div>
               <div class="group">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalAppointment-emailAddress" id="medicalAppointment-emailAddress" v-model="medicalAppointment.emailAddress" />
-                  <label class="labelText" for="medicalAppointment-emailAddress">Correo Electronico</label>
+                <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.medicalAppointment.emailAddress.$error }">
+                  <input class="form__input mdl-textfield__input" type="text" name="medicalAppointment-emailAddress" id="medicalAppointment-emailAddress" v-model.trim="$v.medicalAppointment.emailAddress.$model" />
+                  <label class="form__label labelText" for="medicalAppointment-emailAddress">Correo Electronico</label>
                 </div>
+                <div class="error" v-if="!$v.medicalAppointment.emailAddress.required">Email requerido</div>
+                <div class="error" v-if="!$v.medicalAppointment.emailAddress.email">Tiene que ser un correo de electronico valido</div>
               </div>
             </div>
             <div class="subTitle">
@@ -105,25 +111,35 @@
                 </div>
               </div>
               <div class="group">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <select v-model="medicalAppointment.medicalAreaId">
+                <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.medicalAppointment.medicalAreaId.$error }">
+                  <select v-model="$v.medicalAppointment.medicalAreaId.$model">
                     <option v-for="medicalArea in medicalAreas" v-bind:value="medicalArea.id">
                       {{ medicalArea.areaName }}
                     </option>
                   </select>
-                  <label class="labelText" for="medicalAppointment-medicalAreaId">Especialidad</label>
+                  <label class="form__label labelText" for="medicalAppointment-medicalAreaId">Especialidad</label>
                 </div>
+                <div class="error" v-if="!$v.medicalAppointment.medicalAreaId.required">Especialidad requerida</div>
               </div>
               <div class="group">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <select v-model="medicalAppointment.doctorId">
+                <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <select v-model="$v.medicalAppointment.doctorId.$model">
                     <option v-for="doctor in doctors" v-bind:value="doctor.id">
                       {{ doctor.firstName }}
                     </option>
                   </select>
-                  <label class="labelText" for="medicalAppointment-doctorId">Especialista</label>
+                  <label class="form__label labelText" for="medicalAppointment-doctorId">Especialista</label>
                 </div>
+                <div class="error" v-if="!$v.medicalAppointment.doctorId.required">Especialidad requerida</div>
               </div>
+              <div class="groupFull">
+                <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.medicalAppointment.notes.$error }">
+                  <input class="mdl-textfield__input" type="text" name="medicalAppointment-notes" id="medicalAppointment-notes" v-model="$v.medicalAppointment.notes.$model" />
+                  <label class="labelText" for="medicalAppointment-notes">Notas</label>
+                </div>
+                <div class="error" v-if="!$v.medicalAppointment.notes.maxLength">Cantidad de caracteres excedido</div>
+              </div>
+              <!-- medicalAppointment in attend -->
               <div class="groupFull" v-if="medicalAppointment.status == '10'">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <select v-model="medicalAppointment.preferentialDiagnostic">
@@ -168,9 +184,22 @@ import axios from 'axios'
 import moment from 'moment'
 import round from 'vue-round-filter'
 import Datepicker from 'vuejs-datepicker';
-import { Datetime } from 'vue-datetime';
+import {
+  Datetime
+} from 'vue-datetime';
 import 'vue-datetime/dist/vue-datetime.css'
-import { Settings } from 'luxon'
+import {
+  Settings
+} from 'luxon'
+//Validations
+import {
+  required,
+  minLength,
+  between,
+  email,
+  maxLength
+} from 'vuelidate/lib/validators'
+
 
 Settings.defaultLocale = 'es'
 
@@ -183,34 +212,101 @@ export default {
       medicalAppointment: {
         dateAppointment: (new Date()).toISOString(),
         status: 0,
-        emailAddress:'',
-        documentType:'1',
-        medicalAppointmentType:'1',
-        patient: {
-        },
+        emailAddress: '',
+        firstName: '',
+        lastName: '',
+        documentNumber: '',
+        documentType: '1',
+        celPhoneNumber: '',
+        doctorId: '',
+        medicalAreaId: '',
+        medicalAppointmentType: '1',
+        notes: '',
+        patient: {},
         attachmentList: [],
       },
-      medicalAreas: [
+      medicalAreas: [],
+      doctors: [],
+      medicalAppointmentTypes: [{
+          id: 1,
+          type: 'Nueva Consulta'
+        },
+        {
+          id: 2,
+          type: 'Control'
+        },
+        {
+          id: 3,
+          type: 'Analisis de Laboratorio'
+        },
+        {
+          id: 4,
+          type: 'Riego Quirurgico'
+        },
+        {
+          id: 5,
+          type: 'Ecografia'
+        },
+        {
+          id: 6,
+          type: 'Eco Dopler'
+        },
+        {
+          id: 7,
+          type: 'Cirugia Ambulatoria'
+        },
+        {
+          id: 8,
+          type: 'Cirugia con Hospitalacion'
+        },
+        {
+          id: 8,
+          type: 'Ambulancia'
+        },
       ],
-      doctors:[
+      preferentialDiagnostics: [{
+          key: 1,
+          value: 'Cirugia de Rinoplastia'
+        },
+        {
+          key: 2,
+          value: 'Cirugia de Liposuccion'
+        },
+        {
+          key: 3,
+          value: 'Otros'
+        },
       ],
-      medicalAppointmentTypes:[
-        {id:1,type:'Nueva Consulta'},
-        {id:2,type:'Control'},
-        {id:3,type:'Analisis de Laboratorio'},
-        {id:4,type:'Riego Quirurgico'},
-        {id:5,type:'Ecografia'},
-        {id:6,type:'Eco Dopler'},
-        {id:7,type:'Cirugia Ambulatoria'},
-        {id:8,type:'Cirugia con Hospitalacion'},
-        {id:8,type:'Ambulancia'},
-      ],
-      preferentialDiagnostics:[
-        {key:1,value:'Cirugia de Rinoplastia'},
-        {key:2,value:'Cirugia de Liposuccion'},
-        {key:3,value:'Otros'},
-      ]
     }
+  },
+  validations: {
+    medicalAppointment:{
+      emailAddress: {
+        required,
+        email,
+      },
+      lastName: {
+        required,
+      },
+      firstName: {
+        required,
+      },
+      documentNumber: {
+        required,
+      },
+      celPhoneNumber: {
+        required,
+      },
+      medicalAreaId: {
+        required,
+      },
+      doctorId: {
+        required,
+      },
+      notes: {
+        maxLength: maxLength(4000)
+      }
+    },
   },
   components: {
     Datepicker,
@@ -242,20 +338,20 @@ export default {
         console.log(error)
       })
     var urlDoctorInfo = this.$parent.backendUrl + 'employeesByTitle/1'
-      axios.get(urlDoctorInfo)
-        .then(response => {
-          this.doctors = response.data
-        })
-        .catch(error => {
-          console.log(error)
-        })
+    axios.get(urlDoctorInfo)
+      .then(response => {
+        this.doctors = response.data
+      })
+      .catch(error => {
+        console.log(error)
+      })
   },
   methods: {
     getPatientInfo: function() {
       let selfVue = this
       axios.get(this.$parent.backendUrl + 'retrievePatientByDocumentNumber/' + this.medicalAppointment.documentNumber)
         .then(response => {
-          if(response.data != null){
+          if (response.data != null) {
             selfVue.medicalAppointment.firstName = response.data.firstName
             selfVue.medicalAppointment.lastName = response.data.lastName
             selfVue.medicalAppointment.celPhoneNumber = response.data.celPhoneNumber
@@ -281,18 +377,31 @@ export default {
     saveObjectState: function() {
       const url = this.$parent.backendUrl + 'medicalAppointments'
       //Add patientId to medicalHistory
-      if (this.medicalAppointment.emailAddress == ''){
+      if (this.medicalAppointment.emailAddress == '') {
         this.medicalAppointment.emailAddress = 'novaclinicarequipa@gmail.com'
       }
       let selfVue = this
-      axios.post(url, this.medicalAppointment)
-        .then(response => {
-          selfVue.medicalAppointment = response.data
-          selfVue.$parent.sucessMessage()
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        selfVue.$parent.errorMessage("Por favor complete los campos requeridos")
+      } else {
+        // do your submit logic here
+        axios.post(url, this.medicalAppointment)
+          .then(response => {
+            selfVue.medicalAppointment = response.data
+            selfVue.$parent.sucessMessage()
+            setTimeout(() => {
+              this.$router.push({
+                name: 'BrowseComponent',
+                params: { browseType: 'allMedicalAppointments', entityId: 'null' }
+              })
+            },1000)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
+
       // this.$router.push({ name: '/'})
     },
     downloadAttachment: function(attachment) {
