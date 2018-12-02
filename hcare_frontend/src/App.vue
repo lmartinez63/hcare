@@ -78,6 +78,16 @@ export default {
       medicalHistoryActivities: {
         'true':'Activa',
         'false':'Pasiva',
+      },medicalAppointmentTypes: {
+        1:'Nueva Consulta',
+        2:'Control',
+        3:'Analisis de Laboratorio',
+        4:'Riego Quirurgico',
+        5:'Ecografia',
+        6:'Eco Dopler',
+        7:'Cirugia Ambulatoria',
+        8:'Cirugia con Hospitalacion',
+        9:'Ambulancia'
       },
       medicalAppointmentStatus: {
         0:'Cita Nueva',
@@ -142,12 +152,12 @@ export default {
       }, 2000);
     },
     errorMessage: function(errormsg) {
-      this.message = "Hubo un error porfavor contacte al administrador"
+      this.message = errormsg
       this.displayMessage = true
       let selfVue = this
       setTimeout(function(){
             selfVue.displayMessage = false;
-      }, 2000);
+      }, 3000);
     }
   }
 }
