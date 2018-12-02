@@ -118,7 +118,7 @@
                                 <div class="descrip">Esta es su lista de citas para el dia de mañana</div>
                                 <ul>
                                 <#list mal as ma>
-                                  <li>${ma.firstName} a horas ${ma.dateAppointment?datetime?string('hh:mm a')}</li>
+                                  <li>${ma.fullName} a horas ${ma.dateAppointment?datetime?string('hh:mm a')}</li>
                                 </#list>
                                 </ul>
                             <#else>
