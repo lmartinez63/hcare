@@ -18,6 +18,8 @@
                 <th v-for="columnDefinition in columnDefinitionNames">{{columnDefinition.columnName}}</th>
               </tr>
             </thead>
+            <tbody>
+            </tbody>
           </table>
         </div>
       </div>
@@ -193,7 +195,7 @@ export default {
           "key": "employeeId",
           "value": 0
         }, ]
-        this.columnDefinitionValues = '[objectItem.id, objectItem.employeeCode,objectItem.firstName,objectItem.lastName,objectItem.title,]'
+        this.columnDefinitionValues = '[objectItem.id, objectItem.employeeCode,objectItem.firstName,objectItem.lastName,self.$parent.employeeTitles[objectItem.title],]'
         break;
       case 'allPatients':
         this.browseurl = this.$parent.backendUrl + 'patients'
@@ -293,10 +295,13 @@ export default {
           $('#browseDataTable').dataTable().fnAddData(eval(self.columnDefinitionValues))
         })
         let selfinside = self
-        $('#browseDataTable').on('click', 'tr', function(self) {
-          var data = browseDataTable.row(this).data()
-          //console.log('You clicked on ' + data[0] + '\'s row')
-          selfinside.viewObjectDetails(data)
+        $('#browseDataTable tbody').on('click', 'tr', function(self) {
+          //Remove event when the its on first element to dont overwrite more options button
+          if(self.target.tabIndex != 0 || (self.target.tabIndex == 0 && this.cells.length == 1) ){
+            var data = browseDataTable.row(this).data()
+            //console.log('You clicked on ' + data[0] + '\'s row')
+            selfinside.viewObjectDetails(data)
+          }
         })
       })
       .catch(error => {

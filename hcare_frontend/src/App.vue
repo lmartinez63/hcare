@@ -71,6 +71,14 @@ export default {
       message:'',
       displayMessage:false,
       backendUrl: 'http://127.0.0.1:8080/',
+      employeeTitles: {
+          1: 'Doctor(a)',
+          2: 'Terapista',
+          3: 'Enfermer(a)',
+          4: 'Tecnico(a)',
+          5: 'Personal Administrativo',
+          6: 'Auxiliar'
+      },
       medicalHistoryStatus: {
         '0':'Encontrada',
         '99':'Perdida',
