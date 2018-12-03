@@ -142,7 +142,7 @@ export default {
           columnName: 'Codigo de Historia',
           visible: true
         }, {
-          columnName: 'Paciente',
+          columnName: 'Numero de archivo',
           visible: true
         }, {
           columnName: 'Estado de la Historia',
