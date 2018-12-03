@@ -182,6 +182,12 @@ export default {
     var browseDataTable = $('#browseDataTable').DataTable({
       responsive: true,
       columnDefs: this.columnDefinitionArray,
+      dom: 'Bfrtip',
+      buttons: [
+          'copy', 'csv', 'excel', 'pdf', 'print'
+      ],
+      bProcessing: true,
+      bDeferRender: true,
     })
     this.entityId = this.$route.params.entityId
     switch (this.$route.params.browseType) {
