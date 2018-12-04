@@ -44,6 +44,7 @@ export default {
       browseurl: '',
       entityId: 'null',
       columnDefinitionArray: [],
+      orderDefinitionArray: [],
       columnDefinitionValues: [],
       columnDefinitionNames: [],
       parametersArray: [],
@@ -130,7 +131,8 @@ export default {
           visible: true
         },{
           columnName: 'Fecha de cita',
-          visible: true
+          visible: true,
+          order: 'desc'
         }, {
           columnName: 'Tipo de Cita',
           visible: true
@@ -177,8 +179,12 @@ export default {
       if (columnDefinition.visible == false) {
         self.columnDefinitionArray.push(JSON.parse('{"targets": [' + columnIndex + '],"visible": false,"searchable": false}'))
       }
+      if (columnDefinition.order != undefined) {
+        self.orderDefinitionArray.push(JSON.parse('[' + columnIndex + ',"' + columnDefinition.order + '"]'))
+      }
       columnIndex++
     });
+
     var browseDataTable = $('#browseDataTable').DataTable({
       responsive: true,
       columnDefs: this.columnDefinitionArray,
@@ -186,6 +192,7 @@ export default {
       buttons: [
           'copy', 'csv', 'excel', 'pdf', 'print'
       ],
+      order: this.orderDefinitionArray,
       bProcessing: true,
       bDeferRender: true,
     })
