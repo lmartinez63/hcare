@@ -46,8 +46,8 @@ public class MedicalHistoryController {
     @PostMapping("/medicalHistories")
     public MedicalHistory saveMedicalHistory(@Valid @RequestBody MedicalHistory medicalHistory) throws Exception{
         MedicalHistory medicalHistorySaved = medicalHistoryService.save(medicalHistory);
-        if (medicalHistory.getHistoryCode() != null) {
-            Patient patient = patientService.findById(medicalHistorySaved.getHistoryCode()).get();
+        if (medicalHistorySaved.getHistoryCode() != null) {
+            Patient patient = patientService.findByHistoryCode(medicalHistorySaved.getHistoryCode());
             medicalHistorySaved.setPatient(patient);
             medicalHistorySaved.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalHistory", medicalHistorySaved.getHistoryCode()));
         }
