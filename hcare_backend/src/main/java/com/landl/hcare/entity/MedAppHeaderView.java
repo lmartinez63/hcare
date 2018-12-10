@@ -28,6 +28,10 @@ public class MedAppHeaderView{
     @Column(name="ma_med_app_type")
     private String maMedAppType;
 
+    @Column(name="ma_status")
+    private String maStatus;
+
+
     @Transient
     private String maDateAppointmentDateFormatted;
 
@@ -108,5 +112,13 @@ public class MedAppHeaderView{
 
     public void setMaMedAppType(String maMedAppType) {
         this.maMedAppType = maMedAppType;
+    }
+
+    public String getMaStatus() {
+        return maStatus;
+    }
+
+    public void setMaStatus(String maStatus) {
+        this.maStatus = maStatus;
     }
 }

@@ -45,13 +45,13 @@ public class MedicalHistory extends AuditModel {
     private String medicationAllergies;
 
     @Column(name="smoke")
-    private String smoke;
+    private Boolean smoke;
 
     @Column(name="packages_cigarettes_pday")
     private Integer packagesCigarettesPday;
 
     @Column(name="drink")
-    private String drink;
+    private Boolean drink;
 
     @Column(name="how_often_drink")
     private String howOftenDrink;
@@ -60,19 +60,19 @@ public class MedicalHistory extends AuditModel {
     private String preferentialDiet;
 
     @Column(name="hep_b_result")
-    private String hepBResult;
+    private Boolean hepBResult;
 
     @Column(name="hep_b_year")
     private String hepBYear;
 
     @Column(name="hep_c_result")
-    private String hepCResult;
+    private Boolean hepCResult;
 
     @Column(name="hep_c_year")
     private String hepCYear;
 
     @Column(name="vih_result")
-    private String vihResult;
+    private Boolean vihResult;
 
     @Column(name="vih_year")
     private String vihYear;
@@ -100,11 +100,11 @@ public class MedicalHistory extends AuditModel {
         this.fileNumber = fileNumber;
     }
 
-    public String getSmoke() {
+    public Boolean getSmoke() {
         return smoke;
     }
 
-    public void setSmoke(String smoke) {
+    public void setSmoke(Boolean smoke) {
         this.smoke = smoke;
     }
 
@@ -116,11 +116,11 @@ public class MedicalHistory extends AuditModel {
         this.packagesCigarettesPday = packagesCigarettesPday;
     }
 
-    public String getHepBResult() {
+    public Boolean getHepBResult() {
         return hepBResult;
     }
 
-    public void setHepBResult(String hepBResult) {
+    public void setHepBResult(Boolean hepBResult) {
         this.hepBResult = hepBResult;
     }
 
@@ -132,11 +132,11 @@ public class MedicalHistory extends AuditModel {
         this.hepBYear = hepBYear;
     }
 
-    public String getHepCResult() {
+    public Boolean getHepCResult() {
         return hepCResult;
     }
 
-    public void setHepCResult(String hepCResult) {
+    public void setHepCResult(Boolean hepCResult) {
         this.hepCResult = hepCResult;
     }
 
@@ -148,11 +148,11 @@ public class MedicalHistory extends AuditModel {
         this.hepCYear = hepCYear;
     }
 
-    public String getVihResult() {
+    public Boolean getVihResult() {
         return vihResult;
     }
 
-    public void setVihResult(String vihResult) {
+    public void setVihResult(Boolean vihResult) {
         this.vihResult = vihResult;
     }
 
@@ -228,11 +228,11 @@ public class MedicalHistory extends AuditModel {
         this.attachmentList = attachmentList;
     }
 
-    public String getDrink() {
+    public Boolean getDrink() {
         return drink;
     }
 
-    public void setDrink(String drink) {
+    public void setDrink(Boolean drink) {
         this.drink = drink;
     }
 
