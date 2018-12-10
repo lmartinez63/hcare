@@ -71,14 +71,14 @@
               -->
               <div class="group">
                 <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.employee.firstName.$error }">
-                  <input class="mdl-textfield__input" type="text" name="employee-firstName" id="employee-firstName" v-model.trim="$v.employee.firstName.$model" />
+                  <input class="mdl-textfield__input" type="text" name="employee-firstName" id="employee-firstName" v-model.trim="$v.employee.firstName.$model" @input="forceUppercase($event, employee, 'firstName')" />
                   <label class="labelText" for="employee-firstName">Nombres</label>
                 </div>
                 <div class="error" v-if="!$v.employee.firstName.required">Nombres requeridos</div>
               </div>
               <div class="group">
                 <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.employee.lastName.$error }">
-                  <input class="form__input mdl-textfield__input" type="text" name="employee-lastName" id="employee-lastName" v-model.trim="$v.employee.lastName.$model" />
+                  <input class="form__input mdl-textfield__input" type="text" name="employee-lastName" id="employee-lastName" v-model.trim="$v.employee.lastName.$model" @input="forceUppercase($event, employee, 'lastName')" />
                   <label class="form__label labelText" for="employee-lastName">Apellidos</label>
                 </div>
                 <div class="error" v-if="!$v.employee.lastName.required">Apellidos requeridos</div>
@@ -128,27 +128,27 @@ export default {
       },
       titles: [{
           titleId: 1,
-          titleName: 'Doctor(a)'
+          titleName: 'DOCTOR(A)'
         },
         {
           titleId: 2,
-          titleName: 'Terapista'
+          titleName: 'TERAPISTA'
         },
         {
           titleId: 3,
-          titleName: 'Enfermer(a)'
+          titleName: 'ENFERMERO(A)'
         },
         {
           titleId: 4,
-          titleName: 'Tecnico(a)'
+          titleName: 'TECNICO(A)'
         },
         {
           titleId: 5,
-          titleName: 'Personal Administrativo'
+          titleName: 'PERSONAL ADMINISTRATIVO'
         },
         {
           titleId: 6,
-          titleName: 'Auxiliar'
+          titleName: 'AUXILIAR'
         },
       ],
 

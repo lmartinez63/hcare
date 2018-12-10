@@ -114,7 +114,10 @@ export default {
           }, {
             columnName: 'Tipo de Cita',
             visible: true
-          }, ]
+          }, {
+            columnName: 'Estado',
+            visible: true
+          },]
           break;
       case 'allMedicalAppointments':
         this.columnDefinitionNames = [{
@@ -130,14 +133,17 @@ export default {
           columnName: 'Doctor(a)',
           visible: true
         },{
-          columnName: 'Fecha de cita',
+          columnName: 'Fecha Y Hora',
           visible: true,
           order: 'desc',
           colType: 'date'
         }, {
-          columnName: 'Tipo de Cita',
+          columnName: 'Tipo ',
           visible: true
-        }, ]
+        }, {
+          columnName: 'Estado',
+          visible: true
+        },]
         break;
       case 'allMedicalHistories':
         this.columnDefinitionNames = [
@@ -271,7 +277,7 @@ export default {
           "value": 0,
           "newEntityValue": null
         }, ]
-        this.columnDefinitionValues = '[objectItem.maId, objectItem.maHistoryCode,objectItem.maFullName,objectItem.emFullName,self.frontEndDatetimeFormat(objectItem.maDateAppointment),self.$parent.medicalAppointmentTypes[objectItem.maMedAppType],]'
+        this.columnDefinitionValues = '[objectItem.maId, objectItem.maHistoryCode,objectItem.maFullName,objectItem.emFullName,self.frontEndDatetimeFormat(objectItem.maDateAppointment),self.$parent.medicalAppointmentTypes[objectItem.maMedAppType],self.$parent.medicalAppointmentStatus[objectItem.maStatus],]'
         break;
       case 'medicalAppointmentsToday':
         this.browseurl = this.$parent.backendUrl + 'medicalAppointmentsToday'
@@ -284,7 +290,7 @@ export default {
           "value": 0,
           "newEntityValue": null
         }, ]
-        this.columnDefinitionValues = '[objectItem.id, objectItem.historyCode,objectItem.fullName,self.frontEndDatetimeFormat(objectItem.dateAppointment),self.$parent.medicalAppointmentTypes[objectItem.medicalAppointmentType],]'
+        this.columnDefinitionValues = '[objectItem.id, objectItem.historyCode,objectItem.fullName,self.frontEndDatetimeFormat(objectItem.dateAppointment),self.$parent.medicalAppointmentTypes[objectItem.medicalAppointmentType],self.$parent.medicalAppointmentStatus[objectItem.status],]'
         break;
         v
       case 'medicalAppointmentsByPatient':

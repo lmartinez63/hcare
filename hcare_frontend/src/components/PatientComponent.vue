@@ -212,7 +212,7 @@ export default {
       let selfVue = this
       axios.get(this.$parent.backendUrl + 'retrievePatientByDocumentNumber/' + this.patient.documentNumber)
         .then(response => {
-          if (response.data != null) {
+          if ( response.data != null && response.data !== "" ) {
             selfVue.patient= response.data
           }
           //this.patient.birthday = this.frontEndDateFormat(this.patient.birthday)

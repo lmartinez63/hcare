@@ -2,6 +2,7 @@
   <div id="app">
     <!--img src="./assets/logo.png"-->
     <header id="header" class="header-container header-fixed bg-white" >
+        <div class="mainMenu" onClick="openMenuMain()"><i class="fas fa-bars"></i></div>
         <div class="logo">
             <img src="/static/img/logo.png">
         </div>
@@ -72,38 +73,38 @@ export default {
       displayMessage:false,
       backendUrl: 'http://127.0.0.1:8080/',
       employeeTitles: {
-          1: 'Doctor(a)',
-          2: 'Terapista',
-          3: 'Enfermer(a)',
-          4: 'Tecnico(a)',
-          5: 'Personal Administrativo',
-          6: 'Auxiliar'
+          1: 'DOCTOR(A)',
+          2: 'TERAPISTA',
+          3: 'ENFERMERO(A)',
+          4: 'TECNICO(A)',
+          5: 'PERSONAL ADMINISTRATIVO',
+          6: 'AUXILIAR'
       },
       medicalHistoryStatus: {
-        '0':'Encontrada',
-        '99':'Perdida',
+        '0':'CON ARCHIVO FISICO',
+        '99':'SIN ARCHIVO FISICO',
       },
       medicalHistoryActivities: {
         'true':'Activa',
         'false':'Pasiva',
       },medicalAppointmentTypes: {
-        1:'Nueva Consulta',
-        2:'Control',
-        3:'Analisis de Laboratorio',
-        4:'Riego Quirurgico',
-        5:'Ecografia',
-        6:'Eco Dopler',
-        7:'Cirugia Ambulatoria',
-        8:'Cirugia con Hospitalacion',
-        9:'Ambulancia'
+        1:'NUEVA CONSULTA',
+        2:'CONTROL',
+        3:'ANALISIS DE LABORATORIO',
+        4:'RIESGO QUIRURGICO',
+        5:'ECOGRAFIA',
+        6:'ECO DOPLER',
+        7:'CIRUGIA AMBULATORIA',
+        8:'CIRUGIA CON HOSPITALIZACION',
+        9:'AMBULANCIA'
       },
       medicalAppointmentStatus: {
-        0:'Cita Nueva',
-        5:'Agendada',
-        10:'En atencion',
-        15:'Pendiente Resultados',
-        20:'Auxiliar',
-        90:'No se presento',
+        0:'NUEVA CITA',
+        5:'AGENDADA',
+        10:'EN ATENCION',
+        15:'SOLICITUD DE OPERACION',
+        20:'AUXILIAR',
+        90:'NO SE PRESENTO',
       },
       documentTypes: [
         {"key":1,"value":'DNI'},

@@ -61,33 +61,34 @@
             <div class="twoCol">
               <div class="groupFull">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalHistory-previousSurgeries" id="medicalHistory-previousSurgeries" v-model="medicalHistory.previousSurgeries" />
+                  <input class="mdl-textfield__input" type="text" name="medicalHistory-previousSurgeries" id="medicalHistory-previousSurgeries" v-model="medicalHistory.previousSurgeries" @input="forceUppercase($event, medicalHistory, 'previousSurgeries')" />
                   <label class="labelText" for="medicalHistory-previousSurgeries">Cirugias Previas</label>
                 </div>
               </div>
               <div class="groupFull">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalHistory-previousDiseases" id="medicalHistory-previousDiseases" v-model="medicalHistory.previousDiseases" />
+                  <input class="mdl-textfield__input" type="text" name="medicalHistory-previousDiseases" id="medicalHistory-previousDiseases" v-model="medicalHistory.previousDiseases" @input="forceUppercase($event, medicalHistory, 'previousDiseases')" />
                   <label class="labelText" for="medicalHistory-previousDiseases">Enfermedades Previas</label>
                 </div>
               </div>
               <div class="groupFull">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalHistory-hospitalizations" id="medicalHistory-hospitalizations" v-model="medicalHistory.hospitalizations" />
+                  <input class="mdl-textfield__input" type="text" name="medicalHistory-hospitalizations" id="medicalHistory-hospitalizations" v-model="medicalHistory.hospitalizations" @input="forceUppercase($event, medicalHistory, 'hospitalizations')" />
                   <label class="labelText" for="medicalHistory-hospitalizations">Hospitalizaciones</label>
                 </div>
               </div>
               <div class="groupFull">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalHistory-medicationAllergies" id="medicalHistory-medicationAllergies" v-model="medicalHistory.medicationAllergies" />
+                  <input class="mdl-textfield__input" type="text" name="medicalHistory-medicationAllergies" id="medicalHistory-medicationAllergies" v-model="medicalHistory.medicationAllergies" @input="forceUppercase($event, medicalHistory, 'medicationAllergies')" />
                   <label class="labelText" for="medicalHistory-medicationAllergies">Alergias a Medicamentos</label>
                 </div>
               </div>
               <div class="group">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalHistory-smoke" id="medicalHistory-smoke" v-model="medicalHistory.smoke" />
-                  <label class="labelText" for="medicalHistory-smoke">Fuma S/N</label>
-                </div>
+                <input type="checkbox" name="medicalHistory-smoke" id="medicalHistory-smoke" v-model="medicalHistory.smoke" class="switch-input" />
+                <label for="medicalHistory-smoke" class="switch-label">Fuma
+                  <span class="toggle--on">Si</span>
+                  <span class="toggle--off">No</span>
+                </label>
               </div>
               <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -96,56 +97,60 @@
                 </div>
               </div>
               <div class="group">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalHistory-drink" id="medicalHistory-drink" v-model="medicalHistory.drink" />
-                  <label class="labelText" for="medicalHistory-drink">Bebe S/N</label>
-                </div>
+                <input type="checkbox" name="medicalHistory-drink" id="medicalHistory-drink" v-model="medicalHistory.drink" class="switch-input" />
+                <label for="medicalHistory-drink" class="switch-label">Bebe
+                  <span class="toggle--on">Si</span>
+                  <span class="toggle--off">No</span>
+                </label>
               </div>
               <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalHistory-howOftenDrink" id="medicalHistory-howOftenDrink" v-model="medicalHistory.howOftenDrink" />
+                  <input class="mdl-textfield__input" type="text" name="medicalHistory-howOftenDrink" id="medicalHistory-howOftenDrink" v-model="medicalHistory.howOftenDrink" @input="forceUppercase($event, medicalHistory, 'howOftenDrink')"/>
                   <label class="labelText" for="medicalHistory-howOftenDrink">Con que frequencia?</label>
                 </div>
               </div>
               <div class="group">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalHistory-hepBResult" id="medicalHistory-hepBResult" v-model="medicalHistory.hepBResult" />
-                  <label class="labelText" for="medicalHistory-hepBResult">Hepatitis B resulado</label>
-                </div>
+                <input type="checkbox" name="medicalHistory-hepBResult" id="medicalHistory-hepBResult" v-model="medicalHistory.hepBResult" class="switch-input" />
+                <label for="medicalHistory-hepBResult" class="switch-label">Hepatitis B resulado
+                  <span class="toggle--on">POSITIVO</span>
+                  <span class="toggle--off">NEGATIVO</span>
+                </label>
               </div>
               <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" name="medicalHistory-hepBYear" id="medicalHistory-hepBYear" v-model="medicalHistory.hepBYear" />
-                  <label class="labelText" for="medicalHistory-hepBYear">Año</label>
+                  <label class="labelText" for="medicalHistory-hepBYear">Año de Diagnostico</label>
                 </div>
               </div>
               <div class="group">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalHistory-hepCResult" id="medicalHistory-hepCResult" v-model="medicalHistory.hepCResult" />
-                  <label class="labelText" for="medicalHistory-hepBResult">Hepatitis C resulado</label>
-                </div>
+                <input type="checkbox" name="medicalHistory-hepCResult" id="medicalHistory-hepCResult" v-model="medicalHistory.hepCResult" class="switch-input" />
+                <label for="medicalHistory-hepCResult" class="switch-label">Hepatitis C resulado
+                  <span class="toggle--on">POSITIVO</span>
+                  <span class="toggle--off">NEGATIVO</span>
+                </label>
               </div>
               <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" name="medicalHistory-hepCYear" id="medicalHistory-hepCYear" v-model="medicalHistory.hepCYear" />
-                  <label class="labelText" for="medicalHistory-hepCYear">Año</label>
+                  <label class="labelText" for="medicalHistory-hepCYear">Año de Diagnostico</label>
                 </div>
               </div>
               <div class="group">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalHistory-vihResult" id="medicalHistory-vihResult" v-model="medicalHistory.vihResult" />
-                  <label class="labelText" for="medicalHistory-vihResult">VIH resulado</label>
-                </div>
+                <input type="checkbox" name="medicalHistory-vihResult" id="medicalHistory-vihResult" v-model="medicalHistory.vihResult" class="switch-input" />
+                <label for="medicalHistory-vihResult" class="switch-label">VIH resulado
+                  <span class="toggle--on">POSITIVO</span>
+                  <span class="toggle--off">NEGATIVO</span>
+                </label>
               </div>
               <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" name="medicalHistory-vihYear" id="medicalHistory-vihYear" v-model="medicalHistory.vihYear" />
-                  <label class="labelText" for="medicalHistory-vihYear">Año</label>
+                  <label class="labelText" for="medicalHistory-vihYear">Año de Diagnostico</label>
                 </div>
               </div>
               <div class="groupFull">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalHistory-preferentialDiet" id="medicalHistory-preferentialDiet" v-model="medicalHistory.preferentialDiet" />
+                  <input class="mdl-textfield__input" type="text" name="medicalHistory-preferentialDiet" id="medicalHistory-preferentialDiet" v-model="medicalHistory.preferentialDiet"  @input="forceUppercase($event, medicalHistory, 'preferentialDiet')"/>
                   <label class="labelText" for="medicalHistory-preferentialDiet">Dieta preferencial( por ejemplo: vegetariana )</label>
                 </div>
               </div>

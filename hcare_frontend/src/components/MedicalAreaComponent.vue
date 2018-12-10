@@ -28,7 +28,7 @@
             <div class="twoCol">
               <div class="group">
                 <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.medicalArea.areaName.$error }">
-                  <input class="form__input mdl-textfield__input" type="text" name="medicalArea-areaName" id="medicalArea-areaName" v-model.trim="$v.medicalArea.areaName.$model" />
+                  <input class="form__input mdl-textfield__input" type="text" name="medicalArea-areaName" id="medicalArea-areaName" v-model.trim="$v.medicalArea.areaName.$model" @input="forceUppercase($event, medicalArea, 'areaName')" />
                   <label class="form__label labelText" for="medicalArea-areaName">Nombre del Area</label>
                 </div>
                 <div class="error" v-if="!$v.medicalArea.areaName.required">Nombre del Area requerido</div>
