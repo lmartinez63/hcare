@@ -264,7 +264,7 @@ export default {
         name: 'BrowseComponent',
         params: {
           browseType: 'medicalAppointmentsByPatient',
-          entityId: this.medicalHistory.historyCode,
+          entityId: this.medicalHistory.patient.documentNumber,
         }
       })
     },

@@ -132,7 +132,8 @@ export default {
         },{
           columnName: 'Fecha de cita',
           visible: true,
-          order: 'desc'
+          order: 'desc',
+          colType: 'date'
         }, {
           columnName: 'Tipo de Cita',
           visible: true
@@ -176,9 +177,19 @@ export default {
     //Assing this vue compnent to self to don't lose reference
     let self = this
     this.columnDefinitionNames.forEach(function(columnDefinition) {
-      if (columnDefinition.visible == false) {
-        self.columnDefinitionArray.push(JSON.parse('{"targets": [' + columnIndex + '],"visible": false,"searchable": false}'))
+      var colType = ''
+      if (columnDefinition.colType != undefined) {
+        colType = ',"type": "'+columnDefinition.colType+'"'
       }
+      var visibility = ''
+      if (columnDefinition.visible == false) {
+        visibility = ',"visible": false, "searchable": false'
+
+      } else {
+        visibility = ',"visible": true'
+      }
+      self.columnDefinitionArray.push(JSON.parse('{"targets": [' + columnIndex + ']'+visibility+colType+'}'))
+
       if (columnDefinition.order != undefined) {
         self.orderDefinitionArray.push(JSON.parse('[' + columnIndex + ',"' + columnDefinition.order + '"]'))
       }
