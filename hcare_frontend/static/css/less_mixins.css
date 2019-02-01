@@ -1,0 +1,27 @@
+/*----------------------------     LESS MIXINS    -------------------------------*/
+/*----------------------     BROWSERS COMPATIBILITY    ---------------------------*/
+@keyframes arrowdown {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, 50%, 0);
+  }
+}
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes slideInFromLeft2 {
+  from {
+    transform: translateX(150%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

@@ -1,0 +1,46 @@
+/*--------------------------     Default Theme    ------------------------------*/
+@font-face { font-family: Roboto;src: url(../fonts/Roboto/Roboto-Thin.ttf);font-weight:100; }
+@font-face { font-family: Roboto;src: url(../fonts/Roboto/Roboto-Light.ttf);font-weight:300;}
+@font-face { font-family: Roboto;src: url(../fonts/Roboto/Roboto-Regular.ttf);font-weight:400; }
+@font-face { font-family: Roboto;src: url(../fonts/Roboto/Roboto-Medium.ttf);font-weight:500; }
+@font-face { font-family: Roboto;src: url(../fonts/Roboto/Roboto-Bold.ttf);font-weight:700; }
+@font-face { font-family: Roboto;src: url(../fonts/Roboto/Roboto-LightItalic.ttf);font-weight:300;font-style:italic; }
+@font-face { font-family: Roboto;src: url(../fonts/Roboto/Roboto-MediumItalic.ttf);font-weight:500;font-style:italic; }
+
+//@typeFont: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+@typeFont: Roboto;
+
+@import "less_mixins";
+@import "less_normalize";
+@import "less-portlet";
+
+/* This to make sure all browses (even pop-up browse) obtain the sizing classes (not on mobile) */
+
+.mxsmall { 
+    @media @desktop { .flex(0.2 2.5 0px)!important; } 
+    @media @tablet { .flex(0.2 2.5 0px)!important; } 
+    @media @mobile { .flex(0.2 2.5 0px)!important; } 
+}
+.small { 
+    @media @desktop { .flex(1 2 0px)!important; } 
+    @media @tablet { .flex(1 2 0px)!important; } 
+    @media @mobile { .flex(1 2 0px)!important; } 
+}
+.medium { 
+    @media @desktop { .flex(1.5 1 0px)!important; } 
+    @media @tablet { .flex(1.5 1 0px)!important; } 
+    @media @mobile { .flex(1.5 1 0px)!important; } 
+}
+.large { 
+    @media @desktop { .flex(2.2 1 0px)!important; } 
+    @media @tablet { .flex(2.2 1 0px)!important; } 
+    @media @mobile { .flex(2.2 1 0px)!important; } 
+}
+
+
+@light: #ffffff;
+@black: #000000;
+@gris: #cccccc;
+@blue: #2962ff;
+
+
