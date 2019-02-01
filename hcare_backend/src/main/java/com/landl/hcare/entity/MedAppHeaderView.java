@@ -44,6 +44,12 @@ public class MedAppHeaderView{
     @Column(name="em_full_name")
     private String emFullName;
 
+    @Column(name="lmat_language")
+    private String lmatLanguage;
+
+    @Column(name="lmas_language")
+    private String lmasLanguage;
+
 
     public MedAppHeaderView() {
     }
@@ -120,5 +126,21 @@ public class MedAppHeaderView{
 
     public void setMaStatus(String maStatus) {
         this.maStatus = maStatus;
+    }
+
+    public String getLmatLanguage() {
+        return lmatLanguage;
+    }
+
+    public void setLmatLanguage(String lmatLanguage) {
+        this.lmatLanguage = lmatLanguage;
+    }
+
+    public String getLmasLanguage() {
+        return lmasLanguage;
+    }
+
+    public void setLmasLanguage(String lmasLanguage) {
+        this.lmasLanguage = lmasLanguage;
     }
 }

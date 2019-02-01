@@ -18,13 +18,26 @@ public class Property extends AuditModel {
     )
     private Long id;
 
+    @Column(name="module")
+    private String module;
+
     @Column(name="property_code")
     private String propertyCode;
 
     @Column(name="property_value")
     private String propertyValue;
 
+    @Transient
+    private String labelValue;
+
     public Property() {
+    }
+
+    public Property(String module, String propertyCode, String propertyValue, String labelValue) {
+        this.module = module;
+        this.propertyCode = propertyCode;
+        this.propertyValue = propertyValue;
+        this.labelValue = labelValue;
     }
 
     public Long getId() {
@@ -49,5 +62,21 @@ public class Property extends AuditModel {
 
     public void setPropertyValue(String propertyValue) {
         this.propertyValue = propertyValue;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
+    }
+
+    public String getLabelValue() {
+        return labelValue;
+    }
+
+    public void setLabelValue(String labelValue) {
+        this.labelValue = labelValue;
     }
 }

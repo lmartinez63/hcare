@@ -10,4 +10,5 @@ import java.util.List;
 
 @Repository
 public interface MedAppHeaderViewRepository extends JpaRepository<MedAppHeaderView, Long>{
+    List<MedAppHeaderView> findByLmatLanguageAndLmasLanguageOrderByMaDateAppointmentDesc(String lmatLanguage,String lmasLanguage);
 }

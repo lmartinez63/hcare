@@ -25,7 +25,7 @@ public class VerifySchedule {
     PatientService patientService;
 
     @Autowired
-    EmployeeService employeeService;
+    UserService userService;
 
     @Autowired
     MedicalAppointmentService medicalAppointmentService;
@@ -64,8 +64,8 @@ public class VerifySchedule {
                         break;
                     case "medicalAppointmentReportByDoctor":
                     LOGGER.info("Processing medicalAppointmentReportByDoctor Template" + emailTemplate.toString());
-                    List<Employee> doctorsList = employeeService.findByTitle("1");
-                    for(Employee doctor:doctorsList){
+                    List<UserProfile> doctorsList = userService.findByRole("DOCTOR");
+                    for(UserProfile doctor:doctorsList){
 
                         Calendar cal = Calendar.getInstance();
                         Date tomorrow = new Date();

@@ -1,7 +1,6 @@
 package com.landl.hcare.controller;
 
 import com.landl.hcare.entity.Employee;
-import com.landl.hcare.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +10,7 @@ import java.util.List;
 @RestController
 public class EmployeeController {
 
-    @Autowired
+    /*@Autowired
     private EmployeeService employeeService;
 
     @GetMapping("/employees")
@@ -34,5 +33,5 @@ public class EmployeeController {
     public Employee saveUser(@Valid @RequestBody Employee employee) {
         return employeeService.save(employee);
     }
-
+*/
 }

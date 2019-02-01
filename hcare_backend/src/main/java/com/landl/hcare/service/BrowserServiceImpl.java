@@ -1,5 +1,6 @@
 package com.landl.hcare.service;
 
+import com.landl.hcare.entity.DataTableResult;
 import com.landl.hcare.entity.MedAppHeaderView;
 import com.landl.hcare.entity.MedicalAppointment;
 import com.landl.hcare.repository.MedAppHeaderViewRepository;
@@ -20,6 +21,20 @@ public class BrowserServiceImpl implements BrowserService {
 
     public List<MedAppHeaderView> findAllMedAppHeaderView() throws Exception {
         return medAppHeaderViewRepository.findAll();
+    }
+
+    public DataTableResult buildDataTableObject(String browseType) throws Exception {
+        DataTableResult dataTableResult = new DataTableResult();
+        List result = null;
+        switch (browseType){
+            case "allMedAppHeaderView":
+                result = medAppHeaderViewRepository.findByLmatLanguageAndLmasLanguageOrderByMaDateAppointmentDesc("ES_ES","ES_ES");
+                break;
+        }
+        dataTableResult.setData(result);
+        dataTableResult.setDraw(1);
+
+        return dataTableResult;
     }
 
 }

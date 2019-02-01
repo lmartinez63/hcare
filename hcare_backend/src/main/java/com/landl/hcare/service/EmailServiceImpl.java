@@ -40,7 +40,7 @@ public class EmailServiceImpl implements EmailService {
     public PatientService patientService;
 
     @Autowired
-    public EmployeeService employeeService;
+    public UserService userService;
 
     @Autowired
     public PropertyService propertyService;
@@ -59,6 +59,7 @@ public class EmailServiceImpl implements EmailService {
         } else {
             helper.setTo(email.getSendTo());
         }
+        //TODO put bcc in a property
         helper.setBcc("l.martinez.rod@gmail.com");
         helper.setSubject(email.getSubject());
         helper.setText(email.getBody(), true);
@@ -126,7 +127,7 @@ public class EmailServiceImpl implements EmailService {
         //Get Data source
         Map<String,Object> dataSource = new HashMap<String, Object>();
         Map<String, Object> propertiesMap =  propertyService.getPropertiesMap();
-        Employee doctor = employeeService.findById(medicalAppointment.getDoctorId()).get();
+        UserProfile doctor = userService.findById(medicalAppointment.getDoctorId());
         dataSource.put("Properties", propertiesMap);
         dataSource.put("Doctor", doctor);
         dataSource.put("MedicalAppointment", medicalAppointment);
@@ -151,7 +152,7 @@ public class EmailServiceImpl implements EmailService {
         email.setEmailTemplate(emailTemplate);
         //Get Data source
         Map<String,Object> dataSource = new HashMap<String, Object>();
-        Employee doctor = employeeService.findById(medicalAppointment.getDoctorId()).get();
+        UserProfile doctor = userService.findById(medicalAppointment.getDoctorId());
         Map<String, Object> propertiesMap =  propertyService.getPropertiesMap();
         dataSource.put("Properties", propertiesMap);
         dataSource.put("Doctor", doctor);
