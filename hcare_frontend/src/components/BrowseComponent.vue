@@ -47,6 +47,7 @@ export default {
       orderDefinitionArray: [],
       columnDefinitionValues: [],
       columnDefinitionNames: [],
+      dataOfDatatables: {},
       parametersArray: [],
     }
   },
@@ -85,7 +86,13 @@ export default {
           columnName: 'Id',
           visible: false
         }, {
-          columnName: 'HistoryCode',
+          columnName: '# de HC',
+          visible: true
+        }, {
+          columnName: 'DNI',
+          visible: true
+        }, {
+          columnName: 'Celular',
           visible: true
         }, {
           columnName: 'Nombres y Apellidos',
@@ -114,7 +121,10 @@ export default {
           }, {
             columnName: 'Tipo de Cita',
             visible: true
-          }, ]
+          }, {
+            columnName: 'Estado',
+            visible: true
+          },]
           break;
       case 'allMedicalAppointments':
         this.columnDefinitionNames = [{
@@ -125,19 +135,39 @@ export default {
           visible: true
         }, {
           columnName: 'Paciente',
-          visible: true
+          visible: true,
+          colType: 'string'
         },{
           columnName: 'Doctor(a)',
-          visible: true
+          visible: true,
+          colType: 'string'
         },{
-          columnName: 'Fecha de cita',
+          columnName: 'Fecha Y Hora',
           visible: true,
           order: 'desc',
           colType: 'date'
         }, {
-          columnName: 'Tipo de Cita',
+          columnName: 'Tipo ',
+          visible: true,
+          colType: 'string'
+        }, {
+          columnName: 'Estado',
+          visible: true,
+          colType: 'string'
+        }, {
+          columnName: 'Opciones',
+          colType: 'medical_appointment_button',
           visible: true
-        }, ]
+        },]
+        this.columns = [
+            { data: "maId" },
+            { data: "maHistoryCode" },
+            { data: "maFullName" },
+            { data: "emFullName" },
+            { data: "maDateAppointment"},
+            { data: "maMedAppType" },
+            { data: "maStatus" },
+        ]
         break;
       case 'allMedicalHistories':
         this.columnDefinitionNames = [
@@ -175,7 +205,7 @@ export default {
     console.log('mounted-' + 'BrowseComponent')
     var columnIndex = 0;
     //Assing this vue compnent to self to don't lose reference
-    let self = this
+    let selfVue = this
     this.columnDefinitionNames.forEach(function(columnDefinition) {
       var colType = ''
       if (columnDefinition.colType != undefined) {
@@ -188,26 +218,29 @@ export default {
       } else {
         visibility = ',"visible": true'
       }
-      self.columnDefinitionArray.push(JSON.parse('{"targets": [' + columnIndex + ']'+visibility+colType+'}'))
+      var jsonObject=JSON.parse('{"targets": [' + columnIndex + ']'+visibility+colType+'}')
+      switch(columnDefinition.colType){
+        case 'date':
+          jsonObject.render = function(data){return moment(data).format('DD/MM/YYYY hh:mm a');}
+          jsonObject.className = 'dt-body-right'
+          break;
+        case 'string':
+          jsonObject.className = 'dt-body-left'
+          break;
+        case 'medical_appointment_button':
+          jsonObject.data = null,
+          jsonObject.defaultContent = "<button id='openMedicalAppointment'>Abrir</button><button>Se presento</button><button>No se Presento</button>"
+          break;
+      }
+      selfVue.columnDefinitionArray.push(jsonObject)
 
       if (columnDefinition.order != undefined) {
-        self.orderDefinitionArray.push(JSON.parse('[' + columnIndex + ',"' + columnDefinition.order + '"]'))
+        selfVue.orderDefinitionArray.push(JSON.parse('[' + columnIndex + ',"' + columnDefinition.order + '"]'))
       }
       columnIndex++
     });
-
-    var browseDataTable = $('#browseDataTable').DataTable({
-      responsive: true,
-      columnDefs: this.columnDefinitionArray,
-      dom: 'Bfrtip',
-      buttons: [
-          'copy', 'csv', 'excel', 'pdf', 'print'
-      ],
-      order: this.orderDefinitionArray,
-      bProcessing: true,
-      bDeferRender: true,
-    })
     this.entityId = this.$route.params.entityId
+    this.browseurl = this.$parent.backendUrl + '/getBrowseData/'
     switch (this.$route.params.browseType) {
       case 'allEmployees':
         this.browseurl = this.$parent.backendUrl + 'employees'
@@ -232,7 +265,7 @@ export default {
           "value": 0,
           "newEntityValue": null
         }, ]
-        this.columnDefinitionValues = '[objectItem.id, objectItem.historyCode, objectItem.fullName,objectItem.emailAddress,self.frontEndDateFormat(objectItem.birthday),]'
+        this.columnDefinitionValues = '[objectItem.id, objectItem.historyCode, objectItem.documentNumber, objectItem.phoneNumber, objectItem.fullName,objectItem.emailAddress,self.frontEndDateFormat(objectItem.birthday),]'
         break;
       case 'allMedicalAreas':
         this.browseurl = this.$parent.backendUrl + 'medicalAreas'
@@ -261,17 +294,19 @@ export default {
         this.columnDefinitionValues = '[objectItem.historyCode, objectItem.fileNumber, self.$parent.medicalHistoryStatus[objectItem.status],]'
         break;
       case 'allMedicalAppointments':
-        this.browseurl = this.$parent.backendUrl + 'medicalAppointmentsHeaderView'
+        this.browseurl = this.browseurl + 'allMedAppHeaderView'
+        //this.browseurl = this.$parent.backendUrl + 'medicalAppointments'
         this.detailComponent = 'MedicalAppointmentComponent'
         this.title = 'Listado de Citas'
         this.newButtonVisible = true
         this.newButtonTitle = 'Añadir Cita'
         this.parametersArray = [{
-          "key": "medicalAppointmentId",
+          "key": "maId",
+          "alias": "medicalAppointmentId",
           "value": 0,
           "newEntityValue": null
         }, ]
-        this.columnDefinitionValues = '[objectItem.maId, objectItem.maHistoryCode,objectItem.maFullName,objectItem.emFullName,self.frontEndDatetimeFormat(objectItem.maDateAppointment),self.$parent.medicalAppointmentTypes[objectItem.maMedAppType],]'
+        this.columnDefinitionValues = '[objectItem.maId, objectItem.maHistoryCode,objectItem.maFullName,objectItem.emFullName,self.frontEndDatetimeFormat(objectItem.maDateAppointment),self.$parent.medicalAppointmentTypes[objectItem.maMedAppType],self.$parent.medicalAppointmentStatus[objectItem.maStatus],]'
         break;
       case 'medicalAppointmentsToday':
         this.browseurl = this.$parent.backendUrl + 'medicalAppointmentsToday'
@@ -284,7 +319,7 @@ export default {
           "value": 0,
           "newEntityValue": null
         }, ]
-        this.columnDefinitionValues = '[objectItem.id, objectItem.historyCode,objectItem.fullName,self.frontEndDatetimeFormat(objectItem.dateAppointment),self.$parent.medicalAppointmentTypes[objectItem.medicalAppointmentType],]'
+        this.columnDefinitionValues = '[objectItem.id, objectItem.historyCode,objectItem.fullName,self.frontEndDatetimeFormat(objectItem.dateAppointment),self.$parent.medicalAppointmentTypes[objectItem.medicalAppointmentType],self.$parent.medicalAppointmentStatus[objectItem.status],]'
         break;
         v
       case 'medicalAppointmentsByPatient':
@@ -309,7 +344,58 @@ export default {
       default:
         break;
     }
+    axios.get(this.browseurl).then(response => {
+        selfVue.dataOfDatatables = response.data.data
+        // JS Load Data for datatables
+        var browseDataTable = $('#browseDataTable').DataTable({
+          responsive: true,
+          columnDefs: selfVue.columnDefinitionArray,
+          dom: 'Bfrtip',
+          buttons: [
+              'copy', 'csv', 'excel', 'pdf', 'print'
+          ],
+          order: selfVue.orderDefinitionArray,
+          //data: selfVue.dataOfDatatables,
+          "ajax": function (data, callback, settings) {
+              callback( { data: selfVue.dataOfDatatables } );
+          },
+          "columns": selfVue.columns
+        })
 
+        $('#browseDataTable tbody').on('click', '#openMedicalAppointment', function(self) {
+          //Remove event when the its on first element to dont overwrite more options button
+          var data = browseDataTable.row(this).data()
+          //console.log('You clicked on ' + data[0] + '\'s row')
+          selfVue.viewObjectDetails(data)
+        })
+
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    /*
+    var browseDataTable = $('#browseDataTable').DataTable({
+      responsive: true,
+      columnDefs: this.columnDefinitionArray,
+      dom: 'Bfrtip',
+      buttons: [
+          'copy', 'csv', 'excel', 'pdf', 'print'
+      ],
+      order: this.orderDefinitionArray,
+
+//      "processing": true,
+      "serverSide": true,
+      "ajax": {
+            "url": this.browseurl,
+            "type": "GET"
+      },
+      "columns": this.columns
+    })
+    browseDataTable = $('#browseDataTable').DataTable({
+      "serverSide": false
+    })
+    *./
+/*
     axios.get(this.browseurl).then(response => {
         const objectsModel = response.data
         // Clear datatable
@@ -331,6 +417,7 @@ export default {
       .catch(error => {
         console.log(error)
       })
+      */
   },
   methods: {
     viewObjectDetails: function(data) {
@@ -345,21 +432,19 @@ export default {
             dataParameter = selfVue.$route.params[parameter.newEntityValue]
           }
         } else {
-          dataParameter = data[parameter.value]
+          dataParameter = data[parameter.key]
         }
-        jsonString = jsonString + '"' + parameter.key + '":"' + dataParameter + '",'
+        var sentParameterName = parameter.key
+        if (parameter.alias != null) {
+          sentParameterName = parameter.alias
+        }
+        jsonString = jsonString + '"' + sentParameterName + '":"' + dataParameter + '",'
       });
       jsonString = jsonString.substring(0, jsonString.length - 1);
       jsonString = jsonString + '}}'
       routeObject = JSON.parse(jsonString)
       //routeObject = JSON.parse('{"name":"' + this.detailComponent + '","params":{"' + this.entityIdName + '":"' + id + '"}}')
       this.$router.push(routeObject)
-    },
-    frontEndDateFormat: function(date) {
-      return moment(date, 'YYYY-MM-DDTHH:mm:ss.fff Z').format('DD/MM/YYYY')
-    },
-    frontEndDatetimeFormat: function(date) {
-      return moment(date, 'YYYY-MM-DDTHH:mm:ss.fff Z').format('DD/MM/YYYY hh:mm a')
     },
   }
 }

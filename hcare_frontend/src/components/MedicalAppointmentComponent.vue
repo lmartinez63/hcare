@@ -65,14 +65,14 @@
               </div>
               <div class="group">
                 <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.medicalAppointment.firstName.$error }">
-                  <input class="form__input mdl-textfield__input" type="text" name="medicalAppointment-firstName" id="medicalAppointment-firstName" v-model.trim="$v.medicalAppointment.firstName.$model" />
+                  <input class="form__input mdl-textfield__input" type="text" name="medicalAppointment-firstName" id="medicalAppointment-firstName" v-model.trim="$v.medicalAppointment.firstName.$model" @input="forceUppercase($event, medicalAppointment, 'firstName')" />
                   <label class="form__label labelText" for="medicalAppointment-firstName">Nombres</label>
                 </div>
                 <div class="error" v-if="!$v.medicalAppointment.firstName.required">Nombres requeridos</div>
               </div>
               <div class="group">
                 <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.medicalAppointment.lastName.$error }">
-                  <input class="form__input mdl-textfield__input" type="text" name="medicalAppointment-lastName" id="medicalAppointment-lastName" v-model.trim="$v.medicalAppointment.lastName.$model" />
+                  <input class="form__input mdl-textfield__input" type="text" name="medicalAppointment-lastName" id="medicalAppointment-lastName" v-model.trim="$v.medicalAppointment.lastName.$model" @input="forceUppercase($event, medicalAppointment, 'lastName')" />
                   <label class="form__label labelText" for="medicalAppointment-lastName">Apellidos</label>
                 </div>
                 <div class="error" v-if="!$v.medicalAppointment.lastName.required">Apellidos requeridos</div>
@@ -134,7 +134,7 @@
               </div>
               <div class="groupFull">
                 <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.medicalAppointment.notes.$error }">
-                  <input class="mdl-textfield__input" type="text" name="medicalAppointment-notes" id="medicalAppointment-notes" v-model="$v.medicalAppointment.notes.$model" />
+                  <input class="mdl-textfield__input" type="text" name="medicalAppointment-notes" id="medicalAppointment-notes" v-model="$v.medicalAppointment.notes.$model" @input="forceUppercase($event, medicalAppointment, 'notes')" />
                   <label class="labelText" for="medicalAppointment-notes">Notas</label>
                 </div>
                 <div class="error" v-if="!$v.medicalAppointment.notes.maxLength">Cantidad de caracteres excedido</div>
@@ -152,7 +152,7 @@
               </div>
               <div class="groupFull" v-if="medicalAppointment.status == '10'">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalAppointment-diagnostic" id="medicalAppointment-diagnostic" v-model="medicalAppointment.diagnostic" />
+                  <input class="mdl-textfield__input" type="text" name="medicalAppointment-diagnostic" id="medicalAppointment-diagnostic" v-model="medicalAppointment.diagnostic" @input="forceUppercase($event, medicalAppointment, 'diagnostic')"/>
                   <label class="labelText" for="medicalAppointment-diagnostic">Detalle de Diagnostico</label>
                 </div>
               </div>
@@ -212,7 +212,7 @@ export default {
       medicalAppointment: {
         dateAppointment: (new Date()).toISOString(),
         status: 0,
-        emailAddress: '',
+        emailAddress: 'novaclinicarequipa@gmail.com',
         firstName: '',
         lastName: '',
         documentNumber: '',
@@ -229,52 +229,52 @@ export default {
       doctors: [],
       medicalAppointmentTypes: [{
           id: 1,
-          type: 'Nueva Consulta'
+          type: 'NUEVA CONSULTA'
         },
         {
           id: 2,
-          type: 'Control'
+          type: 'CONTROL'
         },
         {
           id: 3,
-          type: 'Analisis de Laboratorio'
+          type: 'ANALISIS DE LABORATORIO'
         },
         {
           id: 4,
-          type: 'Riego Quirurgico'
+          type: 'RIEGO QUIRURGICO'
         },
         {
           id: 5,
-          type: 'Ecografia'
+          type: 'ECOGRAFIA'
         },
         {
           id: 6,
-          type: 'Eco Dopler'
+          type: 'ECO DOPLER'
         },
         {
           id: 7,
-          type: 'Cirugia Ambulatoria'
+          type: 'CIRUGIA AMBULATORIA'
         },
         {
           id: 8,
-          type: 'Cirugia con Hospitalacion'
+          type: 'CIRUGIA CON HOSPITALIZACION'
         },
         {
           id: 8,
-          type: 'Ambulancia'
+          type: 'AMBULANCIA'
         },
       ],
       preferentialDiagnostics: [{
           key: 1,
-          value: 'Cirugia de Rinoplastia'
+          value: 'CIRUGIA DE RINOPLATIA'
         },
         {
           key: 2,
-          value: 'Cirugia de Liposuccion'
+          value: 'CIRUGIA DE LIPOSUCCION'
         },
         {
           key: 3,
-          value: 'Otros'
+          value: 'OTROS'
         },
       ],
     }
@@ -351,7 +351,7 @@ export default {
       let selfVue = this
       axios.get(this.$parent.backendUrl + 'retrievePatientByDocumentNumber/' + this.medicalAppointment.documentNumber)
         .then(response => {
-          if (response.data != null) {
+          if (response.data != null && response.data != '' ) {
             selfVue.medicalAppointment.firstName = response.data.firstName
             selfVue.medicalAppointment.lastName = response.data.lastName
             selfVue.medicalAppointment.celPhoneNumber = response.data.celPhoneNumber
@@ -377,7 +377,7 @@ export default {
     saveObjectState: function() {
       const url = this.$parent.backendUrl + 'medicalAppointments'
       //Add patientId to medicalHistory
-      if (this.medicalAppointment.emailAddress == '') {
+      if (this.medicalAppointment.emailAddress == '' || this.medicalAppointment.emailAddress == undefined) {
         this.medicalAppointment.emailAddress = 'novaclinicarequipa@gmail.com'
       }
       let selfVue = this
