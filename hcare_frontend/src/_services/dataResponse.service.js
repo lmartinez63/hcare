@@ -31,7 +31,7 @@ function getPatientInfoByDocumentNumberOnMedAppointment( documentNumber ) {
     method: 'GET',
     headers: authHeader()
   };
-  return fetch(`${config.apiUrl}/retrievePatientByDocumentNumber/` + documentNumber, requestOptions).then(handleResponse);
+  return fetch(`${config.apiUrl}/getPatientByDocumentNumber/` + documentNumber, requestOptions).then(handleResponse);
 }
 
 function handleResponse(response) {
@@ -42,6 +42,7 @@ function handleResponse(response) {
         if (response.status === 401) {
           // auto logout if 401 response returned from api
           //TODO Pending test this feature
+          console.log('dataResponseService - handleResponse - logout');
           userService.logout();
           location.reload(true);
         }

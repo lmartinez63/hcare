@@ -5,7 +5,7 @@ import { alert } from './alert.module';
 import { authentication } from './authentication.module';
 import { users } from './users.module';
 import { general } from './general.module';
-import { dataResponse } from './dataResponse.module';
+import { medicalAppointment } from './medicalAppointment.module';
 
 Vue.use(Vuex);
 
@@ -15,6 +15,6 @@ export const store = new Vuex.Store({
         authentication,
         users,
         general,
-        dataResponse
+        medicalAppointment
     }
 });

@@ -323,27 +323,10 @@ export default {
       return this.$store.state.general.medicalAreas;
     },
     medicalAppointment () {
-      /*
-      if (this.$store.state.general.medicalAppointment != undefined){
-        this.$store.state.general.medicalAppointment = {
-          dateAppointment: (new Date()).toISOString(),
-          status: 0,
-          emailAddress: 'novaclinicarequipa@gmail.com',
-          firstName: '',
-          lastName: '',
-          documentNumber: '',
-          documentType: '1',
-          celPhoneNumber: '',
-          doctorId: '',
-          medicalAreaId: '',
-          medicalAppointmentType: '1',
-          notes: '',
-          patient: {},
-          attachmentList: [],
-        };
-      }
-      */
-      return this.$store.state.dataResponse.content.dataContent.dataMap.medicalAppointment;
+      return this.$store.state.medicalAppointment.data;
+    },
+    page () {
+      return this.$store.state.medicalAppointment.metadata;
     }
   },
   created: function() {
@@ -354,28 +337,26 @@ export default {
     const { requestPage } = this;
     const { dispatch } = this.$store;
     if (this.$route.params.medicalAppointmentId !== 'null') {
-      dispatch('dataResponse/getContent', { requestPage: requestPage, processName:'RetrieveMedicalAppointmentInfo', dataContent: dataContent });
+      dispatch('medicalAppointment/getById', { requestPage: requestPage, processName:'RetrieveMedicalAppointmentInfo', dataContent: dataContent });
     } else {
-      this.$store.state.dataResponse.content.dataContent.dataMap.medicalAppointment = this.defaultMedicalAppointment;
+      this.$store.state.medicalAppointment.data = this.defaultMedicalAppointment;
     }
     console.log("MedicalAppointmentPage - created - end");
   },
   mounted: function() {
     console.log("MedicalAppointmentPage - mounted - begin");
     let selfVue = this
-    /*
-    if (this.$route.params.medicalAppointmentId !== 'null') {
-      this.$store.dispatch('medicalAppointment/getById', {selfVue.$route.params.medicalAppointmentId});
-    }
-    */
     console.log("MedicalAppointmentPage - mounted - end");
   },
   methods: {
     getPatientInfo: function() {
         console.log("MedicalAppointmentPage - method - getPatientInfo - begin");
-        const { documentNumber } = this.medicalAppointment;
+        const dataContent = {
+    		    "documentNumber":this.medicalAppointment.documentNumber
+    	  }
+        const { requestPage } = this;
         const { dispatch } = this.$store;
-        dispatch('dataContent/getPatientInfoByDocumentNumberOnMedAppointment', { documentNumber } );
+        dispatch('medicalAppointment/getPatientInfoByDocumentNumberOnMedAppointment', { requestPage: requestPage, processName:'GetPatientByDocumentNumber', dataContent: dataContent } );
         console.log("MedicalAppointmentPage - method - getPatientInfo - end");
     },
     goBackBrowse: function() {
