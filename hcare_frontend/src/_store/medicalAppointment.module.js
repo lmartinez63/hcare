@@ -1,4 +1,5 @@
 import { dataResponseService } from '../_services';
+import { router } from '../_helpers';
 
 export const medicalAppointment = {
     namespaced: true,
@@ -14,6 +15,20 @@ export const medicalAppointment = {
           dataResponseService.getContent( requestPage, processName, dataContent  )
               .then(
                   content => commit('getByIdSuccess', content),
+                  error => commit('failureDetected', error)
+              );
+        },
+        saveEntity({ dispatch, commit },{ requestPage, processName, dataContent }){
+          commit('pendingRequest');
+          dataResponseService.getContent( requestPage, processName, dataContent  )
+              .then(
+                  content => {
+                    commit('saveEntitySuccess', content);
+                    router.push({
+                      name: 'BrowseComponent',
+                      params: { browseType: 'allMedicalAppointments', entityId: 'null' }
+                    })
+                  },
                   error => commit('failureDetected', error)
               );
         },
@@ -40,7 +55,13 @@ export const medicalAppointment = {
             state.loading = false;
             console.log('medicalAppointmentResponse - mutations  - getByIdSuccess');
             state.data = content.dataContent.dataMap.medicalAppointment;
-            state.metadata = content.metadataContent.page;
+            state.metadata = content.metadataContent;
+        },
+        saveEntitySuccess(state, content) {
+            state.loading = false;
+            console.log('medicalAppointmentResponse - mutations  - getByIdSuccess');
+            state.data = content.dataContent.dataMap.medicalAppointment;
+            state.metadata = content.metadataContent;
         },
         getPatientInfoByDocumentNumberOnMedAppointmentSuccess(state, content) {
             state.loading = false;

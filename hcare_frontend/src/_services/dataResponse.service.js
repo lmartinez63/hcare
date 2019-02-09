@@ -7,7 +7,7 @@ import { userService,generalService } from '../_services';
 
 export const dataResponseService = {
   getContent,
-  getPatientInfoByDocumentNumberOnMedAppointment
+  getBrowseData
 };
 
 function getContent( requestPage, processName, dataContent ) {
@@ -25,13 +25,19 @@ function getContent( requestPage, processName, dataContent ) {
   return fetch(`${config.apiUrl}/getContent/`, requestOptions).then(handleResponse);
 }
 
-function getPatientInfoByDocumentNumberOnMedAppointment( documentNumber ) {
-  console.log('dataResponseService - getPatientInfoByDocumentNumberOnMedAppointment');
+function getBrowseData( requestPage, processName, dataContent ) {
+  console.log('dataResponseService - getBrowseData');
+  var requestData =  {
+	   "requestPage":requestPage,
+	   "processName":processName,
+	   "data":dataContent
+  }
   const requestOptions = {
-    method: 'GET',
-    headers: authHeader()
+    method: 'POST',
+    headers: { 'Authorization':authHeader().Authorization, 'Content-Type': 'application/json' },
+    body: JSON.stringify(requestData)
   };
-  return fetch(`${config.apiUrl}/getPatientByDocumentNumber/` + documentNumber, requestOptions).then(handleResponse);
+  return fetch(`${config.apiUrl}/getBrowseData/`, requestOptions).then(handleResponse);
 }
 
 function handleResponse(response) {

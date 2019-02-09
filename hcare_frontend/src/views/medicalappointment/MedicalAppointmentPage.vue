@@ -28,23 +28,23 @@
             </div>
           </div>
         </div>
-        <div class="formBox">
+        <div v-if="page && page.sectionMap" class="formBox">
           <div class="headerFacNew">
-            <div class="subTitle">
+            <div v-if="page.sectionMap.patientInfo && page.sectionMap.patientInfo.visible && page.sectionMap.patientInfo.fieldDefinitionMap" class="subTitle">
               Datos de Paciente
             </div>
-            <div class="twoCol">
-              <div class="group">
+            <div v-if="page.sectionMap.patientInfo && page.sectionMap.patientInfo.visible && page.sectionMap.patientInfo.fieldDefinitionMap" class="twoCol">
+              <div v-if="page.sectionMap.patientInfo.fieldDefinitionMap.medicalAppointmentType && page.sectionMap.patientInfo.fieldDefinitionMap.medicalAppointmentType.visible" class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label form-group">
                   <select v-model="medicalAppointment.medicalAppointmentType">
-                    <option v-for="medicalAppointmentType in medicalAppointmentTypes" v-bind:value="medicalAppointmentType.id">
-                      {{ medicalAppointmentType.type }}
+                    <option v-for="(value, key, index) in medicalAppointmentTypes" v-bind:value="key">
+                      {{ value }}
                     </option>
                   </select>
                   <label class="labelText form__label" for="medicalAppointment-medicalAppointmentType">Tipo de Cita</label>
                 </div>
               </div>
-              <div class="group">
+              <div v-if="page.sectionMap.patientInfo.fieldDefinitionMap.medicalAppointmentType && page.sectionMap.patientInfo.fieldDefinitionMap.medicalAppointmentType.visible" class="group">
               </div>
               <!--
               <div class="group">
@@ -58,14 +58,14 @@
                 </div>
               </div>
             -->
-              <div class="group">
+              <div v-if="page.sectionMap.patientInfo.fieldDefinitionMap.documentNumber && page.sectionMap.patientInfo.fieldDefinitionMap.documentNumber.visible" class="group">
                 <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.medicalAppointment.documentNumber.$error }">
                   <input class="form__input mdl-textfield__input" type="text" name="medicalAppointment-documentNumber" id="medicalAppointment-documentNumber" v-model.trim="$v.medicalAppointment.documentNumber.$model" @change="getPatientInfo()" />
                   <label class="form__label labelText" for="medicalAppointment-documentNumber">Numero de Documento</label>
                 </div>
                 <div class="error" v-if="!$v.medicalAppointment.documentNumber.required">Numero de Documento requerido</div>
               </div>
-              <div class="group">
+              <div v-if="page.sectionMap.patientInfo.fieldDefinitionMap.firstName && page.sectionMap.patientInfo.fieldDefinitionMap.firstName.visible" class="group">
                 <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.medicalAppointment.firstName.$error }">
                   <input class="form__input mdl-textfield__input" type="text" name="medicalAppointment-firstName" id="medicalAppointment-firstName" v-model.trim="$v.medicalAppointment.firstName.$model" @input="forceUppercase($event, medicalAppointment, 'firstName')" />
                   <label class="form__label labelText" for="medicalAppointment-firstName">Nombres</label>
@@ -106,7 +106,7 @@
                   <label class="labelText" for="medicalAppointment-dateAppointment">Fecha de la Cita</label>
                 </div>
               </div>
-<!--
+              <!--
               <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <label class="mdl-textfield__input labelNoEdit" id="medicalAppointment-status">{{$parent.medicalAppointmentStatus[medicalAppointment.status]}}</label>
@@ -147,8 +147,8 @@
               <div class="groupFull">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <select v-model="medicalAppointment.preferentialDiagnostic">
-                    <option v-for="preferentialDiagnostic in preferentialDiagnostics" v-bind:value="preferentialDiagnostic.key">
-                      {{ preferentialDiagnostic.value }}
+                    <option v-for="(value, key, index) in preferentialDiagnostics" v-bind:value="key">
+                      {{ value }}
                     </option>
                   </select>
                   <label class="labelText" for="medicalAppointment-visitReason">Diagnostico Preferencial</label>
@@ -156,30 +156,30 @@
               </div>
               <div class="groupFull">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalAppointment-diagnostic" id="medicalAppointment-diagnostic" v-model="medicalAppointment.diagnostic" @input="forceUppercase($event, medicalAppointment, 'diagnostic')"/>
+                  <input class="mdl-textfield__input" type="text" name="medicalAppointment-diagnostic" id="medicalAppointment-diagnostic" v-model="medicalAppointment.diagnostic" @input="forceUppercase($event, medicalAppointment, 'diagnostic')" />
                   <label class="labelText" for="medicalAppointment-diagnostic">Detalle de Diagnostico</label>
                 </div>
               </div>
             </div>
-            <div class="subTitle">
+            <div v-if="page && page.sectionMap && page.sectionMap.attachmentInfo && page.sectionMap.attachmentInfo.visible" class="subTitle">
               Documentos Adjuntos
             </div>
-            <div class="twoCol">
+            <div v-if="page && page.sectionMap && page.sectionMap.attachmentInfo && page.sectionMap.attachmentInfo.visible" class="twoCol">
               <ul id="attachment-list">
                 <li v-for="attachment in medicalAppointment.attachmentList">
                   <div v-on:click="downloadAttachment(attachment)">
                     <span>{{ attachment.fileName }}</span>
                     <!--<i class="fas fa-file-download"></i>-->
-                    <i class="fas fa-save"></i>
-                  </div>
-                </li>
-              </ul>
+              <i class="fas fa-save"></i>
             </div>
+            </li>
+            </ul>
           </div>
         </div>
       </div>
-    </section>
-  </section>
+</div>
+</section>
+</section>
 </div>
 </template>
 <!--script src="https://unpkg.com/element-ui/lib/index.js"></script-->
@@ -215,75 +215,25 @@ export default {
     return {
       requestPage: 'medicalAppointmentInfo',
       defaultMedicalAppointment: {
-          dateAppointment: (new Date()).toISOString(),
-          status: 0,
-          emailAddress: 'novaclinicarequipa@gmail.com',
-          firstName: '',
-          lastName: '',
-          documentNumber: '',
-          documentType: '1',
-          celPhoneNumber: '',
-          doctorId: '',
-          medicalAreaId: '',
-          medicalAppointmentType: '1',
-          notes: '',
-          patient: {},
-          attachmentList: [],
+        dateAppointment: (new Date()).toISOString(),
+        status: 0,
+        emailAddress: 'novaclinicarequipa@gmail.com',
+        firstName: '',
+        lastName: '',
+        documentNumber: '',
+        documentType: '1',
+        celPhoneNumber: '',
+        doctorId: '',
+        medicalAreaId: '',
+        medicalAppointmentType: '1',
+        notes: '',
+        patient: {},
+        attachmentList: [],
       },
-      medicalAppointmentTypes: [{
-          id: 1,
-          type: 'NUEVA CONSULTA'
-        },
-        {
-          id: 2,
-          type: 'CONTROL'
-        },
-        {
-          id: 3,
-          type: 'ANALISIS DE LABORATORIO'
-        },
-        {
-          id: 4,
-          type: 'RIEGO QUIRURGICO'
-        },
-        {
-          id: 5,
-          type: 'ECOGRAFIA'
-        },
-        {
-          id: 6,
-          type: 'ECO DOPLER'
-        },
-        {
-          id: 7,
-          type: 'CIRUGIA AMBULATORIA'
-        },
-        {
-          id: 8,
-          type: 'CIRUGIA CON HOSPITALIZACION'
-        },
-        {
-          id: 8,
-          type: 'AMBULANCIA'
-        },
-      ],
-      preferentialDiagnostics: [{
-          key: 1,
-          value: 'CIRUGIA DE RINOPLATIA'
-        },
-        {
-          key: 2,
-          value: 'CIRUGIA DE LIPOSUCCION'
-        },
-        {
-          key: 3,
-          value: 'OTROS'
-        },
-      ],
     }
   },
   validations: {
-    medicalAppointment:{
+    medicalAppointment: {
       emailAddress: {
         required,
         email,
@@ -315,29 +265,46 @@ export default {
     Datepicker,
     datetime: Datetime,
   },
-  computed : {
-    doctors () {
+  computed: {
+    doctors() {
       return this.$store.state.general.doctors;
     },
-    medicalAreas () {
+    medicalAreas() {
       return this.$store.state.general.medicalAreas;
     },
-    medicalAppointment () {
+    medicalAppointmentTypes() {
+      return this.$store.state.general.properties.items.MEDICAL_APPOINTMENT.TYPE;
+    },
+    preferentialDiagnostics() {
+      return this.$store.state.general.properties.items.MEDICAL_APPOINTMENT.PREFERENTIAL_DIAGNOSTIC;
+    },
+    medicalAppointment() {
       return this.$store.state.medicalAppointment.data;
     },
-    page () {
-      return this.$store.state.medicalAppointment.metadata;
+
+    page() {
+      return this.$store.state.medicalAppointment.metadata.page;
     }
   },
   created: function() {
     console.log("MedicalAppointmentPage - created - begin");
     const dataContent = {
-		    "medicalAppointment":{"id":this.$route.params.medicalAppointmentId}
-	  }
-    const { requestPage } = this;
-    const { dispatch } = this.$store;
+      "medicalAppointment": {
+        "id": this.$route.params.medicalAppointmentId
+      }
+    }
+    const {
+      requestPage
+    } = this;
+    const {
+      dispatch
+    } = this.$store;
     if (this.$route.params.medicalAppointmentId !== 'null') {
-      dispatch('medicalAppointment/getById', { requestPage: requestPage, processName:'RetrieveMedicalAppointmentInfo', dataContent: dataContent });
+      dispatch('medicalAppointment/getById', {
+        requestPage: requestPage,
+        processName: 'RetrieveMedicalAppointmentInfo',
+        dataContent: dataContent
+      });
     } else {
       this.$store.state.medicalAppointment.data = this.defaultMedicalAppointment;
     }
@@ -350,14 +317,22 @@ export default {
   },
   methods: {
     getPatientInfo: function() {
-        console.log("MedicalAppointmentPage - method - getPatientInfo - begin");
-        const dataContent = {
-    		    "documentNumber":this.medicalAppointment.documentNumber
-    	  }
-        const { requestPage } = this;
-        const { dispatch } = this.$store;
-        dispatch('medicalAppointment/getPatientInfoByDocumentNumberOnMedAppointment', { requestPage: requestPage, processName:'GetPatientByDocumentNumber', dataContent: dataContent } );
-        console.log("MedicalAppointmentPage - method - getPatientInfo - end");
+      console.log("MedicalAppointmentPage - method - getPatientInfo - begin");
+      const dataContent = {
+        "documentNumber": this.medicalAppointment.documentNumber
+      }
+      const {
+        requestPage
+      } = this;
+      const {
+        dispatch
+      } = this.$store;
+      dispatch('medicalAppointment/getPatientInfoByDocumentNumberOnMedAppointment', {
+        requestPage: requestPage,
+        processName: 'GetBrowseData',
+        dataContent: dataContent
+      });
+      console.log("MedicalAppointmentPage - method - getPatientInfo - end");
     },
     goBackBrowse: function() {
       this.$router.push({
@@ -370,34 +345,27 @@ export default {
       // this.$router.push({ name: '/'})
     },
     saveObjectState: function() {
-      const url = this.$parent.backendUrl + 'medicalAppointments'
-      //Add patientId to medicalHistory
-      if (this.medicalAppointment.emailAddress == '' || this.medicalAppointment.emailAddress == undefined) {
-        this.medicalAppointment.emailAddress = 'novaclinicarequipa@gmail.com'
+      console.log("MedicalAppointmentPage - method - saveObjectState - begin");
+      const dataContent = {
+        "medicalAppointment": this.medicalAppointment
       }
-      let selfVue = this
+      const {
+        requestPage
+      } = this;
+      const {
+        dispatch
+      } = this.$store;
       this.$v.$touch()
       if (this.$v.$invalid) {
         selfVue.$parent.errorMessage("Por favor complete los campos requeridos")
       } else {
-        // do your submit logic here
-        axios.post(url, this.medicalAppointment)
-          .then(response => {
-            selfVue.medicalAppointment = response.data
-            selfVue.$parent.sucessMessage()
-            setTimeout(() => {
-              this.$router.push({
-                name: 'BrowseComponent',
-                params: { browseType: 'allMedicalAppointments', entityId: 'null' }
-              })
-            },1000)
-          })
-          .catch(error => {
-            console.log(error)
-          })
+        dispatch('medicalAppointment/saveEntity', {
+          requestPage: requestPage,
+          processName: 'SaveMedicalAppointment',
+          dataContent: dataContent
+        });
       }
-
-      // this.$router.push({ name: '/'})
+      console.log("MedicalAppointmentPage - method - saveObjectState - end");
     },
     downloadAttachment: function(attachment) {
       axios.get(this.$parent.backendUrl + 'downloadAttachment/' + attachment.id, {
