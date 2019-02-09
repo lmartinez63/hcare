@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SectionServiceImpl implements SectionService{
@@ -37,6 +38,7 @@ public class SectionServiceImpl implements SectionService{
         List<Section> sectionList = sectionRepository.getSectionsByPageCodeAndUsername(pageCode, username);
         for(Section section:sectionList){
             section.setFieldDefinitionList(fieldService.getFieldsByPageSectionCodeAndUsername(pageCode, section.getSectionCode(), username));
+            section.setFieldDefinitionMap(section.getFieldDefinitionList().stream().collect(Collectors.toMap(FieldDefinition::getFieldDefinitionCode, item -> item)));
         }
         return sectionList;
     }

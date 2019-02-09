@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PageServiceImpl implements PageService {
@@ -55,7 +56,7 @@ public class PageServiceImpl implements PageService {
         UserProfile userProfile = userService.getPageAndFieldsAssigned(username);
         Page page = findByPageCode(pageCode);
         page.setSectionList(sectionService.getSectionsByPageCodeAndUsername(pageCode, username));
-        //
+        page.setSectionMap(page.getSectionList().stream().collect(Collectors.toMap(Section::getSectionCode, item -> item)));
         return page;
     }
 
@@ -79,8 +80,9 @@ public class PageServiceImpl implements PageService {
                 fieldService.evaluateRules(fieldDefinition, dataSource);
                 fieldService.evaluateFields(fieldDefinition, dataSource);
             }
+            section.setFieldDefinitionMap(section.getFieldDefinitionList().stream().collect(Collectors.toMap(FieldDefinition::getFieldDefinitionCode, item -> item)));
         }
-
+        page.setSectionMap(page.getSectionList().stream().collect(Collectors.toMap(Section::getSectionCode, item -> item)));
     }
 
 }

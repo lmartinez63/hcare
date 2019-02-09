@@ -1,9 +1,7 @@
 package com.landl.hcare.component;
 
 import com.landl.hcare.entity.UserAuthenticated;
-import com.landl.hcare.service.AttachmentService;
-import com.landl.hcare.service.MedicalAppointmentService;
-import com.landl.hcare.service.PatientService;
+import com.landl.hcare.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -18,6 +16,12 @@ public abstract class  CustomProcess {
 
     @Autowired
     PatientService patientService;
+
+    @Autowired
+    EmailService emailService;
+
+    @Autowired
+    MedicalHistoryService medicalHistoryService;
 
     @Autowired
     AttachmentService attachmentService;

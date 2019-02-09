@@ -44,6 +44,9 @@ public class Email  extends AuditModel {
     @Column(name="email_template_id")
     private Long emailTemplateId;
 
+    @Column(name="messageError",length = 10485760)
+    private String messageError;
+
     @Transient
     private EmailTemplate emailTemplate;
 
@@ -154,5 +157,13 @@ public class Email  extends AuditModel {
 
     public void setDescriptionStatus(String descriptionStatus) {
         this.descriptionStatus = descriptionStatus;
+    }
+
+    public String getMessageError() {
+        return messageError;
+    }
+
+    public void setMessageError(String messageError) {
+        this.messageError = messageError;
     }
 }

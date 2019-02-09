@@ -4,6 +4,7 @@ import com.landl.hcare.model.AuditModel;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -36,6 +37,9 @@ public class Page extends AuditModel {
     */
     @Transient
     private List<Section> sectionList;
+
+    @Transient
+    private Map<String,Section> sectionMap;
 
     /*
     @Transient
@@ -85,4 +89,11 @@ public class Page extends AuditModel {
         this.visible = visible;
     }
 
+    public Map<String, Section> getSectionMap() {
+        return sectionMap;
+    }
+
+    public void setSectionMap(Map<String, Section> sectionMap) {
+        this.sectionMap = sectionMap;
+    }
 }

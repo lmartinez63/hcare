@@ -49,7 +49,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().
                 authorizeRequests()
-                .antMatchers("/token/*", "/signup", "/getContent/*", "/loadProperties","/getDoctors","/getMedicalAreas").permitAll()
+                //TODO getBrowseData/ need to be removed becouse it need to go first to getContent
+                .antMatchers("/getBrowseData/*","/token/*", "/signup", "/getContent/*", "/loadProperties","/getDoctors","/getMedicalAreas").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()

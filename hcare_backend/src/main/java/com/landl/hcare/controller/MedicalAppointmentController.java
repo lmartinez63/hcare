@@ -42,17 +42,6 @@ public class MedicalAppointmentController {
         return medicalAppointmentService.findByToday();
     }
 
-
-    @GetMapping("/medicalAppointments/{medicalAppointmentId}")
-    public MedicalAppointment retrieveByMedicalAppointmentId(@PathVariable Long medicalAppointmentId) throws Exception{
-        MedicalAppointment medicalAppointment = medicalAppointmentService.findById(medicalAppointmentId).get();
-        if(medicalAppointment.getDocumentType() != null){
-            medicalAppointment.setPatient(patientService.findByDocumentNumber(medicalAppointment.getDocumentNumber()));
-        }
-        medicalAppointment.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalAppointment", medicalAppointment.getId()));
-        return medicalAppointment;
-    }
-
     @PostMapping("/medicalAppointments")
     public MedicalAppointment saveMedicalAppointment(@Valid @RequestBody MedicalAppointment medicalAppointment) throws Exception{
         //If is a new medical appointment send a reminder email
