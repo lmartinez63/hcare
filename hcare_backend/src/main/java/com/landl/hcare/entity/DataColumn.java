@@ -1,12 +1,12 @@
 package com.landl.hcare.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.landl.hcare.model.AuditModel;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 
+@Entity
+@Table(name="data_column")
 public class DataColumn extends AuditModel {
     @Id
     @GeneratedValue(generator = "data_column_generator")
@@ -17,9 +17,6 @@ public class DataColumn extends AuditModel {
             allocationSize = 1
     )
     private Long id;
-
-    @Column(name="data_table_code")
-    private String dataTableCode;
 
     @Column(name="data_column_code")
     private String dataColumnCode;
@@ -33,6 +30,17 @@ public class DataColumn extends AuditModel {
     @Column(name="front_end_visibility")
     private String frontEndVisibility;
 
+    @Column(name="column_type")
+    private String columnType;
+
+    @Column(name="column_order")
+    private String columnOrder;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinColumn(name = "data_table_id", nullable = false)
+    private DataTable dataTable;
+
 
     public Long getId() {
         return id;
@@ -40,14 +48,6 @@ public class DataColumn extends AuditModel {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getDataTableCode() {
-        return dataTableCode;
-    }
-
-    public void setDataTableCode(String dataTableCode) {
-        this.dataTableCode = dataTableCode;
     }
 
     public String getDataColumnCode() {
@@ -80,5 +80,29 @@ public class DataColumn extends AuditModel {
 
     public void setFrontEndVisibility(String frontEndVisibility) {
         this.frontEndVisibility = frontEndVisibility;
+    }
+
+    public DataTable getDataTable() {
+        return dataTable;
+    }
+
+    public void setDataTable(DataTable dataTable) {
+        this.dataTable = dataTable;
+    }
+
+    public String getColumnType() {
+        return columnType;
+    }
+
+    public void setColumnType(String columnType) {
+        this.columnType = columnType;
+    }
+
+    public String getColumnOrder() {
+        return columnOrder;
+    }
+
+    public void setColumnOrder(String columnOrder) {
+        this.columnOrder = columnOrder;
     }
 }

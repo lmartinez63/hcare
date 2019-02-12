@@ -2,11 +2,12 @@ package com.landl.hcare.entity;
 
 import com.landl.hcare.model.AuditModel;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
+@Entity
+@Table(name="data_table")
 public class DataTable extends AuditModel {
     @Id
     @GeneratedValue(generator = "data_table_generator")
@@ -23,6 +24,11 @@ public class DataTable extends AuditModel {
 
     @Column(name="data_table_name")
     private String dataTableName;
+
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "dataTable")
+    private Set<DataColumn> dataColumns = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -47,4 +53,13 @@ public class DataTable extends AuditModel {
     public void setDataTableName(String dataTableName) {
         this.dataTableName = dataTableName;
     }
+
+    public Set<DataColumn> getDataColumns() {
+        return dataColumns;
+    }
+
+    public void setDataColumns(Set<DataColumn> dataColumns) {
+        this.dataColumns = dataColumns;
+    }
+
 }

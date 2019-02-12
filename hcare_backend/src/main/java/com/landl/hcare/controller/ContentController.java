@@ -51,6 +51,12 @@ public class ContentController {
     private UserService userService;
 
     @Autowired
+    private BrowserService browserService;
+
+    @Autowired
+    private DataTableService dataTableService;
+
+    @Autowired
     private TokenProvider jwtTokenUtil;
 
     @Autowired
@@ -94,6 +100,16 @@ public class ContentController {
             content.setDataContent(dataContent);
         }
         return content;
+    }
+
+    @PostMapping("/getBrowseContent")
+    public Browse getBrowseContent(@RequestBody Map<String,Object> requestMap) throws Exception{
+        Map requestDataMap = (Map)requestMap.get("data");
+        String browseName = requestDataMap.get("browseName").toString();
+        Browse browse = new Browse();
+        browse.setMetaDataBrowse(dataTableService.findByDataTableCode(browseName));
+        browse.setDataBrowse(browserService.buildDataTableObject(browseName));
+        return browse;
     }
 
     @GetMapping("/loadProperties")
