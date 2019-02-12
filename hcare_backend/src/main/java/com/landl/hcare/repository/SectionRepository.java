@@ -14,6 +14,7 @@ public interface SectionRepository extends JpaRepository<Section, Long>{
             "inner join role_page_section_field rpsf on rpsf.section_id = sec.id\n" +
             "inner join page p on p.id = rpsf.page_id\n" +
             "inner join user_roles ur on ur.role_id = rpsf.role_id\n" +
-            "inner join user_profile up on up.id = ur.user_id where p.page_code = :pageCode and up.username = :username", nativeQuery = true)
+            "inner join user_profile up on up.id = ur.user_id where p.page_code = :pageCode and up.username = :username " +
+            "group by sec.id, sec.section_code, sec.visible_rule_exp, sec.label_code, sec.label_module, sec.label_sub_module, sec.created_at, sec.updated_at", nativeQuery = true)
     List<Section> getSectionsByPageCodeAndUsername(String pageCode, String username);
 }

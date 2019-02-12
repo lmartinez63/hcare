@@ -4,6 +4,7 @@ import com.landl.hcare.model.AuditModel;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name="section")
@@ -41,6 +42,9 @@ public class Section extends AuditModel {
 
     @Transient
     private List<FieldDefinition> fieldDefinitionList;
+
+    @Transient
+    private Map<String,FieldDefinition> fieldDefinitionMap;
 
     public Long getId() {
         return id;
@@ -112,5 +116,13 @@ public class Section extends AuditModel {
 
     public void setLabelValue(String labelValue) {
         this.labelValue = labelValue;
+    }
+
+    public Map<String, FieldDefinition> getFieldDefinitionMap() {
+        return fieldDefinitionMap;
+    }
+
+    public void setFieldDefinitionMap(Map<String, FieldDefinition> fieldDefinitionMap) {
+        this.fieldDefinitionMap = fieldDefinitionMap;
     }
 }

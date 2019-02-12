@@ -151,14 +151,26 @@ public class EmailServiceImpl implements EmailService {
         email.setStatus(0);
         email.setEmailTemplate(emailTemplate);
         //Get Data source
-        Map<String,Object> dataSource = new HashMap<String, Object>();
-        UserProfile doctor = userService.findById(medicalAppointment.getDoctorId());
-        Map<String, Object> propertiesMap =  propertyService.getPropertiesMap();
-        dataSource.put("Properties", propertiesMap);
-        dataSource.put("Doctor", doctor);
-        dataSource.put("MedicalAppointment", medicalAppointment);
-        email.setDataSource(dataSource);
-        buildEmailFromEmailTemplate(email);
+        try {
+            Map<String, Object> dataSource = new HashMap<String, Object>();
+            UserProfile doctor = userService.findById(medicalAppointment.getDoctorId());
+            Map<String, Object> propertiesMap = propertyService.getPropertiesMap();
+            dataSource.put("Properties", propertiesMap);
+            dataSource.put("Doctor", doctor);
+            dataSource.put("MedicalAppointment", medicalAppointment);
+            email.setDataSource(dataSource);
+            buildEmailFromEmailTemplate(email);
+        } catch(Exception e){
+            e.printStackTrace();
+            String errorMessage = "";
+            if(e.getMessage() != null && e.getMessage().length() > 10485758){
+                errorMessage = e.getMessage().substring(0,10485758);
+            } else {
+                errorMessage = UtilityTools.isNull(e.getMessage());
+            }
+            email.setMessageError(errorMessage);
+            email.setStatus(99);
+        }
         save(email);
         return 100;
     }
