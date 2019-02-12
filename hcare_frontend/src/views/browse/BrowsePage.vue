@@ -14,9 +14,6 @@
           </div>
           <table id="browseDataTable" class="display responsive nowrap" style="width:100%">
             <thead>
-              <tr>
-                <th v-for="columnDefinition in columnDefinitionNames">{{columnDefinition.columnName}}</th>
-              </tr>
             </thead>
             <tbody>
             </tbody>
@@ -43,7 +40,7 @@ export default {
       displayObjects: [],
       detailFunction: '',
       browseurl: '',
-      browseType: '',
+      browseName: '',
       entityId: 'null',
       columnDefinitionArray: [],
       orderDefinitionArray: [],
@@ -53,8 +50,8 @@ export default {
     }
   },
   computed: {
-    dataOfDatatables() {
-      return this.$store.state.browse.data;
+    dataColumns() {
+      return this.$store.state.browse.metadata.dataColumns;
     },
   },
   created: function() {
@@ -301,7 +298,7 @@ export default {
         break;
       case 'allMedicalAppointments':
         this.browseurl = this.browseurl + 'allMedAppHeaderView'
-        this.browseType = 'allMedAppHeaderView'
+        this.browseName = 'allMedAppHeaderView'
         //this.browseurl = this.$parent.backendUrl + 'medicalAppointments'
         this.detailComponent = 'MedicalAppointmentComponent'
         this.title = 'Listado de Citas'
@@ -352,7 +349,7 @@ export default {
         break;
     }
     const dataContent = {
-        "browseType": this.browseType
+        "browseName": this.browseName
     }
     const {
       requestPage
@@ -364,7 +361,10 @@ export default {
         requestPage: requestPage,
         processName: 'RetrieveMedicalAppointmentInfo',
         dataContent: dataContent
-    }).then( response => {
+    });
+    /*
+    .then( response => {
+
       var browseDataTable = $('#browseDataTable').DataTable({
         responsive: true,
         columnDefs: selfVue.columnDefinitionArray,
@@ -386,7 +386,7 @@ export default {
         selfVue.viewObjectDetails(data)
       })
     });
-
+    */
 
     /*
 

@@ -37,7 +37,7 @@ function getBrowseData( requestPage, processName, dataContent ) {
     headers: { 'Authorization':authHeader().Authorization, 'Content-Type': 'application/json' },
     body: JSON.stringify(requestData)
   };
-  return fetch(`${config.apiUrl}/getBrowseData/`, requestOptions).then(handleResponse);
+  return fetch(`${config.apiUrl}/getBrowseContent/`, requestOptions).then(handleResponse);
 }
 
 function handleResponse(response) {
