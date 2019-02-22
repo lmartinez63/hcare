@@ -6,6 +6,8 @@ import { authentication } from './authentication.module';
 import { users } from './users.module';
 import { general } from './general.module';
 import { medicalAppointment } from './medicalAppointment.module';
+import { userProfile } from './userProfile.module';
+import { medicalArea } from './medicalArea.module';
 import { browse } from './browse.module';
 
 Vue.use(Vuex);
@@ -17,6 +19,8 @@ export const store = new Vuex.Store({
         users,
         general,
         medicalAppointment,
-        browse
+        medicalArea,
+        browse,
+        userProfile
     }
 });

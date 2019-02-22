@@ -361,7 +361,7 @@ export default {
       } else {
         dispatch('medicalAppointment/saveEntity', {
           requestPage: requestPage,
-          processName: 'SaveMedicalAppointment',
+          processName: 'RegisterMedicalAppointment',
           dataContent: dataContent
         });
       }

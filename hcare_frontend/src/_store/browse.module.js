@@ -6,17 +6,28 @@ export const browse = {
     state: {
         loading: false,
         data: {},
+        browseDataTable: null,
         error: {},
         metadata: {},
     },
     actions: {
-        getBrowseData({ dispatch, commit },{ requestPage, processName, dataContent }){
-          commit('pendingRequest');
-          //TODO need to change  to get Content
-          //dataResponseService.getContent( requestPage, processName, dataContent  )
-          dataResponseService.getBrowseData( requestPage, processName, dataContent  )
+        getBrowseData({ dispatch, commit },{ requestPage, processName, dataContent, vueInstance }){
+            commit('pendingRequest');
+            //TODO need to change  to get Content
+            //dataResponseService.getContent( requestPage, processName, dataContent  )
+            dataResponseService.getBrowseData( requestPage, processName, dataContent, vueInstance  )
               .then(
-                  content => commit('getBrowseDataSuccess', content),
+                  content => commit('getBrowseDataSuccess', content, vueInstance),
+                  error => commit('failureDetected', error)
+              );
+        },
+        reloadBrowseData({ dispatch, commit },{ dataContent}){
+            commit('pendingRequest');
+            //TODO need to change  to get Content
+            //dataResponseService.getContent( requestPage, processName, dataContent  )
+            dataResponseService.getBrowseData( '', '', dataContent, null  )
+              .then(
+                  content => commit('reloadBrowseDataSuccess', content),
                   error => commit('failureDetected', error)
               );
         },
@@ -31,7 +42,14 @@ export const browse = {
             console.log('browse - mutations - failureDetected - '+ error);
             state.error = error;
         },
-        getBrowseDataSuccess(state, content) {
+        reloadBrowseDataSuccess(state, content) {
+            state.loading = false;
+            console.log('browse - mutations  - reloadBrowseDataSuccess');
+            state.data = content.dataBrowse.data;
+            state.metadata = content.metaDataBrowse;
+            state.browseDataTable.ajax.reload( null, false );
+        },
+        getBrowseDataSuccess(state, content, vueInstance) {
             state.loading = false;
             console.log('browse - mutations  - getBrowseDataSuccess');
             state.data = content.dataBrowse.data;
@@ -55,6 +73,7 @@ export const browse = {
                 visibility = ',"visible": true'
               }
               var jsonObject=JSON.parse('{"targets": [' + columnIndex + ']'+visibility+colType+'}')
+
               switch(columnDefinition.columnType){
                 case 'date':
                   jsonObject.render = function(data){return moment(data).format('DD/MM/YYYY hh:mm a');}
@@ -63,12 +82,16 @@ export const browse = {
                 case 'string':
                   jsonObject.className = 'dt-body-left'
                   break;
-                case 'medical_appointment_button':
-                  jsonObject.data = null,
-                  jsonObject.defaultContent = "<button id='openMedicalAppointment'>Abrir</button><button>Se presento</button><button>No se Presento</button>"
+                case 'rowButtons':
+                  jsonObject.defaultContent = "";
+                  //jsonObject.data = null;
+                  state.metadata.dataRowButtons.forEach(function(rowButton) {
+                    //TODO set labelValue as user language
+                    jsonObject.defaultContent = jsonObject.defaultContent + "<div id='"+rowButton.dataRowButtonCode+"' data-funtion='"+rowButton.dataRowButtonEvent+"' >"+rowButton.label.labelValueEsEs+"</div>";
+                  })
                   break;
-              }
-              columnDefinitionArray.push(jsonObject)
+              };
+              columnDefinitionArray.push(jsonObject);
 
               if (columnDefinition.columnOrder != undefined) {
                 orderDefinitionArray.push(JSON.parse('[' + columnIndex + ',"' + columnDefinition.columnOrder + '"]'))
@@ -76,7 +99,7 @@ export const browse = {
               columnIndex++
             });
 
-            var browseDataTable = $('#browseDataTable').DataTable({
+            state.browseDataTable = $('#browseDataTable').DataTable({
               responsive: true,
               columnDefs: columnDefinitionArray,
               dom: 'Bfrtip',
@@ -90,15 +113,7 @@ export const browse = {
               },
               "columns": columns
             })
-            $('#browseDataTable tbody').on('click', '#openMedicalAppointment', function(self) {
-              //Remove event when the its on first element to dont overwrite more options button
-              var data = browseDataTable.row(this).data()
-              //console.log('You clicked on ' + data[0] + '\'s row')
-              selfVue.viewObjectDetails(data)
-            })
-            //TODO needs to be changed to be dinamic and refresh target data and build directly and not in browsepage
-            //var browseDataTable = $('#browseDataTable').DataTable();
-            //browseDataTable.ajax.reload();
-        }
+
+        },
     }
 }

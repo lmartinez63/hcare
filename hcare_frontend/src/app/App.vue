@@ -49,14 +49,14 @@
                               <a><i class="icono izquierda fa fa-share-alt"></i>Administracion de Citas<i class="icono derecha fa fa-chevron-down"></i></a>
                                 <ul>
                                     <li><router-link :to="{ name: 'MedicalAppointmentPage', params: { medicalAppointmentId: 'null' }}">Nueva Cita</router-link></li>
-                                    <li><router-link :to="{ name: 'BrowseComponent', params: { browseType: 'allMedicalAppointments', entityId: 'null' }}">Listado de Citas</router-link></li>
+                                    <li><router-link :to="{ name: 'BrowseComponent', params: { browseName: 'allMedAppHeaderView', entityId: 'null' }}">Listado de Citas</router-link></li>
                                     <li><router-link :to="{ name: 'BrowseComponent', params: { browseType: 'medicalAppointmentsToday', entityId: 'null' }}">Listado de Citas de Hoy</router-link></li>
                                 </ul>
                             </li>
                             <li v-if="user.userProfile.pageSectionMap.medicalAreaInfo != undefined || user.userProfile.pageSectionMap.userProfileInfo != undefined" >
                               <a><i class="icono izquierda fa fa-share-alt"></i>Configuraciones<i class="icono derecha fa fa-chevron-down"></i></a>
                                 <ul>
-                                    <li v-if="user.userProfile.pageSectionMap.medicalAreaInfo != undefined" ><router-link :to="{ name: 'BrowseComponent', params: { browseType: 'allMedicalAreas', entityId: 'null' }}">Listado de Especialidades</router-link></li>
+                                    <li v-if="user.userProfile.pageSectionMap.medicalAreaInfo != undefined" ><router-link :to="{ name: 'BrowseComponent', params: { browseName: 'allMedicalAreas', entityId: 'null' }}">Listado de Especialidades</router-link></li>
                                     <li v-if="user.userProfile.pageSectionMap.userProfileInfo != undefined" ><router-link :to="{ name: 'BrowseComponent', params: { browseType: 'allEmployees', entityId: 'null' }}">Listado de Colaboradores</router-link></li>
                                 </ul>
                             </li>
@@ -65,8 +65,8 @@
                 </div>
             </div>
         </aside>
+        <router-view :key="$route.fullPath"/>
         <div v-if="alert.message" :class="`alert ${alert.type}`">{{alert.message}}</div>
-      <router-view :key="$route.fullPath"/>
     </div>
     <!--
     <div v-show="displayMessage" class="groupMsgBox">

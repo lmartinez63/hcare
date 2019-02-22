@@ -40,11 +40,11 @@ export default {
       displayObjects: [],
       detailFunction: '',
       browseurl: '',
-      browseName: '',
+      //browseName: '',
       entityId: 'null',
       columnDefinitionArray: [],
       orderDefinitionArray: [],
-      columnDefinitionValues: [],
+      //columnDefinitionValues: [],
       columnDefinitionNames: [],
       parametersArray: [],
     }
@@ -56,7 +56,7 @@ export default {
   },
   created: function() {
     console.log('created-' + 'BrowseComponent')
-    switch (this.$route.params.browseType) {
+    switch (this.$route.params.browseName) {
       case 'allEmployees':
         this.columnDefinitionNames = [{
           columnName: 'Id',
@@ -72,15 +72,6 @@ export default {
           visible: true
         }, {
           columnName: 'Cargo',
-          visible: true
-        }]
-        break;
-      case 'allMedicalAreas':
-        this.columnDefinitionNames = [{
-          columnName: 'Id',
-          visible: false
-        }, {
-          columnName: 'Nombre de la Especialidad',
           visible: true
         }]
         break;
@@ -129,49 +120,6 @@ export default {
             visible: true
           },]
           break;
-      case 'allMedicalAppointments':
-        this.columnDefinitionNames = [{
-          columnName: 'Id',
-          visible: false
-        }, {
-          columnName: 'Codigo de Historia',
-          visible: true
-        }, {
-          columnName: 'Paciente',
-          visible: true,
-          colType: 'string'
-        },{
-          columnName: 'Doctor(a)',
-          visible: true,
-          colType: 'string'
-        },{
-          columnName: 'Fecha Y Hora',
-          visible: true,
-          order: 'desc',
-          colType: 'date'
-        }, {
-          columnName: 'Tipo ',
-          visible: true,
-          colType: 'string'
-        }, {
-          columnName: 'Estado',
-          visible: true,
-          colType: 'string'
-        }, {
-          columnName: 'Opciones',
-          colType: 'medical_appointment_button',
-          visible: true
-        },]
-        this.columns = [
-            { data: "maId" },
-            { data: "maHistoryCode" },
-            { data: "maFullName" },
-            { data: "emFullName" },
-            { data: "maDateAppointment"},
-            { data: "maMedAppType" },
-            { data: "maStatus" },
-        ]
-        break;
       case 'allMedicalHistories':
         this.columnDefinitionNames = [
         {
@@ -209,42 +157,9 @@ export default {
     var columnIndex = 0;
     //Assing this vue compnent to self to don't lose reference
     let selfVue = this
-    this.columnDefinitionNames.forEach(function(columnDefinition) {
-      var colType = ''
-      if (columnDefinition.colType != undefined) {
-        colType = ',"type": "'+columnDefinition.colType+'"'
-      }
-      var visibility = ''
-      if (columnDefinition.visible == false) {
-        visibility = ',"visible": false, "searchable": false'
 
-      } else {
-        visibility = ',"visible": true'
-      }
-      var jsonObject=JSON.parse('{"targets": [' + columnIndex + ']'+visibility+colType+'}')
-      switch(columnDefinition.colType){
-        case 'date':
-          jsonObject.render = function(data){return moment(data).format('DD/MM/YYYY hh:mm a');}
-          jsonObject.className = 'dt-body-right'
-          break;
-        case 'string':
-          jsonObject.className = 'dt-body-left'
-          break;
-        case 'medical_appointment_button':
-          jsonObject.data = null,
-          jsonObject.defaultContent = "<button id='openMedicalAppointment'>Abrir</button><button>Se presento</button><button>No se Presento</button>"
-          break;
-      }
-      selfVue.columnDefinitionArray.push(jsonObject)
-
-      if (columnDefinition.order != undefined) {
-        selfVue.orderDefinitionArray.push(JSON.parse('[' + columnIndex + ',"' + columnDefinition.order + '"]'))
-      }
-      columnIndex++
-    });
     this.entityId = this.$route.params.entityId
-    this.browseurl = this.$parent.backendUrl + '/getBrowseData/'
-    switch (this.$route.params.browseType) {
+    switch (this.$route.params.browseName) {
       case 'allEmployees':
         this.browseurl = this.$parent.backendUrl + 'employees'
         this.detailComponent = 'EmployeeComponent'
@@ -271,7 +186,7 @@ export default {
         this.columnDefinitionValues = '[objectItem.id, objectItem.historyCode, objectItem.documentNumber, objectItem.phoneNumber, objectItem.fullName,objectItem.emailAddress,self.frontEndDateFormat(objectItem.birthday),]'
         break;
       case 'allMedicalAreas':
-        this.browseurl = this.$parent.backendUrl + 'medicalAreas'
+        //this.browseurl = this.$parent.backendUrl + 'medicalAreas'
         this.detailComponent = 'MedicalAreaComponent'
         this.title = 'Listado de Especialidades'
         this.newButtonTitle = 'Añadir Especialidad'
@@ -281,7 +196,7 @@ export default {
           "value": 0,
           "newEntityValue": null
         }, ]
-        this.columnDefinitionValues = '[objectItem.id, objectItem.areaName,]'
+        //this.columnDefinitionValues = '[objectItem.id, objectItem.areaName,]'
         break;
       case 'allMedicalHistories':
         this.browseurl = this.$parent.backendUrl + 'medicalHistories'
@@ -296,11 +211,10 @@ export default {
         }, ]
         this.columnDefinitionValues = '[objectItem.historyCode, objectItem.fileNumber, self.$parent.medicalHistoryStatus[objectItem.status],]'
         break;
-      case 'allMedicalAppointments':
-        this.browseurl = this.browseurl + 'allMedAppHeaderView'
-        this.browseName = 'allMedAppHeaderView'
+      case 'allMedAppHeaderView':
+        //this.browseName = this.$route.params.browseName
         //this.browseurl = this.$parent.backendUrl + 'medicalAppointments'
-        this.detailComponent = 'MedicalAppointmentComponent'
+        this.detailComponent = 'MedicalAppointmentPage'
         this.title = 'Listado de Citas'
         this.newButtonVisible = true
         this.newButtonTitle = 'Añadir Cita'
@@ -310,7 +224,7 @@ export default {
           "value": 0,
           "newEntityValue": null
         }, ]
-        this.columnDefinitionValues = '[objectItem.maId, objectItem.maHistoryCode,objectItem.maFullName,objectItem.emFullName,self.frontEndDatetimeFormat(objectItem.maDateAppointment),self.$parent.medicalAppointmentTypes[objectItem.maMedAppType],self.$parent.medicalAppointmentStatus[objectItem.maStatus],]'
+        //this.columnDefinitionValues = '[objectItem.maId, objectItem.maHistoryCode,objectItem.maFullName,objectItem.emFullName,self.frontEndDatetimeFormat(objectItem.maDateAppointment),self.$parent.medicalAppointmentTypes[objectItem.maMedAppType],self.$parent.medicalAppointmentStatus[objectItem.maStatus],]'
         break;
       case 'medicalAppointmentsToday':
         this.browseurl = this.$parent.backendUrl + 'medicalAppointmentsToday'
@@ -349,7 +263,7 @@ export default {
         break;
     }
     const dataContent = {
-        "browseName": this.browseName
+        "browseName": this.$route.params.browseName
     }
     const {
       requestPage
@@ -357,97 +271,89 @@ export default {
     const {
       dispatch
     } = this.$store;
+
     dispatch('browse/getBrowseData', {
         requestPage: requestPage,
-        processName: 'RetrieveMedicalAppointmentInfo',
-        dataContent: dataContent
+        processName: '',
+        dataContent: dataContent,
+        vueInstance: this
     });
-    /*
-    .then( response => {
 
-      var browseDataTable = $('#browseDataTable').DataTable({
-        responsive: true,
-        columnDefs: selfVue.columnDefinitionArray,
-        dom: 'Bfrtip',
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-        ],
-        order: selfVue.orderDefinitionArray,
-        //data: selfVue.dataOfDatatables,
-        "ajax": function (data, callback, settings) {
-            callback( { data: selfVue.dataOfDatatables } );
-        },
-        "columns": selfVue.columns
-      })
-      $('#browseDataTable tbody').on('click', '#openMedicalAppointment', function(self) {
-        //Remove event when the its on first element to dont overwrite more options button
-        var data = browseDataTable.row(this).data()
-        //console.log('You clicked on ' + data[0] + '\'s row')
-        selfVue.viewObjectDetails(data)
-      })
-    });
-    */
-
-    /*
-
-    axios.get(this.browseurl).then(response => {
-        selfVue.dataOfDatatables = response.data.data
-        // JS Load Data for datatables
-        var browseDataTable = $('#browseDataTable').DataTable({
-          responsive: true,
-          columnDefs: selfVue.columnDefinitionArray,
-          dom: 'Bfrtip',
-          buttons: [
-              'copy', 'csv', 'excel', 'pdf', 'print'
-          ],
-          order: selfVue.orderDefinitionArray,
-          //data: selfVue.dataOfDatatables,
-          "ajax": function (data, callback, settings) {
-              callback( { data: selfVue.dataOfDatatables } );
-          },
-          "columns": selfVue.columns
-        })
-
-        $('#browseDataTable tbody').on('click', '#openMedicalAppointment', function(self) {
-          //Remove event when the its on first element to dont overwrite more options button
-          var data = browseDataTable.row(this).data()
-          //console.log('You clicked on ' + data[0] + '\'s row')
-          selfVue.viewObjectDetails(data)
-        })
-
-      })
-      .catch(error => {
-        console.log(error)
-      })
-      */
-
+    $('#browseDataTable tbody').on('click', '#open', function(self) {
+      //Remove event when the its on first element to dont overwrite more options button
+      var dataRoute = this.getAttribute('data-funtion');
+      var rowData = $('#browseDataTable').DataTable().row(this).data();
+      if(rowData == undefined){
+        var $tr = $(this).closest('tr');
+        rowData = $('#browseDataTable').DataTable().row($tr).data();
+      }
+      selfVue.openObjectDetails(rowData,dataRoute);
+    })
+    $('#browseDataTable tbody').on('click', '#save', function(self) {
+      //Remove event when the its on first element to dont overwrite more options button
+      ;
+      var rowData = $('#browseDataTable').DataTable().row(this).data();
+      if(rowData == undefined){
+        var $tr = $(this).closest('tr');
+        rowData = $('#browseDataTable').DataTable().row($tr).data();
+      }
+      //console.log('You clicked on ' + data[0] + '\'s row')
+      var dataFuntion = this.getAttribute('data-funtion');
+      selfVue.saveObjectDetails(rowData,dataFuntion);
+    })
   },
   methods: {
-    viewObjectDetails: function(data) {
-      var routeObject = {}
-      var jsonString = '{"name":"' + this.detailComponent + '","params":{'
-      let selfVue = this
-      this.parametersArray.forEach(function(parameter) {
-        //Should be other parameter like identificator for example and not use visible
-        var dataParameter = null;
-        if (data == null) {
-          if (parameter.newEntityValue != null) {
-            dataParameter = selfVue.$route.params[parameter.newEntityValue]
-          }
-        } else {
-          dataParameter = data[parameter.key]
-        }
-        var sentParameterName = parameter.key
-        if (parameter.alias != null) {
-          sentParameterName = parameter.alias
-        }
-        jsonString = jsonString + '"' + sentParameterName + '":"' + dataParameter + '",'
+    openObjectDetails: function(rowData,dataRoute) {
+      var routeObject = {};
+      var jsonString = dataRoute;
+      dataRoute.match(/\${{(.*?)}}/g).forEach(function(dataRouteVariable) {
+        jsonString = jsonString.replace(dataRouteVariable,rowData[dataRouteVariable.match( /\$\{\{([^)]+)\}\}/)[1]]);
       });
-      jsonString = jsonString.substring(0, jsonString.length - 1);
-      jsonString = jsonString + '}}'
-      routeObject = JSON.parse(jsonString)
+      routeObject = JSON.parse(jsonString);
       //routeObject = JSON.parse('{"name":"' + this.detailComponent + '","params":{"' + this.entityIdName + '":"' + id + '"}}')
-      this.$router.push(routeObject)
+      this.$router.push(routeObject);
+    },
+    saveObjectDetails: function(rowData,dataFuntion) {
+      var routeObject = {};
+      var jsonFuntionString = dataFuntion;
+      dataFuntion.match(/\${{(.*?)}}/g).forEach(function(dataFuntionVariable) {
+        jsonFuntionString = jsonFuntionString.replace(dataFuntionVariable,rowData[dataFuntionVariable.match( /\$\{\{([^)]+)\}\}/)[1]]);
+      });
+      var functionJSONObject = JSON.parse(jsonFuntionString);
+      const {
+        dispatch,commit
+      } = this.$store;
+      dispatch(functionJSONObject.action, {
+        requestPage: functionJSONObject.params.requestPage,
+        processName: functionJSONObject.params.processName,
+        dataContent: functionJSONObject.params.dataContent
+      }).then(response => {
+          var dataContent = {
+            "browseName": this.$route.params.browseName
+          };
+          dispatch('browse/reloadBrowseData', {
+            requestPage: '',
+            processName: '',
+            dataContent: dataContent,
+            vueInstance: this
+          });
+        }, error => {
+            console.error("Got nothing from server. Prompt user to check internet connection and try again")
+        })
+      /*
+      .then(() => {
+
+        var dataContent = {
+          "browseName": this.$route.params.browseName
+        };
+        dispatch('browse/getBrowseData', {
+            requestPage: '',
+            processName: '',
+            dataContent: dataContent,
+            vueInstance: this
+        });
+      });
+      */
     },
   }
 }
