@@ -30,6 +30,22 @@ public class DataTable extends AuditModel {
             mappedBy = "dataTable")
     private Set<DataColumn> dataColumns = new HashSet<>();
 
+    /*
+    @OneToMany
+    @JoinColumn(name="data_table_id", referencedColumnName="id")
+    */
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JoinColumn(name = "data_table_id")
+    private Set<DataRowButton> dataRowButtons;
+
+    //Map one to one association between Person and Address
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="label_id")
+    private Label label;
+
     public Long getId() {
         return id;
     }
@@ -62,4 +78,19 @@ public class DataTable extends AuditModel {
         this.dataColumns = dataColumns;
     }
 
+    public Set<DataRowButton> getDataRowButtons() {
+        return dataRowButtons;
+    }
+
+    public void setDataRowButtons(Set<DataRowButton> dataRowButtons) {
+        this.dataRowButtons = dataRowButtons;
+    }
+
+    public Label getLabel() {
+        return label;
+    }
+
+    public void setLabel(Label label) {
+        this.label = label;
+    }
 }

@@ -10,10 +10,19 @@ public class CustomProcessSelector {
     RetrieveMedicalAppointmentInfo retrieveMedicalAppointmentInfo;
 
     @Autowired
+    RetrieveMedicalAreaInfo retrieveMedicalAreaInfo;
+
+    @Autowired
+    RetrieveUserProfileInfo retrieveUserProfileInfo;
+
+    @Autowired
     GetPatientByDocumentNumber getPatientByDocumentNumber;
 
     @Autowired
     SaveMedicalAppointment saveMedicalAppointment;
+
+    @Autowired
+    RegisterMedicalAppointment registerMedicalAppointment;
 
 
     public CustomProcess getCustomProcessClass(String customProcessName) throws Exception{
@@ -22,13 +31,21 @@ public class CustomProcessSelector {
             case "RetrieveMedicalAppointmentInfo":
                 customProcess = retrieveMedicalAppointmentInfo;
                 break;
+            case "RetrieveUserProfileInfo":
+                customProcess = retrieveUserProfileInfo;
+                break;
+            case "RetrieveMedicalAreaInfo":
+                customProcess = retrieveMedicalAreaInfo;
+                break;
             case "GetPatientByDocumentNumber":
                 customProcess = getPatientByDocumentNumber;
+                break;
+            case "RegisterMedicalAppointment":
+                customProcess = registerMedicalAppointment;
                 break;
             case "SaveMedicalAppointment":
                 customProcess = saveMedicalAppointment;
                 break;
-
             default:
                     throw new Exception("Process "+customProcessName+" has not been found");
         }

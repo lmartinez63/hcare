@@ -25,8 +25,8 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
         return medicalAppointmentRepository.findAll();
     }
 
-    public Optional<MedicalAppointment> findById(Long medicalAppointmentId) throws Exception{
-        return medicalAppointmentRepository.findById(medicalAppointmentId);
+    public MedicalAppointment findById(Long medicalAppointmentId) throws Exception{
+        return medicalAppointmentRepository.findById(medicalAppointmentId).get();
     }
 
     public List<MedicalAppointment> findByHistoryCode(Long historyCode) throws Exception{

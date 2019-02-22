@@ -36,6 +36,9 @@ public class DataColumn extends AuditModel {
     @Column(name="column_order")
     private String columnOrder;
 
+    @Column(name="order_number")
+    private Integer orderNumber;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "data_table_id", nullable = false)
@@ -104,5 +107,13 @@ public class DataColumn extends AuditModel {
 
     public void setColumnOrder(String columnOrder) {
         this.columnOrder = columnOrder;
+    }
+
+    public Integer getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(Integer orderNumber) {
+        this.orderNumber = orderNumber;
     }
 }

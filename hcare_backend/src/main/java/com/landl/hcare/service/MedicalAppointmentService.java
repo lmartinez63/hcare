@@ -13,7 +13,7 @@ public interface MedicalAppointmentService {
 
     public List<MedicalAppointment> findAll() throws Exception;
 
-    public Optional<MedicalAppointment> findById(Long medicalAppointmentId) throws Exception;
+    public MedicalAppointment findById(Long medicalAppointmentId) throws Exception;
 
     public List<MedicalAppointment> findByHistoryCode(Long historyCode) throws Exception;
 
