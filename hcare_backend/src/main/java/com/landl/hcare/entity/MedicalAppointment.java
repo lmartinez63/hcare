@@ -228,13 +228,19 @@ public class MedicalAppointment  extends AuditModel {
     }
 
     public String getDateAppointmentDateFormatted() {
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        return format.format(dateAppointment);
+        if (dateAppointment != null) {
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            return format.format(dateAppointment);
+        }
+        return null;
     }
 
     public String getDateAppointmentTimeFormatted() {
-        SimpleDateFormat format = new SimpleDateFormat("hh:mm a");
-        return format.format(dateAppointment);
+        if (dateAppointment != null) {
+            SimpleDateFormat format = new SimpleDateFormat("hh:mm a");
+            return format.format(dateAppointment);
+        }
+        return null;
     }
 
     public String getPreferentialDiagnostic() {

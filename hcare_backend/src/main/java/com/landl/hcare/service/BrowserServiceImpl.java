@@ -18,6 +18,8 @@ public class BrowserServiceImpl implements BrowserService {
 
     @Autowired
     MedAppHeaderViewRepository medAppHeaderViewRepository;
+    @Autowired
+    MedicalAreaService medicalAreaService;
 
     public List<MedAppHeaderView> findAllMedAppHeaderView() throws Exception {
         return medAppHeaderViewRepository.findAll();
@@ -29,6 +31,9 @@ public class BrowserServiceImpl implements BrowserService {
         switch (browseType){
             case "allMedAppHeaderView":
                 result = medAppHeaderViewRepository.findByLmatLanguageAndLmasLanguageOrderByMaDateAppointmentDesc("ES_ES","ES_ES");
+                break;
+            case "allMedicalAreas":
+                result = medicalAreaService.findAll();
                 break;
         }
         dataTableResult.setData(result);

@@ -29,6 +29,9 @@ public class Label extends AuditModel {
     @Column(name="label_value")
     private String labelValue;
 
+    @Column(name="label_value_es_es")
+    private String labelValueEsEs;
+
     @Column(name="validation_message")
     private String validationMessage;
 
@@ -93,5 +96,13 @@ public class Label extends AuditModel {
 
     public void setValidationMessage(String validationMessage) {
         this.validationMessage = validationMessage;
+    }
+
+    public String getLabelValueEsEs() {
+        return labelValueEsEs;
+    }
+
+    public void setLabelValueEsEs(String labelValueEsEs) {
+        this.labelValueEsEs = labelValueEsEs;
     }
 }
