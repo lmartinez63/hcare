@@ -87,6 +87,11 @@
 <script>
 export default {
     name: 'app',
+    data () {
+      return {
+        backendUrl: 'http://127.0.0.1:8080/'
+      }
+    },
     computed: {
         alert () {
             return this.$store.state.alert
