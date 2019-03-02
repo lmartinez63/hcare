@@ -36,11 +36,11 @@ public class MedicalAppointmentController {
     public List<MedicalAppointment> retrieveAllMedicalAppointments() throws Exception{
         return medicalAppointmentService.findAll();
     }
-
+    /*
     @GetMapping("/medicalAppointmentsToday")
     public List<MedicalAppointment> retrieveTodayMedicalAppointments() throws Exception{
         return medicalAppointmentService.findByToday();
-    }
+    }*/
 
     @PostMapping("/medicalAppointments")
     public MedicalAppointment saveMedicalAppointment(@Valid @RequestBody MedicalAppointment medicalAppointment) throws Exception{

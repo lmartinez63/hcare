@@ -30,6 +30,9 @@ public class CustomProcessSelector {
     @Autowired
     RegisterMedicalAppointment registerMedicalAppointment;
 
+    @Autowired
+    RetrieveMedicalHistoryInfo retrieveMedicalHistoryInfo;
+
 
     public CustomProcess getCustomProcessClass(String customProcessName) throws Exception{
         CustomProcess customProcess = null;
@@ -45,6 +48,9 @@ public class CustomProcessSelector {
                 break;
             case "RetrieveMedicalAreaInfo":
                 customProcess = retrieveMedicalAreaInfo;
+                break;
+            case "RetrieveMedicalHistoryInfo":
+                customProcess = retrieveMedicalHistoryInfo;
                 break;
             case "GetPatientByDocumentNumber":
                 customProcess = getPatientByDocumentNumber;

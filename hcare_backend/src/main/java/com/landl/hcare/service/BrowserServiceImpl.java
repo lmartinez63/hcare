@@ -22,6 +22,8 @@ public class BrowserServiceImpl implements BrowserService {
     MedicalAreaService medicalAreaService;
     @Autowired
     PatientService patientService;
+    @Autowired
+    MedicalAppointmentService medicalAppointmentService;
 
 
     public List<MedAppHeaderView> findAllMedAppHeaderView() throws Exception {
@@ -40,6 +42,9 @@ public class BrowserServiceImpl implements BrowserService {
                 break;
             case "allPatients":
                 result = patientService.findAll();
+                break;
+            case "medicalAppointmentsToday":
+                result = medicalAppointmentService.findByToday();
                 break;
         }
         dataTableResult.setData(result);
