@@ -50,7 +50,7 @@
                                 <ul>
                                     <li><router-link :to="{ name: 'MedicalAppointmentPage', params: { medicalAppointmentId: 'null' }}">Nueva Cita</router-link></li>
                                     <li><router-link :to="{ name: 'BrowsePage', params: { browseName: 'allMedAppHeaderView', entityId: 'null' }}">Listado de Citas</router-link></li>
-                                    <li><router-link :to="{ name: 'BrowseComponent', params: { browseType: 'medicalAppointmentsToday', entityId: 'null' }}">Listado de Citas de Hoy</router-link></li>
+                                    <li><router-link :to="{ name: 'BrowsePage', params: { browseName: 'medicalAppointmentsToday', entityId: 'null' }}">Listado de Citas de Hoy</router-link></li>
                                 </ul>
                             </li>
                             <li v-if="user.userProfile.pageSectionMap.medicalAreaInfo != undefined || user.userProfile.pageSectionMap.userProfileInfo != undefined" >
