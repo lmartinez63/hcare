@@ -104,10 +104,13 @@ public class ContentController {
 
     @PostMapping("/getBrowseContent")
     public Browse getBrowseContent(@RequestBody Map<String,Object> requestMap) throws Exception{
+        //Credential from Authorization
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
         Map requestDataMap = (Map)requestMap.get("data");
         String browseName = requestDataMap.get("browseName").toString();
         Browse browse = new Browse();
-        browse.setMetaDataBrowse(dataTableService.findByDataTableCode(browseName));
+        browse.setMetaDataBrowse(dataTableService.findByDataTableCodeAndUsername(browseName,username));
         browse.setDataBrowse(browserService.buildDataTableObject(browseName));
         return browse;
     }

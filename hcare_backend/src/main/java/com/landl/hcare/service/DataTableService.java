@@ -15,4 +15,7 @@ public interface DataTableService {
 
     public DataTable findByDataTableCode(String dataTableCode);
 
+    public DataTable findByDataTableCodeAndUsername(String dataTableCode, String username);
+
+
 }

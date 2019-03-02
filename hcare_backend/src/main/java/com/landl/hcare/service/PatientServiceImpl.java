@@ -36,9 +36,18 @@ public class PatientServiceImpl implements PatientService{
         return patient;
     };
 
-    public Optional<Patient> findById(Long patientId){
-        return patientRepository.findById(patientId);
+    public Patient findById(Long patientId) throws  Exception{
+        return patientRepository.findById(patientId).get();
     }
+
+    public Patient createPatient() throws  Exception{
+        Patient patient = new Patient();
+        //TODO it should come from database
+        //DefaultValues
+        patient.setDocumentType("1");
+        return patient;
+    }
+
     public Patient findByHistoryCode(Long historyCode) throws Exception{
         Patient patient = null;
         List<Patient> patientList  =  patientRepository.findByHistoryCode(historyCode);

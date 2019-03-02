@@ -3,7 +3,9 @@ package com.landl.hcare.entity;
 import com.landl.hcare.model.AuditModel;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -25,15 +27,15 @@ public class DataTable extends AuditModel {
     @Column(name="data_table_name")
     private String dataTableName;
 
+    /*
+    Remove auto foring key
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "dataTable")
-    private Set<DataColumn> dataColumns = new HashSet<>();
-
-    /*
-    @OneToMany
-    @JoinColumn(name="data_table_id", referencedColumnName="id")
     */
+    @Transient
+    private List<DataColumn> dataColumns = new ArrayList<>();
+
     @OneToMany(
             cascade = CascadeType.ALL,
             orphanRemoval = true
@@ -70,11 +72,11 @@ public class DataTable extends AuditModel {
         this.dataTableName = dataTableName;
     }
 
-    public Set<DataColumn> getDataColumns() {
+    public List<DataColumn> getDataColumns() {
         return dataColumns;
     }
 
-    public void setDataColumns(Set<DataColumn> dataColumns) {
+    public void setDataColumns(List<DataColumn> dataColumns) {
         this.dataColumns = dataColumns;
     }
 

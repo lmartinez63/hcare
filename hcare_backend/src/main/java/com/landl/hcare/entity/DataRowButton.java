@@ -20,6 +20,9 @@ public class DataRowButton extends AuditModel {
     @Column(name="data_row_button_code")
     private String dataRowButtonCode;
 
+    @Column(name="visibility_condition")
+    private String visibilityCondition;
+
     @Transient
     private String labelValue;
 
@@ -69,5 +72,13 @@ public class DataRowButton extends AuditModel {
 
     public void setLabel(Label label) {
         this.label = label;
+    }
+
+    public String getVisibilityCondition() {
+        return visibilityCondition;
+    }
+
+    public void setVisibilityCondition(String visibilityCondition) {
+        this.visibilityCondition = visibilityCondition;
     }
 }

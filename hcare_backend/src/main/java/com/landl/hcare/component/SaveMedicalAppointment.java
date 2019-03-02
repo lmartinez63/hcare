@@ -15,11 +15,6 @@ public class SaveMedicalAppointment extends CustomProcess {
 
         final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
         final MedicalAppointment medicalAppointmentRequest = mapper.convertValue(requestMap.get("medicalAppointment"), MedicalAppointment.class);
-
-        if (medicalAppointmentRequest.getId() == null) {
-            throw new Exception("MedicalAppointment not found");
-            //If is a new medical appointment send a reminder email
-        }
         MedicalAppointment medicalAppointment= medicalAppointmentService.findById(medicalAppointmentRequest.getId());
         copyNonNullProperties(medicalAppointmentRequest, medicalAppointment);
         medicalAppointmentService.save(medicalAppointment);

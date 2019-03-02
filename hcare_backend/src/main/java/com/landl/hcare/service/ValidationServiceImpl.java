@@ -45,13 +45,15 @@ public class ValidationServiceImpl implements ValidationService{
     public List<Validation> getValidationsByFieldDefinition(FieldDefinition fieldDefinition){
         //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         //new UserAuthenticated((User) authentication.getPrincipal()));
+        List<Validation> validationList = new ArrayList<Validation>();
         //TODO get language from current user
         String language = "ES_ES";
+        /* TODO Pending to to fix to get validations data
         List<Object[]> validationFields = validationRepository.findByFieldDefinitionIdAndLabel(fieldDefinition.getId(), language, fieldDefinition.getLabelCode(), fieldDefinition.getLabelModule(), fieldDefinition.getLabelSubModule());
-        List<Validation> validationList = new ArrayList<Validation>();
         for(Object[] validationField:validationFields){
             validationList.add(new Validation(((BigInteger)validationField[0]).longValue(), ((BigInteger)validationField[1]).longValue(), (String)validationField[2], (String)validationField[3], (String)validationField[4]));
         }
+        */
         return validationList;
     }
 }
