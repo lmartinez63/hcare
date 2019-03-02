@@ -32,6 +32,9 @@ public class UserProfile {
     @Column(name="email_address")
     private String emailAddress;
 
+    @Column(name="language")
+    private String language;
+
     @Column(name="first_name")
     private String firstName;
 
@@ -156,5 +159,13 @@ public class UserProfile {
 
     public void setPageSectionMap(Map pageSectionMap) {
         this.pageSectionMap = pageSectionMap;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }

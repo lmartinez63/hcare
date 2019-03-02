@@ -64,7 +64,8 @@ public class FieldServiceImpl implements FieldService{
     }
 
     public void evaluateFields(FieldDefinition fieldDefinition, Map dataSource) throws  Exception {
-        Label label = labelService.getByLabelCodeAndUserLanguage(fieldDefinition.getLabelCode(), fieldDefinition.getLabelModule(), fieldDefinition.getLabelSubModule());
+            //Label label = labelService.getByLabelCodeAndUserLanguage(fieldDefinition.getLabelCode(), fieldDefinition.getLabelModule(), fieldDefinition.getLabelSubModule());
+        Label label = fieldDefinition.getLabel();
         if (label != null){
             fieldDefinition.setLabelValue(label.getLabelValue());
             fieldDefinition.setValidationList(validationService.getValidationsByFieldDefinition(fieldDefinition));

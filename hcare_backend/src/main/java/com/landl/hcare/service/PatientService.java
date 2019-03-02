@@ -19,7 +19,9 @@ public interface PatientService {
 
     public Patient findByDocumentNumber(String documentNumber) throws Exception;
 
-    public Optional<Patient> findById(Long patientId);
+    public Patient findById(Long patientId) throws Exception;
+
+    public Patient createPatient() throws Exception;
 
     public Patient findByHistoryCode(Long historyCode) throws Exception;
 

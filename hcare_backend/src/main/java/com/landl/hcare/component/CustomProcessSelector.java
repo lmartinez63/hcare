@@ -10,6 +10,9 @@ public class CustomProcessSelector {
     RetrieveMedicalAppointmentInfo retrieveMedicalAppointmentInfo;
 
     @Autowired
+    RetrievePatientInfo retrievePatientInfo;
+
+    @Autowired
     RetrieveMedicalAreaInfo retrieveMedicalAreaInfo;
 
     @Autowired
@@ -22,6 +25,9 @@ public class CustomProcessSelector {
     SaveMedicalAppointment saveMedicalAppointment;
 
     @Autowired
+    SavePatient savePatient;
+
+    @Autowired
     RegisterMedicalAppointment registerMedicalAppointment;
 
 
@@ -30,6 +36,9 @@ public class CustomProcessSelector {
         switch(customProcessName){
             case "RetrieveMedicalAppointmentInfo":
                 customProcess = retrieveMedicalAppointmentInfo;
+                break;
+            case "RetrievePatientInfo":
+                customProcess = retrievePatientInfo;
                 break;
             case "RetrieveUserProfileInfo":
                 customProcess = retrieveUserProfileInfo;
@@ -45,6 +54,9 @@ public class CustomProcessSelector {
                 break;
             case "SaveMedicalAppointment":
                 customProcess = saveMedicalAppointment;
+                break;
+            case "SavePatient":
+                customProcess = savePatient;
                 break;
             default:
                     throw new Exception("Process "+customProcessName+" has not been found");

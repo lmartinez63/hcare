@@ -24,14 +24,10 @@ public class FieldDefinition extends AuditModel {
     @Column(name="field_definition_code")
     private String fieldDefinitionCode;
 
-    @Column(name="label_code")
-    private String labelCode;
-
-    @Column(name="label_module")
-    private String labelModule;
-
-    @Column(name="label_sub_module")
-    private String labelSubModule;
+    //Map one to one association between Person and Address
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="label_id")
+    private Label label;
 
     @Transient
     private String labelValue;
@@ -75,14 +71,6 @@ public class FieldDefinition extends AuditModel {
 
     public void setFieldDefinitionCode(String fieldDefinitionCode) {
         this.fieldDefinitionCode = fieldDefinitionCode;
-    }
-
-    public String getLabelCode() {
-        return labelCode;
-    }
-
-    public void setLabelCode(String labelCode) {
-        this.labelCode = labelCode;
     }
 
     public String getVisibleRuleExp() {
@@ -141,6 +129,14 @@ public class FieldDefinition extends AuditModel {
         this.fieldType = fieldType;
     }
 
+    public Label getLabel() {
+        return label;
+    }
+
+    public void setLabel(Label label) {
+        this.label = label;
+    }
+
     public String getLabelValue() {
         return labelValue;
     }
@@ -149,21 +145,6 @@ public class FieldDefinition extends AuditModel {
         this.labelValue = labelValue;
     }
 
-    public String getLabelModule() {
-        return labelModule;
-    }
-
-    public void setLabelModule(String labelModule) {
-        this.labelModule = labelModule;
-    }
-
-    public String getLabelSubModule() {
-        return labelSubModule;
-    }
-
-    public void setLabelSubModule(String labelSubModule) {
-        this.labelSubModule = labelSubModule;
-    }
 
     public List<Validation> getValidationList() {
         return validationList;

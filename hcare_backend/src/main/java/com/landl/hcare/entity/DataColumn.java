@@ -24,9 +24,6 @@ public class DataColumn extends AuditModel {
     @Column(name="data_column_name")
     private String dataColumnName;
 
-    @Column(name="field_definition_code")
-    private String fieldDefinitionCode;
-
     @Column(name="front_end_visibility")
     private String frontEndVisibility;
 
@@ -38,13 +35,21 @@ public class DataColumn extends AuditModel {
 
     @Column(name="order_number")
     private Integer orderNumber;
-
+/*
+    Remove auto foring key
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "data_table_id", nullable = false)
     private DataTable dataTable;
 
+    public DataTable getDataTable() {
+        return dataTable;
+    }
 
+    public void setDataTable(DataTable dataTable) {
+        this.dataTable = dataTable;
+    }
+    */
     public Long getId() {
         return id;
     }
@@ -69,13 +74,6 @@ public class DataColumn extends AuditModel {
         this.dataColumnName = dataColumnName;
     }
 
-    public String getFieldDefinitionCode() {
-        return fieldDefinitionCode;
-    }
-
-    public void setFieldDefinitionCode(String fieldDefinitionCode) {
-        this.fieldDefinitionCode = fieldDefinitionCode;
-    }
 
     public String getFrontEndVisibility() {
         return frontEndVisibility;
@@ -83,14 +81,6 @@ public class DataColumn extends AuditModel {
 
     public void setFrontEndVisibility(String frontEndVisibility) {
         this.frontEndVisibility = frontEndVisibility;
-    }
-
-    public DataTable getDataTable() {
-        return dataTable;
-    }
-
-    public void setDataTable(DataTable dataTable) {
-        this.dataTable = dataTable;
     }
 
     public String getColumnType() {

@@ -25,4 +25,5 @@ public class MedicalAreaServiceImpl implements MedicalAreaService{
     public Optional<MedicalArea> findById(Long medicalAreaId){
         return medicalAreaRepository.findById(medicalAreaId);
     }
+    
 }

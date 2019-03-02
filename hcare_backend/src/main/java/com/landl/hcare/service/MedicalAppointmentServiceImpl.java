@@ -1,15 +1,14 @@
 package com.landl.hcare.service;
 
+import com.landl.hcare.entity.Attachment;
 import com.landl.hcare.entity.MedicalAppointment;
+import com.landl.hcare.entity.Patient;
 import com.landl.hcare.repository.MedicalAppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class MedicalAppointmentServiceImpl implements MedicalAppointmentService {
@@ -27,6 +26,20 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
 
     public MedicalAppointment findById(Long medicalAppointmentId) throws Exception{
         return medicalAppointmentRepository.findById(medicalAppointmentId).get();
+    }
+    public MedicalAppointment createMedicalAppointment() throws  Exception{
+        MedicalAppointment medicalAppointment = new MedicalAppointment();
+        //TODO it should come from database
+        //DefaultValues
+        medicalAppointment.setStatus("0");
+        medicalAppointment.setDateAppointment(new Date());
+        medicalAppointment.setEmailAddress("novaclinicarequipa@gmail.com");
+        //TODO we Should use ENUMS
+        medicalAppointment.setDocumentType("1");
+        medicalAppointment.setMedicalAppointmentType("1");
+        medicalAppointment.setPatient(new Patient());
+        medicalAppointment.setAttachmentList(new ArrayList<>());
+        return medicalAppointment;
     }
 
     public List<MedicalAppointment> findByHistoryCode(Long historyCode) throws Exception{

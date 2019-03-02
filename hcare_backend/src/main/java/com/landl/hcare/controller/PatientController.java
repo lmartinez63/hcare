@@ -21,33 +21,16 @@ public class PatientController {
     @Autowired
     private MedicalHistoryService medicalHistoryService;
 
+    /*
     @GetMapping("/patients")
     public List<Patient> retrieveAllPatients() {
         return patientService.findAll();
     }
-
-    @GetMapping("/patients/{historyCode}")
-    public Patient retrieveByHistoryCode(@PathVariable Long historyCode) {
-        Patient patient = patientService.findById(historyCode).get();
-        return patient;
-    }
+    */
 
     @GetMapping("/retrievePatientByDocumentNumber/{documentNumber}")
     public Patient retrievePatientByDocumentNumber(@PathVariable String documentNumber) throws Exception {
         return patientService.findByDocumentNumber(documentNumber);
-    }
-
-    @PostMapping("/patients")
-    public Patient savePatient(@Valid @RequestBody Patient patient) {
-        /*
-        //Create MedicalHistory with historyCode if doesn't exits
-        MedicalHistory optMedicalHistory = medicalHistoryService.findById(patient.getHistoryCode());
-        if(optMedicalHistory != null){
-            MedicalHistory medicalHistory = medicalHistoryService.createMedicalHistory(patient);
-        }
-        Patient patientSaved = patientService.save(patient);
-        */
-        return patientService.save(patient);
     }
 
 }

@@ -14,11 +14,16 @@ public class RetrieveMedicalAppointmentInfo extends CustomProcess {
 
         final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
         final MedicalAppointment medicalAppointmentRequest = mapper.convertValue(requestMap.get("medicalAppointment"), MedicalAppointment.class);
-        MedicalAppointment medicalAppointment = medicalAppointmentService.findById(medicalAppointmentRequest.getId());
-        if(medicalAppointment.getDocumentType() != null){
-            medicalAppointment.setPatient(patientService.findByDocumentNumber(medicalAppointment.getDocumentNumber()));
+        MedicalAppointment medicalAppointment;
+        if(medicalAppointmentRequest.getId() != null) {
+            medicalAppointment = medicalAppointmentService.findById(medicalAppointmentRequest.getId());
+            if (medicalAppointment.getDocumentType() != null) {
+                medicalAppointment.setPatient(patientService.findByDocumentNumber(medicalAppointment.getDocumentNumber()));
+            }
+            medicalAppointment.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalAppointment", medicalAppointment.getId()));
+        } else {
+            medicalAppointment = medicalAppointmentService.createMedicalAppointment();
         }
-        medicalAppointment.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalAppointment", medicalAppointment.getId()));
         addDataToResultMap("medicalAppointment",medicalAppointment);
     }
 
