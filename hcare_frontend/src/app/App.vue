@@ -35,8 +35,8 @@
                             <li v-if="user.userProfile.pageSectionMap.patientInfo != undefined">
                               <a><i class="icono izquierda fa fa-star"></i>Administration de Pacientes<i class="icono derecha fa fa-chevron-down"></i></a>
                                 <ul>
-                                    <li><router-link :to="{ name: 'BrowseComponent', params: { browseType: 'allPatients', entityId: 'null' }}">Listado de Pacientes</router-link></li>
-                                    <li><router-link :to="{ name: 'PatientComponent', params: { id: 'null' }}">Registrar Paciente</router-link></li>
+                                    <li><router-link :to="{ name: 'BrowsePage', params: { browseName: 'allPatients', entityId: 'null' }}">Listado de Pacientes</router-link></li>
+                                    <li><router-link :to="{ name: 'PatientPage', params: { patientId: 'null' }}">Registrar Paciente</router-link></li>
                                 </ul>
                             </li>
                             <li v-if="user.userProfile.pageSectionMap.medicalHistoryInfo != undefined" >
@@ -49,7 +49,7 @@
                               <a><i class="icono izquierda fa fa-share-alt"></i>Administracion de Citas<i class="icono derecha fa fa-chevron-down"></i></a>
                                 <ul>
                                     <li><router-link :to="{ name: 'MedicalAppointmentPage', params: { medicalAppointmentId: 'null' }}">Nueva Cita</router-link></li>
-                                    <li><router-link :to="{ name: 'BrowseComponent', params: { browseName: 'allMedAppHeaderView', entityId: 'null' }}">Listado de Citas</router-link></li>
+                                    <li><router-link :to="{ name: 'BrowsePage', params: { browseName: 'allMedAppHeaderView', entityId: 'null' }}">Listado de Citas</router-link></li>
                                     <li><router-link :to="{ name: 'BrowseComponent', params: { browseType: 'medicalAppointmentsToday', entityId: 'null' }}">Listado de Citas de Hoy</router-link></li>
                                 </ul>
                             </li>
@@ -112,6 +112,23 @@ export default {
             this.$store.dispatch('general/getDoctors');
         }
         console.log('App - Create - end')
+    },
+    methods: {
+      getLabelValue: function (label) {
+        var lValue = '';
+        if(label){
+          var language = this.$store.state.authentication.user.userProfile.language;
+          switch(language) {
+            case 'ES_ES':
+              lValue = label.labelValueEsEs;
+              break;
+            default:
+              break;
+          }
+
+        }
+        return lValue;
+      },
     },
     watch:{
         $route (to, from){

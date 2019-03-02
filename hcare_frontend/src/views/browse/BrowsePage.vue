@@ -29,7 +29,7 @@ import axios from 'axios'
 import moment from 'moment'
 
 export default {
-  name: 'BrowseComponent',
+  name: 'BrowsePage',
   data() {
     return {
       requestPage: 'browseInfo',
@@ -72,30 +72,6 @@ export default {
           visible: true
         }, {
           columnName: 'Cargo',
-          visible: true
-        }]
-        break;
-      case 'allPatients':
-        this.columnDefinitionNames = [{
-          columnName: 'Id',
-          visible: false
-        }, {
-          columnName: '# de HC',
-          visible: true
-        }, {
-          columnName: 'DNI',
-          visible: true
-        }, {
-          columnName: 'Celular',
-          visible: true
-        }, {
-          columnName: 'Nombres y Apellidos',
-          visible: true
-        }, {
-          columnName: 'Email',
-          visible: true
-        }, {
-          columnName: 'Fecha de nacimiento',
           visible: true
         }]
         break;
