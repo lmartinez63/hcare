@@ -22,24 +22,24 @@ export const medicalAppointment = {
           error => commit('failureDetected', error)
         );
     },
-    saveEntity({ dispatch, commit }, { requestPage, processName, dataContent }) {
+    saveEntity({ dispatch, commit }, { requestPage, processName, dataContent ,returnRoute }) {
       return new Promise((resolve, reject) => {
         commit('pendingRequest');
-        dataResponseService.getContent(requestPage, processName, dataContent)
+        dataResponseService.getContent(requestPage, processName, dataContent, returnRoute)
           .then(
             content => {
               commit('saveEntitySuccess', content);
-              /*
-              router.push({
-                name: 'BrowseComponent',
-                params: {
-                  browseName: 'allMedAppHeaderView',
-                  entityId: 'null'
-                }
-              })*/
+              //TODO sucess message should come from a label translated from backend
+              dispatch('alert/success', 'Los datos fueron guardados satisfactoriamente', { root: true });
+              if ( returnRoute ) {
+                  router.push(returnRoute);
+              }
               resolve({status:200});
             },
-            error => commit('failureDetected', error)
+            error => {
+                commit('failureDetected', error);
+                dispatch('alert/error', error, { root: true });
+            }
           );
       })
     },
@@ -77,7 +77,7 @@ export const medicalAppointment = {
     },
     saveEntitySuccess(state, content) {
       state.loading = false;
-      console.log('medicalAppointmentResponse - mutations  - getByIdSuccess');
+      console.log('medicalAppointmentResponse - mutations  - saveEntitySuccess');
       state.data = content.dataContent.dataMap.medicalAppointment;
       state.metadata = content.metadataContent;
     },

@@ -9,6 +9,7 @@ import { medicalAppointment } from './medicalAppointment.module';
 import { userProfile } from './userProfile.module';
 import { medicalArea } from './medicalArea.module';
 import { browse } from './browse.module';
+import { patient } from './patient.module';
 
 Vue.use(Vuex);
 
@@ -21,6 +22,7 @@ export const store = new Vuex.Store({
         medicalAppointment,
         medicalArea,
         browse,
-        userProfile
+        userProfile,
+        patient
     }
 });

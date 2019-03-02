@@ -8,6 +8,9 @@ export const alert = {
         success({ commit }, message) {
             commit('success', message);
         },
+        warning({ commit }, message) {
+            commit('warning', message);
+        },
         error({ commit }, message) {
             commit('error', message);
         },
@@ -18,6 +21,10 @@ export const alert = {
     mutations: {
         success(state, message) {
             state.type = 'alert-success';
+            state.message = message;
+        },
+        warning(state, message) {
+            state.type = 'alert-warning';
             state.message = message;
         },
         error(state, message) {

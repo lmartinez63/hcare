@@ -4,6 +4,7 @@ import Router from 'vue-router';
 import HomePage from '../views/home/HomePage'
 import LoginPage from '../views/login/LoginPage'
 import MedicalAppointmentPage from '../views/medicalAppointment/MedicalAppointmentPage'
+import PatientPage from '../views/patient/PatientPage'
 import BrowsePage from '../views/browse/BrowsePage'
 import UserProfilePage from '../views/userProfile/UserProfilePage'
 import MedicalAreaPage from '../views/medicalArea/MedicalAreaPage'
@@ -16,9 +17,10 @@ export const router = new Router({
     { path: '/', component: HomePage },
     { path: '/login', component: LoginPage },
     { path: '/medicalAppointment/:medicalAppointmentId', name:'MedicalAppointmentPage', component: MedicalAppointmentPage },
+    { path: '/patient/:patientId', name:'PatientPage', component: PatientPage },
     { path: '/medicalArea/:medicalAreaId', name:'MedicalAreaPage', component: MedicalAreaPage },
     { path: '/userProfile/:userProfileId', name:'UserProfilePage', component: UserProfilePage },
-    { path: '/browse/:browseName/:entityId', name: 'BrowseComponent', component: BrowsePage},
+    { path: '/browse/:browseName/:entityId', name: 'BrowsePage', component: BrowsePage},
     // otherwise redirect to home
     { path: '*', redirect: '/' }
   ]

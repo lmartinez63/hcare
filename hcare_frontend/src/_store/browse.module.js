@@ -60,9 +60,9 @@ export const browse = {
             var orderDefinitionArray = [];
             var columnIndex = 0;
             state.metadata.dataColumns.forEach(function(columnDefinition) {
-              columns.push({mData: columnDefinition.fieldDefinitionCode, sTitle: columnDefinition.dataColumnName});
+              columns.push({mData: columnDefinition.dataColumnCode, sTitle: columnDefinition.dataColumnName});
               var colType = ''
-              if (columnDefinition.columnType != undefined) {
+              if (columnDefinition.columnType != undefined && columnDefinition.columnType !== 'rowButtons') {
                 colType = ',"type": "'+columnDefinition.columnType+'"'
               }
               var visibility = ''
@@ -87,7 +87,10 @@ export const browse = {
                   //jsonObject.data = null;
                   state.metadata.dataRowButtons.forEach(function(rowButton) {
                     //TODO set labelValue as user language
-                    jsonObject.defaultContent = jsonObject.defaultContent + "<div id='"+rowButton.dataRowButtonCode+"' data-funtion='"+rowButton.dataRowButtonEvent+"' >"+rowButton.label.labelValueEsEs+"</div>";
+                    var visibility = eval(rowButton.visibilityCondition);
+                    if ( visibility == null || visibility == 'true' ) {
+                        jsonObject.defaultContent = jsonObject.defaultContent + "<div id='"+rowButton.dataRowButtonCode+"' data-funtion='"+rowButton.dataRowButtonEvent+"' >"+rowButton.label.labelValueEsEs+"</div>";
+                    }
                   })
                   break;
               };
