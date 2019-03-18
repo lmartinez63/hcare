@@ -3,7 +3,7 @@ package com.landl.hcare.entity;
 import com.landl.hcare.model.AuditModel;
 
 import javax.persistence.*;
-
+//TODO Change to extends to frontEndButton class on extends
 @Entity
 @Table(name="data_row_button")
 public class DataRowButton extends AuditModel {

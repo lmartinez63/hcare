@@ -36,8 +36,20 @@ public class FieldServiceImpl implements FieldService{
         return fieldRepository.getFieldsByPageCodeAndUsername(pageCode, serviceCode, username);
     }
 
-    public Optional<FieldDefinition> findById(Long fieldId){
-        return fieldRepository.findById(fieldId);
+    public List<FieldDefinition> getFieldsBySectionCode(String serviceCode){
+        return fieldRepository.getFieldsBySectionCode(serviceCode);
+    }
+
+    public FieldDefinition findById(Long fieldId){
+        return fieldRepository.findById(fieldId).get();
+    }
+
+    public FieldDefinition createFieldDefinition(){
+        FieldDefinition fieldDefinition = new FieldDefinition();
+        fieldDefinition.setEditRuleExp("true");
+        fieldDefinition.setVisibleRuleExp("true");
+        fieldDefinition.setFieldType(1);
+        return fieldDefinition;
     }
 
     public void evaluateRules(FieldDefinition fieldDefinition, Map dataSource) {
@@ -57,7 +69,7 @@ public class FieldServiceImpl implements FieldService{
             try{
                 fieldDefinition.setEditable(RuleManager.evaluateExpression(fieldDefinition.getEditRuleExp(),dataSource));
             } catch(Exception e){
-                e.printStackTrace();
+//                e.printStackTrace();
                 fieldDefinition.setEditable(false);
             }
         }
@@ -65,11 +77,13 @@ public class FieldServiceImpl implements FieldService{
 
     public void evaluateFields(FieldDefinition fieldDefinition, Map dataSource) throws  Exception {
             //Label label = labelService.getByLabelCodeAndUserLanguage(fieldDefinition.getLabelCode(), fieldDefinition.getLabelModule(), fieldDefinition.getLabelSubModule());
+        /* Not longer neccesary label comes from field foreing relation to label
         Label label = fieldDefinition.getLabel();
         if (label != null){
             fieldDefinition.setLabelValue(label.getLabelValue());
+        */
             fieldDefinition.setValidationList(validationService.getValidationsByFieldDefinition(fieldDefinition));
-        }
+        //}
         fieldDefinition.setObjectValue(UtilityTools.getObjectValue(fieldDefinition.getDefinition(), dataSource));
         //fieldDefinition.setFieldType(fieldDefinition.getObjectValue().getClass().getSimpleName());
     }

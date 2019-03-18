@@ -28,11 +28,34 @@ public class CustomProcessSelector {
     SavePatient savePatient;
 
     @Autowired
+    SavePage savePage;
+
+    @Autowired
+    SaveSection saveSection;
+
+    @Autowired
+    SaveFieldDefinition saveFieldDefinition;
+
+    @Autowired
+    SaveLabel saveLabel;
+
+    @Autowired
     RegisterMedicalAppointment registerMedicalAppointment;
 
     @Autowired
     RetrieveMedicalHistoryInfo retrieveMedicalHistoryInfo;
 
+    @Autowired
+    RetrievePageInfo retrievePageInfo;
+
+    @Autowired
+    RetrieveSectionInfo retrieveSectionInfo;
+
+    @Autowired
+    RetrieveFieldDefinitionInfo retrieveFieldDefinitionInfo;
+
+    @Autowired
+    RetrieveLabelInfo retrieveLabelInfo;
 
     public CustomProcess getCustomProcessClass(String customProcessName) throws Exception{
         CustomProcess customProcess = null;
@@ -49,6 +72,18 @@ public class CustomProcessSelector {
             case "RetrieveMedicalAreaInfo":
                 customProcess = retrieveMedicalAreaInfo;
                 break;
+            case "RetrievePageInfo":
+                customProcess = retrievePageInfo;
+                break;
+            case "RetrieveSectionInfo":
+                customProcess = retrieveSectionInfo;
+                break;
+            case "RetrieveFieldDefinitionInfo":
+                customProcess = retrieveFieldDefinitionInfo;
+                break;
+            case "RetrieveLabelInfo":
+                customProcess = retrieveLabelInfo;
+                break;
             case "RetrieveMedicalHistoryInfo":
                 customProcess = retrieveMedicalHistoryInfo;
                 break;
@@ -63,6 +98,18 @@ public class CustomProcessSelector {
                 break;
             case "SavePatient":
                 customProcess = savePatient;
+                break;
+            case "SavePage":
+                customProcess = savePage;
+                break;
+            case "SaveSection":
+                customProcess = saveSection;
+                break;
+            case "SaveFieldDefinition":
+                customProcess = saveFieldDefinition;
+                break;
+            case "SaveLabel":
+                customProcess = saveLabel;
                 break;
             default:
                     throw new Exception("Process "+customProcessName+" has not been found");

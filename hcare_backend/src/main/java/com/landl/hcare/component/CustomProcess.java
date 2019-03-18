@@ -26,6 +26,18 @@ public abstract class  CustomProcess {
     PatientService patientService;
 
     @Autowired
+    PageService pageService;
+
+    @Autowired
+    SectionService sectionService;
+
+    @Autowired
+    FieldService fieldService;
+
+    @Autowired
+    LabelService labelService;
+
+    @Autowired
     UserService userService;
 
     @Autowired

@@ -70,6 +70,7 @@ public class PropertyServiceImpl implements PropertyService{
     }
 
     public Map<String,Map<String,String>> getPropertiesGroupByModule() throws Exception{
+        //TODO Change to work with language_eses
         Map<String,Map<String,String>> moduleMap = new HashMap<String, Map<String,String>>();
         List<Object[]> returnData = propertyRepository.findPropertyGroupByModule();
         for(Object[] data:returnData){

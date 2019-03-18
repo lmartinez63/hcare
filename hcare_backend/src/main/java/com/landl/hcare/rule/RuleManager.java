@@ -2,6 +2,7 @@ package com.landl.hcare.rule;
 
 import com.landl.hcare.common.UtilityTools;
 import com.landl.hcare.entity.MedicalAppointment;
+import com.landl.hcare.entity.Patient;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -28,7 +29,11 @@ public class RuleManager {
             MedicalAppointment medicalAppointment = new MedicalAppointment();
             medicalAppointment.setStatus("20");
             entityMap.put("medicalAppointment",medicalAppointment);
-            String expression = "'{{medicalAppointment.status}}' > '10'";
+
+            Patient patient = new Patient();
+            patient.setHistoryCode(new Long(123123));
+            String expression = "{{patient.historyCode}} !== null";
+            entityMap.put("patient",patient);
             evaluateExpression(expression, entityMap);
         } catch (Exception e){
             e.printStackTrace();

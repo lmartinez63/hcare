@@ -14,15 +14,19 @@ public interface PageService {
 
     public List<Page> findAll();
 
-    public Optional<Page> findById(Long pageId);
+    public Page findById(Long pageId);
 
     public Page findByPageCode(String pageCode);
+
+    public Page createPage();
 
     public Page findByPageCodeAndUsername(String pageCode,String username);
 
     public Page findPageSectionAndFieldsByPageCodeAndUserName(String pageCode, String username);
 
     public void verifyIfCurrentUserIsAuthorizated(Page page, Map dataSource);
+
+    public void evaluateRules(Page page, Map dataSource) throws Exception;
 
     public void processFields(Page page, Map dataSource) throws Exception;
 }

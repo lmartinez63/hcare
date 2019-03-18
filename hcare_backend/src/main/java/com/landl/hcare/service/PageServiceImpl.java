@@ -1,10 +1,7 @@
 package com.landl.hcare.service;
 
 import com.landl.hcare.common.UtilityTools;
-import com.landl.hcare.entity.FieldDefinition;
-import com.landl.hcare.entity.Page;
-import com.landl.hcare.entity.Section;
-import com.landl.hcare.entity.UserProfile;
+import com.landl.hcare.entity.*;
 import com.landl.hcare.repository.PageRepository;
 import com.landl.hcare.rule.RuleManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +36,14 @@ public class PageServiceImpl implements PageService {
         return pageRepository.findAll();
     }
 
-    public Optional<Page> findById(Long pageId){
-        return pageRepository.findById(pageId);
+    public Page findById(Long pageId){
+        return pageRepository.findById(pageId).get();
+    }
+
+    public Page createPage(){
+        Page page = new Page();
+        page.setVisibleRuleExp("true");
+        return page;
     }
 
     public Page findByPageCode(String pageCode){
@@ -72,10 +75,27 @@ public class PageServiceImpl implements PageService {
         }
     }
 
+    public void evaluateRules(Page page, Map dataSource) throws Exception {
+        //By default set Visible to true
+        for (PageButton pageButton:page.getPageButtons()) {
+            pageButton.setVisible(true);
+            if(!UtilityTools.isEmpty(pageButton.getVisibleRuleExp())){
+                try{
+                    pageButton.setVisible(RuleManager.evaluateExpression(pageButton.getVisibleRuleExp(),dataSource));
+                } catch(Exception e){
+                    //e.printStackTrace();
+                    pageButton.setVisible(false);
+                }
+            }
+        }
+    }
+
     public void processFields(Page page, Map dataSource) throws Exception {
+        evaluateRules(page,dataSource);
         for(Section section:page.getSectionList()){
             sectionService.evaluateRules(section, dataSource);
-            sectionService.evaluateFields(section, dataSource);
+            //Not longer neccesary labels comes from label relation
+            //sectionService.evaluateFields(section, dataSource);
             for(FieldDefinition fieldDefinition:section.getFieldDefinitionList()){
                 fieldService.evaluateRules(fieldDefinition, dataSource);
                 fieldService.evaluateFields(fieldDefinition, dataSource);

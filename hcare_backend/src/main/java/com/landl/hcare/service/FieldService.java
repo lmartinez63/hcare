@@ -15,7 +15,11 @@ public interface FieldService {
 
     public List<FieldDefinition> getFieldsByPageSectionCodeAndUsername(String pageCode, String serviceCode,String username);
 
-    public Optional<FieldDefinition> findById(Long fieldId);
+    public List<FieldDefinition> getFieldsBySectionCode(String serviceCode);
+
+    public FieldDefinition findById(Long fieldId);
+
+    public FieldDefinition createFieldDefinition();
 
     public void evaluateRules(FieldDefinition fieldDefinition, Map dataSource);
 

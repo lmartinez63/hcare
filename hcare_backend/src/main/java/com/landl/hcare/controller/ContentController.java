@@ -1,5 +1,6 @@
 package com.landl.hcare.controller;
 
+import com.landl.hcare.common.UtilityTools;
 import com.landl.hcare.component.CustomProcessSelector;
 import com.landl.hcare.config.TokenProvider;
 import com.landl.hcare.entity.*;
@@ -108,10 +109,12 @@ public class ContentController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         Map requestDataMap = (Map)requestMap.get("data");
-        String browseName = requestDataMap.get("browseName").toString();
+        String browseName = UtilityTools.isNull((String)requestDataMap.get("browseName").toString());
+        Map<String,Object> browseParameters = (Map<String,Object>)requestDataMap.get("browseParameters");
         Browse browse = new Browse();
-        browse.setMetaDataBrowse(dataTableService.findByDataTableCodeAndUsername(browseName,username));
-        browse.setDataBrowse(browserService.buildDataTableObject(browseName));
+        DataTable dataTable = dataTableService.findByDataTableCodeAndUsername(browseName,username);
+        browse.setMetaDataBrowse(dataTable);
+        browse.setDataBrowse(browserService.buildDataTableObject(dataTable.getQueryString(),browseParameters));
         return browse;
     }
 
