@@ -50,8 +50,13 @@ public class LabelServiceImpl implements LabelService{
         return labelRepository.findAll();
     }
 
-    public Optional<Label> findById(Long labelId){
-        return labelRepository.findById(labelId);
+    public Label findById(Long labelId){
+        return labelRepository.findById(labelId).get();
+    }
+
+    public Label createLabel(){
+        Label label = new Label();
+        return label;
     }
 
     @CacheResult

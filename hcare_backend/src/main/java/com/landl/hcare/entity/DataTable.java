@@ -24,6 +24,9 @@ public class DataTable extends AuditModel {
     @Column(name="data_table_code")
     private String dataTableCode;
 
+    @Column(name="query_string",length = 10485760)
+    private String queryString;
+
     @Column(name="data_table_name")
     private String dataTableName;
 
@@ -94,5 +97,13 @@ public class DataTable extends AuditModel {
 
     public void setLabel(Label label) {
         this.label = label;
+    }
+
+    public String getQueryString() {
+        return queryString;
+    }
+
+    public void setQueryString(String queryString) {
+        this.queryString = queryString;
     }
 }

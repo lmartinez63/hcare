@@ -7,11 +7,12 @@ import com.landl.hcare.entity.MedicalAppointment;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface BrowserService {
 
     public List<MedAppHeaderView> findAllMedAppHeaderView() throws Exception;
-    public DataTableResult buildDataTableObject(String browseType) throws Exception;
+    public DataTableResult buildDataTableObject(String browseType, Map<String,Object> browseParameters) throws Exception;
 
 }

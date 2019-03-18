@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -37,7 +38,13 @@ public class UtilityTools {
                             break;
                     }
                 }else{
-                    reflectedValue = getReflectedValue(dinamicValue, dataSource).toString();
+                    Object objectValue = getReflectedValue(dinamicValue, dataSource);
+                    if(objectValue != null){
+                        reflectedValue = getReflectedValue(dinamicValue, dataSource).toString();
+                    }
+                    else{
+                        reflectedValue = "null";
+                    }
                 }
 
                 formatedValue = formatedValue.replace("{{" + dinamicValue + "}}", reflectedValue);
@@ -103,6 +110,10 @@ public class UtilityTools {
     }
 
     public static String isNull(String value){
+        return (value == null) ? "" : value;
+    }
+
+    public static Object checkForNull(Object value){
         return (value == null) ? "" : value;
     }
 

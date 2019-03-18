@@ -29,6 +29,14 @@ public class Page extends AuditModel {
     @Transient
     private Boolean visible;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="label_id")
+    private Label label;
+
+    @OneToMany
+    @OrderBy("display_order")
+    @JoinColumn(name = "page_id")
+    private List<PageButton> pageButtons;
     /*
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "page_field", joinColumns = {
@@ -95,5 +103,21 @@ public class Page extends AuditModel {
 
     public void setSectionMap(Map<String, Section> sectionMap) {
         this.sectionMap = sectionMap;
+    }
+
+    public Label getLabel() {
+        return label;
+    }
+
+    public void setLabel(Label label) {
+        this.label = label;
+    }
+
+    public List<PageButton> getPageButtons() {
+        return pageButtons;
+    }
+
+    public void setPageButtons(List<PageButton> pageButtons) {
+        this.pageButtons = pageButtons;
     }
 }

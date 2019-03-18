@@ -13,12 +13,14 @@ public interface SectionService {
 
     public List<Section> findAll();
 
-    public List<Section> getSectionsByPageCodeAndUsername(String section, String username);
+    public List<Section> getSectionsByPageCode(String pageCode);
 
-    public Optional<Section> findById(Long sectionId);
+    public List<Section> getSectionsByPageCodeAndUsername(String pageCode, String username);
+
+    public Section findById(Long sectionId);
+
+    public Section createSection();
 
     public void evaluateRules(Section section, Map dataSource);
-
-    public void evaluateFields(Section section, Map dataSource) throws  Exception;
 
 }

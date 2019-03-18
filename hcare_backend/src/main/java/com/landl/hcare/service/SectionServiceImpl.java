@@ -34,6 +34,11 @@ public class SectionServiceImpl implements SectionService{
         return sectionRepository.findAll();
     }
 
+    public List<Section> getSectionsByPageCode(String pageCode){
+        List<Section> sectionList = sectionRepository.getSectionsByPageCode(pageCode);
+        return sectionList;
+    }
+
     public List<Section> getSectionsByPageCodeAndUsername(String pageCode, String username){
         List<Section> sectionList = sectionRepository.getSectionsByPageCodeAndUsername(pageCode, username);
         for(Section section:sectionList){
@@ -43,8 +48,14 @@ public class SectionServiceImpl implements SectionService{
         return sectionList;
     }
 
-    public Optional<Section> findById(Long sectionId){
-        return sectionRepository.findById(sectionId);
+    public Section findById(Long sectionId){
+        return sectionRepository.findById(sectionId).get();
+    }
+
+    public Section createSection(){
+        Section section = new Section();
+        section.setVisibleRuleExp("true");
+        return section;
     }
 
     public void evaluateRules(Section section, Map dataSource) {
@@ -60,12 +71,14 @@ public class SectionServiceImpl implements SectionService{
         }
 
     }
-
+    /* Not Longer neccesary
     public void evaluateFields(Section section, Map dataSource) throws  Exception {
+
         Label label = labelService.getByLabelCodeAndUserLanguage(section.getLabelCode(), section.getLabelModule(), section.getLabelSubModule());
         if (label != null){
             section.setLabelValue(label.getLabelValue());
         }
-    }
 
+    }
+    */
 }

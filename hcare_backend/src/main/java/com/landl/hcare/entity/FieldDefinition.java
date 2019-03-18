@@ -40,7 +40,7 @@ public class FieldDefinition extends AuditModel {
     private Object objectValue;
 
     @Column(name="field_type")
-    private String fieldType;
+    private Integer fieldType;
 
     @Column(name="visible_rule_exp")
     private String visibleRuleExp;
@@ -56,6 +56,7 @@ public class FieldDefinition extends AuditModel {
 
     @Transient
     private List<Validation> validationList;
+
 
     public Long getId() {
         return id;
@@ -121,11 +122,11 @@ public class FieldDefinition extends AuditModel {
         this.objectValue = objectValue;
     }
 
-    public String getFieldType() {
+    public Integer getFieldType() {
         return fieldType;
     }
 
-    public void setFieldType(String fieldType) {
+    public void setFieldType(Integer fieldType) {
         this.fieldType = fieldType;
     }
 

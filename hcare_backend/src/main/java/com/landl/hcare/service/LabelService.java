@@ -13,7 +13,9 @@ public interface LabelService {
 
     public List<Label> findAll();
 
-    public Optional<Label> findById(Long labelId);
+    public Label findById(Long labelId);
+
+    public Label createLabel();
 
     public Label getByLabelCodeAndUserLanguage(String labelCode, String module, String subModule);
 

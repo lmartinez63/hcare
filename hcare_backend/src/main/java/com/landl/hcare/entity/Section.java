@@ -28,14 +28,9 @@ public class Section extends AuditModel {
     @Transient
     private Boolean visible;
 
-    @Column(name="label_code")
-    private String labelCode;
-
-    @Column(name="label_module")
-    private String labelModule;
-
-    @Column(name="label_sub_module")
-    private String labelSubModule;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="label_id")
+    private Label label;
 
     @Transient
     private String labelValue;
@@ -86,28 +81,12 @@ public class Section extends AuditModel {
         this.fieldDefinitionList = fieldDefinitionList;
     }
 
-    public String getLabelCode() {
-        return labelCode;
+    public Label getLabel() {
+        return label;
     }
 
-    public void setLabelCode(String labelCode) {
-        this.labelCode = labelCode;
-    }
-
-    public String getLabelModule() {
-        return labelModule;
-    }
-
-    public void setLabelModule(String labelModule) {
-        this.labelModule = labelModule;
-    }
-
-    public String getLabelSubModule() {
-        return labelSubModule;
-    }
-
-    public void setLabelSubModule(String labelSubModule) {
-        this.labelSubModule = labelSubModule;
+    public void setLabel(Label label) {
+        this.label = label;
     }
 
     public String getLabelValue() {
@@ -125,4 +104,5 @@ public class Section extends AuditModel {
     public void setFieldDefinitionMap(Map<String, FieldDefinition> fieldDefinitionMap) {
         this.fieldDefinitionMap = fieldDefinitionMap;
     }
+
 }

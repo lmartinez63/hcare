@@ -38,7 +38,9 @@ public class DataTableResult {
 
     public void setData(List<Object> data) {
         this.data = data;
-        this.setRecordsTotal(data.size());
-        this.setRecordsFiltered(data.size());
+        if (data != null){
+            this.setRecordsTotal(data.size());
+            this.setRecordsFiltered(data.size());
+        }
     }
 }

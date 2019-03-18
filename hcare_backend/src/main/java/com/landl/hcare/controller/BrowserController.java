@@ -21,9 +21,11 @@ public class BrowserController {
         return browserService.findAllMedAppHeaderView();
     }
 
+    /*
     @RequestMapping(value = "/getBrowseData/{browseType}", method = RequestMethod.GET)
     public DataTableResult getBrowseData(@PathVariable("browseType") String browseType) throws Exception{
         return browserService.buildDataTableObject(browseType);
     }
+    */
 
 }
