@@ -8,6 +8,7 @@ import PatientPage from '../views/patient/PatientPage'
 import BrowsePage from '../views/browse/BrowsePage'
 import UserProfilePage from '../views/userProfile/UserProfilePage'
 import MedicalAreaPage from '../views/medicalArea/MedicalAreaPage'
+import MedicalHistoryPage from '../views/medicalHistory/MedicalHistoryPage'
 
 Vue.use(Router);
 
@@ -19,6 +20,7 @@ export const router = new Router({
     { path: '/medicalAppointment/:medicalAppointmentId', name:'MedicalAppointmentPage', component: MedicalAppointmentPage },
     { path: '/patient/:patientId', name:'PatientPage', component: PatientPage },
     { path: '/medicalArea/:medicalAreaId', name:'MedicalAreaPage', component: MedicalAreaPage },
+    { path: '/medicalHistory/:historyCode', name:'MedicalHistoryPage', component: MedicalHistoryPage },
     { path: '/userProfile/:userProfileId', name:'UserProfilePage', component: UserProfilePage },
     { path: '/browse/:browseName/:entityId', name: 'BrowsePage', component: BrowsePage},
     // otherwise redirect to home

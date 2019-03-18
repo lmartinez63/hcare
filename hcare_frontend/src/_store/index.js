@@ -10,6 +10,7 @@ import { userProfile } from './userProfile.module';
 import { medicalArea } from './medicalArea.module';
 import { browse } from './browse.module';
 import { patient } from './patient.module';
+import { medicalHistory } from './medicalHistory.module';
 
 Vue.use(Vuex);
 
@@ -20,6 +21,7 @@ export const store = new Vuex.Store({
         users,
         general,
         medicalAppointment,
+        medicalHistory,
         medicalArea,
         browse,
         userProfile,
