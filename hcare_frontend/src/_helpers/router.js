@@ -9,6 +9,10 @@ import BrowsePage from '../views/browse/BrowsePage'
 import UserProfilePage from '../views/userProfile/UserProfilePage'
 import MedicalAreaPage from '../views/medicalArea/MedicalAreaPage'
 import MedicalHistoryPage from '../views/medicalHistory/MedicalHistoryPage'
+import PageDefinitionPage from '../views/configuration/PageDefinitionPage'
+import SectionPage from '../views/configuration/SectionPage'
+import FieldDefinitionPage from '../views/configuration/FieldDefinitionPage'
+import LabelPage from '../views/configuration/LabelPage'
 
 Vue.use(Router);
 
@@ -22,7 +26,11 @@ export const router = new Router({
     { path: '/medicalArea/:medicalAreaId', name:'MedicalAreaPage', component: MedicalAreaPage },
     { path: '/medicalHistory/:historyCode', name:'MedicalHistoryPage', component: MedicalHistoryPage },
     { path: '/userProfile/:userProfileId', name:'UserProfilePage', component: UserProfilePage },
-    { path: '/browse/:browseName/:entityId', name: 'BrowsePage', component: BrowsePage},
+    { path: '/browse/:browseName', name: 'BrowsePage', component: BrowsePage},
+    { path: '/page/:pageId', name: 'PageDefinitionPage', component: PageDefinitionPage},
+    { path: '/section/:sectionId', name: 'SectionPage', component: SectionPage},
+    { path: '/fieldDefinition/:fieldDefinitionId', name: 'FieldDefinitionPage', component: FieldDefinitionPage},
+    { path: '/label/:labelId', name: 'LabelPage', component: LabelPage},
     // otherwise redirect to home
     { path: '*', redirect: '/' }
   ]

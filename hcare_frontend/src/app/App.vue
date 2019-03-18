@@ -35,7 +35,7 @@
                             <li v-if="user.userProfile.pageSectionMap.patientInfo != undefined">
                               <a><i class="icono izquierda fa fa-star"></i>Administration de Pacientes<i class="icono derecha fa fa-chevron-down"></i></a>
                                 <ul>
-                                    <li><router-link :to="{ name: 'BrowsePage', params: { browseName: 'allPatients', entityId: 'null' }}">Listado de Pacientes</router-link></li>
+                                    <li><router-link :to="{ name: 'BrowsePage', params: { browseName: 'allPatients' }}">Listado de Pacientes</router-link></li>
                                     <li><router-link :to="{ name: 'PatientPage', params: { patientId: 'null' }}">Registrar Paciente</router-link></li>
                                 </ul>
                             </li>
@@ -49,15 +49,27 @@
                               <a><i class="icono izquierda fa fa-share-alt"></i>Administracion de Citas<i class="icono derecha fa fa-chevron-down"></i></a>
                                 <ul>
                                     <li><router-link :to="{ name: 'MedicalAppointmentPage', params: { medicalAppointmentId: 'null' }}">Nueva Cita</router-link></li>
-                                    <li><router-link :to="{ name: 'BrowsePage', params: { browseName: 'allMedAppHeaderView', entityId: 'null' }}">Listado de Citas</router-link></li>
-                                    <li><router-link :to="{ name: 'BrowsePage', params: { browseName: 'medicalAppointmentsToday', entityId: 'null' }}">Listado de Citas de Hoy</router-link></li>
+                                    <li><router-link :to="{ name: 'BrowsePage', params: { browseName: 'allMedAppHeaderView' }}">Listado de Citas</router-link></li>
+                                    <li><router-link :to="{ name: 'BrowsePage', params: { browseName: 'medicalAppointmentsToday' }}">Listado de Citas de Hoy</router-link></li>
                                 </ul>
                             </li>
                             <li v-if="user.userProfile.pageSectionMap.medicalAreaInfo != undefined || user.userProfile.pageSectionMap.userProfileInfo != undefined" >
                               <a><i class="icono izquierda fa fa-share-alt"></i>Configuraciones<i class="icono derecha fa fa-chevron-down"></i></a>
                                 <ul>
-                                    <li v-if="user.userProfile.pageSectionMap.medicalAreaInfo != undefined" ><router-link :to="{ name: 'BrowseComponent', params: { browseName: 'allMedicalAreas', entityId: 'null' }}">Listado de Especialidades</router-link></li>
-                                    <li v-if="user.userProfile.pageSectionMap.userProfileInfo != undefined" ><router-link :to="{ name: 'BrowseComponent', params: { browseType: 'allEmployees', entityId: 'null' }}">Listado de Colaboradores</router-link></li>
+                                    <li v-if="user.userProfile.pageSectionMap.medicalAreaInfo != undefined" ><router-link :to="{ name: 'BrowsePage', params: { browseName: 'allMedicalAreas' }}">Listado de Especialidades</router-link></li>
+                                    <li v-if="user.userProfile.pageSectionMap.userProfileInfo != undefined" ><router-link :to="{ name: 'BrowsePage', params: { browseName: 'allEmployees' }}">Listado de Colaboradores</router-link></li>
+                                    <li v-if="user.userProfile.pageSectionMap.pageInfo != undefined" >
+                                      <router-link :to="{ name: 'BrowsePage', params: { browseName: 'allPages' }}">Listado de Paginas</router-link>
+                                    </li>
+                                    <li v-if="user.userProfile.pageSectionMap.pageInfo != undefined" >
+                                      <router-link :to="{ name: 'PageDefinitionPage', params: { pageId: 'null' }}">Nueva Pagina</router-link>
+                                    </li>
+                                    <li v-if="user.userProfile.pageSectionMap.permissionSettingInfo != undefined" >
+                                          <router-link :to="{ name: 'BrowsePage', params: { browseName: 'fieldAssignmentByRole' }}">Asignacion de Campos de Paginas</router-link>
+                                    </li>
+                                    <li v-if="user.userProfile.pageSectionMap.permissionSettingInfo != undefined" >
+                                          <router-link :to="{ name: 'BrowsePage', params: { browseName: 'dataColumnAssignmentByRole' }}">Asignacion de Campos de Busquedas</router-link>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>

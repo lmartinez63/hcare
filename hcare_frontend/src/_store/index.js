@@ -11,6 +11,7 @@ import { medicalArea } from './medicalArea.module';
 import { browse } from './browse.module';
 import { patient } from './patient.module';
 import { medicalHistory } from './medicalHistory.module';
+import { config } from './config.module';
 
 Vue.use(Vuex);
 
@@ -25,6 +26,7 @@ export const store = new Vuex.Store({
         medicalArea,
         browse,
         userProfile,
-        patient
+        patient,
+        config
     }
 });
