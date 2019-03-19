@@ -7,7 +7,7 @@
     "pre-build": "rimraf ./node_modules/.cache",
     "build": "webpack --progress --profile --colors --display-error-details --display-cached --config webpack.config.js",
     "lint": "vue-cli-service lint",
-    "start": "webpack-dev-server --open"
+    "start": "webpack-dev-server --host 0.0.0.0 --port 8081 --open"
   },
   "dependencies": {
     "axios": "^0.18.0",
