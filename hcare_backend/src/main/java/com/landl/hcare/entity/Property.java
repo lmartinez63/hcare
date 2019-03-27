@@ -30,6 +30,11 @@ public class Property extends AuditModel {
     @Transient
     private String labelValue;
 
+    //Map one to one association between Person and Address
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="label_id")
+    private Label label;
+
     public Property() {
     }
 
@@ -79,4 +84,13 @@ public class Property extends AuditModel {
     public void setLabelValue(String labelValue) {
         this.labelValue = labelValue;
     }
+
+    public Label getLabel() {
+        return label;
+    }
+
+    public void setLabel(Label label) {
+        this.label = label;
+    }
+
 }

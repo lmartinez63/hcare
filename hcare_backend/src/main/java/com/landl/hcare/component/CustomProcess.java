@@ -17,6 +17,9 @@ import java.util.Set;
 public abstract class  CustomProcess {
 
     @Autowired
+    RolePageSectionFieldService rolePageSectionFieldService;
+
+    @Autowired
     MedicalAppointmentService medicalAppointmentService;
 
     @Autowired
@@ -33,6 +36,9 @@ public abstract class  CustomProcess {
 
     @Autowired
     FieldService fieldService;
+
+    @Autowired
+    RoleService roleService;
 
     @Autowired
     LabelService labelService;

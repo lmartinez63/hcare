@@ -29,7 +29,7 @@ public class Page extends AuditModel {
     @Transient
     private Boolean visible;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="label_id")
     private Label label;
 
@@ -120,4 +120,5 @@ public class Page extends AuditModel {
     public void setPageButtons(List<PageButton> pageButtons) {
         this.pageButtons = pageButtons;
     }
+
 }

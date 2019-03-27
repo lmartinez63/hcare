@@ -2,13 +2,7 @@ package com.landl.hcare.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.landl.hcare.common.UtilityTools;
 import com.landl.hcare.entity.DataTableResult;
-import com.landl.hcare.entity.MedAppHeaderView;
-import com.landl.hcare.entity.MedicalAppointment;
-import com.landl.hcare.entity.Patient;
-import com.landl.hcare.repository.MedAppHeaderViewRepository;
-import com.landl.hcare.repository.MedicalAppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +15,6 @@ import java.util.*;
 @Service
 public class BrowserServiceImpl implements BrowserService {
 
-    @Autowired
-    MedAppHeaderViewRepository medAppHeaderViewRepository;
     @Autowired
     MedicalAreaService medicalAreaService;
     @Autowired
@@ -45,35 +37,24 @@ public class BrowserServiceImpl implements BrowserService {
     @PersistenceContext
     EntityManager entityManager;
 
-
-    public List<MedAppHeaderView> findAllMedAppHeaderView() throws Exception {
-        return medAppHeaderViewRepository.findAll();
-    }
-
     public DataTableResult buildDataTableObject(String queryString, Map<String,Object> browseParameters) throws Exception {
         DataTableResult dataTableResult = new DataTableResult();
-        List result = null;
+        List result = getQuery(queryString,browseParameters);
+        /*
         switch (queryString){
-            case "allMedAppHeaderView":
-                result = medAppHeaderViewRepository.findByLmatLanguageAndLmasLanguageOrderByMaDateAppointmentDesc("ES_ES","ES_ES");
-                break;
             case "allMedicalAreas":
                 result = medicalAreaService.findAll();
                 break;
-            case "allPatients":
-                result = patientService.findAll();
-                break;
+
             case "medicalAppointmentsToday":
                 result = medicalAppointmentService.findByToday();
                 break;
-            case "medicalAppointmentsByPatient":
-                //result = medicalAppointmentService.findByDocumentNumber(entityId);
-                break;
+
             default:
                 result = getQuery(queryString,browseParameters);
                 break;
 
-        }
+        }*/
         dataTableResult.setData(result);
         dataTableResult.setDraw(1);
 

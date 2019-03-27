@@ -1,5 +1,6 @@
 package com.landl.hcare.config;
 
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,10 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
-
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+        int internalErrorCode = 99;
+        if(authException instanceof BadCredentialsException){
+            internalErrorCode = 1;
+        }
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, String.valueOf(internalErrorCode));
     }
 }

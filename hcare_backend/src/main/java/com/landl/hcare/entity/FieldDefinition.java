@@ -25,7 +25,7 @@ public class FieldDefinition extends AuditModel {
     private String fieldDefinitionCode;
 
     //Map one to one association between Person and Address
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="label_id")
     private Label label;
 
