@@ -176,6 +176,7 @@ export default {
         selfVue.$parent.errorMessage("Por favor complete los campos requeridos")
       } else {
         dispatch('config/saveSectionEntity', {
+          vm: this,
           requestPage: requestPage,
           processName: 'SaveSection',
           dataContent: dataContent,

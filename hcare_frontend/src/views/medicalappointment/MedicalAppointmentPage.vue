@@ -1,9 +1,9 @@
 <template>
 <div class="content-container">
   <section data-ui-view="" class="view-container animate-fade-up">
-    <section class="page">
+    <section v-if="page && page.sectionMap" class="page">
       <div class="titleForm">
-        Cita Medica
+        {{$parent.getLabelValue(page.label)}}
       </div>
       <div class="row ui-section contentMain">
         <div class="btnMoreActions" onClick="openThreePoint()">
@@ -12,31 +12,22 @@
           </div>
           <div class="moreOptions" id="moreOptions">
             <div class="menuContent">
-              <div v-on:click="saveObjectState()" class="link">
-                <div class="icon"><i class="fas fa-save"></i></div>
-                <div class="text">Guardar</div>
+              <div v-for="button in page.pageButtons" v-if="button.visible" v-on:click="executeAction(button)" class="link">
+                <div class="icon"><i class="button.icon"></i></div>
+                <div class="text">{{$parent.getLabelValue(button.label)}}</div>
               </div>
-              <div v-on:click="updateStatus('10')" class="link">
-                <div class="icon"><i class="fas fa-save"></i></div>
-                <div class="text">En Atencion</div>
-              </div>
-              <div v-on:click="updateStatus('90')" class="link">
-                <div class="icon"><i class="fas fa-save"></i></div>
-                <div class="text">No se presento</div>
-              </div>
-              <!-- specialButtons -->
             </div>
           </div>
         </div>
         <div v-if="page && page.sectionMap" class="formBox">
           <div class="headerFacNew">
             <div v-if="page.sectionMap.patientInfo && page.sectionMap.patientInfo.visible && page.sectionMap.patientInfo.fieldDefinitionMap" class="subTitle">
-              Datos de Paciente
+              {{$parent.getLabelValue(page.sectionMap.patientInfo.label)}}
             </div>
             <div v-if="page.sectionMap.patientInfo && page.sectionMap.patientInfo.visible && page.sectionMap.patientInfo.fieldDefinitionMap" class="twoCol">
               <div v-if="page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.medicalAppointmentType && page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.medicalAppointmentType.visible" class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label form-group">
-                  <select v-model="medicalAppointment.medicalAppointmentType">
+                  <select v-model="medicalAppointment.medicalAppointmentType" :disabled="!page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.medicalAppointmentType.editable" >
                     <option v-for="(value, key, index) in medicalAppointmentTypes" v-bind:value="key">
                       {{ value }}
                     </option>
@@ -60,35 +51,35 @@
             -->
               <div v-if="page.sectionMap.patientInfo.fieldDefinitionMap.documentNumber && page.sectionMap.patientInfo.fieldDefinitionMap.documentNumber.visible" class="group">
                 <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.medicalAppointment.documentNumber.$error }">
-                  <input class="form__input mdl-textfield__input" type="text" name="medicalAppointment-documentNumber" id="medicalAppointment-documentNumber" v-model.trim="$v.medicalAppointment.documentNumber.$model" @change="getPatientInfo()" />
+                  <input :disabled="!page.sectionMap.patientInfo.fieldDefinitionMap.documentNumber.editable"  class="form__input mdl-textfield__input" type="text" name="medicalAppointment-documentNumber" id="medicalAppointment-documentNumber" v-model.trim="$v.medicalAppointment.documentNumber.$model" @change="getPatientInfo()" />
                   <label class="form__label labelText" for="medicalAppointment-documentNumber">{{$parent.getLabelValue( page.sectionMap.patientInfo.fieldDefinitionMap.documentNumber.label)}}</label>
                 </div>
                 <div class="error" v-if="!$v.medicalAppointment.documentNumber.required">Numero de Documento requerido</div>
               </div>
               <div v-if="page.sectionMap.patientInfo.fieldDefinitionMap.firstName && page.sectionMap.patientInfo.fieldDefinitionMap.firstName.visible" class="group">
                 <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.medicalAppointment.firstName.$error }">
-                  <input class="form__input mdl-textfield__input" type="text" name="medicalAppointment-firstName" id="medicalAppointment-firstName" v-model.trim="$v.medicalAppointment.firstName.$model" @input="forceUppercase($event, medicalAppointment, 'firstName')" />
+                  <input :disabled="!page.sectionMap.patientInfo.fieldDefinitionMap.firstName.editable" class="form__input mdl-textfield__input" type="text" name="medicalAppointment-firstName" id="medicalAppointment-firstName" v-model.trim="$v.medicalAppointment.firstName.$model" @input="forceUppercase($event, medicalAppointment, 'firstName')" />
                   <label class="form__label labelText" for="medicalAppointment-firstName">{{$parent.getLabelValue( page.sectionMap.patientInfo.fieldDefinitionMap.firstName.label)}}</label>
                 </div>
                 <div class="error" v-if="!$v.medicalAppointment.firstName.required">Nombres requeridos</div>
               </div>
               <div v-if="page.sectionMap.patientInfo.fieldDefinitionMap.lastName && page.sectionMap.patientInfo.fieldDefinitionMap.lastName.visible" class="group">
                 <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.medicalAppointment.lastName.$error }">
-                  <input class="form__input mdl-textfield__input" type="text" name="medicalAppointment-lastName" id="medicalAppointment-lastName" v-model.trim="$v.medicalAppointment.lastName.$model" @input="forceUppercase($event, medicalAppointment, 'lastName')" />
+                  <input :disabled="!page.sectionMap.patientInfo.fieldDefinitionMap.lastName.editable" class="form__input mdl-textfield__input" type="text" name="medicalAppointment-lastName" id="medicalAppointment-lastName" v-model.trim="$v.medicalAppointment.lastName.$model" @input="forceUppercase($event, medicalAppointment, 'lastName')" />
                   <label class="form__label labelText" for="medicalAppointment-lastName">{{$parent.getLabelValue( page.sectionMap.patientInfo.fieldDefinitionMap.lastName.label)}}</label>
                 </div>
                 <div class="error" v-if="!$v.medicalAppointment.lastName.required">Apellidos requeridos</div>
               </div>
               <div v-if="page.sectionMap.patientInfo.fieldDefinitionMap.celPhoneNumber && page.sectionMap.patientInfo.fieldDefinitionMap.celPhoneNumber.visible" class="group">
                 <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.medicalAppointment.celPhoneNumber.$error }">
-                  <input class="form__input mdl-textfield__input" type="text" name="medicalAppointment-celPhoneNumber" id="medicalAppointment-celPhoneNumber" v-model="$v.medicalAppointment.celPhoneNumber.$model" />
+                  <input :disabled="!page.sectionMap.patientInfo.fieldDefinitionMap.celPhoneNumber.editable" class="form__input mdl-textfield__input" type="text" name="medicalAppointment-celPhoneNumber" id="medicalAppointment-celPhoneNumber" v-model="$v.medicalAppointment.celPhoneNumber.$model" />
                   <label class="form__label labelText" for="medicalAppointment-celPhoneNumber">{{$parent.getLabelValue( page.sectionMap.patientInfo.fieldDefinitionMap.celPhoneNumber.label)}}</label>
                 </div>
                 <div class="error" v-if="!$v.medicalAppointment.celPhoneNumber.required">Numero Celular requerido</div>
               </div>
               <div v-if="page.sectionMap.patientInfo.fieldDefinitionMap.emailAddress && page.sectionMap.patientInfo.fieldDefinitionMap.emailAddress.visible" class="group">
                 <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.medicalAppointment.emailAddress.$error }">
-                  <input class="form__input mdl-textfield__input" type="text" name="medicalAppointment-emailAddress" id="medicalAppointment-emailAddress" v-model.trim="$v.medicalAppointment.emailAddress.$model" />
+                  <input :disabled="!page.sectionMap.patientInfo.fieldDefinitionMap.emailAddress.editable" class="form__input mdl-textfield__input" type="text" name="medicalAppointment-emailAddress" id="medicalAppointment-emailAddress" v-model.trim="$v.medicalAppointment.emailAddress.$model" />
                   <label class="form__label labelText" for="medicalAppointment-emailAddress">{{$parent.getLabelValue( page.sectionMap.patientInfo.fieldDefinitionMap.emailAddress.label)}}</label>
                 </div>
                 <div class="error" v-if="!$v.medicalAppointment.emailAddress.required">Email requerido</div>
@@ -96,13 +87,13 @@
               </div>
             </div>
             <div v-if="page.sectionMap.medicalAppointmentInfo && page.sectionMap.medicalAppointmentInfo.visible && page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap" class="subTitle">
-              Datos de la Cita
+              {{$parent.getLabelValue(page.sectionMap.medicalAppointmentInfo.label)}}
             </div>
             <div class="twoCol">
               <div v-if="page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.dateAppointment && page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.dateAppointment.visible" class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <!--<datepicker v-model="medicalAppointment.dateAppointment"></datepicker>-->
-                  <datetime type="datetime" :minute-step="30" v-model="medicalAppointment.dateAppointment"></datetime>
+                  <datetime :disabled="!page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.dateAppointment.editable" type="datetime" :minute-step="30" v-model="medicalAppointment.dateAppointment"></datetime>
                   <label class="labelText" for="medicalAppointment-dateAppointment">{{$parent.getLabelValue( page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.dateAppointment.label)}}</label>
                 </div>
               </div>
@@ -116,7 +107,7 @@
 -->
               <div v-if="page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.medicalAreaId && page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.medicalAreaId.visible" class="group">
                 <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.medicalAppointment.medicalAreaId.$error }">
-                  <select v-model="$v.medicalAppointment.medicalAreaId.$model">
+                  <select :disabled="!page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.medicalAreaId.editable" v-model="$v.medicalAppointment.medicalAreaId.$model">
                     <option v-for="medicalArea in medicalAreas.items" v-bind:value="medicalArea.id">
                       {{ medicalArea.areaName }}
                     </option>
@@ -127,7 +118,7 @@
               </div>
               <div v-if="page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.doctorId && page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.doctorId.visible" class="group">
                 <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <select v-model="$v.medicalAppointment.doctorId.$model">
+                  <select :disabled="!page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.medicalAreaId.editable" v-model="$v.medicalAppointment.doctorId.$model">
                     <option v-for="doctor in doctors.items" v-bind:value="doctor.id">
                       {{ doctor.fullName }}
                     </option>
@@ -138,7 +129,7 @@
               </div>
               <div  v-if="page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.notes && page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.notes.visible" class="groupFull">
                 <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.medicalAppointment.notes.$error }">
-                  <input class="mdl-textfield__input" type="text" name="medicalAppointment-notes" id="medicalAppointment-notes" v-model="$v.medicalAppointment.notes.$model" @input="forceUppercase($event, medicalAppointment, 'notes')" />
+                  <input :disabled="!page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.notes.editable" class="mdl-textfield__input" type="text" name="medicalAppointment-notes" id="medicalAppointment-notes" v-model="$v.medicalAppointment.notes.$model" @input="forceUppercase($event, medicalAppointment, 'notes')" />
                   <label class="labelText" for="medicalAppointment-notes">{{$parent.getLabelValue( page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.notes.label)}}</label>
                 </div>
                 <div class="error" v-if="!$v.medicalAppointment.notes.maxLength">Cantidad de caracteres excedido</div>
@@ -146,7 +137,7 @@
               <!-- medicalAppointment in attend -->
               <div v-if="page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.preferentialDiagnostic && page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.preferentialDiagnostic.visible" class="groupFull">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <select v-model="medicalAppointment.preferentialDiagnostic">
+                  <select :disabled="!page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.preferentialDiagnostic.editable" v-model="medicalAppointment.preferentialDiagnostic">
                     <option v-for="(value, key, index) in preferentialDiagnostics" v-bind:value="key">
                       {{ value }}
                     </option>
@@ -156,16 +147,16 @@
               </div>
               <div v-if="page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.diagnostic && page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.diagnostic.visible" class="groupFull">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="medicalAppointment-diagnostic" id="medicalAppointment-diagnostic" v-model="medicalAppointment.diagnostic" @input="forceUppercase($event, medicalAppointment, 'diagnostic')" />
+                  <input :disabled="!page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.diagnostic.editable" class="mdl-textfield__input" type="text" name="medicalAppointment-diagnostic" id="medicalAppointment-diagnostic" v-model="medicalAppointment.diagnostic" @input="forceUppercase($event, medicalAppointment, 'diagnostic')" />
                   <label class="labelText" for="medicalAppointment-diagnostic">{{$parent.getLabelValue( page.sectionMap.medicalAppointmentInfo.fieldDefinitionMap.diagnostic.label)}}</label>
                 </div>
               </div>
             </div>
             <div v-if="page && page.sectionMap && page.sectionMap.attachmentInfo && page.sectionMap.attachmentInfo.visible" class="subTitle">
-              Documentos Adjuntos
+              {{$parent.getLabelValue(page.sectionMap.attachmentInfo.label)}}
             </div>
             <div v-if="page && page.sectionMap && page.sectionMap.attachmentInfo && page.sectionMap.attachmentInfo.visible" class="twoCol">
-              <ul id="attachment-list">
+              <ul v-if="page.sectionMap.attachmentInfo.fieldDefinitionMap.attachmentList && page.sectionMap.attachmentInfo.fieldDefinitionMap.attachmentList.visible"  id="attachment-list">
                 <li v-for="attachment in medicalAppointment.attachmentList">
                   <div v-on:click="downloadAttachment(attachment)">
                     <span>{{ attachment.fileName }}</span>
@@ -323,6 +314,26 @@ export default {
       this.saveObjectState();
       // this.$router.push({ name: '/'})
     },
+    executeAction: function(button) {
+      let selfVue = this
+      switch (button.buttonType) {
+        case 1:
+          var routeObject = {};
+          var jsonString = button.eventDefinition;
+          var eventArray = button.eventDefinition.match(/\${{(.*?)}}/g);
+          for (var i = 0, len = eventArray.length; i < len; i++) {
+            var dataRouteVariable = eventArray[i];
+            jsonString = jsonString.replace(dataRouteVariable, eval(dataRouteVariable.match(/\$\{\{([^)]+)\}\}/)[1]));
+          }
+          routeObject = JSON.parse(jsonString);
+          this.$router.push(routeObject);
+          break;
+        case 2:
+          eval(button.eventDefinition);
+          break;
+      }
+
+    },
     saveObjectState: function() {
       console.log("MedicalAppointmentPage - method - saveObjectState - begin");
       const dataContent = {
@@ -340,6 +351,7 @@ export default {
         selfVue.$parent.errorMessage("Por favor complete los campos requeridos")
       } else {
         dispatch('medicalAppointment/saveEntity', {
+          vm: this,
           requestPage: requestPage,
           processName: 'RegisterMedicalAppointment',
           dataContent: dataContent,

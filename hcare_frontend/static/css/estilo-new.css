@@ -1,0 +1,60 @@
+<style>
+.form__input {
+    font-size: 14px;
+    text-indent: 10px;
+}
+
+.btn {
+	display: box;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+    -ms-flex-align:center;
+	-webkit-align-items:center;
+	align-items:center;
+	-webkit-align-content:center;
+	align-content:center;
+    -webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	color: #fff;
+	padding: 10px 15px;
+	font-size: 14px;
+	line-height: 14px;
+	text-align: center;
+	cursor: pointer;
+	text-transform: uppercase;
+    -webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+    width: 120px;
+}
+
+.btn.btn-primary {
+    background: #2962FF;
+}
+
+.btn.btn-primary:hover {
+    background: #0346ff;
+    -webkit-box-shadow: 0 3px 3px rgba(204, 204, 204, 0.5);
+	-moz-box-shadow: 0 3px 3px rgba(204, 204, 204, 0.5);
+	box-shadow: 0 3px 3px rgba(204, 204, 204, 0.5);
+}
+
+.form-group {
+    position: relative;
+}
+    
+.form-group .labelText{
+    top: -16px;
+}
+.form__input {
+    font-size: 14px !important;
+    margin-top: 20px;
+}   
+.form-group--error .form__label {
+    display: none;
+}
+</style>

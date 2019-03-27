@@ -3,7 +3,7 @@
   <section data-ui-view="" class="view-container animate-fade-up">
     <section class="page">
       <div class="titleForm">
-        {{title}}
+        {{dataBrowse.dataTableName}}
       </div>
       <div class="row ui-section">
         <div class="formBox">
@@ -53,6 +53,9 @@ export default {
     dataColumns() {
       return this.$store.state.browse.metadata.dataColumns;
     },
+    dataBrowse() {
+      return this.$store.state.browse.metadata;
+    }
   },
   created: function() {
     console.log('created-' + 'BrowseComponent')

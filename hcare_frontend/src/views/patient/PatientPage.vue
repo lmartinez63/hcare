@@ -10,7 +10,7 @@
           </div>
           <div class="moreOptions" id="moreOptions">
             <div class="menuContent">
-            
+
               <div v-for="button in page.pageButtons"  v-if="button.visible" v-on:click="executeAction(button)" class="link">
                 <div class="icon"><i class="button.icon"></i></div>
                 <div class="text">{{$parent.getLabelValue(button.label)}}</div>
@@ -276,6 +276,7 @@ export default {
         selfVue.$parent.errorMessage("Por favor complete los campos requeridos")
       } else {
         dispatch('patient/saveEntity', {
+          vm: this,
           requestPage: requestPage,
           processName: 'SavePatient',
           dataContent: dataContent,

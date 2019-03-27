@@ -11,20 +11,30 @@ export const medicalHistory = {
   },
   actions: {
     getHistoryCode({ dispatch, commit }, { requestPage, processName, dataContent }) {
+      commit('general/setLoading',true,{ root: true });
       commit('pendingRequest');
       dataResponseService.getContent(requestPage, processName, dataContent)
         .then(
-          content => commit('getHistoryCodeSuccess', content),
-          error => commit('failureDetected', error)
+          content => {
+            commit('getHistoryCodeSuccess', content);
+            commit('general/setLoading',false,{ root: true });
+          },
+          error => {
+            commit('failureDetected', error)
+            dispatch('alert/error', error, { root: true });
+          }
         );
     },
-    saveEntity({ dispatch, commit }, { requestPage, processName, dataContent }) {
+    saveEntity({ dispatch, commit }, { vm, requestPage, processName, dataContent }) {
       return new Promise((resolve, reject) => {
+        commit('general/setLoading',true,{ root: true });
         commit('pendingRequest');
         dataResponseService.getContent(requestPage, processName, dataContent)
           .then(
             content => {
               commit('saveEntitySuccess', content);
+              dispatch('alert/success', {"vm": vm, "message":'Los datos fueron guardados satisfactoriamente'}, { root: true });
+              commit('general/setLoading',false,{ root: true });
               /*
               router.push({
                 name: 'BrowseComponent',
@@ -35,7 +45,10 @@ export const medicalHistory = {
               })*/
               resolve({status:200});
             },
-            error => commit('failureDetected', error)
+            error => {
+              commit('failureDetected', error),
+              dispatch('alert/error', error, { root: true });
+            }
           );
       })
     },

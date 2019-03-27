@@ -165,6 +165,7 @@ export default {
         this.$parent.errorMessage("Por favor complete los campos requeridos")
       } else {
         dispatch('config/savePageEntity', {
+          vm: this,
           requestPage: requestPage,
           processName: 'SavePage',
           dataContent: dataContent,

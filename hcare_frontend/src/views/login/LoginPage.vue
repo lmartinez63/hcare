@@ -18,7 +18,7 @@
             <div class="group">
               <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.password.$error }">
                 <input class="form__input mdl-textfield__input" type="password" name="password" id="password" v-model="$v.password.$model" />
-                <label class="form__label labelText" for="password">Usuario</label>
+                <label class="form__label labelText" for="password">Password</label>
               </div>
               <div class="error" v-if="!$v.password.required">Password requerido</div>
             </div>

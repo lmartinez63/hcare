@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import VueFlashMessage from 'vue-flash-message';
+import VueSwal from 'vue-swal';
 
 import { alert } from './alert.module';
 import { authentication } from './authentication.module';
@@ -14,6 +16,8 @@ import { medicalHistory } from './medicalHistory.module';
 import { config } from './config.module';
 
 Vue.use(Vuex);
+Vue.use(VueSwal);
+Vue.use(VueFlashMessage);
 
 export const store = new Vuex.Store({
     modules: {

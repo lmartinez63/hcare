@@ -11,10 +11,6 @@
           <div class="moreOptions" id="moreOptions">
             <div class="menuContent">
               <!--
-              <div v-on:click="saveObjectState()" class="link">
-                <div class="icon"><i class="fas fa-save"></i></div>
-                <div class="text">Guardar</div>
-              </div>
               <div v-on:click="viewMedicalAppointmets(medicalHistory.historyCode)" class="link">
                 <div class="icon"><i class="fas fa-save"></i></div>
                 <div class="text">Citas</div>
@@ -78,7 +74,7 @@
               <div v-if="page.sectionMap.medicalHistoryBackgroundInfo.fieldDefinitionMap.hospitalizations && page.sectionMap.medicalHistoryBackgroundInfo.fieldDefinitionMap.hospitalizations.visible" class="groupFull">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <input class="mdl-textfield__input" type="text" name="medicalHistory-hospitalizations" id="medicalHistory-hospitalizations" v-model="medicalHistory.hospitalizations" @input="$parent.forceUppercase($event, medicalHistory, 'hospitalizations')" />
-                  <label class="labelText" for="medicalHistory-hospitalizations">{{$parent.getLabelValue( page.sectionMap.medicalHistoryBackgroundInfo.fieldDefinitionMap.previousDiseases.label)}}</label>
+                  <label class="labelText" for="medicalHistory-hospitalizations">{{$parent.getLabelValue( page.sectionMap.medicalHistoryBackgroundInfo.fieldDefinitionMap.hospitalizations.label)}}</label>
                 </div>
               </div>
 
@@ -161,13 +157,13 @@
               </div>
             </div>
 
-            <div v-if="medicalHistory.attachmentList.length > 0" class="subTitle">
-              Documentos Adjuntos
+            <div v-if="page && page.sectionMap && page.sectionMap.attachmentInfo && page.sectionMap.attachmentInfo.visible && medicalHistory.attachmentList.length > 0" class="subTitle">
+              {{$parent.getLabelValue(page.sectionMap.attachmentInfo.label)}}
             </div>
-            <div v-if="medicalHistory.attachmentList.length > 0" class="twoCol">
-              <ul class="boxLinks" id="attachment-list">
+            <div v-if="page && page.sectionMap && page.sectionMap.attachmentInfo && page.sectionMap.attachmentInfo.visible && medicalHistory.attachmentList.length > 0"  class="twoCol">
+              <ul v-if="page.sectionMap.attachmentInfo.fieldDefinitionMap.attachmentList && page.sectionMap.attachmentInfo.fieldDefinitionMap.attachmentList.visible"  class="boxLinks" id="attachment-list">
                 <li v-for="attachment in medicalHistory.attachmentList">
-                  <div v-on:click="downloadAttachment(attachment)">
+                  <div v-on:click="$parent.downloadAttachment(attachment)">
                     <span>{{ attachment.fileName }}</span>
                     <!--<i class="fas fa-file-download"></i>-->
                     <i class="fas fa-save"></i>
@@ -202,6 +198,10 @@ export default {
 
     }
   },
+  validations: {
+    medicalHistory: {
+    },
+  },
   computed: {
     medicalHistory() {
       return this.$store.state.medicalHistory.data;
@@ -211,7 +211,7 @@ export default {
     }
   },
   created: function() {
-    console.log("MedicalHistoryComponent - created - begin");
+    console.log("MedicalHistoryPage - created - begin");
     const dataContent = {
       "medicalHistory": {
         "historyCode": this.$route.params.historyCode
@@ -231,9 +231,9 @@ export default {
         dataContent: dataContent
       });
     } else {
-      this.$store.state.medicalHistory.data = this.defaultMedicalHistory;
+      dispatch('alert/error', 'Historial Medico no disponible');
     }
-    console.log("MedicalHistoryComponent - created - end");
+    console.log("MedicalHistoryPage - created - end");
   },
   methods: {
     goBackBrowse: function() {
@@ -241,19 +241,49 @@ export default {
         name: 'BrowseComponent'
       })
     },
-    saveObjectState: function() {
-      const url = this.$parent.backendUrl + 'medicalHistories'
-      //Add patientId to medicalHistory
+    executeAction: function(button) {
       let selfVue = this
-      axios.post(url, this.medicalHistory)
-        .then(response => {
-          selfVue.medicalHistory = response.data
-          selfVue.$parent.sucessMessage()
-        })
-        .catch(error => {
-          console.log(error)
-        })
-      // this.$router.push({ name: '/'})
+      switch (button.buttonType) {
+        case 1:
+          var routeObject = {};
+          var jsonString = button.eventDefinition;
+          var eventArray = button.eventDefinition.match(/\${{(.*?)}}/g);
+          for (var i = 0, len = eventArray.length; i < len; i++) {
+            var dataRouteVariable = eventArray[i];
+            jsonString = jsonString.replace(dataRouteVariable, eval(dataRouteVariable.match(/\$\{\{([^)]+)\}\}/)[1]));
+          }
+          routeObject = JSON.parse(jsonString);
+          this.$router.push(routeObject);
+          break;
+        case 2:
+          eval(button.eventDefinition);
+          break;
+      }
+
+    },
+    saveObjectState: function() {
+      console.log("MedicalHistoryPage - method - saveObjectState - begin");
+      const dataContent = {
+        "medicalHistory": this.medicalHistory
+      }
+      const {
+        requestPage
+      } = this;
+      const {
+        dispatch
+      } = this.$store;
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        selfVue.$parent.errorMessage("Por favor complete los campos requeridos")
+      } else {
+        dispatch('medicalHistory/saveEntity', {
+          vm: this,
+          requestPage: requestPage,
+          processName: 'SaveMedicalHistory',
+          dataContent: dataContent,
+        });
+      }
+      console.log("MedicalHistoryPage - method - saveObjectState - end");
     },
     downloadAttachment: function(attachment) {
       axios.get(this.$parent.backendUrl + 'downloadAttachment/' + attachment.id, {
@@ -279,16 +309,6 @@ export default {
         .catch(error => {
           console.log(error)
         })
-    },
-    uploadAttachment: function(entity, entityId, entityCode) {
-      this.$router.push({
-        name: 'AttachmentComponent',
-        params: {
-          entity: entity,
-          entityId: entityId,
-          entityCode: entityCode,
-        }
-      })
     },
     viewMedicalAppointmets: function() {
       this.$router.push({
