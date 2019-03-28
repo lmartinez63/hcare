@@ -1,4 +1,5 @@
 <template>
+<v-app>
 <div class="content-container">
   <section class="contPortlet">
   </section>
@@ -41,6 +42,7 @@
       <v-toolbar-title>Mi Citas del dia</v-toolbar-title>
       <v-divider class="mx-2" inset vertical></v-divider>
       <v-spacer></v-spacer>
+      <!--
       <v-dialog v-model="dialog" max-width="500px">
         <template v-slot:activator="{ on }">
           <v-btn color="primary" dark class="mb-2" v-on="on">New Item</v-btn>
@@ -78,6 +80,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      -->
     </v-toolbar>
     <v-data-table :headers="headers" :items="desserts" class="elevation-1">
       <template slot="items" slot-scope="props">
@@ -102,6 +105,7 @@
 
 </div>
 </div>
+</v-app>
 </template>
 <script>
 

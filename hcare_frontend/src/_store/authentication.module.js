@@ -29,6 +29,7 @@ export const authentication = {
         logout({ commit }) {
             userService.logout();
             commit('logout');
+            router.push('/login');
         }
     },
     mutations: {

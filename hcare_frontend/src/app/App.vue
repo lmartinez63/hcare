@@ -9,7 +9,7 @@
     <div class="top-nav">
       <div v-if="user.userProfile" class="username">
         Usuario: <div v-if="user.userProfile.firstName != undefined"> {{user.userProfile.firstName}}</div>
-        <router-link to="/login">Logout</router-link>
+        <div class="btn btn-primary" v-on:click="logout"><div class="iconLogout"></div>Logout</div>
       </div>
     </div>
   </header>
@@ -167,6 +167,11 @@ export default {
 
       }
       return lValue;
+    },
+    logout: function() {
+      this.submitted = true;
+      const { dispatch } = this.$store;
+      dispatch('authentication/logout');
     },
     downloadAttachment: function(attachment) {
       const dataContent = {

@@ -1,5 +1,4 @@
 <template>
-<form @submit.prevent="handleSubmit">
   <div class="boxLoginPortlet">
     <div class="boxLogin">
       <div class="body-inner">
@@ -24,9 +23,7 @@
             </div>
           </div>
           <div class="form-group">
-            <button class="btn btn-primary" :disabled="loggingIn">Login</button>
-            <img v-show="loggingIn" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-            <!-- <div class="btn btn-primary"><div class="iconLogin"></div>Login</div> -->
+            <div class="btn btn-primary" v-on:click="handleSubmit"><div class="iconLogin"></div>Login</div>
           </div>
         </div>
         <div class="additional-info">
@@ -34,7 +31,6 @@
       </div>
     </div>
   </div>
-</form>
 </template>
 
 <script>
@@ -71,7 +67,7 @@ export default {
   created() {
     console.log('LoginPage - Created - begin');
     // reset login status
-    this.$store.dispatch('authentication/logout');
+    //this.$store.dispatch('authentication/logout');
     console.log('LoginPage - Created - end');
   },
   methods: {
