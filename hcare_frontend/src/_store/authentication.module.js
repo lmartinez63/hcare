@@ -17,7 +17,7 @@ export const authentication = {
                     user => {
                         commit('general/setLoading',false,{ root: true });
                         commit('loginSuccess', user);
-                        router.push('/');
+                        router.push('/dashboard');
                     },
                     error => {
                         commit('general/setLoading',false,{ root: true });

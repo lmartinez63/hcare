@@ -14,10 +14,17 @@ import { browse } from './browse.module';
 import { patient } from './patient.module';
 import { medicalHistory } from './medicalHistory.module';
 import { config } from './config.module';
+import Chart from 'v-chart-plugin';
+import Vuetify from 'vuetify'
+
 
 Vue.use(Vuex);
 Vue.use(VueSwal);
 Vue.use(VueFlashMessage);
+Vue.use(Chart);
+Vue.use(Vuetify)
+
+
 
 export const store = new Vuex.Store({
     modules: {

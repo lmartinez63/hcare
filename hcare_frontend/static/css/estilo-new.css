@@ -57,4 +57,42 @@
 .form-group--error .form__label {
     display: none;
 }
+.content-container {
+    margin-top: 52px;
+}
+.dt-body-left {
+    padding-left: 8px !important;
+    text-align: left;
+}
+
+
+.contentTab {
+            display: flex;
+            flex: 1 1 100%;
+            flex-wrap: wrap;
+        }
+        .tabsHeader {
+            display: flex;
+            flex: 1 1 100%;
+        }
+        .tabOption {
+            width: 150px;
+            height: 40px;
+            align-items: center;
+            align-content: center;
+            display: flex;
+            padding: 0 15px;
+            margin-right: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            border-bottom: 2px solid #00695c;
+       }
+        .tabOption:hover {
+            background: #e0f2f1;
+        }
+        .tabsDescrip {
+            flex: 1 1 100%;
+            display: flex;
+            padding: 15px 15px;
+        }
 </style>

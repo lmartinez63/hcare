@@ -16,6 +16,7 @@ import FieldDefinitionPage from '../views/configuration/FieldDefinitionPage'
 import LabelPage from '../views/configuration/LabelPage'
 import AttachmentPage from '../views/general/AttachmentPage'
 import PageNotFoundPage from '../views/general/PageNotFoundPage'
+import DashboardPage from '../views/general/DashboardPage'
 
 Vue.use(Router);
 
@@ -24,6 +25,7 @@ export const router = new Router({
   routes: [
     { path: '/', component: HomePage },
     { path: '/login', component: LoginPage },
+    { path: '/dashboard', name:'DashboardPage', component: DashboardPage },
     { path: '/medicalAppointment/:medicalAppointmentId', name:'MedicalAppointmentPage', component: MedicalAppointmentPage },
     { path: '/patient/:patientId', name:'PatientPage', component: PatientPage },
     { path: '/medicalArea/:medicalAreaId', name:'MedicalAreaPage', component: MedicalAreaPage },
@@ -37,7 +39,7 @@ export const router = new Router({
     { path: '/label/:labelId', name: 'LabelPage', component: LabelPage},
     { path: '/uploadAttachment/:entity/:entityId/:entityCode', name: 'AttachmentPage', component: AttachmentPage },
     // otherwise redirect to home
-    { path: '*', redirect: 'PageNotFoundPage' }
+    { path: '*', redirect: '/' }
   ]
 });
 

@@ -22,7 +22,7 @@
           <div class="contenedor-menu">
             <ul class="menu" v-if="user.userProfile">
               <li>
-                <router-link :to="{ name: 'DashboardComponent'}"><i class="icono izquierda fa fa-home"></i>Tablero</router-link>
+                <router-link :to="{ name: 'DashboardPage'}"><i class="icono izquierda fa fa-home"></i>Tablero Principal</router-link>
               </li>
               <li v-if="user.userProfile.pageSectionMap.patientInfo != undefined">
                 <a><i class="icono izquierda fa fa-star"></i>Administration de Pacientes<i class="icono derecha fa fa-chevron-down"></i></a>
@@ -86,7 +86,7 @@
       </div>
     </aside>
     <router-view :key="$route.fullPath" />
-    <div v-if="alertVar.message && alertVar.type =='warning' "> :class="`alert ${alertVar.type}`">{{alertVar.message}}</div>
+    <div v-if="alertVar.message && alertVar.type =='warning' " :class="`alert ${alertVar.type}`">{{alertVar.message}}</div>
   </div>
   <!--
     <div v-show="displayMessage" class="groupMsgBox">
@@ -109,7 +109,7 @@ import Loading from 'vue-loading-overlay';
 // Import stylesheet
 import 'vue-loading-overlay/dist/vue-loading.css';
 import 'vue-flash-message/dist/vue-flash-message.min.css';
-
+import 'vuetify/dist/vuetify.min.css'
 
 export default {
   name: 'app',
