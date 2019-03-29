@@ -16,6 +16,7 @@
   <div class="main-container">
     <loading :active.sync="isLoading" :can-cancel="true" :on-cancel="onCancel" :is-full-page="fullPage"></loading>
     <flash-message></flash-message>
+    <div v-if="alertVar.message && alertVar.type =='warning' " :class="`alert ${alertVar.type}`">{{alertVar.message}}</div>
     <aside v-if="user" id="nav-container" class="nav-container nav-fixed bg-dark">
       <div class="nav-wrapper">
         <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
@@ -86,7 +87,6 @@
       </div>
     </aside>
     <router-view :key="$route.fullPath" />
-    <div v-if="alertVar.message && alertVar.type =='warning' " :class="`alert ${alertVar.type}`">{{alertVar.message}}</div>
   </div>
   <!--
     <div v-show="displayMessage" class="groupMsgBox">
