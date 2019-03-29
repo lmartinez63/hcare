@@ -50,8 +50,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable().
                 authorizeRequests()
                 //TODO getBrowseData/ need to be removed becouse it need to go first to getContent
-                .antMatchers("/getBrowseContent/*","/token/*", "/signup", "/getContent/*", "/loadProperties","/getDoctors","/getMedicalAreas").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/api/downloadAttachment/*","/api/uploadAttachment","/api/getBrowseContent/*","/api/getContent/*", "/api/loadProperties","/api/getDoctors","/api/getMedicalAreas").hasAnyRole("ADMIN","DOCTOR","SECRETARY")
+                .antMatchers("/api/generate-token/*", "/api/signup").permitAll()
+//                .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

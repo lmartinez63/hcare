@@ -28,7 +28,7 @@ public class Section extends AuditModel {
     @Transient
     private Boolean visible;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="label_id")
     private Label label;
 

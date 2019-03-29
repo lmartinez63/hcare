@@ -8,16 +8,23 @@ import com.landl.hcare.component.CustomProcess;
 import com.landl.hcare.component.ProcessStatus;
 import com.landl.hcare.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/api")
 public class ContentController {
 
     @Autowired
@@ -69,7 +76,8 @@ public class ContentController {
     public Content getContent(@PathVariable String pageCode) throws Exception {
     */
     @PostMapping("/getContent")
-    public Content getContent(@RequestBody Map<String,Object> requestMap) throws Exception{
+    public Content getContent(@RequestBody Map<String,Object> requestMap){
+        try {
         //Credential from Authorization
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -101,21 +109,63 @@ public class ContentController {
             content.setDataContent(dataContent);
         }
         return content;
+        }
+        catch (Exception exc) {
+            //TODO Add Log4j2 and register this error
+            exc.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", null);
+        }
+    }
+
+    @PostMapping("/uploadAttachment")
+    public Attachment uploadAttachment(@RequestParam("file") MultipartFile file, @RequestParam("fileName") String fileName, @RequestParam("entity") String entity, @RequestParam("entityId") Long entityId) throws Exception{
+        //attachment.setEntity();
+        //attachment.setEntityId();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Attachment attachment = new Attachment(fileName, entity, entityId);
+        attachment.setContent(file.getBytes());
+        attachment.setContentType(file.getContentType());
+        return attachmentService.save(attachment);
+    }
+
+    @GetMapping(value = "/downloadAttachment/{attachmentId}")
+    public ResponseEntity<byte[]> downloadAttachment(@PathVariable Long attachmentId) throws Exception {
+
+        Attachment attachment = attachmentService.findById(attachmentId).get();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        byte[] output = attachment.getContent();
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("charset", "utf-8");
+        responseHeaders.setContentType(MediaType.valueOf(attachment.getContentType()));
+        responseHeaders.setContentLength(output.length);
+        responseHeaders.set("Content-disposition", "attachment; filename="+attachment.getFileName());
+
+        return new ResponseEntity<byte[]>(output, responseHeaders, HttpStatus.OK);
     }
 
     @PostMapping("/getBrowseContent")
-    public Browse getBrowseContent(@RequestBody Map<String,Object> requestMap) throws Exception{
-        //Credential from Authorization
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        Map requestDataMap = (Map)requestMap.get("data");
-        String browseName = UtilityTools.isNull((String)requestDataMap.get("browseName").toString());
-        Map<String,Object> browseParameters = (Map<String,Object>)requestDataMap.get("browseParameters");
-        Browse browse = new Browse();
-        DataTable dataTable = dataTableService.findByDataTableCodeAndUsername(browseName,username);
-        browse.setMetaDataBrowse(dataTable);
-        browse.setDataBrowse(browserService.buildDataTableObject(dataTable.getQueryString(),browseParameters));
-        return browse;
+    public Browse getBrowseContent(@RequestBody Map<String,Object> requestMap){
+        try {
+            //Credential from Authorization
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String username = authentication.getName();
+            Map requestDataMap = (Map) requestMap.get("data");
+            String browseName = UtilityTools.isNull((String) requestDataMap.get("browseName").toString());
+            Map<String, Object> browseParameters = (Map<String, Object>) requestDataMap.get("browseParameters");
+            Browse browse = new Browse();
+            DataTable dataTable = dataTableService.findByDataTableCodeAndUsername(browseName, username);
+            if (dataTable.getDataColumns() == null || dataTable.getDataColumns().size() < 1) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Insufficient Privileges or Data Columns are not defined", null);
+            }
+            browse.setMetaDataBrowse(dataTable);
+            browse.setDataBrowse(browserService.buildDataTableObject(dataTable.getQueryString(), browseParameters));
+            return browse;
+        }
+        catch (Exception exc) {
+            //TODO Add Log4j2 and register this error
+            exc.printStackTrace();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", null);
+        }
     }
 
     @GetMapping("/loadProperties")

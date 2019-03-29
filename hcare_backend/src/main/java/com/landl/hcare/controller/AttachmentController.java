@@ -21,7 +21,7 @@ public class AttachmentController {
 
     @Autowired
     private AttachmentService attachmentService;
-
+/*
     @PostMapping("/uploadAttachment")
     public Attachment uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("fileName") String fileName, @RequestParam("entity") String entity, @RequestParam("entityId") Long entityId) throws Exception{
         //attachment.setEntity();
@@ -31,13 +31,13 @@ public class AttachmentController {
         attachment.setContentType(file.getContentType());
         return attachmentService.save(attachment);
     }
-
+*/
     @GetMapping("/attachments/{entity}/{entityId}")
     public List<Attachment> retrieveByEntityAndEntityId(@PathVariable String entity, @PathVariable Long entityId) {
         List<Attachment> attachmentList = attachmentService.findByEntityAndEntityId(entity,entityId);
         return attachmentList;
     }
-
+/*
     @GetMapping(value = "/downloadAttachment/{attachmentId}")
     public ResponseEntity<byte[]> getDownloadData(@PathVariable Long attachmentId) throws Exception {
 
@@ -51,5 +51,5 @@ public class AttachmentController {
 
         return new ResponseEntity<byte[]>(output, responseHeaders, HttpStatus.OK);
     }
-
+*/
 }

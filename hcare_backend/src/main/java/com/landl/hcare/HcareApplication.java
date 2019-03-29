@@ -36,45 +36,17 @@ public class HcareApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 
 				String frontEndUrl = (String)propertyService.getPropertiesMap().get("frontEndUrl");
-				registry.addMapping("/loadProperties").allowedOrigins(frontEndUrl);
-				registry.addMapping("/getContent").allowedOrigins(frontEndUrl);
-				registry.addMapping("/getContent/*").allowedOrigins(frontEndUrl);
-				registry.addMapping("/getDoctors").allowedOrigins(frontEndUrl);
-				registry.addMapping("/getMedicalAreas").allowedOrigins(frontEndUrl);
-				registry.addMapping("/token/generate-token").allowedOrigins(frontEndUrl);
-				registry.addMapping("/properties").allowedOrigins(frontEndUrl);
-				registry.addMapping("/properties/*").allowedOrigins(frontEndUrl);
-				registry.addMapping("/employees").allowedOrigins(frontEndUrl);
-				registry.addMapping("/employees/*").allowedOrigins(frontEndUrl);
-				registry.addMapping("/employeesByTitle").allowedOrigins(frontEndUrl);
-				registry.addMapping("/employeesByTitle/*").allowedOrigins(frontEndUrl);
-				registry.addMapping("/patients").allowedOrigins(frontEndUrl);
-				registry.addMapping("/patients/*").allowedOrigins(frontEndUrl);
-				registry.addMapping("/retrievePatientByDocumentNumber/*").allowedOrigins(frontEndUrl);
-				registry.addMapping("/medicalHistories").allowedOrigins(frontEndUrl);
-				registry.addMapping("/medicalHistories/*").allowedOrigins(frontEndUrl);
-				registry.addMapping("/medicalHistory").allowedOrigins(frontEndUrl);
-				registry.addMapping("/medicalHistory/*").allowedOrigins(frontEndUrl);
-				registry.addMapping("/medicalArea").allowedOrigins(frontEndUrl);
-				registry.addMapping("/medicalArea/*").allowedOrigins(frontEndUrl);
-				registry.addMapping("/medicalAreas").allowedOrigins(frontEndUrl);
-				registry.addMapping("/medicalAreas/*").allowedOrigins(frontEndUrl);
-				registry.addMapping("/medicalAppointmentsToday").allowedOrigins(frontEndUrl);
-				registry.addMapping("/medicalAppointmentsToday/*").allowedOrigins(frontEndUrl);
-				registry.addMapping("/medicalAppointments").allowedOrigins(frontEndUrl);
-				registry.addMapping("/medicalAppointments/*").allowedOrigins(frontEndUrl);
-				registry.addMapping("/medicalAppointmentsByPatient").allowedOrigins(frontEndUrl);
-				registry.addMapping("/medicalAppointmentsByPatient/*").allowedOrigins(frontEndUrl);
-				registry.addMapping("/medicalAppointment").allowedOrigins(frontEndUrl);
-				registry.addMapping("/medicalAppointment/*").allowedOrigins(frontEndUrl);
-				registry.addMapping("/attachment").allowedOrigins(frontEndUrl);
-				registry.addMapping("/uploadAttachment").allowedOrigins(frontEndUrl);
-				registry.addMapping("/downloadAttachment").allowedOrigins(frontEndUrl);
-				registry.addMapping("/downloadAttachment/*").allowedOrigins(frontEndUrl);
-				registry.addMapping("/getDashboardInformation").allowedOrigins(frontEndUrl);
-				registry.addMapping("/medicalAppointmentsHeaderView").allowedOrigins(frontEndUrl);
-				registry.addMapping("/getBrowseContent/*").allowedOrigins(frontEndUrl);
-				registry.addMapping("/getBrowseContent").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/loadProperties").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/getContent").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/getContent/*").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/getDoctors").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/getMedicalAreas").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/generate-token").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/uploadAttachment").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/downloadAttachment").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/downloadAttachment/*").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/getBrowseContent/*").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/getBrowseContent").allowedOrigins(frontEndUrl);
 			}
 		};
 	}

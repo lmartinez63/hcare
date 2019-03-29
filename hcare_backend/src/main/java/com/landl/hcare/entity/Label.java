@@ -105,4 +105,6 @@ public class Label extends AuditModel {
     public void setLabelValueEsEs(String labelValueEsEs) {
         this.labelValueEsEs = labelValueEsEs;
     }
+
+
 }

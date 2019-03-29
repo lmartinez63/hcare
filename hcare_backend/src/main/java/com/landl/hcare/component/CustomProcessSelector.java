@@ -37,6 +37,12 @@ public class CustomProcessSelector {
     SaveFieldDefinition saveFieldDefinition;
 
     @Autowired
+    SaveMedicalHistory saveMedicalHistory;
+
+    @Autowired
+    SaveRolePageSectionField saveRolePageSectionField;
+
+    @Autowired
     SaveLabel saveLabel;
 
     @Autowired
@@ -55,7 +61,22 @@ public class CustomProcessSelector {
     RetrieveFieldDefinitionInfo retrieveFieldDefinitionInfo;
 
     @Autowired
+    RetrieveRolePageSectionFieldInfo retrieveRolePageSectionFieldInfo;
+
+    @Autowired
     RetrieveLabelInfo retrieveLabelInfo;
+
+    @Autowired
+    RetrieveAllRoles retrieveAllRoles;
+
+    @Autowired
+    RetrieveAllSections retrieveAllSections;
+
+    @Autowired
+    RetrieveAllPages retrieveAllPages;
+
+    @Autowired
+    RetrieveAllFieldDefinitions retrieveAllFieldDefinitions;
 
     public CustomProcess getCustomProcessClass(String customProcessName) throws Exception{
         CustomProcess customProcess = null;
@@ -72,6 +93,9 @@ public class CustomProcessSelector {
             case "RetrieveMedicalAreaInfo":
                 customProcess = retrieveMedicalAreaInfo;
                 break;
+            case "RetrieveRolePageSectionFieldInfo":
+                customProcess = retrieveRolePageSectionFieldInfo;
+                break;
             case "RetrievePageInfo":
                 customProcess = retrievePageInfo;
                 break;
@@ -81,6 +105,18 @@ public class CustomProcessSelector {
             case "RetrieveFieldDefinitionInfo":
                 customProcess = retrieveFieldDefinitionInfo;
                 break;
+            case "RetrieveAllRoles":
+                customProcess = retrieveAllRoles;
+                break;
+            case "RetrieveAllPages":
+                customProcess = retrieveAllPages;
+                break;
+            case "RetrieveAllSections":
+                customProcess = retrieveAllSections;
+                break;
+            case "RetrieveAllFieldDefinitions":
+                customProcess = retrieveAllFieldDefinitions;
+                break;
             case "RetrieveLabelInfo":
                 customProcess = retrieveLabelInfo;
                 break;
@@ -89,6 +125,9 @@ public class CustomProcessSelector {
                 break;
             case "GetPatientByDocumentNumber":
                 customProcess = getPatientByDocumentNumber;
+                break;
+            case "SaveMedicalHistory":
+                customProcess = saveMedicalHistory;
                 break;
             case "RegisterMedicalAppointment":
                 customProcess = registerMedicalAppointment;
@@ -107,6 +146,9 @@ public class CustomProcessSelector {
                 break;
             case "SaveFieldDefinition":
                 customProcess = saveFieldDefinition;
+                break;
+            case "SaveRolePageSectionField":
+                customProcess = saveRolePageSectionField;
                 break;
             case "SaveLabel":
                 customProcess = saveLabel;

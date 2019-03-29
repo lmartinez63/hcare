@@ -18,6 +18,7 @@ public class RegisterMedicalAppointment extends CustomProcess {
 
         if (medicalAppointment.getId() == null) {
             //If is a new medical appointment send a reminder email
+            //TODO Setup a property to send email to patient and doctor
             int emailPatientStatus = emailService.sendEmailToPatient(medicalAppointment);
             int emailDoctorStatus = emailService.sendEmailToDoctor(medicalAppointment);
             medicalAppointment.setStatus("5");
