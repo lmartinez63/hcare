@@ -1,5 +1,7 @@
 package com.landl.hcare.config;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -12,7 +14,7 @@ import java.io.Serializable;
 
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
-
+    private static final Logger logger = LogManager.getLogger(JwtAuthenticationEntryPoint.class);
     @Override
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
@@ -20,6 +22,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
         int internalErrorCode = 99;
         if(authException instanceof BadCredentialsException){
             internalErrorCode = 1;
+            logger.debug("error_message: ");
+            authException.printStackTrace();
         }
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, String.valueOf(internalErrorCode));
     }
