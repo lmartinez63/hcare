@@ -68,7 +68,7 @@
    HTML5 display definitions
    ========================================================================== */
 /* Correct `block` display not defined in IE 6/7/8/9 and Firefox 3. */
-/* ------------- Initial general styles -------------/* 
+/* ------------- Initial general styles -------------/*
 article,
 aside,
 details,
@@ -1940,21 +1940,7 @@ select {
 .contPortlet .portBox:last-child {
   margin-right: 0px;
 }
-svg {
-  font: 10px sans-serif;
-}
-.y.axis path {
-  display: none;
-}
-.y.axis line {
-  stroke: #fff;
-  stroke-opacity: .2;
-  shape-rendering: crispEdges;
-}
-.y.axis .zero line {
-  stroke: #000;
-  stroke-opacity: 1;
-}
+
 .title {
   font: 300 78px Helvetica Neue;
   fill: #666;
@@ -1965,13 +1951,6 @@ svg {
 }
 .birthyear {
   fill: #fff;
-}
-rect {
-  fill-opacity: .6;
-  fill: #e377c2;
-}
-rect:first-child {
-  fill: #42a5f4;
 }
 /* This to make sure all browses (even pop-up browse) obtain the sizing classes (not on mobile) */
 @media (min-width: 991px) {

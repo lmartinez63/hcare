@@ -68,6 +68,9 @@ function handleResponse(response) {
       if (!response.ok) {
         if (response.status === 401) {
           // auto logout if 401 response returned from api
+          if (data.message === '1'){
+            return Promise.reject('Usuario y/o Password incorrectos');
+          }
           logout();
           location.reload(true);
         }

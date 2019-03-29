@@ -9,6 +9,14 @@ import BrowsePage from '../views/browse/BrowsePage'
 import UserProfilePage from '../views/userProfile/UserProfilePage'
 import MedicalAreaPage from '../views/medicalArea/MedicalAreaPage'
 import MedicalHistoryPage from '../views/medicalHistory/MedicalHistoryPage'
+import RolePageSectionFieldPage from '../views/configuration/RolePageSectionFieldPage'
+import PageDefinitionPage from '../views/configuration/PageDefinitionPage'
+import SectionPage from '../views/configuration/SectionPage'
+import FieldDefinitionPage from '../views/configuration/FieldDefinitionPage'
+import LabelPage from '../views/configuration/LabelPage'
+import AttachmentPage from '../views/general/AttachmentPage'
+import PageNotFoundPage from '../views/general/PageNotFoundPage'
+import DashboardPage from '../views/general/DashboardPage'
 
 Vue.use(Router);
 
@@ -17,12 +25,19 @@ export const router = new Router({
   routes: [
     { path: '/', component: HomePage },
     { path: '/login', component: LoginPage },
+    { path: '/dashboard', name:'DashboardPage', component: DashboardPage },
     { path: '/medicalAppointment/:medicalAppointmentId', name:'MedicalAppointmentPage', component: MedicalAppointmentPage },
     { path: '/patient/:patientId', name:'PatientPage', component: PatientPage },
     { path: '/medicalArea/:medicalAreaId', name:'MedicalAreaPage', component: MedicalAreaPage },
     { path: '/medicalHistory/:historyCode', name:'MedicalHistoryPage', component: MedicalHistoryPage },
     { path: '/userProfile/:userProfileId', name:'UserProfilePage', component: UserProfilePage },
-    { path: '/browse/:browseName/:entityId', name: 'BrowsePage', component: BrowsePage},
+    { path: '/browse/:browseName', name: 'BrowsePage', component: BrowsePage},
+    { path: '/rolePageSectionField/:roleId/:pageId/:sectionId/:fieldDefinitionId', name: 'RolePageSectionFieldPage', component: RolePageSectionFieldPage},
+    { path: '/page/:pageId', name: 'PageDefinitionPage', component: PageDefinitionPage},
+    { path: '/section/:sectionId', name: 'SectionPage', component: SectionPage},
+    { path: '/fieldDefinition/:fieldDefinitionId', name: 'FieldDefinitionPage', component: FieldDefinitionPage},
+    { path: '/label/:labelId', name: 'LabelPage', component: LabelPage},
+    { path: '/uploadAttachment/:entity/:entityId/:entityCode', name: 'AttachmentPage', component: AttachmentPage },
     // otherwise redirect to home
     { path: '*', redirect: '/' }
   ]
