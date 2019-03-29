@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/token")
+@RequestMapping("/api")
 public class AuthenticationController {
 
     private static final Logger logger = LogManager.getLogger(AuthenticationController.class);

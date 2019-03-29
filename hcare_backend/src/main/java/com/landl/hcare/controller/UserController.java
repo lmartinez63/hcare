@@ -22,24 +22,24 @@ public class UserController {
 
     //@Secured({"ROLE_ADMIN", "ROLE_USER"})
     @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value="/users", method = RequestMethod.GET)
+    @RequestMapping(value="/api/users", method = RequestMethod.GET)
     public List<UserProfile> listUser(){
         return userService.findAll();
     }
 
     ////@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    @RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/users/{id}", method = RequestMethod.GET)
     public UserProfile getOne(@PathVariable(value = "id") Long id){
         return userService.findById(id);
     }
 
-    @RequestMapping(value = "/getUserInfoByToken/{token}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/getUserInfoByToken/{token}", method = RequestMethod.GET)
     public UserProfile getUserInfoByToken(@PathVariable(value = "token") String token){
         return tokenProvider.getUserProfileFromToken(token);
     }
 
 
-    @RequestMapping(value="/signup", method = RequestMethod.POST)
+    @RequestMapping(value="/api/signup", method = RequestMethod.POST)
     public UserProfile save(@Valid @RequestBody UserProfile userProfile){
         return userService.save(userProfile);
     }

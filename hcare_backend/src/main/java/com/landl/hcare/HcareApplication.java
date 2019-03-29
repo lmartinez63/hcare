@@ -36,17 +36,17 @@ public class HcareApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 
 				String frontEndUrl = (String)propertyService.getPropertiesMap().get("frontEndUrl");
-				registry.addMapping("/loadProperties").allowedOrigins(frontEndUrl);
-				registry.addMapping("/getContent").allowedOrigins(frontEndUrl);
-				registry.addMapping("/getContent/*").allowedOrigins(frontEndUrl);
-				registry.addMapping("/getDoctors").allowedOrigins(frontEndUrl);
-				registry.addMapping("/getMedicalAreas").allowedOrigins(frontEndUrl);
-				registry.addMapping("/token/generate-token").allowedOrigins(frontEndUrl);
-				registry.addMapping("/uploadAttachment").allowedOrigins(frontEndUrl);
-				registry.addMapping("/downloadAttachment").allowedOrigins(frontEndUrl);
-				registry.addMapping("/downloadAttachment/*").allowedOrigins(frontEndUrl);
-				registry.addMapping("/getBrowseContent/*").allowedOrigins(frontEndUrl);
-				registry.addMapping("/getBrowseContent").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/loadProperties").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/getContent").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/getContent/*").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/getDoctors").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/getMedicalAreas").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/token/generate-token").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/uploadAttachment").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/downloadAttachment").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/downloadAttachment/*").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/getBrowseContent/*").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/getBrowseContent").allowedOrigins(frontEndUrl);
 			}
 		};
 	}
