@@ -1,8 +1,6 @@
 <template>
 <v-app>
   <div class="content-container">
-    <section class="contPortlet">
-    </section>
     <section v-if="$parent.user.userProfile.roles.some( role => role['id'] === 4 )" class="contentGraph">
       <!-- <v-chart v-bind:chartData="chartData"></v-chart>-->
       <div id="chart">
@@ -70,39 +68,41 @@
         </template>
       </v-data-table>
     </section>
-    <section v-if="$parent.user.userProfile.roles.some( role => role['id'] === 7 )" >
-      <v-card class="mx-auto" color="#26c6da" dark max-width="400">
-        <v-card-title>
-          <v-icon large left>mdi-twitter</v-icon>
-          <span class="title font-weight-light">Nova Clinic</span>
-        </v-card-title>
-        <v-card-text class="headline font-weight-bold">
-          "Estimados Colegas, les presentamos el nuevo sistema Web, cualquier comentario escribirnos a novaclinic@gmail.com"
-        </v-card-text>
-        <v-card-actions>
-          <v-list-tile class="grow">
-            <v-list-tile-avatar color="grey darken-3">
-              <v-img class="elevation-6" src="https://avataaars.io/"></v-img>
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title>Jackeline Cruz</v-list-tile-title>
-            </v-list-tile-content>
-            <v-layout align-center justify-end>
-              <v-icon class="mr-1">mdi-heart</v-icon>
-              <span class="subheading mr-2">Marzo</span>
-              <span class="mr-1">·</span>
-              <v-icon class="mr-1">mdi-share-variant</v-icon>
-              <span class="subheading">18</span>
-            </v-layout>
-          </v-list-tile>
-        </v-card-actions>
-      </v-card>
-    </section>
-    <section v-if="$parent.user.userProfile.roles.some( role => role['id'] === 7 )"  class="contentGraph">
-      <div id="chart">
-        <apexchart :type="chart2.type" :width="chart2.width" :height="chart2.height" :options="chart2.chartOptions" :series="chart2.series" />
-      </div>
-    </section>
+    <div class="rowElement">
+      <section v-if="$parent.user.userProfile.roles.some( role => role['id'] === 7 )" class="mediumWidth">
+        <v-card class="mx-auto" color="#26c6da" dark width="100%">
+          <v-card-title>
+            <v-icon large left>mdi-twitter</v-icon>
+            <span class="title font-weight-light">Nova Clinic</span>
+          </v-card-title>
+          <v-card-text class="headline font-weight-bold">
+            "Estimados Colegas, les presentamos el nuevo sistema Web, cualquier comentario escribirnos a novaclinic@gmail.com"
+          </v-card-text>
+          <v-card-actions>
+            <v-list-tile class="grow">
+              <v-list-tile-avatar color="grey darken-3">
+                <v-img class="elevation-6" src="https://avataaars.io/"></v-img>
+              </v-list-tile-avatar>
+              <v-list-tile-content>
+                <v-list-tile-title>Jackeline Cruz</v-list-tile-title>
+              </v-list-tile-content>
+              <v-layout align-center justify-end>
+                <v-icon class="mr-1">mdi-heart</v-icon>
+                <span class="subheading mr-2">Marzo</span>
+                <span class="mr-1">·</span>
+                <v-icon class="mr-1">mdi-share-variant</v-icon>
+                <span class="subheading">18</span>
+              </v-layout>
+            </v-list-tile>
+          </v-card-actions>
+        </v-card>
+      </section>
+      <section v-if="$parent.user.userProfile.roles.some( role => role['id'] === 7 )" class="contentGraph mediumWidth">
+        <div id="chart">
+          <apexchart :type="chart2.type" :width="chart2.width" :height="chart2.height" :options="chart2.chartOptions" :series="chart2.series" />
+        </div>
+      </section>
+    </div>
   </div>
   </div>
 </v-app>
@@ -163,7 +163,7 @@ export default {
       },
       chart2: {
         height: '300px',
-        width: '50%',
+        width: '100%',
         chartOptions: {
           chart: {
             id: 'char2id'
@@ -232,8 +232,7 @@ export default {
         }
       ],
       */
-      headers: [
-        {
+      headers: [{
           text: 'Paciente',
           align: 'left',
           sortable: false,
@@ -297,16 +296,27 @@ export default {
   },
   created: function() {
     console.log('DashboardPage - created - begin')
-    const { requestPage } = this;
-    const { dispatch } = this.$store;
+    const {
+      requestPage
+    } = this;
+    const {
+      dispatch
+    } = this.$store;
     //Doctor
-    if(this.$parent.user.userProfile.roles.some( role => role['id'] === 7 )){
+    if (this.$parent.user.userProfile.roles.some(role => role['id'] === 7)) {
       const dataContent = {
-          "browseName": 'todayMedicalAppointmentsByLoggedDoctor',
-          "browseParameters": {"doctorId":this.$parent.user.userProfile.id}
+        "browseName": 'todayMedicalAppointmentsByLoggedDoctor',
+        "browseParameters": {
+          "doctorId": this.$parent.user.userProfile.id
+        }
       }
-      dispatch('browse/getBrowseData', { requestPage: requestPage, processName: '', dataContent: dataContent, vueInstance: this });
-  }
+      dispatch('browse/getBrowseData', {
+        requestPage: requestPage,
+        processName: '',
+        dataContent: dataContent,
+        vueInstance: this
+      });
+    }
     console.log('DashboardPage - created - end')
   },
   mounted: function() {
