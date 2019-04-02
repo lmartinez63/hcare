@@ -19,7 +19,7 @@ public class UserProfile {
             initialValue = 1000,
             allocationSize = 1
     )
-    private long id;
+    private Long id;
     @Column
     private String username;
     @Column
@@ -65,11 +65,11 @@ public class UserProfile {
             @JoinColumn(name = "PAGE_ID") })
     private Set<Page> pages;
     */
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -168,4 +168,6 @@ public class UserProfile {
     public void setLanguage(String language) {
         this.language = language;
     }
+
+
 }
