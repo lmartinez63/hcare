@@ -4,8 +4,10 @@ import com.landl.hcare.entity.UserProfile;
 import com.landl.hcare.service.UserService;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -72,8 +74,13 @@ public class TokenProvider implements Serializable {
                 .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_VALIDITY_SECONDS*1000))
                 .compact();
         //Save user in tokenUserProfile singleton
+        try{
+            tokenUserProfileMap.put(token,userService.getPageAndFieldsAssigned(authentication.getName()));
+        }
+        catch(Exception e){
+            throw  new AuthenticationServiceException("Error retrieving page and fields assigned",e);
+        }
 
-        tokenUserProfileMap.put(token,userService.getPageAndFieldsAssigned(authentication.getName()));
         return token;
     }
 

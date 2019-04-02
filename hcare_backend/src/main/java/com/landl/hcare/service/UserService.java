@@ -6,12 +6,13 @@ import java.util.List;
 
 public interface UserService {
 
-    UserProfile save(UserProfile userProfile    );
-    List<UserProfile> findAll();
-    List<UserProfile> findByRole(String roleName);
-    void delete(long id);
-    UserProfile findOne(String username);
-    UserProfile findByUsername(String username);
-    UserProfile getPageAndFieldsAssigned(String username);
-    UserProfile findById(Long id);
+    public UserProfile save(UserProfile userProfile) throws  Exception;
+    public List<UserProfile> findAll() throws  Exception;
+    public List<UserProfile> findByRole(String roleName) throws  Exception;
+    public void delete(long id) throws  Exception;
+    public UserProfile findOne(String username) throws  Exception;
+    public UserProfile findByUsername(String username);
+    public UserProfile createUserProfile() throws  Exception;
+    public UserProfile getPageAndFieldsAssigned(String username)  throws  Exception;
+    public UserProfile findById(Long id) throws  Exception;
 }

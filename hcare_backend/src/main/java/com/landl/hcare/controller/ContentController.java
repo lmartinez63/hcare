@@ -59,6 +59,9 @@ public class ContentController {
     private UserService userService;
 
     @Autowired
+    private RoleService roleService;
+
+    @Autowired
     private BrowserService browserService;
 
     @Autowired
@@ -186,5 +189,9 @@ public class ContentController {
     @GetMapping("/getDoctors")
     public List<UserProfile> getDoctors() throws Exception{
         return userService.findByRole("DOCTOR");
+    }
+    @GetMapping("/getRoles")
+    public List<Role> getRoles() throws Exception{
+        return roleService.findAll();
     }
 }

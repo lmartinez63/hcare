@@ -58,6 +58,9 @@ public class Patient extends AuditModel {
     @Column(name="cel_phone_number")
     private String celPhoneNumber;
 
+    @Column(name="gender")
+    private Integer gender;
+
 
     public Patient() {
     }
@@ -168,5 +171,13 @@ public class Patient extends AuditModel {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getGender() {
+        return gender;
+    }
+
+    public void setGender(Integer gender) {
+        this.gender = gender;
     }
 }

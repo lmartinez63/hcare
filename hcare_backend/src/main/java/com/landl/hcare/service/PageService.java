@@ -20,9 +20,9 @@ public interface PageService {
 
     public Page createPage();
 
-    public Page findByPageCodeAndUsername(String pageCode,String username);
+    public Page findByPageCodeAndUsername(String pageCode,String username) throws Exception;
 
-    public Page findPageSectionAndFieldsByPageCodeAndUserName(String pageCode, String username);
+    public Page findPageSectionAndFieldsByPageCodeAndUserName(String pageCode, String username) throws Exception;
 
     public void verifyIfCurrentUserIsAuthorizated(Page page, Map dataSource);
 

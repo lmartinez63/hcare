@@ -46,6 +46,9 @@ public class CustomProcessSelector {
     SaveLabel saveLabel;
 
     @Autowired
+    SaveUserProfile saveUserProfile;
+
+    @Autowired
     RegisterMedicalAppointment registerMedicalAppointment;
 
     @Autowired
@@ -152,6 +155,9 @@ public class CustomProcessSelector {
                 break;
             case "SaveLabel":
                 customProcess = saveLabel;
+                break;
+            case "SaveUserProfile":
+                customProcess = saveUserProfile;
                 break;
             default:
                     throw new Exception("Process "+customProcessName+" has not been found");

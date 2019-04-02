@@ -1,5 +1,7 @@
 package com.landl.hcare.service;
 
+import com.landl.hcare.entity.MedicalAppointment;
+import com.landl.hcare.entity.Patient;
 import com.landl.hcare.entity.UserProfile;
 import com.landl.hcare.repository.UserProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     //TODO put on cache
-    public UserProfile getPageAndFieldsAssigned(String username){
+    public UserProfile getPageAndFieldsAssigned(String username) throws  Exception{
         UserProfile userProfile = findByUsername(username);
         List<Object[]> pages = userProfileRepository.getPageAndSectionsAssigned(userProfile.getUsername());
         //Map<Integer, BigDecimal> dpaMap = adjustments.stream().collect(Collectors.toMap(a -> (Integer)a[0], a -> BigDecimal.valueOf((Float) a[1])));
@@ -44,6 +46,17 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             }
         }
         userProfile.setPageSectionMap(pageSectionMap);
+        return userProfile;
+    }
+
+    public UserProfile createUserProfile() throws  Exception{
+        UserProfile userProfile = new UserProfile();
+        //TODO it should come from database
+        //DefaultValues
+        userProfile.setEmailAddress("");
+        userProfile.setFirstName("");
+        userProfile.setLastName("");
+        userProfile.setPhoneNumber("");
         return userProfile;
     }
 
@@ -94,6 +107,11 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public UserProfile save(UserProfile userProfile) {
+        if(userProfile.getId() == null){
+            //TODO default password should be a property
+            userProfile.setPassword("password");
+        }
+
         userProfile.setPassword(bcryptEncoder.encode(userProfile.getPassword()));
         return userProfileRepository.save(userProfile);
     }

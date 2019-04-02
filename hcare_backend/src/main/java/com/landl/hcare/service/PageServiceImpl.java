@@ -55,7 +55,7 @@ public class PageServiceImpl implements PageService {
     }
 
     //TODO put on cache
-    public Page findPageSectionAndFieldsByPageCodeAndUserName(String pageCode, String username){
+    public Page findPageSectionAndFieldsByPageCodeAndUserName(String pageCode, String username) throws Exception{
         UserProfile userProfile = userService.getPageAndFieldsAssigned(username);
         Page page = findByPageCode(pageCode);
         page.setSectionList(sectionService.getSectionsByPageCodeAndUsername(pageCode, username));
