@@ -1,3 +1,7 @@
+import {
+  router
+} from '../_helpers';
+
 export const alert = {
   namespaced: true,
   state: {
@@ -6,32 +10,29 @@ export const alert = {
     style: null
   },
   actions: {
-    success({ commit }, { vm, message }) {
-      vm.flash( message, 'success'
-    /*  {
-        timeout: 10000,
-      }*/
-    );
-      commit('success', message);
+    success({ commit }, { vm, message, returnRoute }) {
+      commit('success', { vm, message, returnRoute });
     },
-    warning({
-      commit
-    }, message) {
+    warning({ commit }, message) {
       commit('warning', message);
     },
-    error({
-      commit
-    }, message) {
+    error({ commit }, message) {
       commit('error', message);
     },
-    clear({
-      commit
-    }, message) {
+    clear({ commit }, message) {
       commit('success', message);
     }
   },
   mutations: {
-    success(state, message) {
+    success(state, { vm, message, returnRoute } ) {
+      vm.flash(message, 'success', {
+        timeout: 3000,
+        beforeDestroy() {
+          if ( returnRoute ) {
+              router.push(returnRoute);
+          }
+        }
+      });
       state.type = 'success';
       state.style = 'alert-success';
       state.message = message;

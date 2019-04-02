@@ -6,6 +6,7 @@ import { userService } from '../_services';
 export const generalService = {
   loadProperties,
   getDoctors,
+  getRoles,
   getMedicalAreas
 };
 
@@ -30,6 +31,18 @@ function getDoctors() {
   return fetch(`${config.apiUrl}/getDoctors`, requestOptions).then(handleResponse)
   .then(doctors => {
     localStorage.setItem('doctors', JSON.stringify(doctors));
+    return doctors;
+  });
+}
+function getRoles() {
+  console.log('generalService - getRoles');
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader()
+  };
+  return fetch(`${config.apiUrl}/getRoles`, requestOptions).then(handleResponse)
+  .then(doctors => {
+    localStorage.setItem('roles', JSON.stringify(doctors));
     return doctors;
   });
 }

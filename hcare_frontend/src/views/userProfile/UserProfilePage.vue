@@ -1,9 +1,9 @@
 <template>
 <div class="content-container">
   <section data-ui-view="" class="view-container animate-fade-up">
-    <section class="page">
+    <section v-if="page && page.sectionMap" class="page">
       <div class="titleForm">
-        Coloborador
+        {{$parent.getLabelValue(page.label)}}
       </div>
       <div class="row ui-section contentMain">
         <div class="btnMoreActions" onClick="openThreePoint()">
@@ -12,20 +12,19 @@
           </div>
           <div class="moreOptions" id="moreOptions">
             <div class="menuContent">
-              <div v-on:click="saveObjectState()" class="link">
-                <div class="icon"><i class="fas fa-save"></i></div>
-                <div class="text">Guardar</div>
+              <div v-for="button in page.pageButtons" v-if="button.visible" v-on:click="executeAction(button)" class="link">
+                <div class="icon"><i class="button.icon"></i></div>
+                <div class="text">{{$parent.getLabelValue(button.label)}}</div>
               </div>
-              <!-- specialButtons -->
             </div>
           </div>
         </div>
         <div v-if="page && page.sectionMap" class="formBox">
           <div class="headerFacNew">
-            <div v-if="page.sectionMap.generalInfo && page.sectionMap.generalInfo.visible && page.sectionMap.generalInfo.fieldDefinitionMap" class="subTitle">
-              Datos del Generales
+            <div v-if="page.sectionMap.userProfileInfo && page.sectionMap.userProfileInfo.visible && page.sectionMap.userProfileInfo.fieldDefinitionMap" class="subTitle">
+              {{$parent.getLabelValue(page.sectionMap.userProfileInfo.label)}}
             </div>
-            <div v-if="page.sectionMap.generalInfo && page.sectionMap.generalInfo.visible && page.sectionMap.generalInfo.fieldDefinitionMap" class="twoCol">
+            <div v-if="page.sectionMap.userProfileInfo && page.sectionMap.userProfileInfo.visible && page.sectionMap.userProfileInfo.fieldDefinitionMap" class="twoCol">
               <!-- TODO
               <div class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -38,14 +37,15 @@
                 </div>
               </div>
               -->
-              <!--
-              <div class="group">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" name="employee-employeeCode" id="employee-employeeCode" v-model="employee.employeeCode" />
-                  <label class="labelText" for="employee-employeeCode">Codigo de Colaborador</label>
+              <div v-if="page.sectionMap.userProfileInfo.fieldDefinitionMap.username && page.sectionMap.userProfileInfo.fieldDefinitionMap.username.visible" class="group">
+                <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.userProfile.username.$error }">
+                  <!-- TODO implement toUpperCase
+                  <input class="mdl-textfield__input" type="text" name="userProfile-firstName" id="userProfile-firstName" v-model.trim="$v.userProfile.firstName.$model" @input="forceUppercase($event, userProfile, 'firstName')" />-->
+                  <input class="mdl-textfield__input" type="text" name="userProfile-username" id="userProfile-firstName" v-model.trim="$v.userProfile.username.$model" />
+                  <label class="labelText" for="userProfile-username">{{$parent.getLabelValue( page.sectionMap.userProfileInfo.fieldDefinitionMap.username.label)}}</label>
                 </div>
+                <div class="error" v-if="!$v.userProfile.username.required">Nombre de usuario requerido</div>
               </div>
-            -->
               <!--DELETE
             <div class="group">
               <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.medicalAppointment.documentNumber.$error }">
@@ -55,10 +55,10 @@
               <div class="error" v-if="!$v.medicalAppointment.documentNumber.required">Numero de Documento requerido</div>
             </div>
           -->
-              <div v-if="page.sectionMap.generalInfo.fieldDefinitionMap.emailAddress && page.sectionMap.generalInfo.fieldDefinitionMap.emailAddress.visible" class="group">
+              <div v-if="page.sectionMap.userProfileInfo.fieldDefinitionMap.emailAddress && page.sectionMap.userProfileInfo.fieldDefinitionMap.emailAddress.visible" class="group">
                 <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.userProfile.emailAddress.$error }">
                   <input class="form__input mdl-textfield__input" type="text" name="userProfile-emailAddress" id="userProfile-emailAddress" v-model="$v.userProfile.emailAddress.$model" />
-                  <label class="form__label labelText" for="userProfile-emailAddress">Email</label>
+                  <label class="form__label labelText" for="userProfile-emailAddress">{{$parent.getLabelValue( page.sectionMap.userProfileInfo.fieldDefinitionMap.emailAddress.label)}}</label>
                 </div>
                 <div class="error" v-if="!$v.userProfile.emailAddress.required">Email requerido</div>
                 <div class="error" v-if="!$v.userProfile.emailAddress.email">Tiene que ser un correo de electronico valido</div>
@@ -71,30 +71,41 @@
                 </div>
               </div>
               -->
-              <div v-if="page.sectionMap.generalInfo.fieldDefinitionMap.firstName && page.sectionMap.generalInfo.fieldDefinitionMap.firstName.visible" class="group">
+              <div v-if="page.sectionMap.userProfileInfo.fieldDefinitionMap.firstName && page.sectionMap.userProfileInfo.fieldDefinitionMap.firstName.visible" class="group">
                 <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.userProfile.firstName.$error }">
                   <!-- TODO implement toUpperCase
                   <input class="mdl-textfield__input" type="text" name="userProfile-firstName" id="userProfile-firstName" v-model.trim="$v.userProfile.firstName.$model" @input="forceUppercase($event, userProfile, 'firstName')" />-->
                   <input class="mdl-textfield__input" type="text" name="userProfile-firstName" id="userProfile-firstName" v-model.trim="$v.userProfile.firstName.$model" />
-                  <label class="labelText" for="userProfile-firstName">Nombres</label>
+                  <label class="labelText" for="userProfile-firstName">{{$parent.getLabelValue( page.sectionMap.userProfileInfo.fieldDefinitionMap.firstName.label)}}</label>
                 </div>
                 <div class="error" v-if="!$v.userProfile.firstName.required">Nombres requeridos</div>
               </div>
-              <div v-if="page.sectionMap.generalInfo.fieldDefinitionMap.lastName && page.sectionMap.generalInfo.fieldDefinitionMap.lastName.visible" class="group">
+              <div v-if="page.sectionMap.userProfileInfo.fieldDefinitionMap.lastName && page.sectionMap.userProfileInfo.fieldDefinitionMap.lastName.visible" class="group">
                 <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.userProfile.lastName.$error }">
                   <!-- TODO implement toUpperCase
                   <input class="form__input mdl-textfield__input" type="text" name="userProfile-lastName" id="userProfile-lastName" v-model.trim="$v.userProfile.lastName.$model" @input="forceUppercase($event, userProfile, 'lastName')" />-->
                   <input class="form__input mdl-textfield__input" type="text" name="userProfile-lastName" id="userProfile-lastName" v-model.trim="$v.userProfile.lastName.$model" />
-                  <label class="form__label labelText" for="userProfile-lastName">Apellidos</label>
+                  <label class="form__label labelText" for="userProfile-lastName">{{$parent.getLabelValue( page.sectionMap.userProfileInfo.fieldDefinitionMap.lastName.label)}}</label>
                 </div>
                 <div class="error" v-if="!$v.userProfile.lastName.required">Apellidos requeridos</div>
               </div>
-              <div v-if="page.sectionMap.generalInfo.fieldDefinitionMap.phoneNumber && page.sectionMap.generalInfo.fieldDefinitionMap.phoneNumber.visible" class="group">
+              <div v-if="page.sectionMap.userProfileInfo.fieldDefinitionMap.phoneNumber && page.sectionMap.userProfileInfo.fieldDefinitionMap.phoneNumber.visible" class="group">
                 <div class="form-group mdl-textfield mdl-js-textfield mdl-textfield--floating-label" :class="{ 'form-group--error': $v.userProfile.phoneNumber.$error }">
                   <input class="form__input mdl-textfield__input" type="text" name="userProfile-phoneNumber" id="userProfile-phoneNumber" v-model.trim="$v.userProfile.phoneNumber.$model" />
-                  <label class="form__label labelText" for="userProfile-phoneNumber">Celular</label>
+                  <label class="form__label labelText" for="userProfile-phoneNumber">{{$parent.getLabelValue( page.sectionMap.userProfileInfo.fieldDefinitionMap.phoneNumber.label)}}</label>
                 </div>
                 <div class="error" v-if="!$v.userProfile.phoneNumber.required">Celular requerido</div>
+              </div>
+            </div>
+            <!-- <div v-if="page.sectionMap.userProfileRolesInfo && page.sectionMap.userProfileRolesInfo.visible && page.sectionMap.userProfileRolesInfo.fieldDefinitionMap" class="twoCol"> -->
+              <!-- <div v-if="page.sectionMap.userProfileRolesInfo.fieldDefinitionMap.phoneNumber && page.sectionMap.userProfileRolesInfo.fieldDefinitionMap.phoneNumber.visible" class="group"> -->
+            <div v-if="roles && userProfile.selectedRoles">
+              <div>
+                <v-list-tile v-for="(role, index) in roles" :key="role.id">
+                  <v-list-tile-content>
+                    <v-checkbox :value="role.id" :key="role.name" :label="role.name" v-model="userProfile.selectedRoles"></v-checkbox>
+                  </v-list-tile-content>
+                </v-list-tile>
               </div>
             </div>
           </div>
@@ -126,42 +137,13 @@ export default {
   data() {
     return {
       requestPage: 'userProfileInfo',
-      defaultUserProfile: {
-        title: 1,
-        emailAddress: '',
-        lastName: '',
-        firstName: '',
-        phoneNumber: '',
-      },
-      titles: [{
-          titleId: 1,
-          titleName: 'DOCTOR(A)'
-        },
-        {
-          titleId: 2,
-          titleName: 'TERAPISTA'
-        },
-        {
-          titleId: 3,
-          titleName: 'ENFERMERO(A)'
-        },
-        {
-          titleId: 4,
-          titleName: 'TECNICO(A)'
-        },
-        {
-          titleId: 5,
-          titleName: 'PERSONAL ADMINISTRATIVO'
-        },
-        {
-          titleId: 6,
-          titleName: 'AUXILIAR'
-        },
-      ],
     }
   },
   validations: {
     userProfile: {
+      username:{
+        required,
+      },
       emailAddress: {
         required,
         email,
@@ -184,12 +166,15 @@ export default {
     userProfile() {
       return this.$store.state.userProfile.data;
     },
+    roles() {
+      return this.$store.state.general.roles.items;
+    },
     page() {
       return this.$store.state.userProfile.metadata.page;
     }
   },
   created: function() {
-    console.log("MedicalAppointmentPage - created - begin");
+    console.log("UserProfilePage - created - begin");
     const dataContent = {
       "userProfile": {
         "id": this.$route.params.userProfileId
@@ -201,16 +186,13 @@ export default {
     const {
       dispatch
     } = this.$store;
-    if (this.$route.params.userProfileId !== 'null') {
-      dispatch('userProfile/getById', {
-        requestPage: requestPage,
-        processName: 'RetrieveUserProfileInfo',
-        dataContent: dataContent
-      });
-    } else {
-      this.$store.state.userProfile.data = this.defaultUserProfile;
-    }
-    console.log("MedicalAppointmentPage - created - end");
+    dispatch('userProfile/getById', {
+      vm: this,
+      requestPage: requestPage,
+      processName: 'RetrieveUserProfileInfo',
+      dataContent: dataContent
+    });
+    console.log("UserProfilePage - created - end");
   },
   methods: {
     goBackBrowse: function() {
@@ -218,29 +200,65 @@ export default {
         name: 'BrowseComponent'
       })
     },
-    saveObjectState: function() {
-      const url = this.$parent.backendUrl + 'employees'
+    executeAction: function(button) {
       let selfVue = this
+      switch (button.buttonType) {
+        case 1:
+          var routeObject = {};
+          var jsonString = button.eventDefinition;
+          var eventArray = button.eventDefinition.match(/\${{(.*?)}}/g);
+          for (var i = 0, len = eventArray.length; i < len; i++) {
+            var dataRouteVariable = eventArray[i];
+            jsonString = jsonString.replace(dataRouteVariable, eval(dataRouteVariable.match(/\$\{\{([^)]+)\}\}/)[1]));
+          }
+          routeObject = JSON.parse(jsonString);
+          this.$router.push(routeObject);
+          break;
+        case 2:
+          eval(button.eventDefinition);
+          break;
+      }
+
+    },
+    saveObjectState: function() {
+      console.log("UserProfilePage - method - saveObjectState - begin");
+      this.userProfile.roles = [];
+      let selfVue = this;
+      this.roles.forEach(function(role) {
+        if(selfVue.userProfile.selectedRoles.includes(role.id)){
+            selfVue.userProfile.roles.push(role);
+        }
+      });
+      delete this.userProfile.selectedRoles;
+      const dataContent = {
+        "userProfile": this.userProfile
+      }
+      const {
+        requestPage
+      } = this;
+      const {
+        dispatch
+      } = this.$store;
+      var returnRoute = {
+        name: 'BrowsePage',
+        params: {
+          browseName: 'allUserProfiles',
+          entityId: 'null'
+        }
+      };
       this.$v.$touch()
       if (this.$v.$invalid) {
-        selfVue.$parent.errorMessage("Por favor complete los campos requeridos")
+        dispatch('alert/warning', "Por favor complete los campos requeridos");
       } else {
-        axios.post(url, this.employee)
-          .then(response => {
-            this.employee = response.data
-            selfVue.$parent.sucessMessage()
-            setTimeout(() => {
-              this.$router.push({
-                name: 'BrowseComponent',
-                params: { browseType: 'allEmployees', entityId: 'null' }
-              })
-            },1000)
-          })
-          .catch(error => {
-            console.log(error)
-            selfVue.$parent.errorMessage()
-          })
+        dispatch('userProfile/saveEntity', {
+          vm: this,
+          requestPage: requestPage,
+          processName: 'SaveUserProfile',
+          dataContent: dataContent,
+          returnRoute: returnRoute
+        });
       }
+      console.log("UserProfilePage - method - saveObjectState - end");
     },
     frontEndDateFormat: function(date) {
       return moment(date, 'YYYY-MM-DDTHH:mm:ss.fff Z').format('DD/MM/YYYY')

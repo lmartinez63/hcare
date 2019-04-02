@@ -14,9 +14,12 @@ import { browse } from './browse.module';
 import { patient } from './patient.module';
 import { medicalHistory } from './medicalHistory.module';
 import { config } from './config.module';
+//D3Chart
 import Chart from 'v-chart-plugin';
 import Vuetify from 'vuetify'
+import VueApexCharts from 'vue-apexcharts'
 
+Vue.component('apexchart', VueApexCharts)
 
 Vue.use(Vuex);
 Vue.use(VueSwal);

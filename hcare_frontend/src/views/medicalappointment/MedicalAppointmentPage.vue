@@ -348,7 +348,7 @@ export default {
       var returnRoute = { name: 'BrowsePage', params: { browseName: 'allMedAppHeaderView', entityId: 'null' } };
       this.$v.$touch()
       if (this.$v.$invalid) {
-        selfVue.$parent.errorMessage("Por favor complete los campos requeridos")
+        dispatch('alert/warning', "Por favor complete los campos requeridos");
       } else {
         dispatch('medicalAppointment/saveEntity', {
           vm: this,

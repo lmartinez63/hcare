@@ -8,6 +8,7 @@ import { router } from '../_helpers';
 const properties = JSON.parse(localStorage.getItem('properties'));
 const doctors = JSON.parse(localStorage.getItem('doctors'));
 const medicalAreas = JSON.parse(localStorage.getItem('medicalAreas'));
+const roles = JSON.parse(localStorage.getItem('roles'));
 
 const initialStateProperties = properties ? {
   properties
@@ -24,6 +25,11 @@ const initialStateMedicalAreas = medicalAreas ? {
 } : {
   medicalAreas: null
 };
+const initialStateRoles = roles ? {
+  roles
+} : {
+  roles: null
+};
 
 export const general = {
   namespaced: true,
@@ -31,6 +37,7 @@ export const general = {
     properties: initialStateProperties,
     doctors: initialStateDoctors,
     medicalAreas: initialStateMedicalAreas,
+    roles: initialStateRoles,
     loading: false
   },
   actions: {
@@ -109,6 +116,17 @@ export const general = {
           error => commit('getDoctorsFailure', error)
         );
     },
+    getRoles({
+      dispatch,
+      commit
+    }) {
+      commit('getRolesRequest');
+      generalService.getRoles()
+        .then(
+          doctors => commit('getRolesSuccess', doctors),
+          error => commit('getRolesFailure', error)
+        );
+    },
     getMedicalAreas({
       dispatch,
       commit
@@ -156,6 +174,13 @@ export const general = {
         loading: true
       };
     },
+    getRolesRequest(state) {
+      state.loading = true;
+      console.log('generalStore - mutations - getRolesRequest');
+      state.roles = {
+        loading: true
+      };
+    },
     loadPropertiesSuccess(state, properties) {
       state.loading = false;
       console.log('generalStore - mutations - loadPropertiesSuccess');
@@ -177,6 +202,13 @@ export const general = {
         items: medicalAreas
       };
     },
+    getRolesSuccess(state, roles) {
+      state.loading = false;
+      console.log('generalStore - mutations - getRolesSuccess');
+      state.roles = {
+        items: roles
+      };
+    },
     loadPropertiesFailure(state, error) {
       state.loading = false;
       console.log('generalStore - mutations - loadPropertiesFailure');
@@ -195,6 +227,13 @@ export const general = {
       state.loading = false;
       console.log('generalStore - mutations - getMedicalAreasFailure');
       state.medicalAreas = {
+        error
+      };
+    },
+    getRolesFailure(state, error) {
+      state.loading = false;
+      console.log('generalStore - mutations - getRolesFailure');
+      state.roles = {
         error
       };
     }
