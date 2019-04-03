@@ -9,14 +9,14 @@
     <div class="top-nav">
       <div v-if="user.userProfile" class="username">
         Usuario: <div v-if="user.userProfile.firstName != undefined"> {{user.userProfile.firstName}}</div>
-        <div class="btn btn-primary" v-on:click="logout"><div class="iconLogout"></div>Logout</div>
+        <div class="btn btn-logout" v-on:click="logout"><div class="iconLogout"></div>Logout</div>
       </div>
     </div>
   </header>
   <div class="main-container">
     <loading :active.sync="isLoading" :can-cancel="true" :on-cancel="onCancel" :is-full-page="fullPage"></loading>
     <flash-message></flash-message>
-    <div v-if="alertVar.message && alertVar.type =='warning' " :class="`alert ${alertVar.type}`">{{alertVar.message}}</div>
+    <div v-show="alertVar.message && alertVar.type =='warning' " :class="`alert ${alertVar.type}`">{{alertVar.message}}</div>
     <aside v-if="user" id="nav-container" class="nav-container nav-fixed bg-dark">
       <div class="nav-wrapper">
         <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
@@ -65,7 +65,7 @@
                     <router-link :to="{ name: 'BrowsePage', params: { browseName: 'allMedicalAreas' }}">Listado de Especialidades</router-link>
                   </li>
                   <li v-if="user.userProfile.pageSectionMap.userProfileInfo != undefined">
-                    <router-link :to="{ name: 'BrowsePage', params: { browseName: 'allEmployees' }}">Listado de Colaboradores</router-link>
+                    <router-link :to="{ name: 'BrowsePage', params: { browseName: 'allUserProfiles' }}">Listado de Usuarios</router-link>
                   </li>
                   <li v-if="user.userProfile.pageSectionMap.pageInfo != undefined">
                     <router-link :to="{ name: 'BrowsePage', params: { browseName: 'allPages' }}">Listado de Paginas</router-link>
@@ -149,6 +149,7 @@ export default {
       this.$store.dispatch('general/loadProperties');
       this.$store.dispatch('general/getMedicalAreas');
       this.$store.dispatch('general/getDoctors');
+      this.$store.dispatch('general/getRoles');
     }
     console.log('App - Create - end')
   },

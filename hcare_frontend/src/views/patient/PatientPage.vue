@@ -59,6 +59,16 @@
                   <label class="labelText" for="patient-birthday">{{$parent.getLabelValue( page.sectionMap.patientInfo.fieldDefinitionMap.birthday.label)}}</label>
                 </div>
               </div>
+              <div v-if="page.sectionMap.patientInfo.fieldDefinitionMap.gender && page.sectionMap.patientInfo.fieldDefinitionMap.gender.visible" class="group">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                  <select v-model="patient.gender">
+                    <option v-for="(value, key, index) in genders" v-bind:value="key">
+                      {{ value }}
+                    </option>
+                  </select>
+                  <label class="labelText" for="patient-gender">{{$parent.getLabelValue( page.sectionMap.patientInfo.fieldDefinitionMap.gender.label)}}</label>
+                </div>
+              </div>
               <div v-if="page.sectionMap.patientInfo.fieldDefinitionMap.civilStatus && page.sectionMap.patientInfo.fieldDefinitionMap.civilStatus.visible" class="group">
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                   <select v-model="patient.civilStatus">
@@ -161,6 +171,9 @@ export default {
     },
     civilStatus() {
       return this.$store.state.general.properties.items.GENERAL.CIVIL_STATUS;
+    },
+    genders() {
+      return this.$store.state.general.properties.items.GENERAL.GENDER;
     },
     districts() {
       return this.$store.state.general.properties.items.GENERAL.DISTRICT;
@@ -273,7 +286,7 @@ export default {
       };
       this.$v.$touch()
       if (this.$v.$invalid) {
-        selfVue.$parent.errorMessage("Por favor complete los campos requeridos")
+        dispatch('alert/warning', "Por favor complete los campos requeridos");
       } else {
         dispatch('patient/saveEntity', {
           vm: this,

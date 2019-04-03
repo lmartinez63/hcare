@@ -1,48 +1,19 @@
 <template>
 <v-app>
-<div class="content-container">
-  <section class="contPortlet">
-  </section>
-  <section class="contentGraph">
-    <v-chart v-bind:chartData="chartData"></v-chart>
-  </section>
-  <section>
-    <v-card class="mx-auto" color="#26c6da" dark max-width="400">
-      <v-card-title>
-        <v-icon large left>mdi-twitter</v-icon>
-        <span class="title font-weight-light">Nova Clinic</span>
-      </v-card-title>
-      <v-card-text class="headline font-weight-bold">
-        "Estimados Colegas, les presentamos el nuevo sistema Web, cualquier comentario escribirnos a novaclinic@gmail.com"
-      </v-card-text>
-      <v-card-actions>
-        <v-list-tile class="grow">
-          <v-list-tile-avatar color="grey darken-3">
-            <v-img
-              class="elevation-6"
-              src="https://avataaars.io/"
-            ></v-img>
-          </v-list-tile-avatar>
-          <v-list-tile-content>
-            <v-list-tile-title>Jackeline Cruz</v-list-tile-title>
-          </v-list-tile-content>
-          <v-layout align-center justify-end>
-            <v-icon class="mr-1">mdi-heart</v-icon>
-            <span class="subheading mr-2">Marzo</span>
-            <span class="mr-1">·</span>
-            <v-icon class="mr-1">mdi-share-variant</v-icon>
-            <span class="subheading">18</span>
-          </v-layout>
-        </v-list-tile>
-      </v-card-actions>
-    </v-card>
-  </section>
-  <section>
-    <v-toolbar flat color="white">
-      <v-toolbar-title>Mi Citas del dia</v-toolbar-title>
-      <v-divider class="mx-2" inset vertical></v-divider>
-      <v-spacer></v-spacer>
-      <!--
+  <div class="content-container">
+    <section v-if="$parent.user.userProfile.roles.some( role => role['id'] === 4 )" class="contentGraph">
+      <!-- <v-chart v-bind:chartData="chartData"></v-chart>-->
+      <div id="chart">
+        <apexchart :type="chart1.type" :width="chart1.width" :height="chart1.height" :options="chart1.chartOptions" :series="chart1.series" />
+      </div>
+    </section>
+    <!-- If is doctor -->
+    <section v-if="$parent.user.userProfile.roles.some( role => role['id'] === 7 )">
+      <v-toolbar flat color="white">
+        <v-toolbar-title>Mi Citas del dia</v-toolbar-title>
+        <v-divider class="mx-2" inset vertical></v-divider>
+        <v-spacer></v-spacer>
+        <!--
       <v-dialog v-model="dialog" max-width="500px">
         <template v-slot:activator="{ on }">
           <v-btn color="primary" dark class="mb-2" v-on="on">New Item</v-btn>
@@ -81,30 +52,59 @@
         </v-card>
       </v-dialog>
       -->
-    </v-toolbar>
-    <v-data-table :headers="headers" :items="desserts" class="elevation-1">
-      <template slot="items" slot-scope="props">
-        <td>{{ props.item.name }}</td>
-        <td class="text-xs-right">{{ props.item.calories }}</td>
-        <td class="text-xs-right">{{ props.item.fat }}</td>
-        <td class="text-xs-right">{{ props.item.carbs }}</td>
-        <td class="text-xs-right">{{ props.item.protein }}</td>
-        <td class="justify-center layout px-0">
-          <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
-          <v-icon small @click="deleteItem(props.item)">delete</v-icon>
-        </td>
-      </template>
-    </v-data-table>
-  </section>
-  <section class="contentGraph">
-    <v-chart v-bind:chartData="chartData1"></v-chart>
-  </section>
-  <section class="contentGraph">
-    <v-chart v-bind:chartData="chartData2"></v-chart>
-  </section>
-
-</div>
-</div>
+      </v-toolbar>
+      <v-data-table :headers="headers" :items="dataBrowse" class="elevation-1">
+        <template v-if="dataBrowse" slot="items" slot-scope="props">
+          <td>{{ props.item.fullName }}</td>
+          <td class="text-xs-right">{{ props.item.historyCode }}</td>
+          <td class="text-xs-right">{{ props.item.medicalAppointmentType }}</td>
+          <td class="text-xs-right">{{ props.item.status }}</td>
+          <!--
+          <td class="justify-center layout px-0">
+            <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
+            <v-icon small @click="deleteItem(props.item)">delete</v-icon>
+          </td>
+        -->
+        </template>
+      </v-data-table>
+    </section>
+    <div class="rowElement">
+      <section v-if="$parent.user.userProfile.roles.some( role => role['id'] === 7 )" class="mediumWidth">
+        <v-card class="mx-auto" color="#26c6da" dark width="100%">
+          <v-card-title>
+            <v-icon large left>mdi-twitter</v-icon>
+            <span class="title font-weight-light">Nova Clinic</span>
+          </v-card-title>
+          <v-card-text class="headline font-weight-bold">
+            "Estimados Colegas, les presentamos el nuevo sistema Web, cualquier comentario escribirnos a novaclinic@gmail.com"
+          </v-card-text>
+          <v-card-actions>
+            <v-list-tile class="grow">
+              <v-list-tile-avatar color="grey darken-3">
+                <v-img class="elevation-6" src="https://avataaars.io/"></v-img>
+              </v-list-tile-avatar>
+              <v-list-tile-content>
+                <v-list-tile-title>Jackeline Cruz</v-list-tile-title>
+              </v-list-tile-content>
+              <v-layout align-center justify-end>
+                <v-icon class="mr-1">mdi-heart</v-icon>
+                <span class="subheading mr-2">Marzo</span>
+                <span class="mr-1">·</span>
+                <v-icon class="mr-1">mdi-share-variant</v-icon>
+                <span class="subheading">18</span>
+              </v-layout>
+            </v-list-tile>
+          </v-card-actions>
+        </v-card>
+      </section>
+      <section v-if="$parent.user.userProfile.roles.some( role => role['id'] === 7 )" class="contentGraph mediumWidth">
+        <div id="chart">
+          <apexchart :type="chart2.type" :width="chart2.width" :height="chart2.height" :options="chart2.chartOptions" :series="chart2.series" />
+        </div>
+      </section>
+    </div>
+  </div>
+  </div>
 </v-app>
 </template>
 <script>
@@ -112,258 +112,211 @@
 </script>
 <script>
 //TODO Improve dashboard to portlets come database
-const totalOfPatientsPerDay = [{
-    date: '14/03/2019',
-    totalOfPatients: 98,
-    attendedPatients: 95
-  },
-  {
-    date: '15/03/2019',
-    totalOfPatients: 76,
-    attendedPatients: 71
-  },
-  {
-    date: '16/03/2019',
-    totalOfPatients: 85,
-    attendedPatients: 84
-  },
-  {
-    date: '17/03/2019',
-    totalOfPatients: 65,
-    attendedPatients: 64
-  },
-  {
-    date: '18/03/2019',
-    totalOfPatients: 55,
-    attendedPatients: 51
-  },
-  {
-    date: '19/03/2019',
-    totalOfPatients: 62,
-    attendedPatients: 60
-  },
-  {
-    date: '20/03/2019',
-    totalOfPatients: 52,
-    attendedPatients: 40
-  },
-  {
-    date: '20/03/2019',
-    totalOfPatients: 55,
-    attendedPatients: 49
-  },
-  {
-    date: '21/03/2019',
-    totalOfPatients: 32,
-    attendedPatients: 30
-  },
-  {
-    date: '22/03/2019',
-    totalOfPatients: 62,
-    attendedPatients: 60
-  },
-  {
-    date: '23/03/2019',
-    totalOfPatients: 67,
-    attendedPatients: 55
-  },
-  {
-    date: '24/03/2019',
-    totalOfPatients: 67,
-    attendedPatients: 55
-  },
-  {
-    date: '25/03/2019',
-    totalOfPatients: 67,
-    attendedPatients: 55
-  },
-  {
-    date: '26/03/2019',
-    totalOfPatients: 57,
-    attendedPatients: 55
-  },
-  {
-    date: '27/03/2019',
-    totalOfPatients: 59,
-    attendedPatients: 50
-  },
-  {
-    date: '28/03/2019',
-    totalOfPatients: 47,
-    attendedPatients: 35
-  },
-];
-const grades1 = [{
-    Name: 'Mary',
-    s1Grade: 98,
-    s2Grade: 95
-  },
-  {
-    Name: 'Sam',
-    s1Grade: 76,
-    s2Grade: 81
-  },
-  {
-    Name: 'Steve',
-    s1Grade: 85,
-    s2Grade: 84
-  },
-  {
-    Name: 'Jill',
-    s1Grade: 87,
-    s2Grade: 90
-  },
-  {
-    Name: 'Ben',
-    s1Grade: 63,
-    s2Grade: 75
-  },
-  {
-    Name: 'Brian',
-    s1Grade: 65,
-    s2Grade: 62
-  },
-  {
-    Name: 'Isabel',
-    s1Grade: 90,
-    s2Grade: 85
-  }
-];
-const typeMedicalAppointmentByDoctor = [{
-    type: 'Nueva Cita',
-    countType: 98
-  },
-  {
-    type: 'Control',
-    countType: 62
-  },
-  {
-    type: 'Ecografia',
-    countType: 24
-  },
-  {
-    type: 'Cirugia con Hospitalizacion',
-    countType: 87
-  },
-];
 export default {
   name: 'DashboardPage',
   data() {
     return {
-      dashboardInfo: {
-        qtyMedAppPerDay: 0,
-        qtyMedAppAttendedPerDay: 0,
-        qtyMedAppNotAttendedPerDay: 0,
-      },
-      chartData: {
-        chartType: 'vBarChart',
-        selector: 'chart',
-        title: 'Numero de pacientes durante las ultimas 2 semanas',
-        subtitle: '14 de Marzo - 28 de Marzo',
-        width: 500,
-        height: 400,
-        metric: ['totalOfPatients', 'attendedPatients'],
-        dim: 'date',
-        data: totalOfPatientsPerDay,
-        legends: {
-          enabled: true,
+      chart1: {
+        height: '300px',
+        width: '100%',
+        chartOptions: {
+          chart: {
+            id: 'char1id'
+          },
+          xaxis: {
+            categories: ['Marzo, 27', 'Marzo, 28', 'Marzo, 29', 'Marzo, 30', 'Marzo, 31', 'Abril, 1 ', 'Abril, 2']
+          },
+          title: {
+            text: 'Cantidad citas de la ultima semana',
+            align: 'center',
+            margin: 10,
+            offsetX: 0,
+            offsetY: 0,
+            floating: false,
+            style: {
+              fontSize: '16px',
+              color: '#263238'
+            },
+          },
+          subtitle: {
+            text: 'Marzo, 27 - Abril, 2',
+            align: 'center',
+            margin: 10,
+            offsetX: 0,
+            offsetY: 20,
+            floating: false,
+            style: {
+              fontSize: '12px',
+              color: '#9699a2'
+            },
+          },
+          legend: {
+            show: true,
+            position: 'top'
+          },
         },
-        overrides: {
-          palette: {
-            fill: ['#34495E', '#4fc08d'],
-            stroke: '#41B883'
-          },
-          x: {
-            ticks: 20
-          },
-          y: {
-            axisWidth: 40,
-          }
-        }
+        series: [{
+          name: 'Citas Agendadas',
+          data: [60, 45, 55, 49, 60, 70, 91]
+        }],
+        type: 'line'
       },
-      chartData1: {
-        chartType: 'vBarChart',
-        selector: 'chart1',
-        title: 'Student Grades1',
-        subtitle: '2018 - 2019',
-        width: 500,
-        height: 400,
-        metric: ['s1Grade', 's2Grade'],
-        dim: 'Name',
-        data: grades1,
-        legends: {
-          enabled: true,
+      chart2: {
+        height: '300px',
+        width: '100%',
+        chartOptions: {
+          chart: {
+            id: 'char2id'
+          },
+          xaxis: {
+            categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
+          },
+          title: {
+            text: 'Chart2',
+            align: 'center',
+            margin: 10,
+            offsetX: 0,
+            offsetY: 0,
+            floating: false,
+            style: {
+              fontSize: '16px',
+              color: '#263238'
+            },
+          },
+          subtitle: {
+            text: 'Sub title Chart2',
+            align: 'center',
+            margin: 10,
+            offsetX: 0,
+            offsetY: 20,
+            floating: false,
+            style: {
+              fontSize: '12px',
+              color: '#9699a2'
+            },
+          },
         },
-        overrides: {
-          palette: {
-            fill: ['#34495E', '#4fc08d'],
-            stroke: '#41B883'
-          },
-          x: {
-            ticks: 20
-          },
-          y: {
-            axisWidth: 40,
-          }
-        }
-      },
-      chartData2: {
-        chartType: 'pieChart',
-        selector: 'chart2',
-        title: 'Tipos de las Consultas',
-        subtitle: 'Masculino/Femeninos',
-        width: 500,
-        height: 400,
-        metric: ['countType'],
-        dim: 'type',
-        data: typeMedicalAppointmentByDoctor,
+        series: [{
+          name: 'series-1',
+          data: [30, 40, 45, 50, 49, 60, 70, 91]
+        }],
+        type: 'bar'
       },
       dialog: false,
-    headers: [
-      {
-        text: 'Dessert (100g serving)',
-        align: 'left',
-        sortable: false,
-        value: 'name'
+      /*headers: [{
+          text: 'Dessert (100g serving)',
+          align: 'left',
+          sortable: false,
+          value: 'name'
+        },
+        {
+          text: 'Calories',
+          value: 'calories'
+        },
+        {
+          text: 'Fat (g)',
+          value: 'fat'
+        },
+        {
+          text: 'Carbs (g)',
+          value: 'carbs'
+        },
+        {
+          text: 'Protein (g)',
+          value: 'protein'
+        },
+        {
+          text: 'Actions',
+          value: 'name',
+          sortable: false
+        }
+      ],
+      */
+      headers: [{
+          text: 'Paciente',
+          align: 'left',
+          sortable: false,
+          value: 'fullName'
+        },
+        {
+          text: 'Codigo de Historial',
+          align: 'left',
+          sortable: false,
+          value: 'historyCode'
+        },
+        {
+          text: 'Tipo de Cita',
+          align: 'left',
+          sortable: false,
+          value: 'medicalAppointmentType'
+        },
+        {
+          text: 'Estado de la Cita',
+          align: 'left',
+          sortable: false,
+          value: 'status'
+        },
+      ],
+      desserts: [],
+      data: [],
+      editedIndex: -1,
+      editedItem: {
+        name: '',
+        calories: 0,
+        fat: 0,
+        carbs: 0,
+        protein: 0
       },
-      { text: 'Calories', value: 'calories' },
-      { text: 'Fat (g)', value: 'fat' },
-      { text: 'Carbs (g)', value: 'carbs' },
-      { text: 'Protein (g)', value: 'protein' },
-      { text: 'Actions', value: 'name', sortable: false }
-    ],
-    desserts: [],
-    editedIndex: -1,
-    editedItem: {
-      name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0
-    },
-    defaultItem: {
-      name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0
-    }
+      defaultItem: {
+        name: '',
+        calories: 0,
+        fat: 0,
+        carbs: 0,
+        protein: 0
+      }
     }
   },
   computed: {
-    formTitle () {
+    formTitle() {
       return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+    },
+    metadataBrowse() {
+      return this.$store.state.browse.metadata;
+    },
+    dataBrowse() {
+      return this.$store.state.browse.data;
     }
+
   },
 
   watch: {
-    dialog (val) {
+    dialog(val) {
       val || this.close()
     }
   },
   created: function() {
     console.log('DashboardPage - created - begin')
-    this.initialize();
+    const {
+      requestPage
+    } = this;
+    const {
+      dispatch
+    } = this.$store;
+    //Doctor
+    if (this.$parent.user.userProfile.roles.some(role => role['id'] === 7)) {
+      const dataContent = {
+        "browseName": 'todayMedicalAppointmentsByLoggedDoctor',
+        "browseParameters": {
+          "doctorId": this.$parent.user.userProfile.id
+        }
+      }
+      dispatch('browse/getBrowseData', {
+        requestPage: requestPage,
+        processName: '',
+        dataContent: dataContent,
+        vueInstance: this
+      });
+    }
     console.log('DashboardPage - created - end')
   },
   mounted: function() {
@@ -373,93 +326,18 @@ export default {
 
   },
   methods: {
-    initialize () {
-      this.desserts = [
-        {
-          name: 'Frozen Yogurt',
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0
-        },
-        {
-          name: 'Ice cream sandwich',
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3
-        },
-        {
-          name: 'Eclair',
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0
-        },
-        {
-          name: 'Cupcake',
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3
-        },
-        {
-          name: 'Gingerbread',
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9
-        },
-        {
-          name: 'Jelly bean',
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0
-        },
-        {
-          name: 'Lollipop',
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0
-        },
-        {
-          name: 'Honeycomb',
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5
-        },
-        {
-          name: 'Donut',
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9
-        },
-        {
-          name: 'KitKat',
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7
-        }
-      ]
-    },
-
-    editItem (item) {
+    editItem(item) {
       this.editedIndex = this.desserts.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
 
-    deleteItem (item) {
+    deleteItem(item) {
       const index = this.desserts.indexOf(item)
       confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
     },
 
-    close () {
+    close() {
       this.dialog = false
       setTimeout(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
@@ -467,7 +345,7 @@ export default {
       }, 300)
     },
 
-    save () {
+    save() {
       if (this.editedIndex > -1) {
         Object.assign(this.desserts[this.editedIndex], this.editedItem)
       } else {

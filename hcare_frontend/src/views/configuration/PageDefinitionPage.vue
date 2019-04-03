@@ -37,7 +37,7 @@
                 </div>
                 <div class="error" v-if="!$v.pageData.visibleRuleExp.required">Expresion de visibilidad requerida</div>
               </div>
-              <div class="groupFull">
+              <div v-if="pageData.label" class="groupFull">
                 <label class="typo__label">Label</label>
                 <multiselect v-model="pageData.label" :options="labelList" :custom-label="customLabel" placeholder="Select one Label" label="labelCode" track-by="labelCode"></multiselect>
               </div>
@@ -162,7 +162,7 @@ export default {
       } = this.$store;
       this.$v.$touch()
       if (this.$v.$invalid) {
-        this.$parent.errorMessage("Por favor complete los campos requeridos")
+        dispatch('alert/warning', "Por favor complete los campos requeridos");
       } else {
         dispatch('config/savePageEntity', {
           vm: this,

@@ -43,6 +43,14 @@
 	box-shadow: 0 3px 3px rgba(204, 204, 204, 0.5);
 }
 
+.btn.btn-logout {
+    color: #000;
+}
+
+.btn.btn-logout:hover {
+    color: #597db7;
+}
+
 .form-group {
     position: relative;
 }
@@ -64,8 +72,16 @@
     padding-left: 8px !important;
     text-align: left;
 }
+.boxLoginPortlet .boxLogin .body-inner .card {
+    height: auto;
+}
 
-
+.iconLogin {
+    background: url(login-white.png) no-repeat;
+    width: 24px;
+    height: 24px;
+    margin-right: 15px;
+}
 .contentTab {
             display: flex;
             flex: 1 1 100%;
@@ -95,4 +111,56 @@
             display: flex;
             padding: 15px 15px;
         }
+
+.alert.warning {
+  position: fixed;
+  z-index: 102;
+  top: 0;
+  left: 25%;
+  right: 25%;
+  -webkit-animation: showNotify 3500ms ease-in;
+  animation: showNotify 3500ms ease-in;
+  padding: 10px;
+  background: #cde0f6;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border: 1px solid #b9d4f2;
+  margin: 10px auto;
+}
+.flash__wrapper {
+    z-index: 5000;
+    position: absolute;
+    right: 0;
+    top: 20px;
+}
+section {
+    margin-top: 20px;
+}
+.fullWidth {
+    box-flex: 1 1 100%;
+	-webkit-box-flex: 1 1 100%!important;
+	-moz-box-flex: 1 1 100%!important;
+	-webkit-flex: 1 1 100%!important;
+	-moz-flex: 1 1 100%!important;
+	-ms-flex: 1 1 100%!important;
+	flex: 1 1 100%!important;
+}
+.mediumWidth {
+	box-flex: 1 1 100%;
+	-webkit-box-flex: 1 1 50%!important;
+	-moz-box-flex: 1 1 50%!important;
+	-webkit-flex: 1 1 50%!important;
+	-moz-flex: 1 1 50%!important;
+	-ms-flex: 1 1 50%!important;
+	flex: 1 1 50%!important;
+}
+.rowElement {
+    display: box;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+}
 </style>

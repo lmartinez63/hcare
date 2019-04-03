@@ -49,7 +49,7 @@ export const patient = {
             }
           );
       })
-    }
+    },
   },
   mutations: {
     pendingRequest(state) {

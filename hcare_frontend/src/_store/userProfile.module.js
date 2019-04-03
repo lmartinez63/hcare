@@ -10,36 +10,38 @@ export const userProfile = {
         metadata: {},
     },
     actions: {
-        getById({ dispatch, commit },{ requestPage, processName, dataContent }){
+        getById({ dispatch, commit }, { vm, requestPage, processName, dataContent }) {
+          commit('general/setLoading',true,{ root: true });
           commit('pendingRequest');
-          dataResponseService.getContent( requestPage, processName, dataContent  )
-              .then(
-                  content => commit('getByIdSuccess', content),
-                  error => commit('failureDetected', error)
-              );
+          dataResponseService.getContent(requestPage, processName, dataContent)
+            .then(
+              content => {
+                commit('getByIdSuccess', { vm ,content } );
+                commit('general/setLoading',false,{ root: true });
+              },
+              error => commit('failureDetected', error)
+            );
         },
-        saveEntity({ dispatch, commit },{ requestPage, processName, dataContent }){
-          commit('pendingRequest');
-          dataResponseService.getContent( requestPage, processName, dataContent  )
-              .then(
-                  content => {
-                    commit('saveEntitySuccess', content);
-                    router.push({
-                      name: 'BrowseComponent',
-                      params: { browseType: 'allMedicalAppointments', entityId: 'null' }
-                    })
-                  },
-                  error => commit('failureDetected', error)
-              );
-        },
-        getPatientInfoByDocumentNumberOnMedAppointment({ dispatch, commit }, { requestPage, processName, dataContent } ) {
+        saveEntity({ dispatch, commit }, { vm, requestPage, processName, dataContent ,returnRoute }) {
+          return new Promise((resolve, reject) => {
+            commit('general/setLoading',true,{ root: true });
             commit('pendingRequest');
-            dataResponseService.getContent( requestPage, processName, dataContent )
-                .then(
-                    content => commit('getPatientInfoByDocumentNumberOnMedAppointmentSuccess', content),
-                    error => commit('failureDetected', error)
-                );
-        }
+            dataResponseService.getContent(requestPage, processName, dataContent, returnRoute)
+              .then(
+                content => {
+                  commit('saveEntitySuccess', content);
+                  commit('general/setLoading',false,{ root: true });
+                  //TODO sucess message should come from a label translated from backend
+                  dispatch('alert/success', { vm: vm, message: 'Los datos fueron guardados satisfactoriamente', returnRoute: returnRoute }, { root: true });
+                  resolve({status:200});
+                },
+                error => {
+                    commit('failureDetected', error);
+                    dispatch('alert/error', error, { root: true });
+                }
+              );
+          })
+        },
     },
     mutations: {
         pendingRequest(state) {
@@ -51,10 +53,15 @@ export const userProfile = {
             console.log('userProfileResponse - mutations - failureDetected - '+ error);
             state.error = error;
         },
-        getByIdSuccess(state, content) {
+        getByIdSuccess(state, { vm, content }) {
             state.loading = false;
             console.log('userProfileResponse - mutations  - getByIdSuccess');
             state.data = content.dataContent.dataMap.userProfile;
+            state.data.selectedRoles = [];
+            for(var upr in state.data.roles){
+              state.data.selectedRoles.push(state.data.roles[upr].id);
+            }
+
             state.metadata = content.metadataContent;
         },
         saveEntitySuccess(state, content) {
@@ -62,17 +69,6 @@ export const userProfile = {
             console.log('userProfileResponse - mutations  - getByIdSuccess');
             state.data = content.dataContent.dataMap.medicalAppointment;
             state.metadata = content.metadataContent;
-        },
-        getPatientInfoByDocumentNumberOnMedAppointmentSuccess(state, content) {
-            state.loading = false;
-            console.log('userProfileResponse - mutations - getPatientInfoByDocumentNumberOnMedAppointmentSuccess');
-            if ( content && content != null && content != '' ) {
-              state.data.firstName = content.dataContent.dataMap.patient.firstName
-              state.data.lastName = content.dataContent.dataMap.patient.lastName
-              state.data.celPhoneNumber = content.dataContent.dataMap.patient.celPhoneNumber
-              state.data.emailAddress = content.dataContent.dataMap.patient.emailAddress
-              state.data.historyCode = content.dataContent.dataMap.patient.historyCode
-            }
         },
     }
 }
