@@ -78,7 +78,7 @@ export default {
       this.$v.$touch()
       if (this.$v.$invalid) {
         //selfVue.$parent.errorMessage("Por favor complete los campos requeridos")
-        dispatch('alert/error', "Por favor complete los campos requeridos", { root: true });
+        dispatch('alert/warning', "Por favor complete los campos requeridos");
       } else {
         dispatch('authentication/login', {
           username,

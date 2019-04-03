@@ -26,7 +26,7 @@ Vue.use(VueSwal);
 Vue.use(VueFlashMessage);
 Vue.use(Chart);
 Vue.use(Vuetify)
-
+Vue.use(require('vue-moment'));
 
 
 export const store = new Vuex.Store({

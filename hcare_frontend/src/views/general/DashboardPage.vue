@@ -1,19 +1,22 @@
 <template>
 <v-app>
   <div class="content-container">
-    <section v-if="$parent.user.userProfile.roles.some( role => role['id'] === 4 )" class="contentGraph">
-      <!-- <v-chart v-bind:chartData="chartData"></v-chart>-->
-      <div id="chart">
-        <apexchart :type="chart1.type" :width="chart1.width" :height="chart1.height" :options="chart1.chartOptions" :series="chart1.series" />
-      </div>
-    </section>
+    <div class="rowElement">
+      <section v-if="$parent.user.userProfile.roles.some( role => role['id'] === 4 )" class="contentGraph fullWidth">
+        <!-- <v-chart v-bind:chartData="chartData"></v-chart>-->
+        <div id="chart">
+          <apexchart :type="chart1.type" :width="chart1.width" :height="chart1.height" :options="chart1.chartOptions" :series="chart1.series" />
+        </div>
+      </section>
+    </div>
     <!-- If is doctor -->
-    <section v-if="$parent.user.userProfile.roles.some( role => role['id'] === 7 )">
-      <v-toolbar flat color="white">
-        <v-toolbar-title>Mi Citas del dia</v-toolbar-title>
-        <v-divider class="mx-2" inset vertical></v-divider>
-        <v-spacer></v-spacer>
-        <!--
+    <div class="rowElement">
+      <section v-if="$parent.user.userProfile.roles.some( role => role['id'] === 7 )" class="fullWidth">
+        <v-toolbar v-if="dataBrowse" flat color="white">
+          <v-toolbar-title>Mis Citas del dia</v-toolbar-title>
+          <v-divider class="mx-2" inset vertical></v-divider>
+          <v-spacer></v-spacer>
+          <!--
       <v-dialog v-model="dialog" max-width="500px">
         <template v-slot:activator="{ on }">
           <v-btn color="primary" dark class="mb-2" v-on="on">New Item</v-btn>
@@ -52,57 +55,124 @@
         </v-card>
       </v-dialog>
       -->
-      </v-toolbar>
-      <v-data-table :headers="headers" :items="dataBrowse" class="elevation-1">
-        <template v-if="dataBrowse" slot="items" slot-scope="props">
-          <td>{{ props.item.fullName }}</td>
-          <td class="text-xs-right">{{ props.item.historyCode }}</td>
-          <td class="text-xs-right">{{ props.item.medicalAppointmentType }}</td>
-          <td class="text-xs-right">{{ props.item.status }}</td>
-          <!--
+        </v-toolbar>
+        <v-data-table :headers="todayMAByCurrentDoctorHeaders" :items="dataBrowse" class="elevation-1">
+          <template v-if="dataBrowse" slot="items" slot-scope="props">
+            <td class="text-xs-left">{{ props.item.fullName }}</td>
+            <td class="text-xs-left">{{ props.item.historyCode }}</td>
+            <td class="text-xs-left">{{ props.item.dateAppointment | moment("hh:mm a") }}</td>
+            <td class="text-xs-left">{{ props.item.medicalAppointmentType }}</td>
+            <td class="text-xs-left">{{ props.item.status }}</td>
+            <!--
           <td class="justify-center layout px-0">
             <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
             <v-icon small @click="deleteItem(props.item)">delete</v-icon>
           </td>
         -->
-        </template>
-      </v-data-table>
-    </section>
-    <div class="rowElement">
-      <section v-if="$parent.user.userProfile.roles.some( role => role['id'] === 7 )" class="mediumWidth">
-        <v-card class="mx-auto" color="#26c6da" dark width="100%">
-          <v-card-title>
-            <v-icon large left>mdi-twitter</v-icon>
-            <span class="title font-weight-light">Nova Clinic</span>
-          </v-card-title>
-          <v-card-text class="headline font-weight-bold">
-            "Estimados Colegas, les presentamos el nuevo sistema Web, cualquier comentario escribirnos a novaclinic@gmail.com"
-          </v-card-text>
-          <v-card-actions>
-            <v-list-tile class="grow">
-              <v-list-tile-avatar color="grey darken-3">
-                <v-img class="elevation-6" src="https://avataaars.io/"></v-img>
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title>Jackeline Cruz</v-list-tile-title>
-              </v-list-tile-content>
-              <v-layout align-center justify-end>
-                <v-icon class="mr-1">mdi-heart</v-icon>
-                <span class="subheading mr-2">Marzo</span>
-                <span class="mr-1">·</span>
-                <v-icon class="mr-1">mdi-share-variant</v-icon>
-                <span class="subheading">18</span>
-              </v-layout>
-            </v-list-tile>
-          </v-card-actions>
-        </v-card>
-      </section>
-      <section v-if="$parent.user.userProfile.roles.some( role => role['id'] === 7 )" class="contentGraph mediumWidth">
-        <div id="chart">
-          <apexchart :type="chart2.type" :width="chart2.width" :height="chart2.height" :options="chart2.chartOptions" :series="chart2.series" />
-        </div>
+          </template>
+        </v-data-table>
       </section>
     </div>
+    <!-- If is secretary -->
+    <div class="rowElement">
+      <section v-if="$parent.user.userProfile.roles.some( role => role['id'] === 6 )" class="fullWidth">
+        <v-toolbar v-if="dataBrowse" flat color="white">
+          <v-toolbar-title>Citas del dia</v-toolbar-title>
+          <v-divider class="mx-2" inset vertical></v-divider>
+          <v-spacer></v-spacer>
+          <!--
+      <v-dialog v-model="dialog" max-width="500px">
+        <template v-slot:activator="{ on }">
+          <v-btn color="primary" dark class="mb-2" v-on="on">New Item</v-btn>
+        </template>
+        <v-card>
+          <v-card-title>
+            <span class="headline">{{ formTitle }}</span>
+          </v-card-title>s
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+                <v-flex xs12 sm6 md4>
+                  <v-text-field v-model="editedItem.name" label="Dessert name"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md4>
+                  <v-text-field v-model="editedItem.calories" label="Calories"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md4>
+                  <v-text-field v-model="editedItem.fat" label="Fat (g)"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md4>
+                  <v-text-field v-model="editedItem.carbs" label="Carbs (g)"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md4>
+                  <v-text-field v-model="editedItem.protein" label="Protein (g)"></v-text-field>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
+            <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      -->
+        </v-toolbar>
+        <v-data-table :headers="headers" :items="dataBrowse" class="elevation-1">
+          <template v-if="dataBrowse" slot="items" slot-scope="props">
+            <td class="text-xs-left">{{ props.item.fullName }}</td>
+            <td class="text-xs-left">{{ props.item.upFullName }}</td>
+            <td class="text-xs-left">{{ props.item.historyCode }}</td>
+            <td class="text-xs-left">{{ props.item.dateAppointment | moment("hh:mm a") }}</td>
+            <td class="text-xs-left">{{ props.item.medicalAppointmentType }}</td>
+            <td class="text-xs-left">{{ props.item.status }}</td>
+            <!--
+          <td class="justify-center layout px-0">
+            <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
+            <v-icon small @click="deleteItem(props.item)">delete</v-icon>
+          </td>
+        -->
+          </template>
+        </v-data-table>
+      </section>
+    </div>
+    <div class="rowElement">
+    <section v-if="$parent.user.userProfile.roles.some( role => role['id'] === 7 )" class="mediumWidth">
+      <v-card class="mx-auto" color="#26c6da" dark width="100%">
+        <v-card-title>
+          <v-icon large left>mdi-twitter</v-icon>
+          <span class="title font-weight-light">Nova Clinic</span>
+        </v-card-title>
+        <v-card-text class="headline font-weight-bold">
+          "Estimados Colegas, les presentamos el nuevo sistema Web, cualquier comentario escribirnos a novaclinic@gmail.com"
+        </v-card-text>
+        <v-card-actions>
+          <v-list-tile class="grow">
+            <v-list-tile-avatar color="grey darken-3">
+              <v-img class="elevation-6" src="https://avataaars.io/"></v-img>
+            </v-list-tile-avatar>
+            <v-list-tile-content>
+              <v-list-tile-title>Jackeline Cruz</v-list-tile-title>
+            </v-list-tile-content>
+            <v-layout align-center justify-end>
+              <v-icon class="mr-1">mdi-heart</v-icon>
+              <span class="subheading mr-2">Marzo</span>
+              <span class="mr-1">·</span>
+              <v-icon class="mr-1">mdi-share-variant</v-icon>
+              <span class="subheading">18</span>
+            </v-layout>
+          </v-list-tile>
+        </v-card-actions>
+      </v-card>
+    </section>
+    <section v-if="$parent.user.userProfile.roles.some( role => role['id'] === 7 )" class="contentGraph mediumWidth">
+      <div id="chart">
+        <apexchart :type="chart2.type" :width="chart2.width" :height="chart2.height" :options="chart2.chartOptions" :series="chart2.series" />
+      </div>
+    </section>
+  </div>
   </div>
   </div>
 </v-app>
@@ -168,11 +238,9 @@ export default {
           chart: {
             id: 'char2id'
           },
-          xaxis: {
-            categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
-          },
+          labels: ['Masculino', 'Femenino', 'No Especificado'],
           title: {
-            text: 'Chart2',
+            text: 'Pacientes por genero',
             align: 'center',
             margin: 10,
             offsetX: 0,
@@ -183,24 +251,15 @@ export default {
               color: '#263238'
             },
           },
-          subtitle: {
-            text: 'Sub title Chart2',
-            align: 'center',
-            margin: 10,
-            offsetX: 0,
-            offsetY: 20,
-            floating: false,
-            style: {
-              fontSize: '12px',
-              color: '#9699a2'
-            },
-          },
         },
-        series: [{
-          name: 'series-1',
-          data: [30, 40, 45, 50, 49, 60, 70, 91]
-        }],
-        type: 'bar'
+        series: [30, 90, 30],
+        dataLabels: {
+          enabled: true,
+          formatter: function(val) {
+            return val + "%"
+          }
+        },
+        type: 'donut'
       },
       dialog: false,
       /*headers: [{
@@ -232,28 +291,71 @@ export default {
         }
       ],
       */
-      headers: [{
+      todayMAByCurrentDoctorHeaders: [{
           text: 'Paciente',
-          align: 'left',
-          sortable: false,
+          align: 'center',
+          sortable: true,
           value: 'fullName'
         },
         {
           text: 'Codigo de Historial',
-          align: 'left',
-          sortable: false,
+          align: 'center',
+          sortable: true,
           value: 'historyCode'
         },
         {
+          text: 'Hora de la Cita',
+          align: 'center',
+          sortable: true,
+          value: 'dateAppointment'
+        },
+        {
           text: 'Tipo de Cita',
-          align: 'left',
-          sortable: false,
+          align: 'center',
+          sortable: true,
           value: 'medicalAppointmentType'
         },
         {
           text: 'Estado de la Cita',
-          align: 'left',
-          sortable: false,
+          align: 'center',
+          sortable: true,
+          value: 'status'
+        },
+      ],
+      headers: [{
+          text: 'Paciente',
+          align: 'center',
+          sortable: true,
+          value: 'fullName'
+        },
+        {
+            text: 'Doctor',
+            align: 'center',
+            sortable: true,
+            value: 'emFullName'
+        },
+        {
+          text: 'Codigo de Historial',
+          align: 'center',
+          sortable: true,
+          value: 'historyCode'
+        },
+        {
+          text: 'Hora de la Cita',
+          align: 'center',
+          sortable: true,
+          value: 'dateAppointment'
+        },
+        {
+          text: 'Tipo de Cita',
+          align: 'center',
+          sortable: true,
+          value: 'medicalAppointmentType'
+        },
+        {
+          text: 'Estado de la Cita',
+          align: 'center',
+          sortable: true,
           value: 'status'
         },
       ],
@@ -316,14 +418,24 @@ export default {
         dataContent: dataContent,
         vueInstance: this
       });
+      //Secretary
+    } else if (this.$parent.user.userProfile.roles.some(role => role['id'] === 6)) {
+      const dataContent = {
+        "browseName": 'medicalAppointmentsToday',
+      }
+      dispatch('browse/getBrowseData', {
+        requestPage: requestPage,
+        processName: '',
+        dataContent: dataContent,
+        vueInstance: this
+      });
     }
     console.log('DashboardPage - created - end')
   },
   mounted: function() {
-    console.log('DashboardPage - mounted - end')
-    //Assing this vue compnent to self to don't lose reference
-    let self = this
 
+    //Assing this vue compnent to self to don't lose reference
+    console.log('DashboardPage - mounted - end');
   },
   methods: {
     editItem(item) {

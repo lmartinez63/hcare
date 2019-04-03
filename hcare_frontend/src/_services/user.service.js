@@ -34,12 +34,20 @@ function login(username, password) {
       }
 
       return user;
-    });
+    })
+    .catch((error) => {
+      //TO handle ERROR CONNECTION
+      console.log(error);
+      //TODO improve messages that comes from database
+      return Promise.reject(error.message);
+    });;
 }
 
 function logout() {
   // remove user from local storage to log user out
-  localStorage.removeItem('user');
+  //localStorage.removeItem('user');
+  // remove all data related
+  localStorage.clear();
 }
 
 function getAll() {
@@ -64,24 +72,25 @@ function getCurrentUserDetails() {
 function handleResponse(response) {
   return response.text().then(text => {
     try {
+      console.log('userService - handleResponse');
       const data = text && JSON.parse(text);
       if (!response.ok) {
         if (response.status === 401) {
           // auto logout if 401 response returned from api
-          if (data.message === '1'){
-            return Promise.reject('Usuario y/o Password incorrectos');
+          if (data.message === '1') {
+            return Promise.reject({code:1,message:'Usuario y/o Password incorrectos'});
           }
           logout();
           location.reload(true);
         }
 
         const error = (data && data.message) || response.statusText;
-        return Promise.reject(error);
+        return Promise.reject({code:0,message:error});
 
       }
       return data;
     } catch (error) {
-      return Promise.reject(response.statusText);
+      return Promise.reject({code:2,message:response.statusText});
     }
 
   });

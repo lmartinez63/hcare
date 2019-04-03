@@ -65,7 +65,10 @@ export const medicalAppointment = {
             commit('getPatientInfoByDocumentNumberOnMedAppointmentSuccess', content)
             commit('general/setLoading',false,{ root: true });
           },
-          error => commit('failureDetected', error)
+          error => {
+            commit('failureDetected', error);
+            dispatch('alert/error', error, { root: true });
+          }
         );
     }
   },
@@ -94,7 +97,7 @@ export const medicalAppointment = {
     getPatientInfoByDocumentNumberOnMedAppointmentSuccess(state, content) {
       state.loading = false;
       console.log('medicalAppointmentResponse - mutations - getPatientInfoByDocumentNumberOnMedAppointmentSuccess');
-      if (content && content != null && content != '') {
+      if (content && content != null && content.dataContent.dataMap.patient) {
         state.data.firstName = content.dataContent.dataMap.patient.firstName
         state.data.lastName = content.dataContent.dataMap.patient.lastName
         state.data.celPhoneNumber = content.dataContent.dataMap.patient.celPhoneNumber

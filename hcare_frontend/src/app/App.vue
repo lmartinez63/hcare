@@ -40,7 +40,7 @@
                 <a><i class="icono izquierda fa fa-share-alt"></i>Administracion de Historias Medicas<i class="icono derecha fa fa-chevron-down"></i></a>
                 <ul>
                   <li>
-                    <router-link :to="{ name: 'BrowseComponent', params: { browseType: 'allMedicalHistories', entityId: 'null' }}">Listado de Historias Medicas</router-link>
+                    <router-link :to="{ name: 'BrowsePage', params: { browseName: 'allMedicalHistories', entityId: 'null' }}">Listado de Historias Medicas</router-link>
                   </li>
                 </ul>
               </li>
@@ -48,13 +48,13 @@
                 <a><i class="icono izquierda fa fa-share-alt"></i>Administracion de Citas<i class="icono derecha fa fa-chevron-down"></i></a>
                 <ul>
                   <li>
+                    <router-link :to="{ name: 'BrowsePage', params: { browseName: 'medicalAppointmentsToday' }}">Listado de Citas de Hoy</router-link>
+                  </li>
+                  <li>
                     <router-link :to="{ name: 'MedicalAppointmentPage', params: { medicalAppointmentId: 'null' }}">Nueva Cita</router-link>
                   </li>
                   <li>
                     <router-link :to="{ name: 'BrowsePage', params: { browseName: 'allMedAppHeaderView' }}">Listado de Citas</router-link>
-                  </li>
-                  <li>
-                    <router-link :to="{ name: 'BrowsePage', params: { browseName: 'medicalAppointmentsToday' }}">Listado de Citas de Hoy</router-link>
                   </li>
                 </ul>
               </li>
@@ -152,6 +152,74 @@ export default {
       this.$store.dispatch('general/getRoles');
     }
     console.log('App - Create - end')
+  },
+  updated () {
+    //TOREMOVE need to be removed it's updated each time DOM is updated
+    var threePoint = true;
+    var menuMain = true;
+    $(document).ready(function() {
+      $('#table_id').DataTable({
+        responsive: true
+      });
+
+      $('.menu li:has(ul)').click(function(e) {
+        e.preventDefault();
+        if ($(this).hasClass('activado')) {
+          $(this).removeClass('activado');
+          $(this).children('ul').slideUp();
+        } else {
+          $('.menu li ul').slideUp();
+          $('.menu li').removeClass('activado');
+          $(this).addClass('activado');
+          $(this).children('ul').slideDown();
+        }
+      });
+
+      $('.btn-menu').click(function() {
+        $('.contenedor-menu .menu').slideToggle();
+      });
+
+      $('.menu li ul li a').click(function() {
+        window.location.href = $(this).attr("href");
+      });
+    });
+
+    function frontEndDateFormat(date,type,row) {
+      return moment(date, 'YYYY-MM-DDTHH:mm:ss.fff Z').format('DD/MM/YYYY')
+    };
+
+    function frontEndDatetimeFormat(date,type,row) {
+      return moment(date, 'YYYY-MM-DDTHH:mm:ss.fff Z').format('DD/MM/YYYY hh:mm a')
+    };
+    function openThreePoint() {
+      if (threePoint) {
+        $(".moreOptions").fadeIn();
+        $(".moreOptions").css({
+          'display': 'flex'
+        });
+        setTimeout(function() {
+          $("body").addClass("closeMoreOptions");
+        }, 10);
+        threePoint = false;
+      }
+    };
+    function openMenuMain() {
+      if (menuMain) {
+        $(".nav-container").fadeIn();
+        $(".nav-container").css({
+          'display': 'flex'
+        });
+        setTimeout(function() {
+          $("body").addClass("closeMenuMain");
+        }, 10);
+        menuMain = false;
+      }
+    };
+    $(document).on("click", ".closeMoreOptions", function() {
+      $(".moreOptions").fadeOut();
+      $(".closeMoreOptions").attr("class", "");
+      threePoint = true;
+    });
   },
   methods: {
     getLabelValue: function(label) {
