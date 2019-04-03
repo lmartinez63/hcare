@@ -90,6 +90,7 @@ public class ContentController {
         String processName = requestMap.get("processName").toString();
         Map requestDataMap = (Map)requestMap.get("data");
         requestDataMap.put("userAuthenticated",new UserAuthenticated((User) authentication.getPrincipal()));
+        requestDataMap.put("userProfileAuthenticated",userService.findByUsername(username));
         Page page = pageService.findPageSectionAndFieldsByPageCodeAndUserName(requestPage,username);
         //Verify if use is authorizated
         //pageService.verifyIfCurrentUserIsAuthorizated(page,dataContent.getDataMap());
@@ -106,6 +107,7 @@ public class ContentController {
             throw new Exception("Process "+customProcess.getClass().getName()+" has not ended correctly "+customProcess.getProcessStatus());
         } else {
             DataContent dataContent = new DataContent();
+            customProcess.getResultMap().put("userProfileAuthenticated",userService.findByUsername(username));
             dataContent.setDataMap(customProcess.getResultMap());
             pageService.processFields(page, dataContent.getDataMap());
             metadataContent.setPage(page);

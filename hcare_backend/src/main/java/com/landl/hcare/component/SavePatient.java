@@ -14,8 +14,13 @@ public class SavePatient extends CustomProcess {
 
         final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
         final Patient patientRequest = mapper.convertValue(requestMap.get("patient"), Patient.class);
-        Patient patient= patientService.findById(patientRequest.getId());
-        copyNonNullProperties(patientRequest, patient);
+        Patient patient;
+        if(patientRequest.getId() != null) {
+            patient = patientService.findById(patientRequest.getId());
+            copyNonNullProperties(patientRequest, patient);
+        } else {
+            patient = patientRequest;
+        }
         patientService.save(patient);
         addDataToResultMap("patient",patient);
     }

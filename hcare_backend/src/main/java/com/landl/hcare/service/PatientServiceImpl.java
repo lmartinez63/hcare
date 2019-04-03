@@ -42,9 +42,11 @@ public class PatientServiceImpl implements PatientService{
 
     public Patient createPatient() throws  Exception{
         Patient patient = new Patient();
-        //TODO it should come from database
+        //TODO it should come from database default values
         //DefaultValues
         patient.setDocumentType("1");
+        //0 = No specified
+        patient.setGender(0);
         return patient;
     }
 

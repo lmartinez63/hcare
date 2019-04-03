@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface DataColumnRepository extends JpaRepository<DataColumn, Long>{
-    @Query(value = "select dc.* from data_column dc\n" +
+    @Query(value = "select distinct dc.* from data_column dc\n" +
             "inner join role_data_table_column rdtc on rdtc.dt_id = dc.data_table_id and rdtc.dc_id = dc.id\n" +
             "inner join role r on r.id = rdtc.role_id\n" +
             "inner join user_roles ur on r.id = ur.role_id\n" +

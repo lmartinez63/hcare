@@ -64,12 +64,13 @@ public class BrowserServiceImpl implements BrowserService {
     public List<ObjectNode> getQuery(String query, Map<String,Object> browseParameters) throws Exception{
 
         Query q = entityManager.createNativeQuery(query, Tuple.class);
-        Iterator<Map.Entry<String, Object>> parameterIterator = browseParameters.entrySet().iterator();
-        while (parameterIterator.hasNext()) {
-            Map.Entry<String, Object> pair = parameterIterator.next();
-            q.setParameter(pair.getKey(),pair.getValue());
+        if ( browseParameters != null ){
+            Iterator<Map.Entry<String, Object>> parameterIterator = browseParameters.entrySet().iterator();
+            while (parameterIterator.hasNext()) {
+                Map.Entry<String, Object> pair = parameterIterator.next();
+                q.setParameter(pair.getKey(),pair.getValue());
+            }
         }
-
         List<Tuple> results = q.getResultList();
 
         List<ObjectNode> json = _toJson(results);
