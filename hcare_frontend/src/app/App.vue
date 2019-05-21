@@ -25,58 +25,58 @@
               <li>
                 <router-link :to="{ name: 'DashboardPage'}"><i class="icono izquierda fa fa-home"></i>Tablero Principal</router-link>
               </li>
-              <li v-if="user.userProfile.pageSectionMap.patientInfo != undefined">
+              <li v-if="user.userProfile.pageSectionMap.patientInfo != undefined" class="activado">
                 <a><i class="icono izquierda fa fa-star"></i>Administration de Pacientes<i class="icono derecha fa fa-chevron-down"></i></a>
-                <ul>
-                  <li>
+                <ul class="activado" style="display: block;">
+                  <li style="display: block;">
                     <router-link :to="{ name: 'BrowsePage', params: { browseName: 'allPatients' }}">Listado de Pacientes</router-link>
                   </li>
-                  <li>
+                  <li style="display: block;">
                     <router-link :to="{ name: 'PatientPage', params: { patientId: 'null' }}">Registrar Paciente</router-link>
                   </li>
                 </ul>
               </li>
               <li v-if="user.userProfile.pageSectionMap.medicalHistoryInfo != undefined">
                 <a><i class="icono izquierda fa fa-share-alt"></i>Administracion de Historias Medicas<i class="icono derecha fa fa-chevron-down"></i></a>
-                <ul>
-                  <li>
+                <ul class="activado" style="display: block;">
+                  <li style="display: block;">
                     <router-link :to="{ name: 'BrowsePage', params: { browseName: 'allMedicalHistories', entityId: 'null' }}">Listado de Historias Medicas</router-link>
                   </li>
                 </ul>
               </li>
               <li v-if="user.userProfile.pageSectionMap.medicalAppointmentInfo != undefined">
                 <a><i class="icono izquierda fa fa-share-alt"></i>Administracion de Citas<i class="icono derecha fa fa-chevron-down"></i></a>
-                <ul>
-                  <li>
+                <ul class="activado" style="display: block;">
+                  <li style="display: block;">
                     <router-link :to="{ name: 'BrowsePage', params: { browseName: 'medicalAppointmentsToday' }}">Listado de Citas de Hoy</router-link>
                   </li>
-                  <li>
+                  <li style="display: block;">
                     <router-link :to="{ name: 'MedicalAppointmentPage', params: { medicalAppointmentId: 'null' }}">Nueva Cita</router-link>
                   </li>
-                  <li>
+                  <li style="display: block;">
                     <router-link :to="{ name: 'BrowsePage', params: { browseName: 'allMedAppHeaderView' }}">Listado de Citas</router-link>
                   </li>
                 </ul>
               </li>
               <li v-if="user.userProfile.pageSectionMap.medicalAreaInfo != undefined || user.userProfile.pageSectionMap.userProfileInfo != undefined">
                 <a><i class="icono izquierda fa fa-share-alt"></i>Configuraciones<i class="icono derecha fa fa-chevron-down"></i></a>
-                <ul>
-                  <li v-if="user.userProfile.pageSectionMap.medicalAreaInfo != undefined">
+                <ul class="activado" style="display: block;">
+                  <li v-if="user.userProfile.pageSectionMap.medicalAreaInfo != undefined" style="display: block;">
                     <router-link :to="{ name: 'BrowsePage', params: { browseName: 'allMedicalAreas' }}">Listado de Especialidades</router-link>
                   </li>
-                  <li v-if="user.userProfile.pageSectionMap.userProfileInfo != undefined">
+                  <li v-if="user.userProfile.pageSectionMap.userProfileInfo != undefined" style="display: block;">
                     <router-link :to="{ name: 'BrowsePage', params: { browseName: 'allUserProfiles' }}">Listado de Usuarios</router-link>
                   </li>
-                  <li v-if="user.userProfile.pageSectionMap.pageInfo != undefined">
+                  <li v-if="user.userProfile.pageSectionMap.pageInfo != undefined" style="display: block;">
                     <router-link :to="{ name: 'BrowsePage', params: { browseName: 'allPages' }}">Listado de Paginas</router-link>
                   </li>
-                  <li v-if="user.userProfile.pageSectionMap.pageInfo != undefined">
+                  <li v-if="user.userProfile.pageSectionMap.pageInfo != undefined" style="display: block;">
                     <router-link :to="{ name: 'PageDefinitionPage', params: { pageId: 'null' }}">Nueva Pagina</router-link>
                   </li>
-                  <li v-if="user.userProfile.pageSectionMap.rolePageSectionFieldInfo != undefined">
+                  <li v-if="user.userProfile.pageSectionMap.rolePageSectionFieldInfo != undefined" style="display: block;">
                     <router-link :to="{ name: 'BrowsePage', params: { browseName: 'allRolePageSectionFieldPage' }}">Listado de Asignacion de Campos por Roles</router-link>
                   </li>
-                  <li v-if="user.userProfile.pageSectionMap.pageInfo != undefined">
+                  <li v-if="user.userProfile.pageSectionMap.pageInfo != undefined" style="display: block;">
                     <router-link :to="{ name: 'RolePageSectionFieldPage', params: { roleId: 'null',pageId: 'null',sectionId: 'null',fieldDefinitionId: 'null' }}">Asignacion de Campo a un Rol</router-link>
                   </li>
                 </ul>
@@ -164,6 +164,7 @@ export default {
 
       $('.menu li:has(ul)').click(function(e) {
         e.preventDefault();
+        return;
         if ($(this).hasClass('activado')) {
           $(this).removeClass('activado');
           $(this).children('ul').slideUp();

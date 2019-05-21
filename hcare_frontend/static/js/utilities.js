@@ -7,6 +7,7 @@ $(document).ready(function() {
 
   $('.menu li:has(ul)').click(function(e) {
     e.preventDefault();
+    return;
     if ($(this).hasClass('activado')) {
       $(this).removeClass('activado');
       $(this).children('ul').slideUp();
