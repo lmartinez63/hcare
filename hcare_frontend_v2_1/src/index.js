@@ -19,6 +19,9 @@ import vuelidateErrorExtractor, { templates } from 'vuelidate-error-extractor'
 import Loading from 'vue-loading-overlay'
 // Import stylesheet
 // import 'vue-loading-overlay/dist/vue-loading.css'
+
+import orderBy from 'lodash.orderby'
+
 // Sync store with router
 sync(store, router)
 const moment = require('moment')

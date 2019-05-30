@@ -15,5 +15,14 @@ export default {
     console.log('processResponse - mutations  - getDataSuccess')
     state.dataMap = content.dataContent.dataMap
     state.metadata = content.metadataContent
+  },
+  saveEntitySuccess (state, content) {
+    state.loading = false
+    console.log('processResponse - mutations  - getDataSuccess')
+    state.dataMap = content.dataContent.dataMap
+  },
+  uploadFileSuccess (state, content) {
+    state.loading = false
+    console.log('processResponse - mutations  - uploadFileSuccess')
   }
 }

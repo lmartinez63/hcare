@@ -23,7 +23,7 @@
               tag="v-flex"
             >
               <v-item
-                v-for="section in page.sectionList"
+                v-for="section in orderedSections"
                 :key="section.sectionCode"
               >
                 <div slot-scope="{ active, toggle }">
@@ -45,16 +45,17 @@
                 vertical
               >
                 <v-window-item
-                  v-for="section in page.sectionList"
+                  v-for="section in orderedSections"
                   :key="section.sectionCode"
                 >
                   <v-layout
                     align-center
                     mb-3
                   >
-                    <v-avatar
-                      color="grey"
-                      class="mr-1"
+                    <v-flex
+                      xs12
+                      sm6
+                      md1
                     />
                     <strong class="title">{{ $parent.$parent.$parent.getLabelValue(section.label) }}</strong>
                     <v-spacer />
@@ -66,12 +67,14 @@
                           v-for="fieldDefinition in section.fieldDefinitionList"
                           :key="fieldDefinition.fieldDefinitionCode"
                         >
+                          <!-- TextField -->
                           <v-text-field
                             v-if="fieldDefinition.fieldType === 1"
                             v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
                             :label="fieldDefinition.label.labelValueEsEs"
-                            :disabled="fieldDefinition.editable"
+                            :disabled="!fieldDefinition.editable"
                           />
+                          <!-- Selects -->
                           <v-autocomplete
                             v-if="fieldDefinition.fieldType === 2"
                             ref="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
@@ -80,6 +83,12 @@
                             :items="propertyItems[fieldDefinition.selectSource]"
                             :label="fieldDefinition.label.labelValueEsEs"
                             placeholder="Seleccione..."
+                          />
+                          <!-- ComboBox -->
+                          <v-switch
+                            v-if="fieldDefinition.fieldType === 3"
+                            v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
+                            :label="fieldDefinition.label.labelValueEsEs"
                           />
                           <v-dialog
                             v-if="fieldDefinition.fieldType === 4"
@@ -181,11 +190,79 @@
           </v-speed-dial>
         </material-card>
       </v-flex>
+      <!-- Upload Attachment -->
+      <v-dialog
+        v-if="createUploadFileDialog"
+        v-model="uploadFileDialog"
+        persistent
+        max-width="600px"
+      >
+        <v-card>
+          <v-card-title>
+            <span class="headline">Subir Documento</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+                <v-flex
+                  xs12
+                  sm6
+                  md4
+                >
+                  <v-text-field
+                    v-model="fileName"
+                    label="Nombre del Documento"
+                  />
+                </v-flex>
+                <v-flex
+                  xs12
+                  sm6
+                >
+                  <v-autocomplete
+                    :items="['Historial Medico', 'Informacion del Paciente']"
+                    label="Categoria"
+                  />
+                </v-flex>
+                <v-flex
+                  xs12
+                  sm6
+                >
+                  <input
+                    id="file"
+                    ref="file"
+                    type="file"
+                    @change="handleFileUpload()"
+                  >
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn
+              color="blue darken-1"
+              flat
+              @click="uploadFileDialog = false"
+            >
+              Close
+            </v-btn>
+            <v-btn
+              color="blue darken-1"
+              flat
+              @click="submitFile"
+            >
+              Save
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-layout>
   </v-container>
 </template>
 
 <script>
+
+import _ from 'lodash'
 
 let installed = false
 
@@ -204,7 +281,16 @@ export default {
       optionButtonBottom: false,
       optionButtonLeft: false,
       optionButtonTransition: 'slide-y-reverse-transition',
-      requestPage: ''
+      requestPage: '',
+      createUploadFileDialog: false,
+      uploadFileDialog: true,
+      fileName: '',
+      file: '',
+      attachment: {
+        entityCode: 0,
+        entityId: 0,
+        entity: '',
+      },
     }
   },
   computed: {
@@ -216,6 +302,9 @@ export default {
     },
     page () {
       return this.$store.state.data.metadata.page
+    },
+    orderedSections: function () {
+      return _.orderBy(this.page.sectionList, 'visualizationOrder')
     }
   },
   created: function () {
@@ -232,9 +321,13 @@ export default {
     })
     console.log('DataPage - created - end')
   },
+  mounted: function () {
+    console.log('DataPage - mounted - begin')
+    console.log('DataPage - mounted - end')
+  },
   methods: {
     getDataMapAttribute: function (dataMap, attribute) {
-      if(attribute && attribute !== null){
+      if (attribute && attribute !== null) {
         var attributeArray = attribute.split('.')
         if (attributeArray.length > 0) {
           var finalAttribute = dataMap[attributeArray[0]]
@@ -245,6 +338,55 @@ export default {
         return finalAttribute
       }
       return ''
+    },
+    getValueFromVariable: function(variable) {
+      var variableArray = variable.match(/\${{(.*?)}}/g)
+
+      if ( variableArray == null || variableArray.length < 1 ){
+        return variable;
+      }
+      var returnString = variable;
+      for (var i = 0, len = variableArray.length; i < len; i++) {
+        var dataVariable = variableArray[i]
+        returnString = returnString.replace(dataVariable, eval(dataVariable.match(/\$\{\{([^)]+)\}\}/)[1]))
+      }
+      return returnString
+    },
+    submitFile () {
+      // Initialize the form data
+      let formData = new FormData()
+      // Add the form data we need to submit
+      formData.append('file', this.file)
+      formData.append('fileName', this.fileName)
+      formData.append('entity', this.getValueFromVariable(this.attachment.entity))
+      formData.append('entityId', this.getValueFromVariable(this.attachment.entityId))
+      formData.append('entityCode', this.getValueFromVariable(this.attachment.entityCode))
+
+      const {
+        dispatch
+      } = this.$store
+      // this.$v.$touch()
+      /* if (this.$v.$invalid) {
+        dispatch('alert/warning', 'Por favor complete los campos requeridos')
+      } else {
+      */
+      dispatch('data/uploadFile', {
+        vm: this,
+        formData: formData
+      }).then(function (response) {
+        console.log('sucessUpload')
+        console.log(response)
+      })
+        .catch(function (response) {
+        // handle error
+          console.log('errorUpload')
+          console.log(response)
+        })
+      this.uploadFileDialog = false
+    },
+    // Handles a change on the file upload
+    handleFileUpload () {
+      this.file = this.$refs.file.files[0]
     },
     executeAction: function (button) {
       let selfVue = this

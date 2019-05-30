@@ -14,6 +14,24 @@ export default {
         error => commit('failureDetected', error)
       )
   },
+  uploadFile ({ dispatch, commit }, { vm, formData }) {
+    return new Promise((resolve, reject) => {
+      commit('general/setLoading', true, { root: true })
+      commit('pendingRequest')
+      dataResponseService.uploadAttachment(formData)
+        .then(
+          content => {
+            commit('uploadFileSuccess', content)
+            commit('general/setLoading', false, { root: true })
+            resolve({ status: 200 })
+          },
+          error => {
+            commit('failureDetected', error)
+            dispatch('alert/error', error, { root: true })
+          }
+        )
+    })
+  },
   saveEntity ({ dispatch, commit }, { vm, requestPage, processName, dataContent, returnRoute }) {
     return new Promise((resolve, reject) => {
       commit('general/setLoading', true, { root: true })
