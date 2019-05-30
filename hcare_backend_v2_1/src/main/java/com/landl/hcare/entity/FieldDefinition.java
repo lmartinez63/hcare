@@ -48,6 +48,9 @@ public class FieldDefinition extends AuditModel {
     @Column(name="edit_rule_exp")
     private String editRuleExp;
 
+    @Column(name="select_source")
+    private String selectSource;
+
     @Transient
     private Boolean visible;
 
@@ -153,5 +156,13 @@ public class FieldDefinition extends AuditModel {
 
     public void setValidationList(List<Validation> validationList) {
         this.validationList = validationList;
+    }
+
+    public String getSelectSource() {
+        return selectSource;
+    }
+
+    public void setSelectSource(String selectSource) {
+        this.selectSource = selectSource;
     }
 }

@@ -69,9 +69,9 @@ public class PropertyServiceImpl implements PropertyService{
         return property;
     }
 
-    public Map<String,Map<String,String>> getPropertiesGroupByModule() throws Exception{
+    public Map getPropertiesGroupByModule() throws Exception{
         //TODO Change to work with language_eses
-        Map<String,Map<String,String>> moduleMap = new HashMap<String, Map<String,String>>();
+        Map moduleMap = new HashMap<>();
         List<Object[]> returnData = propertyRepository.findPropertyGroupByModule();
         for(Object[] data:returnData){
             String module = (String)data[0];
@@ -82,12 +82,15 @@ public class PropertyServiceImpl implements PropertyService{
             if(!moduleMap.containsKey(module)){
                 moduleMap.put(module,new HashMap<String,String>());
             }
-            //PropertyMap
-            Map propertiesMap = (Map)moduleMap.get(module);
-            if(!propertiesMap.containsKey(propertyCode)){
-                propertiesMap.put(propertyCode,new HashMap<String,String>());
+            //PropertiesList
+            Map PropertiesList = (Map)moduleMap.get(module);
+            if(!PropertiesList.containsKey(propertyCode)){
+                PropertiesList.put(propertyCode,new ArrayList<Map>());
             }
-            ((Map)propertiesMap.get(propertyCode)).put(propertyValue,labelValue);
+            Map propertyMapEntry = new HashMap();
+            propertyMapEntry.put("text",labelValue);
+            propertyMapEntry.put("value",propertyValue);
+            ((List)PropertiesList.get(propertyCode)).add(propertyMapEntry);
         }
         return moduleMap;
     }

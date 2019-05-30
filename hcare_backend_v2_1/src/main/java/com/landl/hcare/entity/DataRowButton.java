@@ -29,6 +29,9 @@ public class DataRowButton extends AuditModel {
     @Column(name="data_row_button_event")
     private String dataRowButtonEvent;
 
+    @Column(name="icon")
+    private String icon;
+
     //Map one to one association between Person and Address
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="label_id")
@@ -80,5 +83,13 @@ public class DataRowButton extends AuditModel {
 
     public void setVisibilityCondition(String visibilityCondition) {
         this.visibilityCondition = visibilityCondition;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 }

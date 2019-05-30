@@ -20,6 +20,6 @@ public interface PropertyService {
 
     public String getPropertyValue(String propertyCode);
 
-    public Map<String,Map<String,String>> getPropertiesGroupByModule() throws Exception;
+    public Map getPropertiesGroupByModule() throws Exception;
 
 }

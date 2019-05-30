@@ -15,14 +15,22 @@ public class RetrieveMedicalHistoryInfo extends CustomProcess {
     public void executeCustomProcess(Map<String, Object> requestMap) throws Exception{
     	
         final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
-        final MedicalHistory medicalHistoryRequest = mapper.convertValue(requestMap.get("medicalHistory"), MedicalHistory.class);
-        MedicalHistory medicalHistory = medicalHistoryService.findById(medicalHistoryRequest.getHistoryCode());
-        if (medicalHistory != null) {
-	        if(medicalHistory.getHistoryCode() != null){
-	            medicalHistory.setPatient(patientService.findByHistoryCode(medicalHistory.getHistoryCode()));
-	        }
-	        medicalHistory.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalHistory", medicalHistory.getHistoryCode()));
+        //final MedicalHistory medicalHistoryRequest = mapper.convertValue(requestMap.get("medicalHistory"), MedicalHistory.class);
+        String s_historyCode = (String)requestMap.get("historyCode");
+        Long l_historyCode = Long.parseLong(s_historyCode);
+        if(l_historyCode != null){
+            MedicalHistory medicalHistory = medicalHistoryService.findById(l_historyCode);
+            if (medicalHistory != null) {
+                if(medicalHistory.getHistoryCode() != null){
+                    medicalHistory.setPatient(patientService.findByHistoryCode(medicalHistory.getHistoryCode()));
+                    medicalHistory.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalHistory", medicalHistory.getHistoryCode()));
+                }
+            }
+            addDataToResultMap("medicalHistory",medicalHistory);
+        } else {
+            //TODO
+            throw new Exception("History Code must not me empty");
         }
-        addDataToResultMap("medicalHistory",medicalHistory);
+
     }
 }

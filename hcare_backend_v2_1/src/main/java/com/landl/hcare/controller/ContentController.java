@@ -107,6 +107,7 @@ public class ContentController {
             throw new Exception("Process "+customProcess.getClass().getName()+" has not ended correctly "+customProcess.getProcessStatus());
         } else {
             DataContent dataContent = new DataContent();
+            customProcess.getResultMap().put("userAuthenticated",new UserAuthenticated((User) authentication.getPrincipal()));
             customProcess.getResultMap().put("userProfileAuthenticated",userService.findByUsername(username));
             dataContent.setDataMap(customProcess.getResultMap());
             pageService.processFields(page, dataContent.getDataMap());

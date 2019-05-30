@@ -25,6 +25,12 @@ public class Section extends AuditModel {
     @Column(name="visible_rule_exp")
     private String visibleRuleExp;
 
+    @Column(name="entity")
+    private String entity;
+
+    @Column(name="visualization_order")
+    private String visualizationOrder;
+
     @Transient
     private Boolean visible;
 
@@ -105,4 +111,19 @@ public class Section extends AuditModel {
         this.fieldDefinitionMap = fieldDefinitionMap;
     }
 
+    public String getEntity() {
+        return entity;
+    }
+
+    public void setEntity(String entity) {
+        this.entity = entity;
+    }
+
+    public String getVisualizationOrder() {
+        return visualizationOrder;
+    }
+
+    public void setVisualizationOrder(String visualizationOrder) {
+        this.visualizationOrder = visualizationOrder;
+    }
 }

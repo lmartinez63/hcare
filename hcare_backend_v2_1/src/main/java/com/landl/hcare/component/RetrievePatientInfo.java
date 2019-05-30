@@ -13,10 +13,12 @@ public class RetrievePatientInfo extends CustomProcess {
     public void executeCustomProcess(Map<String, Object> requestMap) throws Exception{
 
         final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
-        final Patient patientRequest = mapper.convertValue(requestMap.get("patient"), Patient.class);
+        String s_patientId = (String)requestMap.get("patientId");
+        Long l_patientId = Long.parseLong(s_patientId);
+        //final Patient patientRequest = mapper.convertValue(requestMap.get("patient"), Patient.class);
         Patient patient = null;
-        if(patientRequest.getId() != null){
-            patient = patientService.findById(patientRequest.getId());
+        if(l_patientId != null){
+            patient = patientService.findById(l_patientId);
         } else {
             patient = patientService.createPatient();
         }
