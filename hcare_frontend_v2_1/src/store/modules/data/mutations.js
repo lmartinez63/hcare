@@ -4,6 +4,8 @@ export default {
   pendingRequest (state) {
     console.log('patientResponse - mutations - pendingRequest')
     state.loading = true
+    state.dataMap = {}
+    state.metadata = {}
   },
   failureDetected (state, error) {
     state.loading = false

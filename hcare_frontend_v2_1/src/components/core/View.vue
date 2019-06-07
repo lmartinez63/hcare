@@ -6,7 +6,7 @@
           <!-- To reload same component
           <router-view />
           -->
-          <router-view :key="$route.path"></router-view>
+          <router-view :key="$route.path" />
         </v-fade-transition>
       </div>
       <core-footer v-if="$route.name !== 'Maps'" />

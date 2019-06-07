@@ -15,144 +15,179 @@
           :title="getDataMapAttribute(dataMap,page.titleDefinition)"
           :text="getDataMapAttribute(dataMap,page.subTitleDefinition)"
         >
-          <v-layout align-center>
-            <v-item-group
-              v-model="window"
-              class="shrink mr-4"
-              mandatory
-              tag="v-flex"
+          <v-layout
+            v-if="page.sectionList.length > 0"
+            align-center
+          >
+            <v-tabs
+              v-model="tab"
+              color="cyan"
+              grow
+              style="width:100%;"
             >
-              <v-item
+              <v-tabs-slider color="yellow" />
+              <v-tab
                 v-for="section in orderedSections"
                 :key="section.sectionCode"
               >
-                <div slot-scope="{ active, toggle }">
-                  <v-btn
-                    :input-value="active"
-                    icon
-                    @click="toggle"
-                  >
-                    <v-icon>mdi-record</v-icon>
-                  </v-btn>
-                </div>
-              </v-item>
-            </v-item-group>
-            <v-flex>
-              <v-window
-                v-if="page.sectionList.length > 0"
-                v-model="window"
-                class="elevation-1"
-                vertical
+                {{ $parent.$parent.$parent.getLabelValue(section.label) }}
+              </v-tab>
+              <v-tab-item
+                v-for="section in orderedSections"
+                :key="section.sectionCode"
               >
-                <v-window-item
-                  v-for="section in orderedSections"
-                  :key="section.sectionCode"
-                >
-                  <v-layout
-                    align-center
-                    mb-3
-                  >
-                    <v-flex
-                      xs12
-                      sm6
-                      md1
-                    />
-                    <strong class="title">{{ $parent.$parent.$parent.getLabelValue(section.label) }}</strong>
-                    <v-spacer />
-                  </v-layout>
-                  <v-form>
-                    <v-container py-0>
-                      <v-layout wrap>
-                        <v-flex
-                          v-for="fieldDefinition in section.fieldDefinitionList"
-                          :key="fieldDefinition.fieldDefinitionCode"
-                        >
-                          <!-- TextField -->
+                <v-form>
+                  <v-container py-6>
+                    <v-layout
+                      v-if="section.sectionType === 2 "
+                      wrap
+                    >
+                      <v-card width="100%">
+                        <v-sheet class="pa-3 primary lighten-2">
                           <v-text-field
-                            v-if="fieldDefinition.fieldType === 1"
-                            v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
-                            :label="fieldDefinition.label.labelValueEsEs"
-                            :disabled="!fieldDefinition.editable"
+                            v-model="search"
+                            label="Search Company Directory"
+                            dark
+                            flat
+                            solo-inverted
+                            hide-details
+                            clearable
+                            clear-icon="mdi-close-circle-outline"
                           />
-                          <!-- Selects -->
-                          <v-autocomplete
-                            v-if="fieldDefinition.fieldType === 2"
-                            ref="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
-                            v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
-                            :rules="[() => !! dataMap[section.entity][fieldDefinition.fieldDefinitionCode] || 'Este campo es requerido']"
-                            :items="propertyItems[fieldDefinition.selectSource]"
-                            :label="fieldDefinition.label.labelValueEsEs"
-                            placeholder="Seleccione..."
+                          <v-checkbox
+                            v-model="caseSensitive"
+                            dark
+                            hide-details
+                            label="Case sensitive search"
                           />
-                          <!-- ComboBox -->
-                          <v-switch
-                            v-if="fieldDefinition.fieldType === 3"
-                            v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
-                            :label="fieldDefinition.label.labelValueEsEs"
-                          />
-                          <v-dialog
-                            v-if="fieldDefinition.fieldType === 4"
-                            ref="dialog"
-                            v-model="fieldDefinition.modal"
-                            :return-value.sync="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
-                            persistent
-                            lazy
-                            full-width
-                            width="290px"
+                        </v-sheet>
+                        <v-layout>
+                          <v-flex>
+                            <v-card-text>
+                              <v-treeview
+                                v-if="dataMap[page.entity].files"
+                                :active.sync="active"
+                                :items="treeviewItems"
+                                :search="search"
+                                :filter="filter"
+                                :open.sync="open"
+                                activatable
+                                item-key="name"
+                                open-on-click
+                                return-object
+                              >
+                                <template v-slot:prepend="{ item, open }">
+                                  <v-icon v-if="!item.fileType">
+                                    {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
+                                  </v-icon>
+                                  <v-icon v-else>
+                                    {{ files[item.fileType] }}
+                                  </v-icon>
+                                </template>
+                              </v-treeview>
+                            </v-card-text>
+                          </v-flex>
+                          <v-divider vertical />
+                          <v-flex
+                            xs12
+                            md6
                           >
-                            <template v-slot:activator="{ on }">
-                              <v-text-field
-                                model="section.entity[fieldDefinition.fieldDefinitionCode]"
-                                :value="$parent.$parent.$parent.computedDateFormattedMomentjs(dataMap[section.entity][fieldDefinition.fieldDefinitionCode])"
-                                :label="fieldDefinition.label.labelValueEsEs"
-                                prepend-icon="mdi-calendar"
-                                readonly
-                                v-on="on"
+                            <v-card>
+                              <v-card-text v-if="!selected">
+                                <div
+                                  class="title font-weight-light grey--text pa-3 text-xs-center"
+                                  style="align-self: center;"
+                                >
+                                  Seleccione una imagen
+                                </div>
+                              </v-card-text>
+                              <v-img
+                                v-else
+                                :key="selected.id"
+                                :src="getImgSrc(selected)"
+                                class="grey darken-4"
                               />
-                            </template>
-                            <v-date-picker
-                              v-model="new Date(dataMap[section.entity][fieldDefinition.fieldDefinitionCode]).toJSON()"
-                              scrollable
-                              locale="es"
-                            >
-                              <v-spacer />
-                              <v-btn
-                                flat
-                                color="primary"
-                                @click="fieldDefinition.modal = false"
-                              >
-                                Cancelar
-                              </v-btn>
-                              <v-btn
-                                flat
-                                color="primary"
-                                @click="$refs.dialog[0].save(dataMap[section.entity][fieldDefinition.fieldDefinitionCode])"
-                              >
-                                OK
-                              </v-btn>
-                            </v-date-picker>
-                          </v-dialog>
-                        </v-flex>
-                        <!--
-                        <v-flex
-                          xs12
-                          text-xs-right
+                            </v-card>
+                          </v-flex>
+                        </v-layout>
+                      </v-card>
+                    </v-layout>
+                    <v-layout
+                      v-if="section.sectionType === 1 "
+                      wrap
+                    >
+                      <v-flex
+                        v-for="fieldDefinition in section.fieldDefinitionList"
+                        :key="fieldDefinition.fieldDefinitionCode"
+                      >
+                        <v-text-field
+                          v-if="fieldDefinition.fieldType === 1"
+                          v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
+                          :label="fieldDefinition.label.labelValueEsEs"
+                          :disabled="!fieldDefinition.editable"
+                        />
+                        <v-autocomplete
+                          v-if="fieldDefinition.fieldType === 2"
+                          ref="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
+                          v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
+                          :rules="[() => !! dataMap[section.entity][fieldDefinition.fieldDefinitionCode] || 'Este campo es requerido']"
+                          :items="propertyItems[fieldDefinition.selectSource]"
+                          :label="fieldDefinition.label.labelValueEsEs"
+                          placeholder="Seleccione..."
+                        />
+                        <v-switch
+                          v-if="fieldDefinition.fieldType === 3"
+                          v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
+                          :label="fieldDefinition.label.labelValueEsEs"
+                        />
+                        <v-dialog
+                          v-if="fieldDefinition.fieldType === 4"
+                          ref="dialog"
+                          v-model="fieldDefinition.modal"
+                          :return-value.sync="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
+                          persistent
+                          lazy
+                          full-width
+                          width="290px"
                         >
-                          <v-btn
-                            class="mx-0 font-weight-light"
-                            color="success"
-                            @click="saveObjectState()"
+                          <template v-slot:activator="{ on }">
+                            <v-text-field
+                              model="section.entity[fieldDefinition.fieldDefinitionCode]"
+                              :value="$parent.$parent.$parent.computedDateFormattedMomentjs(dataMap[section.entity][fieldDefinition.fieldDefinitionCode])"
+                              :label="fieldDefinition.label.labelValueEsEs"
+                              prepend-icon="mdi-calendar"
+                              readonly
+                              v-on="on"
+                            />
+                          </template>
+                          <v-date-picker
+                            v-model="new Date(dataMap[section.entity][fieldDefinition.fieldDefinitionCode]).toJSON()"
+                            scrollable
+                            locale="es"
                           >
-                            Update Profile
-                          </v-btn>
-                        </v-flex>
-                        -->
-                      </v-layout>
-                    </v-container>
-                  </v-form>
-                </v-window-item>
-              </v-window>
-            </v-flex>
+                            <v-spacer />
+                            <v-btn
+                              flat
+                              color="primary"
+                              @click="fieldDefinition.modal = false"
+                            >
+                              Cancelar
+                            </v-btn>
+                            <v-btn
+                              flat
+                              color="primary"
+                              @click="$refs.dialog[0].save(dataMap[section.entity][fieldDefinition.fieldDefinitionCode])"
+                            >
+                              OK
+                            </v-btn>
+                          </v-date-picker>
+                        </v-dialog>
+                      </v-flex>
+                    </v-layout>
+                  </v-container>
+                </v-form>
+              </v-tab-item>
+            </v-tabs>
           </v-layout>
           <v-speed-dial
             v-model="fab"
@@ -210,8 +245,8 @@
                   md4
                 >
                   <v-text-field
-                    v-model="fileName"
-                    label="Nombre del Documento"
+                    v-model="fileTitle"
+                    label="Titulo del Documento"
                   />
                 </v-flex>
                 <v-flex
@@ -272,7 +307,7 @@ export default {
     return {
       modal: false,
       dateElements: 0,
-      window: 0,
+      tab: null,
       optionButtonDirection: 'bottom',
       fab: false,
       optionButtonHover: false,
@@ -284,16 +319,39 @@ export default {
       requestPage: '',
       createUploadFileDialog: false,
       uploadFileDialog: true,
-      fileName: '',
+      fileTitle: '',
       file: '',
       attachment: {
         entityCode: 0,
         entityId: 0,
-        entity: '',
+        entity: ''
       },
+      active: [],
+      // Testing
+      // window: 0,
+      open: [1, 2],
+      search: null,
+      caseSensitive: false,
+      // Testing 2
+      files: {
+        html: 'mdi-language-html5',
+        js: 'mdi-nodejs',
+        json: 'mdi-json',
+        md: 'mdi-markdown',
+        pdf: 'mdi-file-pdf',
+        png: 'mdi-file-image',
+        txt: 'mdi-file-document-outline',
+        xls: 'mdi-file-excel'
+      },
+      tree: []
     }
   },
   computed: {
+    filter () {
+      return this.caseSensitive
+        ? (item, search, textKey) => item[textKey].indexOf(search) > -1
+        : undefined
+    },
     propertyItems () {
       return this.$store.state.general.properties.items.GENERAL
     },
@@ -303,8 +361,15 @@ export default {
     page () {
       return this.$store.state.data.metadata.page
     },
+    treeviewItems () {
+      return this.dataMap[this.page.entity].files
+    },
     orderedSections: function () {
       return _.orderBy(this.page.sectionList, 'visualizationOrder')
+    },
+    selected () {
+      if (!this.active.length) return undefined
+      return this.active[0]
     }
   },
   created: function () {
@@ -326,6 +391,12 @@ export default {
     console.log('DataPage - mounted - end')
   },
   methods: {
+    getImgSrc: function (imageObj) {
+      return 'data:' + imageObj.contentType + ';base64,' + imageObj.src
+    },
+    currentEntity: function (currPage, currSection) {
+      return (currSection && currSection.entity && currSection.entity !== '') ? currSection.entity : currPage.entity
+    },
     getDataMapAttribute: function (dataMap, attribute) {
       if (attribute && attribute !== null) {
         var attributeArray = attribute.split('.')
@@ -339,13 +410,13 @@ export default {
       }
       return ''
     },
-    getValueFromVariable: function(variable) {
+    getValueFromVariable: function (variable) {
       var variableArray = variable.match(/\${{(.*?)}}/g)
 
-      if ( variableArray == null || variableArray.length < 1 ){
-        return variable;
+      if (variableArray == null || variableArray.length < 1) {
+        return variable
       }
-      var returnString = variable;
+      var returnString = variable
       for (var i = 0, len = variableArray.length; i < len; i++) {
         var dataVariable = variableArray[i]
         returnString = returnString.replace(dataVariable, eval(dataVariable.match(/\$\{\{([^)]+)\}\}/)[1]))
@@ -357,7 +428,7 @@ export default {
       let formData = new FormData()
       // Add the form data we need to submit
       formData.append('file', this.file)
-      formData.append('fileName', this.fileName)
+      formData.append('fileTitle', this.fileTitle)
       formData.append('entity', this.getValueFromVariable(this.attachment.entity))
       formData.append('entityId', this.getValueFromVariable(this.attachment.entityId))
       formData.append('entityCode', this.getValueFromVariable(this.attachment.entityCode))

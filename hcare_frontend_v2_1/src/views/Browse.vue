@@ -89,7 +89,11 @@
           </template>
         -->
             <template v-slot:no-data>
-              <v-alert :value="true" color="error" icon="mdi-alert-circle">
+              <v-alert
+                :value="true"
+                color="error"
+                icon="mdi-alert-circle"
+              >
                 Lo sentimos, no hay nada que mostrar aquí.
               </v-alert>
             </template>
