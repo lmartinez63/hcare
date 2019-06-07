@@ -124,13 +124,14 @@ public class ContentController {
     }
 
     @PostMapping("/uploadAttachment")
-    public Attachment uploadAttachment(@RequestParam("file") MultipartFile file, @RequestParam("fileName") String fileName, @RequestParam("entity") String entity, @RequestParam("entityId") Long entityId) throws Exception{
+    public Attachment uploadAttachment(@RequestParam("file") MultipartFile file, @RequestParam("fileTitle") String fileTitle, @RequestParam("entity") String entity, @RequestParam("entityId") Long entityId) throws Exception{
         //attachment.setEntity();
         //attachment.setEntityId();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Attachment attachment = new Attachment(fileName, entity, entityId);
+        Attachment attachment = new Attachment(fileTitle, entity, entityId);
         attachment.setContent(file.getBytes());
         attachment.setContentType(file.getContentType());
+        attachment.setInternalFileName(file.getOriginalFilename());
         return attachmentService.save(attachment);
     }
 
@@ -144,7 +145,7 @@ public class ContentController {
         responseHeaders.set("charset", "utf-8");
         responseHeaders.setContentType(MediaType.valueOf(attachment.getContentType()));
         responseHeaders.setContentLength(output.length);
-        responseHeaders.set("Content-disposition", "attachment; filename="+attachment.getFileName());
+        responseHeaders.set("Content-disposition", "attachment; filename="+attachment.getInternalFileName());
 
         return new ResponseEntity<byte[]>(output, responseHeaders, HttpStatus.OK);
     }

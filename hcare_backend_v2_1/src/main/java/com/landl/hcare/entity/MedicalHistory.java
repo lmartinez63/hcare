@@ -1,9 +1,13 @@
 package com.landl.hcare.entity;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.landl.hcare.model.AuditModel;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name="medical_history")
@@ -88,6 +92,13 @@ public class MedicalHistory extends AuditModel {
 
     @Transient
     private List<Attachment> attachmentList;
+
+    @Transient
+    private Directory directory;
+
+    //Format for directories frontEnd
+    @Transient
+    private List<Map> files;
 
     public MedicalHistory() {
     }
@@ -282,5 +293,21 @@ public class MedicalHistory extends AuditModel {
 
     public void setHistoryActivity(Boolean historyActivity) {
         this.historyActivity = historyActivity;
+    }
+
+    public Directory getDirectory() {
+        return directory;
+    }
+
+    public void setDirectory(Directory directory) {
+        this.directory = directory;
+    }
+
+    public List<Map> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<Map> files) {
+        this.files = files;
     }
 }

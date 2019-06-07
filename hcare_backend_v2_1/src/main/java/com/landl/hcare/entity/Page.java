@@ -23,6 +23,9 @@ public class Page extends AuditModel {
     @Column(name="page_code")
     private String pageCode;
 
+    @Column(name="entity")
+    private String entity;
+
     @Column(name="visible_rule_exp")
     private String visibleRuleExp;
 
@@ -121,4 +124,11 @@ public class Page extends AuditModel {
         this.pageButtons = pageButtons;
     }
 
+    public String getEntity() {
+        return entity;
+    }
+
+    public void setEntity(String entity) {
+        this.entity = entity;
+    }
 }

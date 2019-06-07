@@ -1,10 +1,14 @@
 package com.landl.hcare.entity;
 
+import com.google.gson.JsonArray;
 import com.landl.hcare.common.UtilityTools;
 import com.landl.hcare.model.AuditModel;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name="patient")
@@ -61,6 +65,11 @@ public class Patient extends AuditModel {
     @Column(name="gender")
     private Integer gender;
 
+    @Transient
+    private Directory directory;
+
+    @Transient
+    private List<Map> files;
 
     public Patient() {
     }
@@ -179,5 +188,21 @@ public class Patient extends AuditModel {
 
     public void setGender(Integer gender) {
         this.gender = gender;
+    }
+
+    public Directory getDirectory() {
+        return directory;
+    }
+
+    public void setDirectory(Directory directory) {
+        this.directory = directory;
+    }
+
+    public List<Map> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<Map> files) {
+        this.files = files;
     }
 }

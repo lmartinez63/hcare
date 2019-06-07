@@ -22,6 +22,9 @@ public class Section extends AuditModel {
     @Column(name="section_code")
     private String sectionCode;
 
+    @Column(name="section_type")
+    private Integer sectionType;
+
     @Column(name="visible_rule_exp")
     private String visibleRuleExp;
 
@@ -125,5 +128,13 @@ public class Section extends AuditModel {
 
     public void setVisualizationOrder(String visualizationOrder) {
         this.visualizationOrder = visualizationOrder;
+    }
+
+    public Integer getSectionType() {
+        return sectionType;
+    }
+
+    public void setSectionType(Integer sectionType) {
+        this.sectionType = sectionType;
     }
 }

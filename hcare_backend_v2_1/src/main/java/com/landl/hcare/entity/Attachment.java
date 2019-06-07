@@ -34,16 +34,19 @@ public class Attachment extends AuditModel {
     @Column(name="entity")
     private String entity;
 
-    @Column(name="file_name")
-    private String fileName;
+    @Column(name="internal_file_name")
+    private String internalFileName;
+
+    @Column(name="file_title")
+    private String fileTitle;
 
     public Attachment() {
     }
 
-    public Attachment(String fileName, String entity, Long entityId) {
+    public Attachment(String fileTitle, String entity, Long entityId) {
         this.entity = entity;
         this.entityId = entityId;
-        this.fileName = fileName;
+        this.fileTitle = fileTitle;
     }
 
     public byte[] getContent() {
@@ -62,12 +65,20 @@ public class Attachment extends AuditModel {
         this.emailId = emailId;
     }
 
-    public String getFileName() {
-        return fileName;
+    public String getInternalFileName() {
+        return internalFileName;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setInternalFileName(String internalFileName) {
+        this.internalFileName = internalFileName;
+    }
+
+    public String getFileTitle() {
+        return fileTitle;
+    }
+
+    public void setFileTitle(String fileTitle) {
+        this.fileTitle = fileTitle;
     }
 
     public Long getId() {

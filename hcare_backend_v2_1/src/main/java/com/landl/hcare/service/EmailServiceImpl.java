@@ -65,7 +65,7 @@ public class EmailServiceImpl implements EmailService {
         helper.setText(email.getBody(), true);
         if(email.getAttachmentList() != null){
             for (Attachment attachment : email.getAttachmentList()) {
-                helper.addAttachment(attachment.getFileName(), new ByteArrayResource(attachment.getContent())); }
+                helper.addAttachment(attachment.getFileTitle(), new ByteArrayResource(attachment.getContent())); }
         }
 
         emailSender.send(message);

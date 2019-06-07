@@ -41,6 +41,9 @@ public abstract class  CustomProcess {
     RoleService roleService;
 
     @Autowired
+    DirectoryService directoryService;
+
+    @Autowired
     LabelService labelService;
 
     @Autowired

@@ -1,6 +1,7 @@
 package com.landl.hcare.component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.landl.hcare.entity.Directory;
 import com.landl.hcare.entity.MedicalHistory;
 import com.landl.hcare.entity.Patient;
 
@@ -23,7 +24,10 @@ public class RetrieveMedicalHistoryInfo extends CustomProcess {
             if (medicalHistory != null) {
                 if(medicalHistory.getHistoryCode() != null){
                     medicalHistory.setPatient(patientService.findByHistoryCode(medicalHistory.getHistoryCode()));
-                    medicalHistory.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalHistory", medicalHistory.getHistoryCode()));
+                    //medicalHistory.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalHistory", medicalHistory.getHistoryCode()));
+                    Directory directory = directoryService.findByEntityName("medical_history");
+                    directoryService.retrieveAttachmentInformation(directory,String.valueOf(l_historyCode));
+                    medicalHistory.setFiles(directoryService.convertDirectoryToFrontEndFormat(directory));
                 }
             }
             addDataToResultMap("medicalHistory",medicalHistory);
