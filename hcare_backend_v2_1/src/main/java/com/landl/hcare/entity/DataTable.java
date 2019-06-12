@@ -36,6 +36,12 @@ public class DataTable extends AuditModel {
             fetch = FetchType.LAZY,
             mappedBy = "dataTable")
     */
+
+    @OneToMany
+    @OrderBy("display_order")
+    @JoinColumn(name = "browse_id")
+    private List<PageButton> pageButtons;
+
     @Transient
     private List<DataColumn> dataColumns = new ArrayList<>();
 
@@ -105,5 +111,13 @@ public class DataTable extends AuditModel {
 
     public void setQueryString(String queryString) {
         this.queryString = queryString;
+    }
+
+    public List<PageButton> getPageButtons() {
+        return pageButtons;
+    }
+
+    public void setPageButtons(List<PageButton> pageButtons) {
+        this.pageButtons = pageButtons;
     }
 }

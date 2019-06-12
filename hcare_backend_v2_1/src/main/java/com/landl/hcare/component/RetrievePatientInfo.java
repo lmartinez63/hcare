@@ -15,10 +15,11 @@ public class RetrievePatientInfo extends CustomProcess {
 
         final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
         String s_patientId = (String)requestMap.get("patientId");
-        Long l_patientId = Long.parseLong(s_patientId);
-        //final Patient patientRequest = mapper.convertValue(requestMap.get("patient"), Patient.class);
         Patient patient = null;
-        if(l_patientId != null){
+        if(s_patientId != null){
+            Long l_patientId = Long.parseLong(s_patientId);
+            //final Patient patientRequest = mapper.convertValue(requestMap.get("patient"), Patient.class);
+
             patient = patientService.findById(l_patientId);
             Directory directory = directoryService.findByEntityName("patient");
             directoryService.retrieveAttachmentInformation(directory,String.valueOf(l_patientId));

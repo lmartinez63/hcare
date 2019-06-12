@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.persistence.Tuple;
 import java.util.List;
 import java.util.Map;
 
@@ -109,6 +110,7 @@ public class ContentController {
             DataContent dataContent = new DataContent();
             customProcess.getResultMap().put("userAuthenticated",new UserAuthenticated((User) authentication.getPrincipal()));
             customProcess.getResultMap().put("userProfileAuthenticated",userService.findByUsername(username));
+            customProcess.getResultMap().put("requestPage",requestPage);
             dataContent.setDataMap(customProcess.getResultMap());
             pageService.processFields(page, dataContent.getDataMap());
             metadataContent.setPage(page);
@@ -161,11 +163,14 @@ public class ContentController {
             Map<String, Object> browseParameters = (Map<String, Object>) requestDataMap.get("browseParameters");
             Browse browse = new Browse();
             DataTable dataTable = dataTableService.findByDataTableCodeAndUsername(browseName, username);
+            dataTableService.evaluateRules(dataTable,browseParameters);
             if (dataTable.getDataColumns() == null || dataTable.getDataColumns().size() < 1) {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Insufficient Privileges or Data Columns are not defined", null);
+
             }
             browse.setMetaDataBrowse(dataTable);
             browse.setDataBrowse(browserService.buildDataTableObject(dataTable.getQueryString(), browseParameters));
+
             return browse;
         }
         catch (Exception exc) {
@@ -186,8 +191,8 @@ public class ContentController {
     }
 
     @GetMapping("/getMedicalAreas")
-    public List<MedicalArea> getMedicalAreas() throws Exception{
-        return medicalAreaService.findAll();
+    public List<AutoCompleteField> getMedicalAreas() throws Exception{
+        return medicalAreaService.findIdAndAreaNameForAutoCompleteFields();
     }
 
     @GetMapping("/getDoctors")

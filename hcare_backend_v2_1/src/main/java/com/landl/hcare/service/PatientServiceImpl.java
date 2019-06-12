@@ -45,6 +45,7 @@ public class PatientServiceImpl implements PatientService{
         //TODO it should come from database default values
         //DefaultValues
         patient.setDocumentType("1");
+        patient.setBirthday(new Date());
         //0 = No specified
         patient.setGender(0);
         return patient;

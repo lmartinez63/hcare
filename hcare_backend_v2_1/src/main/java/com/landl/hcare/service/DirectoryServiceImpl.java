@@ -57,12 +57,14 @@ public class DirectoryServiceImpl implements DirectoryService{
             q = em.createNativeQuery(subQueryString);
             Object subResult = (Object) q.getSingleResult();
             String subSource = null;
-            if(subResult instanceof BigInteger){
-                subSource = ((BigInteger) subResult).toString();
-            } else if (subResult instanceof String){
-                subSource = (String) subResult;
+            if ( subSource != null){
+                if(subResult instanceof BigInteger){
+                    subSource = ((BigInteger) subResult).toString();
+                } else if (subResult instanceof String){
+                    subSource = (String) subResult;
+                }
+                retrieveAttachmentInformation(childDirectory, subSource);
             }
-            retrieveAttachmentInformation(childDirectory, subSource);
         }
     }
 

@@ -51,11 +51,20 @@ public class FieldDefinition extends AuditModel {
     @Column(name="select_source")
     private String selectSource;
 
+    @Column(name="on_click_event")
+    private String onClickEvent;
+
+    @Column(name="on_change_event")
+    private String onChangeEvent;
+
     @Transient
     private Boolean visible;
 
     @Transient
     private Boolean editable;
+
+    @Transient
+    private Boolean modal;
 
     @Transient
     private List<Validation> validationList;
@@ -164,5 +173,29 @@ public class FieldDefinition extends AuditModel {
 
     public void setSelectSource(String selectSource) {
         this.selectSource = selectSource;
+    }
+
+    public Boolean getModal() {
+        return modal;
+    }
+
+    public void setModal(Boolean modal) {
+        this.modal = modal;
+    }
+
+    public String getOnClickEvent() {
+        return onClickEvent;
+    }
+
+    public void setOnClickEvent(String onClickEvent) {
+        this.onClickEvent = onClickEvent;
+    }
+
+    public String getOnChangeEvent() {
+        return onChangeEvent;
+    }
+
+    public void setOnChangeEvent(String onChangeEvent) {
+        this.onChangeEvent = onChangeEvent;
     }
 }

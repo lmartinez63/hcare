@@ -29,6 +29,12 @@ public class Page extends AuditModel {
     @Column(name="visible_rule_exp")
     private String visibleRuleExp;
 
+    @Column(name="title_definition")
+    private String titleDefinition;
+
+    @Column(name="sub_title_definition")
+    private String subTitleDefinition;
+
     @Transient
     private Boolean visible;
 
@@ -130,5 +136,21 @@ public class Page extends AuditModel {
 
     public void setEntity(String entity) {
         this.entity = entity;
+    }
+
+    public String getTitleDefinition() {
+        return titleDefinition;
+    }
+
+    public void setTitleDefinition(String titleDefinition) {
+        this.titleDefinition = titleDefinition;
+    }
+
+    public String getSubTitleDefinition() {
+        return subTitleDefinition;
+    }
+
+    public void setSubTitleDefinition(String subTitleDefinition) {
+        this.subTitleDefinition = subTitleDefinition;
     }
 }

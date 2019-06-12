@@ -84,7 +84,7 @@ public class FieldServiceImpl implements FieldService{
         */
             fieldDefinition.setValidationList(validationService.getValidationsByFieldDefinition(fieldDefinition));
         //}
-        fieldDefinition.setObjectValue(UtilityTools.getObjectValue(fieldDefinition.getDefinition(), dataSource));
+        //fieldDefinition.setObjectValue(UtilityTools.getObjectValue(fieldDefinition.getDefinition(), dataSource));
         //fieldDefinition.setFieldType(fieldDefinition.getObjectValue().getClass().getSimpleName());
     }
 }
