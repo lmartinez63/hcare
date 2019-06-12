@@ -11,7 +11,7 @@
       <v-flex
         md12
       >
-        <v-card>
+        <v-card v-if="data && metadata">
           <v-card-title>
             {{ metadata.dataTableName }}
             <v-spacer />
@@ -24,7 +24,6 @@
             />
           </v-card-title>
           <v-data-table
-            v-if="data"
             :headers="columnHeaders"
             :items="data"
             :search="search"
@@ -98,6 +97,40 @@
               </v-alert>
             </template>
           </v-data-table>
+          <v-speed-dial
+            v-model="fab"
+            :top="top"
+            :bottom="bottom"
+            :right="right"
+            :left="left"
+            :direction="direction"
+            :open-on-hover="hover"
+            :transition="transition"
+          >
+            <template v-slot:activator>
+              <v-btn
+                v-model="fab"
+                color="darken-2"
+                dark
+                fab
+              >
+                <v-icon>mdi-dots-vertical</v-icon>
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </template>
+            <v-btn
+              v-for="pageButton in pageButtons"
+              v-if="pageButton.visible"
+              :key="pageButton.buttonCode"
+              fab
+              dark
+              small
+              color="green"
+              @click="executeAction(pageButton)"
+            >
+              <v-icon>{{ pageButton.icon }}</v-icon>
+            </v-btn>
+          </v-speed-dial>
         </v-card>
       </v-flex>
     </v-layout>
@@ -110,6 +143,16 @@ export default {
     search: '',
     dialog: false,
     editedIndex: -1,
+    fab: false,
+    fling: false,
+    hover: false,
+    direction: 'top',
+    tabs: null,
+    top: false,
+    right: false,
+    bottom: true,
+    left: true,
+    transition: 'slide-y-reverse-transition',
     editedItem: {
       name: '',
       calories: 0,
@@ -137,6 +180,9 @@ export default {
     },
     columnHeaders () {
       return this.$store.state.browse.metadata.columnHeaders
+    },
+    pageButtons () {
+      return this.$store.state.browse.metadata.pageButtons
     }
   },
 
@@ -171,6 +217,28 @@ export default {
   },
 
   methods: {
+    executeAction: function (button) {
+      let selfVue = this
+      switch (button.buttonType) {
+        case 1:
+          var routeObject = {}
+          var jsonString = button.eventDefinition
+          var eventArray = button.eventDefinition.match(/\${{(.*?)}}/g)
+          if (eventArray != null) {
+            for (var i = 0, len = eventArray.length; i < len; i++) {
+              var dataRouteVariable = eventArray[i]
+              jsonString = jsonString.replace(dataRouteVariable, eval(dataRouteVariable.match(/\$\{\{([^)]+)\}\}/)[1]))
+            }
+          }
+          routeObject = JSON.parse(jsonString)
+          this.$router.push(routeObject)
+          break
+        case 2:
+          // TOREMOVE
+          eval(button.eventDefinition)
+          break
+      }
+    },
     editItem (item) {
       this.editedIndex = this.desserts.indexOf(item)
       this.editedItem = Object.assign({}, item)

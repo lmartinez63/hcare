@@ -118,6 +118,11 @@ export default {
     console.log('App - Create - end')
   },
   methods: {
+    computedDateFormattedMomentjs (date) {
+      // TODO this property should come from a userProfile locale
+      this.$moment.locale('es')
+      return date ? this.$moment(date).format('LLLL') : ''
+    },
     getLabelValue: function (label) {
       var lValue = ''
       if (label) {

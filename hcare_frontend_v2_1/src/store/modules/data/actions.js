@@ -14,6 +14,20 @@ export default {
         error => commit('failureDetected', error)
       )
   },
+  getPatientInfoByDocumentNumberOnMedAppointment ({ dispatch, commit }, { requestPage, processName, dataContent }) {
+    commit('general/setLoading', true, { root: true })
+    dataResponseService.getContent(requestPage, processName, dataContent)
+      .then(
+        content => {
+          commit('getPatientInfoByDocumentNumberOnMedAppointmentSuccess', content)
+          commit('general/setLoading', false, { root: true })
+        },
+        error => {
+          commit('failureDetected', error)
+          dispatch('alert/error', error, { root: true })
+        }
+      )
+  },
   uploadFile ({ dispatch, commit }, { vm, formData }) {
     return new Promise((resolve, reject) => {
       commit('general/setLoading', true, { root: true })

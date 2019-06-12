@@ -19,6 +19,7 @@ export default {
   saveEntitySuccess (state, content) {
     state.loading = false
     console.log('patientResponse - mutations  - saveEntitySuccess')
+      .toISOString().substr(0, 10)
     state.data = content.dataContent.dataMap.patient
     state.metadata = content.metadataContent
   }

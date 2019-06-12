@@ -11,7 +11,6 @@
     >
       <v-flex xs12>
         <material-card
-          color="green"
           :title="getDataMapAttribute(dataMap,page.titleDefinition)"
           :text="getDataMapAttribute(dataMap,page.subTitleDefinition)"
         >
@@ -21,11 +20,9 @@
           >
             <v-tabs
               v-model="tab"
-              color="cyan"
               grow
               style="width:100%;"
             >
-              <v-tabs-slider color="yellow" />
               <v-tab
                 v-for="section in orderedSections"
                 :key="section.sectionCode"
@@ -43,7 +40,10 @@
                       wrap
                     >
                       <v-card width="100%">
-                        <v-sheet class="pa-3 primary lighten-2">
+                        <v-sheet
+                          class="pa-3 lighten-2"
+                          dark
+                        >
                           <v-text-field
                             v-model="search"
                             label="Search Company Directory"
@@ -125,13 +125,14 @@
                           v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
                           :label="fieldDefinition.label.labelValueEsEs"
                           :disabled="!fieldDefinition.editable"
+                          @change="executeFieldChangeEvent(fieldDefinition.onChangeEvent)"
                         />
                         <v-autocomplete
                           v-if="fieldDefinition.fieldType === 2"
                           ref="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
                           v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
                           :rules="[() => !! dataMap[section.entity][fieldDefinition.fieldDefinitionCode] || 'Este campo es requerido']"
-                          :items="propertyItems[fieldDefinition.selectSource]"
+                          :items="arrayItems(fieldDefinition.selectSource)"
                           :label="fieldDefinition.label.labelValueEsEs"
                           placeholder="Seleccione..."
                         />
@@ -152,7 +153,7 @@
                         >
                           <template v-slot:activator="{ on }">
                             <v-text-field
-                              model="section.entity[fieldDefinition.fieldDefinitionCode]"
+                              model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
                               :value="$parent.$parent.$parent.computedDateFormattedMomentjs(dataMap[section.entity][fieldDefinition.fieldDefinitionCode])"
                               :label="fieldDefinition.label.labelValueEsEs"
                               prepend-icon="mdi-calendar"
@@ -161,7 +162,7 @@
                             />
                           </template>
                           <v-date-picker
-                            v-model="new Date(dataMap[section.entity][fieldDefinition.fieldDefinitionCode]).toJSON()"
+                            v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
                             scrollable
                             locale="es"
                           >
@@ -202,7 +203,7 @@
             <template v-slot:activator>
               <v-btn
                 v-model="fab"
-                color="blue darken-2"
+                color="darken-2"
                 dark
                 fab
               >
@@ -333,6 +334,7 @@ export default {
       search: null,
       caseSensitive: false,
       // Testing 2
+      date: new Date().toISOString().substr(0, 10),
       files: {
         html: 'mdi-language-html5',
         js: 'mdi-nodejs',
@@ -391,6 +393,20 @@ export default {
     console.log('DataPage - mounted - end')
   },
   methods: {
+    arrayItems (selectSource) {
+      if(selectSource && selectSource != null){
+        var parentSource = selectSource.substring(0,selectSource.indexOf(":"))
+        var finalSelectSource = this.$store.state.general[parentSource].items
+        if (selectSource.substring(selectSource.indexOf(":")+1) !== ""){
+          var selectSourceArray = selectSource.substring(selectSource.indexOf(":")+1).split('.')
+          for (var i = 0; i < selectSourceArray.length; i++) {
+            finalSelectSource = finalSelectSource[selectSourceArray[i]]
+          }
+        }
+        return finalSelectSource
+      }
+      return []
+    },
     getImgSrc: function (imageObj) {
       return 'data:' + imageObj.contentType + ';base64,' + imageObj.src
     },
@@ -459,6 +475,33 @@ export default {
     handleFileUpload () {
       this.file = this.$refs.file.files[0]
     },
+    executeFieldChangeEvent (changeEvent) {
+      switch (changeEvent) {
+        case 'getPatientInfo':
+          this.getPatientInfo()
+          break
+        default:
+          break
+      }
+    },
+    getPatientInfo: function () {
+      console.log('DataView - method - getPatientInfo - begin')
+      const dataContent = {
+        'documentNumber': this.dataMap.medicalAppointment.documentNumber
+      }
+      const {
+        requestPage
+      } = this
+      const {
+        dispatch
+      } = this.$store
+      dispatch('data/getPatientInfoByDocumentNumberOnMedAppointment', {
+        requestPage: requestPage,
+        processName: 'GetPatientByDocumentNumber',
+        dataContent: dataContent
+      })
+      console.log('DataView - method - getPatientInfo - end')
+    },
     executeAction: function (button) {
       let selfVue = this
       switch (button.buttonType) {
@@ -507,21 +550,6 @@ export default {
         })
     },
     */
-    getPatientInfo: function () {
-      let selfVue = this
-      /*
-      axios.get(this.$parent.backendUrl + 'retrievePatientByDocumentNumber/' + this.patient.documentNumber)
-        .then(response => {
-          if (response.data != null && response.data !== '') {
-            selfVue.patient = response.data
-          }
-          // this.patient.birthday = this.frontEndDateFormat(this.patient.birthday)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-        */
-    },
     saveObjectState: function (sAttributeArray, processName) {
       console.log('DataView - method - saveObjectState - begin')
       var attributeArray = sAttributeArray.split(',')
