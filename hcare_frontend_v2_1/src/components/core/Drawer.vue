@@ -112,6 +112,16 @@ export default {
         text: 'Administracion de Citas'
       },
       {
+        to: '/browse/allPages',
+        icon: 'mdi-clipboard-outline',
+        text: 'Administracion de Paginas'
+      },
+      {
+        to: '/browse/allRolePageSectionFieldPage',
+        icon: 'mdi-clipboard-outline',
+        text: 'Administracion de Roles'
+      },
+      {
         to: '/typography',
         icon: 'mdi-format-font',
         text: 'Typography'

@@ -22,6 +22,13 @@ import Loading from 'vue-loading-overlay'
 
 import orderBy from 'lodash.orderby'
 
+// Vue Datetime
+
+import DatetimePicker from 'vuetify-datetime-picker'
+import 'vuetify-datetime-picker/src/stylus/main.styl'
+
+Vue.use(DatetimePicker)
+
 // Sync store with router
 sync(store, router)
 const moment = require('moment')

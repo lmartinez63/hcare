@@ -20,7 +20,7 @@
       &copy;
       {{ (new Date()).getFullYear() }}
       <a
-        href="https://www.creative-tim.com/"
+        href="https://www.it-lmartinez.com"
         target="_blank"
       >Luis Martinez</a>, work done with the
       <v-icon

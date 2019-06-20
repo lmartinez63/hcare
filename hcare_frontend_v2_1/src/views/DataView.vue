@@ -119,6 +119,7 @@
                       <v-flex
                         v-for="fieldDefinition in section.fieldDefinitionList"
                         :key="fieldDefinition.fieldDefinitionCode"
+                        xs6
                       >
                         <v-text-field
                           v-if="fieldDefinition.fieldType === 1"
@@ -135,6 +136,8 @@
                           :items="arrayItems(fieldDefinition.selectSource)"
                           :label="fieldDefinition.label.labelValueEsEs"
                           placeholder="Seleccione..."
+                          :return-object="getReturnObject(fieldDefinition.selectSource)"
+                          :item-text="getItemText(fieldDefinition.selectSource)"
                         />
                         <v-switch
                           v-if="fieldDefinition.fieldType === 3"
@@ -183,6 +186,22 @@
                             </v-btn>
                           </v-date-picker>
                         </v-dialog>
+                        <v-datetime-picker
+                          v-if="fieldDefinition.fieldType === 5"
+                          v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
+                          :label="fieldDefinition.label.labelValueEsEs"
+                        >
+                          <template v-slot:dateIcon>
+                            <v-icon >
+                              mdi-calendar
+                            </v-icon>
+                          </template>
+                          <template v-slot:timeIcon>
+                            <v-icon >
+                              mdi-clock-outline
+                            </v-icon>
+                          </template>
+                        </v-datetime-picker>
                       </v-flex>
                     </v-layout>
                   </v-container>
@@ -393,15 +412,33 @@ export default {
     console.log('DataPage - mounted - end')
   },
   methods: {
+    getReturnObject(selectSource){
+      if (selectSource && selectSource != null) {
+        var selectSourceJSON = JSON.parse(selectSource)
+        if(selectSourceJSON.returnObject && selectSourceJSON.returnObject !== ''){
+          return selectSourceJSON.returnObject
+        }
+      }
+      return false
+    },
+    getItemText(selectSource){
+      if (selectSource && selectSource != null) {
+        var selectSourceJSON = JSON.parse(selectSource)
+        if(selectSourceJSON.itemText && selectSourceJSON.itemText !== ''){
+          return selectSourceJSON.itemText
+        }
+        return "text"
+      }
+      return "text"
+    },
     arrayItems (selectSource) {
-      if(selectSource && selectSource != null){
-        var parentSource = selectSource.substring(0,selectSource.indexOf(":"))
-        var finalSelectSource = this.$store.state.general[parentSource].items
-        if (selectSource.substring(selectSource.indexOf(":")+1) !== ""){
-          var selectSourceArray = selectSource.substring(selectSource.indexOf(":")+1).split('.')
-          for (var i = 0; i < selectSourceArray.length; i++) {
-            finalSelectSource = finalSelectSource[selectSourceArray[i]]
-          }
+      if (selectSource && selectSource != null) {
+        var selectSourceJSON = JSON.parse(selectSource)
+        var source = selectSourceJSON.source
+        var finalSelectSource = this.$store.state
+        var selectSourceArray = selectSourceJSON.source.split('.')
+        for (var i = 0; i < selectSourceArray.length; i++) {
+          finalSelectSource = finalSelectSource[selectSourceArray[i]]
         }
         return finalSelectSource
       }

@@ -15,6 +15,7 @@ export default {
           dispatch('general/getMedicalAreas', null, { root: true })
           dispatch('general/getDoctors', null, { root: true })
           dispatch('general/getRoles', null, { root: true })
+          dispatch('general/getLabels', null, { root: true })
           router.push('/dashboard')
         },
         error => {

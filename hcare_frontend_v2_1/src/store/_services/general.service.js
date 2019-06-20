@@ -7,7 +7,8 @@ export const generalService = {
   loadProperties,
   getDoctors,
   getRoles,
-  getMedicalAreas
+  getMedicalAreas,
+  getLabels
 }
 
 function loadProperties () {
@@ -20,6 +21,18 @@ function loadProperties () {
     .then(properties => {
       localStorage.setItem('properties', JSON.stringify(properties))
       return properties
+    })
+}
+function getLabels () {
+  console.log('generalService - getLabels')
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader()
+  }
+  return fetch(`${config.apiUrl}/getLabels`, requestOptions).then(handleResponse)
+    .then(labels => {
+      localStorage.setItem('labels', JSON.stringify(labels))
+      return labels
     })
 }
 function getDoctors () {

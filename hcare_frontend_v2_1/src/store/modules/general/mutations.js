@@ -19,6 +19,13 @@ export default {
       loading: true
     }
   },
+  getLabelsRequest (state) {
+    state.loading = true
+    console.log('generalStore - mutations - getLabelsRequest')
+    state.labels = {
+      loading: true
+    }
+  },
   getMedicalAreasRequest (state) {
     state.loading = true
     console.log('generalStore - mutations - getMedicalAreasRequest')
@@ -45,6 +52,13 @@ export default {
     console.log('generalStore - mutations - loadPropertiesSuccess')
     state.properties = {
       items: properties
+    }
+  },
+  getLabelsSuccess (state, labels) {
+    state.loading = false
+    console.log('generalStore - mutations - getLabelsSuccess')
+    state.labels = {
+      items: labels
     }
   },
   getDoctorsSuccess (state, doctors) {

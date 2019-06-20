@@ -111,6 +111,7 @@ export default {
 
     if (this.user) {
       this.$store.dispatch('general/loadProperties')
+      this.$store.dispatch('general/getLabels')
       this.$store.dispatch('general/getMedicalAreas')
       this.$store.dispatch('general/getDoctors')
       this.$store.dispatch('general/getRoles')

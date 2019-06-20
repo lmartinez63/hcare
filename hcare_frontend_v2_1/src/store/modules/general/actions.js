@@ -69,6 +69,14 @@ export default {
         )
     })
   },
+  getLabels ({ dispatch, commit }) {
+    commit('getLabelsRequest')
+    generalService.getLabels()
+      .then(
+        labels => commit('getLabelsSuccess', labels),
+        error => commit('failureDetected', error)
+      )
+  },
   getDoctors ({
     dispatch,
     commit
