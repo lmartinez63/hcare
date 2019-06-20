@@ -16,18 +16,14 @@ public class RetrievePageInfo extends CustomProcess {
     public void executeCustomProcess(Map<String, Object> requestMap) throws Exception{
 
         final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
-        final Page pageRequest = mapper.convertValue(requestMap.get("page"), Page.class);
-        final UserAuthenticated userAuthenticated = (UserAuthenticated)requestMap.get("userAuthenticated");
-        final String getLabels = (String)requestMap.get("getLabels");
+        String s_pageId = (String)requestMap.get("pageId");
         Page page = null;
-        if(pageRequest.getId() != null){
-            page = pageService.findById(pageRequest.getId());
+        if(s_pageId != null){
+            Long l_pageId = Long.parseLong(s_pageId);
+            page = pageService.findById(l_pageId);
             page.setSectionList(sectionService.getSectionsByPageCode(page.getPageCode()));
         } else {
             page = pageService.createPage();
-        }
-        if(UtilityTools.isNull(getLabels).compareTo("true") == 0){
-            addDataToResultMap("labelList",labelService.findAll());
         }
         addDataToResultMap("page",page);
     }

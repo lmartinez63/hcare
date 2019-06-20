@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface FieldRepository extends JpaRepository<FieldDefinition, Long>{
-    @Query(value = "select fd.* from field_definition fd \n" +
+    @Query(value = "select distinct fd.* from field_definition fd \n" +
             "inner join role_page_section_field rpsf on rpsf.field_definition_id = fd.id\n" +
             "inner join page p on p.id = rpsf.page_id\n" +
             "inner join section sec on sec.id = rpsf.section_id\n" +

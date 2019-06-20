@@ -14,16 +14,13 @@ public class RetrieveFieldDefinitionInfo extends CustomProcess {
     public void executeCustomProcess(Map<String, Object> requestMap) throws Exception{
 
         final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
-        final FieldDefinition fieldDefinitionRequest = mapper.convertValue(requestMap.get("fieldDefinition"), FieldDefinition.class);
-        final String getLabels = (String)requestMap.get("getLabels");
+        String s_fieldDefinitionId = (String)requestMap.get("fieldDefinitionId");
         FieldDefinition fieldDefinition = null;
-        if(fieldDefinitionRequest.getId() != null){
-            fieldDefinition = fieldService.findById(fieldDefinitionRequest.getId());
+        if(s_fieldDefinitionId != null){
+            Long l_fieldDefinitionId = Long.parseLong(s_fieldDefinitionId);
+            fieldDefinition = fieldService.findById(l_fieldDefinitionId);
         } else {
             fieldDefinition = fieldService.createFieldDefinition();
-        }
-        if(UtilityTools.isNull(getLabels).compareTo("true") == 0){
-            addDataToResultMap("labelList",labelService.findAll());
         }
         addDataToResultMap("fieldDefinition",fieldDefinition);
 

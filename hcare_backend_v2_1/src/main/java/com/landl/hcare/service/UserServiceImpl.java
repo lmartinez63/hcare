@@ -1,5 +1,6 @@
 package com.landl.hcare.service;
 
+import com.landl.hcare.entity.AutoCompleteField;
 import com.landl.hcare.entity.MedicalAppointment;
 import com.landl.hcare.entity.Patient;
 import com.landl.hcare.entity.UserProfile;
@@ -89,6 +90,13 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         userProfileRepository.findByRoleName(roleName).iterator().forEachRemaining(list::add);
         return list;
     };
+
+    public List<AutoCompleteField> findByRoleForAutoCompleteFields(String roleName) {
+        List<AutoCompleteField> list = new ArrayList<>();
+        userProfileRepository.findByRoleForAutoCompleteFields(roleName).iterator().forEachRemaining(u -> list.add(new AutoCompleteField((String)u[0],u[1])));
+        return list;
+    };
+
 
     @Override
     public void delete(long id) {

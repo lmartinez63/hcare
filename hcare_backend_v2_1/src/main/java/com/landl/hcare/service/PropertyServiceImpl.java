@@ -77,6 +77,12 @@ public class PropertyServiceImpl implements PropertyService{
             String module = (String)data[0];
             String propertyCode = (String)data[1];
             String propertyValue = (String)data[2];
+            Object propertyObjectValue = null;
+            try{
+                propertyObjectValue = Integer.valueOf(propertyValue);
+            }catch (Exception e){
+                propertyObjectValue = propertyValue;
+            }
             String labelValue = (String)data[3];
             //ModuleMap
             if(!moduleMap.containsKey(module)){
@@ -89,7 +95,7 @@ public class PropertyServiceImpl implements PropertyService{
             }
             Map propertyMapEntry = new HashMap();
             propertyMapEntry.put("text",labelValue);
-            propertyMapEntry.put("value",propertyValue);
+            propertyMapEntry.put("value",propertyObjectValue);
             ((List)PropertiesList.get(propertyCode)).add(propertyMapEntry);
         }
         return moduleMap;

@@ -15,17 +15,14 @@ public class RetrieveSectionInfo extends CustomProcess {
     public void executeCustomProcess(Map<String, Object> requestMap) throws Exception{
 
         final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
-        final Section sectionRequest = mapper.convertValue(requestMap.get("section"), Section.class);
-        final String getLabels = (String)requestMap.get("getLabels");
+        String s_sectionId = (String)requestMap.get("sectionId");
         Section section = null;
-        if(sectionRequest.getId() != null){
-            section = sectionService.findById(sectionRequest.getId());
+        if(s_sectionId != null){
+            Long l_sectionId = Long.parseLong(s_sectionId);
+            section = sectionService.findById(l_sectionId);
             section.setFieldDefinitionList(fieldService.getFieldsBySectionCode(section.getSectionCode()));
         } else {
             section = sectionService.createSection();
-        }
-        if(UtilityTools.isNull(getLabels).compareTo("true") == 0){
-            addDataToResultMap("labelList",labelService.findAll());
         }
         addDataToResultMap("section",section);
     }
