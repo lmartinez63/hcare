@@ -2,6 +2,11 @@ package com.landl.hcare.component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.landl.hcare.entity.RolePageSectionField;
+import com.landl.hcare.entity.Role;
+import com.landl.hcare.entity.Page;
+import com.landl.hcare.entity.Section;
+import com.landl.hcare.entity.FieldDefinition;
+
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -18,11 +23,14 @@ public class SaveRolePageSectionField extends CustomProcess {
         final RolePageSectionField rolePageSectionFieldRequest = mapper.convertValue(requestMap.get("rolePageSectionField"), RolePageSectionField.class);
         RolePageSectionField rolePageSectionField = null;
         //Create condition
-        if ((rolePageSectionFieldRequested.getId().isEmpty()) && !rolePageSectionFieldRequest.getId().isEmpty()){
+        if(rolePageSectionFieldRequest.getId().verifyIfIsEmpty()){
+            rolePageSectionFieldRequest.setIdFromObjects();
+        }
+        if ((rolePageSectionFieldRequested == null || rolePageSectionFieldRequested.getId().verifyIfIsEmpty()) && !rolePageSectionFieldRequest.getId().verifyIfIsEmpty()){
             rolePageSectionField = rolePageSectionFieldRequest;
             rolePageSectionFieldService.save(rolePageSectionField);
         //Edit condition
-        } else if ((!rolePageSectionFieldRequested.getId().isEmpty()) && !rolePageSectionFieldRequest.getId().isEmpty()){
+        } else if ((!rolePageSectionFieldRequested.getId().verifyIfIsEmpty()) && !rolePageSectionFieldRequest.getId().verifyIfIsEmpty()){
             rolePageSectionFieldService.delete(rolePageSectionFieldRequested);
             rolePageSectionField = rolePageSectionFieldRequest;
             rolePageSectionFieldService.save(rolePageSectionFieldRequest);

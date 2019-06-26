@@ -97,9 +97,14 @@
 			<version>2.6</version>
 		</dependency>
 		<!-- used for connection pooling -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-c3p0</artifactId>
+            <version>5.3.7.Final</version>
+        </dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-c3p0</artifactId>
+			<artifactId>hibernate-envers</artifactId>
 			<version>5.3.7.Final</version>
 		</dependency>
         <!-- cache compare -->

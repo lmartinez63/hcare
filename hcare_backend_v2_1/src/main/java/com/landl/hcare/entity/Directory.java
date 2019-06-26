@@ -57,6 +57,9 @@ public class Directory {
     public void setChildDirectories(List<Directory> childDirectories) {
         this.childDirectories = childDirectories;
     }
+    public void addChildDirectories(Directory directory) {
+        this.childDirectories.add(directory);
+    }
 
     public Label getLabel() {
         return label;

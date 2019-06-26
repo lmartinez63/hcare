@@ -15,10 +15,50 @@ public class SaveMedicalAppointment extends CustomProcess {
 
         final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
         final MedicalAppointment medicalAppointmentRequest = mapper.convertValue(requestMap.get("medicalAppointment"), MedicalAppointment.class);
-        MedicalAppointment medicalAppointment= medicalAppointmentService.findById(medicalAppointmentRequest.getId());
-        copyNonNullProperties(medicalAppointmentRequest, medicalAppointment);
-        medicalAppointmentService.save(medicalAppointment);
-        addDataToResultMap("medicalAppointment",medicalAppointment);
+
+        MedicalAppointment medicalAppointment = null;
+        if (medicalAppointmentRequest.getId() != null){
+            medicalAppointment = medicalAppointmentService.findById(medicalAppointmentRequest.getId());
+            copyNonNullProperties(medicalAppointmentRequest, medicalAppointment);
+        } else {
+            medicalAppointment = medicalAppointmentRequest;
+        }
+
+        //Update patient fields
+        Patient patient = patientService.findByDocumentNumber(medicalAppointment.getDocumentNumber());
+        //Create patient if doesn't exits
+        if(patient == null){
+            patient = patientService.createPatient(medicalAppointment);
+        } else
+        {
+            patient = patientService.updatePatient(patient,medicalAppointment);
+        }
+        patient = patientService.save(patient);
+
+        //Send Notifications
+        if (medicalAppointment.getId() == null) {
+            //If is a new medical appointment send a reminder email
+            int emailPatientStatus = emailService.sendEmailToPatient(medicalAppointment);
+            int emailDoctorStatus = emailService.sendEmailToDoctor(medicalAppointment);
+            medicalAppointment.setStatus("5");
+        }
+
+        //Create history code if doesn't exits
+        if (medicalAppointment.getStatus().compareTo("10")==0 && medicalAppointment.getHistoryCode() == null){
+            //Create Medical History set incoming patient with historyCode
+            MedicalHistory medicalHistory = medicalHistoryService.createMedicalHistory(patient);
+            medicalAppointment.setHistoryCode(patient.getHistoryCode());
+        }
+
+
+        //Actualizando Cita
+        MedicalAppointment medicalAppointmentSaved = medicalAppointmentService.save(medicalAppointment);
+        medicalAppointmentSaved.setPatient(patient);
+        //Not neccesary
+        //medicalAppointmentSaved.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalAppointment", medicalAppointmentSaved.getId()));
+
+        addDataToResultMap("medicalAppointment",medicalAppointmentSaved);
+
     }
 
 

@@ -57,6 +57,12 @@ public class FieldDefinition extends AuditModel {
     @Column(name="on_change_event")
     private String onChangeEvent;
 
+    @Column(name="outter_button")
+    private String outterButton;
+
+    @Column(name="order_number")
+    private Integer orderNumber;
+
     @Transient
     private Boolean visible;
 
@@ -197,5 +203,21 @@ public class FieldDefinition extends AuditModel {
 
     public void setOnChangeEvent(String onChangeEvent) {
         this.onChangeEvent = onChangeEvent;
+    }
+
+    public String getOutterButton() {
+        return outterButton;
+    }
+
+    public void setOutterButton(String outterButton) {
+        this.outterButton = outterButton;
+    }
+
+    public Integer getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(Integer orderNumber) {
+        this.orderNumber = orderNumber;
     }
 }

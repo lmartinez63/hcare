@@ -31,7 +31,7 @@ public class Property extends AuditModel {
     private String labelValue;
 
     //Map one to one association between Person and Address
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name="label_id")
     private Label label;
 

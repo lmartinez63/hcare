@@ -1,6 +1,7 @@
 package com.landl.hcare.component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.landl.hcare.entity.Directory;
 import com.landl.hcare.entity.MedicalAppointment;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,9 @@ public class RetrieveMedicalAppointmentInfo extends CustomProcess {
             if (medicalAppointment.getDocumentType() != null) {
                 medicalAppointment.setPatient(patientService.findByDocumentNumber(medicalAppointment.getDocumentNumber()));
             }
-            medicalAppointment.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalAppointment", medicalAppointment.getId()));
+            Directory directory = directoryService.findByEntityNameAndParentDirectoryIdIsNull("medical_appointment");
+            directoryService.retrieveAttachmentInformation(directory,String.valueOf(medicalAppointment.getId()));
+            medicalAppointment.setFiles(directoryService.convertDirectoryToFrontEndFormat(directory));
         } else {
             medicalAppointment = medicalAppointmentService.createMedicalAppointment();
         }

@@ -77,7 +77,7 @@ public class RolePageSectionFieldId implements Serializable {
         return Objects.hash(getRoleId(), getPageId(), getSectionId(), getFieldDefinitionId());
     }
 
-    public boolean isEmpty(){
+    public boolean verifyIfIsEmpty(){
         return this.roleId == null ||
                 this.pageId == null ||
                 this.sectionId == null ||

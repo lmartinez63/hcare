@@ -13,10 +13,11 @@ public class RetrieveLabelInfo extends CustomProcess {
     public void executeCustomProcess(Map<String, Object> requestMap) throws Exception{
 
         final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
-        final Label labelRequest = mapper.convertValue(requestMap.get("label"), Label.class);
+        String s_labelId = (String)requestMap.get("labelId");
         Label label = null;
-        if(labelRequest.getId() != null){
-            label = labelService.findById(labelRequest.getId());
+        if(s_labelId != null){
+            Long l_labelId = Long.parseLong(s_labelId);
+            label = labelService.findById(l_labelId);
         } else {
             label = labelService.createLabel();
         }

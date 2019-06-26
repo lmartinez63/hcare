@@ -10,6 +10,7 @@ import java.util.Map;
 public interface DirectoryService {
 
     public Directory findByEntityName(String entityName);
+    public Directory findByEntityNameAndParentDirectoryIdIsNull(String entityName);
 
     public void retrieveAttachmentInformation(Directory directory, String sourceValue) throws Exception;
 

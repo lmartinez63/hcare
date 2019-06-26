@@ -32,6 +32,9 @@ public abstract class  CustomProcess {
     PageService pageService;
 
     @Autowired
+    PropertyService propertyService;
+
+    @Autowired
     SectionService sectionService;
 
     @Autowired

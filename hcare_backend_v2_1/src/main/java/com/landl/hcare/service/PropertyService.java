@@ -10,13 +10,15 @@ public interface PropertyService {
 
     public Property save(Property employee);
 
+    public Property createProperty();
+
     public List<Property> findAll();
 
     public Map<String, Object> getPropertiesMap();
 
     public Property findByPropertyCode(String propertyCode);
 
-    public Optional<Property> findById(Long propertyId);
+    public Property findById(Long propertyId);
 
     public String getPropertyValue(String propertyCode);
 

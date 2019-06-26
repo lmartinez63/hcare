@@ -21,7 +21,7 @@ public class RetrievePatientInfo extends CustomProcess {
             //final Patient patientRequest = mapper.convertValue(requestMap.get("patient"), Patient.class);
 
             patient = patientService.findById(l_patientId);
-            Directory directory = directoryService.findByEntityName("patient");
+            Directory directory = directoryService.findByEntityNameAndParentDirectoryIdIsNull("patient");
             directoryService.retrieveAttachmentInformation(directory,String.valueOf(l_patientId));
             patient.setFiles(directoryService.convertDirectoryToFrontEndFormat(directory));
         } else {

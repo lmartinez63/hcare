@@ -79,6 +79,12 @@ public class CustomProcessSelector {
     RetrieveAllPages retrieveAllPages;
 
     @Autowired
+    RetrievePropertyInfo retrievePropertyInfo;
+
+    @Autowired
+    SaveProperty saveProperty;
+
+    @Autowired
     RetrieveAllFieldDefinitions retrieveAllFieldDefinitions;
 
     public CustomProcess getCustomProcessClass(String customProcessName) throws Exception{
@@ -159,6 +165,13 @@ public class CustomProcessSelector {
             case "SaveUserProfile":
                 customProcess = saveUserProfile;
                 break;
+            case "RetrievePropertyInfo":
+                customProcess = retrievePropertyInfo;
+                break;
+            case "SaveProperty":
+                customProcess = saveProperty;
+                break;
+
             default:
                     throw new Exception("Process "+customProcessName+" has not been found");
         }

@@ -39,7 +39,7 @@ public class Patient extends AuditModel {
     private String documentNumber;
 
     @Column(name="document_type")
-    private String documentType;
+    private Integer documentType;
 
     @Column(name="birthday")
     private Date birthday;
@@ -51,10 +51,10 @@ public class Patient extends AuditModel {
     private String address;
 
     @Column(name="address_district")
-    private String addressDistrict;
+    private Integer addressDistrict;
 
     @Column(name="civil_status")
-    private String civilStatus;
+    private Integer civilStatus;
 
     @Column(name="phone_number")
     private String phoneNumber;
@@ -98,11 +98,11 @@ public class Patient extends AuditModel {
         this.documentNumber = documentNumber;
     }
 
-    public String getDocumentType() {
+    public Integer getDocumentType() {
         return documentType;
     }
 
-    public void setDocumentType(String documentType) {
+    public void setDocumentType(Integer documentType) {
         this.documentType = documentType;
     }
 
@@ -122,11 +122,11 @@ public class Patient extends AuditModel {
         this.emailAddress = emailAddress;
     }
 
-    public String getCivilStatus() {
+    public Integer getCivilStatus() {
         return civilStatus;
     }
 
-    public void setCivilStatus(String civilStatus) {
+    public void setCivilStatus(Integer civilStatus) {
         this.civilStatus = civilStatus;
     }
 
@@ -154,11 +154,11 @@ public class Patient extends AuditModel {
         this.address = address;
     }
 
-    public String getAddressDistrict() {
+    public Integer getAddressDistrict() {
         return addressDistrict;
     }
 
-    public void setAddressDistrict(String addressDistrict) {
+    public void setAddressDistrict(Integer addressDistrict) {
         this.addressDistrict = addressDistrict;
     }
 

@@ -48,6 +48,12 @@ public class ContentController {
     private PageService pageService;
 
     @Autowired
+    private SectionService sectionService;
+
+    @Autowired
+    private FieldService fieldService;
+
+    @Autowired
     private MedicalHistoryService medicalHistoryService;
 
     @Autowired
@@ -207,6 +213,22 @@ public class ContentController {
     public List<Label> getLabels() throws Exception{
         return labelService.findAll();
     }
+
+    @GetMapping("/getPages")
+    public List<Page> getPages() throws Exception{
+        return pageService.findAll();
+    }
+
+    @GetMapping("/getSections")
+    public List<Section> getSections() throws Exception{
+        return sectionService.findAll();
+    }
+
+    @GetMapping("/getFieldDefinitions")
+    public List<FieldDefinition> getFieldDefinitions() throws Exception{
+        return fieldService.findAll();
+    }
+
     @GetMapping("/getRoles")
     public List<Role> getRoles() throws Exception{
         return roleService.findAll();

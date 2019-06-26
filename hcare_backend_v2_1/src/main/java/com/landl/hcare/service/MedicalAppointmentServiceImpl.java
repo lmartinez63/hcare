@@ -35,8 +35,8 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
         medicalAppointment.setDateAppointment(new Date());
         medicalAppointment.setEmailAddress("novaclinicarequipa@gmail.com");
         //TODO we Should use ENUMS
-        medicalAppointment.setDocumentType("1");
-        medicalAppointment.setMedicalAppointmentType("1");
+        medicalAppointment.setDocumentType(1);
+        medicalAppointment.setMedicalAppointmentType(1);
         medicalAppointment.setPatient(new Patient());
         medicalAppointment.setAttachmentList(new ArrayList<>());
         return medicalAppointment;

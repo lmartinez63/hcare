@@ -47,6 +47,11 @@ public class PropertyServiceImpl implements PropertyService{
         return propertyRepository.save(property);
     }
 
+    public Property createProperty(){
+        Property property = new Property();
+        return property;
+    }
+
     public List<Property> findAll(){
         return propertyRepository.findAll();
     }
@@ -101,8 +106,9 @@ public class PropertyServiceImpl implements PropertyService{
         return moduleMap;
     }
 
-    public Optional<Property> findById(Long employeeId){
-        return propertyRepository.findById(employeeId);
+    public Property findById(Long propertyId){
+
+        return propertyRepository.findById(propertyId).get();
     }
 
     public String getPropertyValue(String propertyCode){

@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @SpringBootApplication
-@EnableJpaAuditing
+
 @EnableCaching
 public class HcareApplication {
 
@@ -42,6 +42,9 @@ public class HcareApplication {
 				registry.addMapping("/api/getLabels").allowedOrigins(frontEndUrl);
 				registry.addMapping("/api/getDoctors").allowedOrigins(frontEndUrl);
 				registry.addMapping("/api/getRoles").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/getPages").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/getSections").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/getFieldDefinitions").allowedOrigins(frontEndUrl);
 				registry.addMapping("/api/getMedicalAreas").allowedOrigins(frontEndUrl);
 				registry.addMapping("/api/generate-token").allowedOrigins(frontEndUrl);
 				registry.addMapping("/api/uploadAttachment").allowedOrigins(frontEndUrl);

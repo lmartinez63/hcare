@@ -32,7 +32,7 @@ public class Section extends AuditModel {
     private String entity;
 
     @Column(name="visualization_order")
-    private String visualizationOrder;
+    private Integer visualizationOrder;
 
     @Transient
     private Boolean visible;
@@ -122,11 +122,11 @@ public class Section extends AuditModel {
         this.entity = entity;
     }
 
-    public String getVisualizationOrder() {
+    public Integer getVisualizationOrder() {
         return visualizationOrder;
     }
 
-    public void setVisualizationOrder(String visualizationOrder) {
+    public void setVisualizationOrder(Integer visualizationOrder) {
         this.visualizationOrder = visualizationOrder;
     }
 

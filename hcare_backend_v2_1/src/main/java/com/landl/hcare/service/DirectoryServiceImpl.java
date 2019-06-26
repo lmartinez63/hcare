@@ -34,30 +34,24 @@ public class DirectoryServiceImpl implements DirectoryService{
         return directoryRepository.findByEntityName(entityName);
     }
 
+    public Directory findByEntityNameAndParentDirectoryIdIsNull(String entityName){
+        return directoryRepository.findByEntityNameAndParentDirectoryIdIsNull(entityName);
+    }
+
     public void retrieveAttachmentInformation(Directory directory, String sourceValue) throws Exception{
         String entityName = directory.getEntityName();
         String entityColumnName = directory.getEntityColumnName();
         String entityRelColumnName = directory.getEntityRelColumnName();
 
-        //Object entityColumnValue = readOnlyRepository.getData(entityColumnName,entityName, parentColumnName,sourceValue);
-        //TODO add validations to prevent query injection
-        String queryString = "SELECT "+entityColumnName+" FROM "+entityName +" WHERE "+entityRelColumnName+" = '"+sourceValue+"'";
+        String queryString = "SELECT distinct "+entityColumnName+" FROM "+entityName +" WHERE "+entityRelColumnName+" = '"+sourceValue+"'";
         Query q = em.createNativeQuery(queryString);
 
-        Object result = (Object) q.getSingleResult();
-        Long entityIdLong = null;
-        if(result instanceof BigInteger){
-            entityIdLong = ((BigInteger) result).longValue();
-        }
-
-        List<Attachment> attachmentList = attachmentService.findByEntityAndEntityId(UtilityTools.toCamelCase(entityName),entityIdLong);
-        directory.setAttachmentList(attachmentList);
         for(Directory childDirectory:directory.getChildDirectories()){
             String subQueryString = "SELECT "+childDirectory.getParentColumnName()+" FROM "+directory.getEntityName() +" WHERE "+directory.getEntityRelColumnName()+" = "+sourceValue;
             q = em.createNativeQuery(subQueryString);
             Object subResult = (Object) q.getSingleResult();
             String subSource = null;
-            if ( subSource != null){
+            if ( subResult != null){
                 if(subResult instanceof BigInteger){
                     subSource = ((BigInteger) subResult).toString();
                 } else if (subResult instanceof String){
@@ -66,6 +60,29 @@ public class DirectoryServiceImpl implements DirectoryService{
                 retrieveAttachmentInformation(childDirectory, subSource);
             }
         }
+
+        //Object entityColumnValue = readOnlyRepository.getData(entityColumnName,entityName, parentColumnName,sourceValue);
+        //TODO add validations to prevent query injection
+
+
+        List resultList = q.getResultList();
+
+        for(Object resultObject:resultList){
+            Long entityIdLong = null;
+            if(resultObject instanceof BigInteger){
+                entityIdLong = ((BigInteger) resultObject).longValue();
+            }
+            List<Attachment> attachmentList = attachmentService.findByEntityAndEntityId(UtilityTools.toCamelCase(entityName),entityIdLong);
+            if(resultList.size() > 1){
+                Directory newChildDirectory = new Directory();
+                newChildDirectory.setEntityName(String.valueOf(entityIdLong));
+                newChildDirectory.setAttachmentList(attachmentList);
+                directory.addChildDirectories(newChildDirectory);
+            } else{
+                directory.setAttachmentList(attachmentList);
+            }
+        }
+
     }
 
 

@@ -70,5 +70,16 @@ public class RolePageSectionField  extends AuditModel {
         this.fieldDefinition = fieldDefinition;
     }
 
+    public void setIdFromObjects() {
+        if( this.page != null && this.section != null && this.fieldDefinition != null && this.role != null){
+            setId(new RolePageSectionFieldId(
+                    this.role.getId(),
+                    this.page.getId(),
+                    this.section.getId(),
+                    this.fieldDefinition.getId()
+                    ));
+        }
+    }
+
 
 }

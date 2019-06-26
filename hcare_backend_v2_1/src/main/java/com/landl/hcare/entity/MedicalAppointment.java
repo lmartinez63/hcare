@@ -2,13 +2,17 @@ package com.landl.hcare.entity;
 
 import com.landl.hcare.model.AuditModel;
 import com.landl.hcare.common.UtilityTools;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Entity
+@Audited
 @Table(name="medical_appointment")
 public class MedicalAppointment  extends AuditModel {
     @Id
@@ -31,10 +35,11 @@ public class MedicalAppointment  extends AuditModel {
     private String lastName;
 
     @Transient
+    @NotAudited
     private String fullName;
 
     @Column(name="document_type")
-    private String documentType;
+    private Integer documentType;
 
     @Column(name="document_number")
     private String documentNumber;
@@ -49,9 +54,11 @@ public class MedicalAppointment  extends AuditModel {
     private Date dateAppointment;
 
     @Transient
+    @NotAudited
     private String dateAppointmentDateFormatted;
 
     @Transient
+    @NotAudited
     private String dateAppointmentTimeFormatted;
 
     @Column(name="status")
@@ -73,16 +80,23 @@ public class MedicalAppointment  extends AuditModel {
     private String diagnostic;
 
     @Column(name="preferential_diagnostic", nullable = true)
-    private String preferentialDiagnostic;
+    private Integer preferentialDiagnostic;
 
     @Column(name="medical_appointment_type")
-    private String medicalAppointmentType;
+    private Integer medicalAppointmentType;
 
     @Transient
+    @NotAudited
     private Patient patient;
 
     @Transient
+    @NotAudited
     private List<Attachment> attachmentList;
+
+    //Format for directories frontEnd
+    @Transient
+    @NotAudited
+    private List<Map> files;
 
     public MedicalAppointment() {
     }
@@ -111,11 +125,11 @@ public class MedicalAppointment  extends AuditModel {
         this.lastName = lastName;
     }
 
-    public String getDocumentType() {
+    public Integer getDocumentType() {
         return documentType;
     }
 
-    public void setDocumentType(String documentType) {
+    public void setDocumentType(Integer documentType) {
         this.documentType = documentType;
     }
 
@@ -191,11 +205,11 @@ public class MedicalAppointment  extends AuditModel {
         this.diagnostic = diagnostic;
     }
 
-    public String getMedicalAppointmentType() {
+    public Integer getMedicalAppointmentType() {
         return medicalAppointmentType;
     }
 
-    public void setMedicalAppointmentType(String medicalAppointmentType) {
+    public void setMedicalAppointmentType(Integer medicalAppointmentType) {
         this.medicalAppointmentType = medicalAppointmentType;
     }
 
@@ -243,11 +257,11 @@ public class MedicalAppointment  extends AuditModel {
         return null;
     }
 
-    public String getPreferentialDiagnostic() {
+    public Integer getPreferentialDiagnostic() {
         return preferentialDiagnostic;
     }
 
-    public void setPreferentialDiagnostic(String preferentialDiagnostic) {
+    public void setPreferentialDiagnostic(Integer preferentialDiagnostic) {
         this.preferentialDiagnostic = preferentialDiagnostic;
     }
 
@@ -257,5 +271,13 @@ public class MedicalAppointment  extends AuditModel {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public List<Map> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<Map> files) {
+        this.files = files;
     }
 }
