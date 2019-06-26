@@ -36,6 +36,116 @@
                 <v-form>
                   <v-container py-6>
                     <v-layout
+                      v-if="section.sectionType === 1 "
+                      wrap
+                    >
+                      <v-flex
+                        v-for="fieldDefinition in section.fieldDefinitionList"
+                        v-if="fieldDefinition.visible"
+                        :key="fieldDefinition.fieldDefinitionCode"
+                        xs6
+                        :class="'order-md'+fieldDefinition.orderNumber"
+                      >
+                        <v-text-field
+                          v-if="fieldDefinition.fieldType === 1"
+                          v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
+                          :label="fieldDefinition.label.labelValueEsEs"
+                          :disabled="!fieldDefinition.editable"
+                          @change="executeFieldChangeEvent(fieldDefinition.onChangeEvent)"
+                        />
+                        <v-autocomplete
+                          v-if="fieldDefinition.fieldType === 2"
+                          ref="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
+                          v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
+                          :rules="[() => !! dataMap[section.entity][fieldDefinition.fieldDefinitionCode] || 'Este campo es requerido']"
+                          :items="arrayItems(fieldDefinition.selectSource)"
+                          :label="fieldDefinition.label.labelValueEsEs"
+                          placeholder="Seleccione..."
+                          :return-object="getReturnObject(fieldDefinition.selectSource)"
+                          :item-text="getItemText(fieldDefinition.selectSource)"
+                          :item-value="getItemValue(fieldDefinition.selectSource)"
+                        >
+                          {{ fieldDefinition.outterButton }}
+                          <template
+                            v-if="fieldDefinition.outterButton && fieldDefinition.outterButton != null && fieldDefinition.outterButton !== '' "
+                            v-slot:append-outer
+                          >
+                            <v-slide-x-reverse-transition mode="out-in">
+                              <v-icon
+                                :key="fieldDefinition.id"
+                                :color="JSON.parse(fieldDefinition.outterButton).color"
+                                @click="executeAction(JSON.parse(fieldDefinition.outterButton).button)"
+                                v-text="JSON.parse(fieldDefinition.outterButton).icon"
+                              />
+                            </v-slide-x-reverse-transition>
+                          </template>
+                        </v-autocomplete>
+                        <v-switch
+                          v-if="fieldDefinition.fieldType === 3"
+                          v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
+                          :label="fieldDefinition.label.labelValueEsEs"
+                        />
+                        <v-dialog
+                          v-if="fieldDefinition.fieldType === 4"
+                          ref="dialog"
+                          v-model="fieldDefinition.modal"
+                          :return-value.sync="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
+                          persistent
+                          lazy
+                          full-width
+                          width="290px"
+                        >
+                          <template v-slot:activator="{ on }">
+                            <v-text-field
+                              model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
+                              :value="$parent.$parent.$parent.computedDateFormattedMomentjs(dataMap[section.entity][fieldDefinition.fieldDefinitionCode])"
+                              :label="fieldDefinition.label.labelValueEsEs"
+                              prepend-icon="mdi-calendar"
+                              readonly
+                              v-on="on"
+                            />
+                          </template>
+                          <v-date-picker
+                            v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
+                            scrollable
+                            locale="es"
+                          >
+                            <v-spacer />
+                            <v-btn
+                              flat
+                              color="primary"
+                              @click="fieldDefinition.modal = false"
+                            >
+                              Cancelar
+                            </v-btn>
+                            <v-btn
+                              flat
+                              color="primary"
+                              @click="$refs.dialog[0].save(dataMap[section.entity][fieldDefinition.fieldDefinitionCode])"
+                            >
+                              OK
+                            </v-btn>
+                          </v-date-picker>
+                        </v-dialog>
+                        <v-datetime-picker
+                          v-if="fieldDefinition.fieldType === 5"
+                          v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
+                          :label="fieldDefinition.label.labelValueEsEs"
+                        >
+                          <template v-slot:dateIcon>
+                            <v-icon>
+                              mdi-calendar
+                            </v-icon>
+                          </template>
+                          <template v-slot:timeIcon>
+                            <v-icon>
+                              mdi-clock-outline
+                            </v-icon>
+                          </template>
+                        </v-datetime-picker>
+                      </v-flex>
+                    </v-layout>
+                    <v-layout
                       v-if="section.sectionType === 2 "
                       wrap
                     >
@@ -111,98 +221,6 @@
                           </v-flex>
                         </v-layout>
                       </v-card>
-                    </v-layout>
-                    <v-layout
-                      v-if="section.sectionType === 1 "
-                      wrap
-                    >
-                      <v-flex
-                        v-for="fieldDefinition in section.fieldDefinitionList"
-                        :key="fieldDefinition.fieldDefinitionCode"
-                        xs6
-                      >
-                        <v-text-field
-                          v-if="fieldDefinition.fieldType === 1"
-                          v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
-                          :label="fieldDefinition.label.labelValueEsEs"
-                          :disabled="!fieldDefinition.editable"
-                          @change="executeFieldChangeEvent(fieldDefinition.onChangeEvent)"
-                        />
-                        <v-autocomplete
-                          v-if="fieldDefinition.fieldType === 2"
-                          ref="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
-                          v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
-                          :rules="[() => !! dataMap[section.entity][fieldDefinition.fieldDefinitionCode] || 'Este campo es requerido']"
-                          :items="arrayItems(fieldDefinition.selectSource)"
-                          :label="fieldDefinition.label.labelValueEsEs"
-                          placeholder="Seleccione..."
-                          :return-object="getReturnObject(fieldDefinition.selectSource)"
-                          :item-text="getItemText(fieldDefinition.selectSource)"
-                        />
-                        <v-switch
-                          v-if="fieldDefinition.fieldType === 3"
-                          v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
-                          :label="fieldDefinition.label.labelValueEsEs"
-                        />
-                        <v-dialog
-                          v-if="fieldDefinition.fieldType === 4"
-                          ref="dialog"
-                          v-model="fieldDefinition.modal"
-                          :return-value.sync="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
-                          persistent
-                          lazy
-                          full-width
-                          width="290px"
-                        >
-                          <template v-slot:activator="{ on }">
-                            <v-text-field
-                              model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
-                              :value="$parent.$parent.$parent.computedDateFormattedMomentjs(dataMap[section.entity][fieldDefinition.fieldDefinitionCode])"
-                              :label="fieldDefinition.label.labelValueEsEs"
-                              prepend-icon="mdi-calendar"
-                              readonly
-                              v-on="on"
-                            />
-                          </template>
-                          <v-date-picker
-                            v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
-                            scrollable
-                            locale="es"
-                          >
-                            <v-spacer />
-                            <v-btn
-                              flat
-                              color="primary"
-                              @click="fieldDefinition.modal = false"
-                            >
-                              Cancelar
-                            </v-btn>
-                            <v-btn
-                              flat
-                              color="primary"
-                              @click="$refs.dialog[0].save(dataMap[section.entity][fieldDefinition.fieldDefinitionCode])"
-                            >
-                              OK
-                            </v-btn>
-                          </v-date-picker>
-                        </v-dialog>
-                        <v-datetime-picker
-                          v-if="fieldDefinition.fieldType === 5"
-                          v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
-                          :label="fieldDefinition.label.labelValueEsEs"
-                        >
-                          <template v-slot:dateIcon>
-                            <v-icon >
-                              mdi-calendar
-                            </v-icon>
-                          </template>
-                          <template v-slot:timeIcon>
-                            <v-icon >
-                              mdi-clock-outline
-                            </v-icon>
-                          </template>
-                        </v-datetime-picker>
-                      </v-flex>
                     </v-layout>
                   </v-container>
                 </v-form>
@@ -412,24 +430,34 @@ export default {
     console.log('DataPage - mounted - end')
   },
   methods: {
-    getReturnObject(selectSource){
+    getReturnObject (selectSource) {
       if (selectSource && selectSource != null) {
         var selectSourceJSON = JSON.parse(selectSource)
-        if(selectSourceJSON.returnObject && selectSourceJSON.returnObject !== ''){
+        if (selectSourceJSON.returnObject && selectSourceJSON.returnObject !== '') {
           return selectSourceJSON.returnObject
         }
       }
       return false
     },
-    getItemText(selectSource){
+    getItemText (selectSource) {
       if (selectSource && selectSource != null) {
         var selectSourceJSON = JSON.parse(selectSource)
-        if(selectSourceJSON.itemText && selectSourceJSON.itemText !== ''){
+        if (selectSourceJSON.itemText && selectSourceJSON.itemText !== '') {
           return selectSourceJSON.itemText
         }
-        return "text"
+        return 'text'
       }
-      return "text"
+      return 'text'
+    },
+    getItemValue (selectSource) {
+      if (selectSource && selectSource != null) {
+        var selectSourceJSON = JSON.parse(selectSource)
+        if (selectSourceJSON.itemValue && selectSourceJSON.itemValue !== '') {
+          return selectSourceJSON.itemValue
+        }
+        return 'value'
+      }
+      return 'value'
     },
     arrayItems (selectSource) {
       if (selectSource && selectSource != null) {
@@ -546,9 +574,11 @@ export default {
           var routeObject = {}
           var jsonString = button.eventDefinition
           var eventArray = button.eventDefinition.match(/\${{(.*?)}}/g)
-          for (var i = 0, len = eventArray.length; i < len; i++) {
-            var dataRouteVariable = eventArray[i]
-            jsonString = jsonString.replace(dataRouteVariable, eval(dataRouteVariable.match(/\$\{\{([^)]+)\}\}/)[1]))
+          if (eventArray != null) {
+            for (var i = 0, len = eventArray.length; i < len; i++) {
+              var dataRouteVariable = eventArray[i]
+              jsonString = jsonString.replace(dataRouteVariable, eval(dataRouteVariable.match(/\$\{\{([^)]+)\}\}/)[1]))
+            }
           }
           routeObject = JSON.parse(jsonString)
           this.$router.push(routeObject)
@@ -587,9 +617,10 @@ export default {
         })
     },
     */
-    saveObjectState: function (sAttributeArray, processName) {
+    saveObjectState: function (sParameters, sAttributeArray, processName, additionalActions) {
+      var jParameters = JSON.parse(sParameters)
       console.log('DataView - method - saveObjectState - begin')
-      var attributeArray = sAttributeArray.split(',')
+      var attributeArray = jParameters.sAttributeArray.split(',')
       var dataContent = {}
       for (var i = 0; i < attributeArray.length; i++) {
         Object.defineProperty(dataContent, attributeArray[i], { value: this.dataMap[attributeArray[i]], writable: true, enumerable: true, configurable: true })
@@ -608,9 +639,10 @@ export default {
       dispatch('data/saveEntity', {
         vm: this,
         requestPage: requestPage,
-        processName: processName,
-        dataContent: dataContent
-        //        returnRoute: returnRoute
+        processName: jParameters.processName,
+        dataContent: dataContent,
+        additionalActions: jParameters.additionalActions,
+        returnRoute: jParameters.returnRoute
       })
       // }
       console.log('MedicalAppointmentPage - method - saveObjectState - end')

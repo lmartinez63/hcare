@@ -1,5 +1,6 @@
 export default {
   type: null,
   message: '',
-  style: null
+  style: null,
+  display: false
 }

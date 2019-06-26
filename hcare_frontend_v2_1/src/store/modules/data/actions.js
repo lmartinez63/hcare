@@ -11,7 +11,11 @@ export default {
           commit('getDataSuccess', content)
           commit('general/setLoading', false, { root: true })
         },
-        error => commit('failureDetected', error)
+        error => {
+          commit('general/setLoading', false, { root: true })
+          commit('failureDetected', error)
+          dispatch('alert/error', error, { root: true })
+        }
       )
   },
   getPatientInfoByDocumentNumberOnMedAppointment ({ dispatch, commit }, { requestPage, processName, dataContent }) {
@@ -46,26 +50,36 @@ export default {
         )
     })
   },
-  saveEntity ({ dispatch, commit }, { vm, requestPage, processName, dataContent, returnRoute }) {
+  saveEntity ({ dispatch, commit }, { vm, requestPage, processName, dataContent, returnRoute, additionalActions }) {
     return new Promise((resolve, reject) => {
+      console.log('data-actions-saveEntity')
       commit('general/setLoading', true, { root: true })
       commit('pendingRequest')
-      dataResponseService.getContent(requestPage, processName, dataContent, returnRoute)
+      dataResponseService.getContent(requestPage, processName, dataContent, returnRoute, additionalActions)
         .then(
           content => {
-            commit('saveEntitySuccess', content)
             commit('general/setLoading', false, { root: true })
-            // dispatch('alert/success', { 'vm': vm, message: 'Los datos fueron guardados satisfactoriamente' }, { root: true })
-            if (returnRoute) {
-              setTimeout(() => {
-                router.push(returnRoute)
-              }, 5000)
+            commit('saveEntitySuccess', content)
+            dispatch('alert/success', 'Los datos fueron guardados satisfactoriamente', { root: true })
+            if (additionalActions && additionalActions !== '') {
+              eval(additionalActions)
             }
+            if (returnRoute && returnRoute !== '') {
+              if (returnRoute === 'back') {
+                router.go(-1)
+              } else {
+                setTimeout(() => {
+                  router.push(returnRoute)
+                }, 5000)
+              }
+            }
+
             resolve({ status: 200 })
           },
           error => {
+            commit('general/setLoading', false, { root: true })
             commit('failureDetected', error)
-            dispatch('alert/error', error, { root: true })
+            dispatch('alert/error', error.message, { root: true })
           }
         )
     })

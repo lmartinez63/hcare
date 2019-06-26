@@ -122,6 +122,11 @@ export default {
         text: 'Administracion de Roles'
       },
       {
+        to: '/browse/allProperties',
+        icon: 'mdi-clipboard-outline',
+        text: 'Administracion de Propiedades'
+      },
+      {
         to: '/typography',
         icon: 'mdi-format-font',
         text: 'Typography'

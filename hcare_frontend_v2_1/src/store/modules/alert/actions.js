@@ -1,6 +1,9 @@
 export default {
-  success ({ commit }, { vm, message, returnRoute }) {
-    commit('success', { vm, message, returnRoute })
+  success ({ commit }, message) {
+    commit('success', message)
+  },
+  info ({ commit }, message) {
+    commit('info', message)
   },
   warning ({ commit }, message) {
     commit('warning', message)

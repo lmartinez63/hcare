@@ -3,6 +3,9 @@ const labels = JSON.parse(localStorage.getItem('labels'))
 const doctors = JSON.parse(localStorage.getItem('doctors'))
 const medicalAreas = JSON.parse(localStorage.getItem('medicalAreas'))
 const roles = JSON.parse(localStorage.getItem('roles'))
+const pages = JSON.parse(localStorage.getItem('pages'))
+const sections = JSON.parse(localStorage.getItem('sections'))
+const fieldDefinitions = JSON.parse(localStorage.getItem('fieldDefinitions'))
 
 const initialStateProperties = properties ? {
   properties
@@ -24,6 +27,21 @@ const initialStateRoles = roles ? {
 } : {
   roles: null
 }
+const initialStatePages = pages ? {
+  pages
+} : {
+  pages: null
+}
+const initialStateSections = sections ? {
+  sections
+} : {
+  sections: null
+}
+const initialStateFieldDefinitions = fieldDefinitions ? {
+  fieldDefinitions
+} : {
+  fieldDefinitions: null
+}
 const initialStateLabels = labels ? {
   labels
 } : {
@@ -35,6 +53,9 @@ export default {
   doctors: initialStateDoctors,
   medicalAreas: initialStateMedicalAreas,
   roles: initialStateRoles,
+  pages: initialStatePages,
+  sections: initialStateSections,
+  fieldDefinitions: initialStateFieldDefinitions,
   labels: initialStateLabels,
   loading: false
 }

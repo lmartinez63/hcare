@@ -85,7 +85,7 @@ export default {
     generalService.getDoctors()
       .then(
         doctors => commit('getDoctorsSuccess', doctors),
-        error => commit('getDoctorsFailure', error)
+        error => commit('failureDetected', error)
       )
   },
   getRoles ({
@@ -95,8 +95,41 @@ export default {
     commit('getRolesRequest')
     generalService.getRoles()
       .then(
-        doctors => commit('getRolesSuccess', doctors),
-        error => commit('getRolesFailure', error)
+        roles => commit('getRolesSuccess', roles),
+        error => commit('failureDetected', error)
+      )
+  },
+  getPages ({
+    dispatch,
+    commit
+  }) {
+    commit('getPagesRequest')
+    generalService.getPages()
+      .then(
+        pages => commit('getPagesSuccess', pages),
+        error => commit('failureDetected', error)
+      )
+  },
+  getSections ({
+    dispatch,
+    commit
+  }) {
+    commit('getSectionsRequest')
+    generalService.getSections()
+      .then(
+        sections => commit('getSectionsSuccess', sections),
+        error => commit('failureDetected', error)
+      )
+  },
+  getFieldDefinitions ({
+    dispatch,
+    commit
+  }) {
+    commit('getFieldDefinitionsRequest')
+    generalService.getFieldDefinitions()
+      .then(
+        fieldDefinitions => commit('getFieldDefinitionsSuccess', fieldDefinitions),
+        error => commit('failureDetected', error)
       )
   },
   getMedicalAreas ({
@@ -107,7 +140,7 @@ export default {
     generalService.getMedicalAreas()
       .then(
         medicalAreas => commit('getMedicalAreasSuccess', medicalAreas),
-        error => commit('getMedicalAreasFailure', error)
+        error => commit('failureDetected', error)
       )
   }
 }

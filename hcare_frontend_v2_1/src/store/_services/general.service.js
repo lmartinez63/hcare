@@ -8,7 +8,10 @@ export const generalService = {
   getDoctors,
   getRoles,
   getMedicalAreas,
-  getLabels
+  getLabels,
+  getPages,
+  getSections,
+  getFieldDefinitions
 }
 
 function loadProperties () {
@@ -47,6 +50,42 @@ function getDoctors () {
       return doctors
     })
 }
+function getPages () {
+  console.log('generalService - getPages')
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader()
+  }
+  return fetch(`${config.apiUrl}/getPages`, requestOptions).then(handleResponse)
+    .then(pages => {
+      localStorage.setItem('pages', JSON.stringify(pages))
+      return pages
+    })
+}
+function getFieldDefinitions () {
+  console.log('generalService - getFieldDefinitions')
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader()
+  }
+  return fetch(`${config.apiUrl}/getFieldDefinitions`, requestOptions).then(handleResponse)
+    .then(fieldDefinitions => {
+      localStorage.setItem('fieldDefinitions', JSON.stringify(fieldDefinitions))
+      return fieldDefinitions
+    })
+}
+function getSections () {
+  console.log('generalService - getSections')
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader()
+  }
+  return fetch(`${config.apiUrl}/getSections`, requestOptions).then(handleResponse)
+    .then(sections => {
+      localStorage.setItem('sections', JSON.stringify(sections))
+      return sections
+    })
+}
 function getRoles () {
   console.log('generalService - getRoles')
   const requestOptions = {
@@ -54,9 +93,9 @@ function getRoles () {
     headers: authHeader()
   }
   return fetch(`${config.apiUrl}/getRoles`, requestOptions).then(handleResponse)
-    .then(doctors => {
-      localStorage.setItem('roles', JSON.stringify(doctors))
-      return doctors
+    .then(roles => {
+      localStorage.setItem('roles', JSON.stringify(roles))
+      return roles
     })
 }
 function getMedicalAreas () {

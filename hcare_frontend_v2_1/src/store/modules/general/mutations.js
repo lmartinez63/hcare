@@ -47,11 +47,53 @@ export default {
       loading: true
     }
   },
+  getPagesRequest (state) {
+    state.loading = true
+    console.log('generalStore - mutations - getPagesRequest')
+    state.pages = {
+      loading: true
+    }
+  },
+  getSectionsRequest (state) {
+    state.loading = true
+    console.log('generalStore - mutations - getSectionsRequest')
+    state.sections = {
+      loading: true
+    }
+  },
+  getFieldDefinitionsRequest (state) {
+    state.loading = true
+    console.log('generalStore - mutations - getFieldDefinitionsRequest')
+    state.fieldDefinitions = {
+      loading: true
+    }
+  },
   loadPropertiesSuccess (state, properties) {
     state.loading = false
     console.log('generalStore - mutations - loadPropertiesSuccess')
     state.properties = {
       items: properties
+    }
+  },
+  getPagesSuccess (state, pages) {
+    state.loading = false
+    console.log('generalStore - mutations - getPagesSuccess')
+    state.pages = {
+      items: pages
+    }
+  },
+  getSectionsSuccess (state, sections) {
+    state.loading = false
+    console.log('generalStore - mutations - getSectionsSuccess')
+    state.sections = {
+      items: sections
+    }
+  },
+  getFieldDefinitionsSuccess (state, fieldDefinitions) {
+    state.loading = false
+    console.log('generalStore - mutations - getFieldDefinitionsSuccess')
+    state.fieldDefinitions = {
+      items: fieldDefinitions
     }
   },
   getLabelsSuccess (state, labels) {

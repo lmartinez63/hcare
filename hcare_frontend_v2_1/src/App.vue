@@ -13,6 +13,39 @@
     <core-drawer v-if="user" />
 
     <core-view />
+    <v-alert
+      :value="alertVar.display"
+      :type="alertVar.type"
+      transition="scale-transition"
+    >
+      {{ alertVar.message }}
+    </v-alert>
+    <v-dialog
+      v-model="appErrorDialog"
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Error detectado
+        </v-card-title>
+
+        <v-card-text>
+          Hubo un error en la applicacion por favor contacte al administrador
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer />
+
+          <v-btn
+            color="green darken-1"
+            flat="flat"
+            @click="backPage()"
+          >
+            Regresar a la Pagina anterior
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 
@@ -45,8 +78,8 @@ export default {
     alertVar () {
       return this.$store.state.alert
     },
-    alertVarType () {
-      return this.$store.state.alert.type
+    appErrorDialog () {
+      return this.$store.state.alert.type === 'error'
     },
     user () {
       return this.$store.state.authentication.user
@@ -65,42 +98,6 @@ export default {
     $route (to, from) {
       // clear alert on location change
       this.$store.dispatch('alert/clear')
-    },
-    alertVarType (val) {
-      console.log('Alert changed ' + val)
-      // TODO setup labels
-      var self = this
-      if (val === 'danger') {
-        this.$swal({
-          title: 'Un error occurrio!',
-          text: 'Le gustaria reportar el error!',
-          icon: 'warning',
-          dangerMode: true,
-          buttons: ['Retornar a la pagina anterior!', 'Enviar Reporte'],
-          closeOnEsc: false,
-          closeOnClickOutside: false
-        }).then((sendAlert) => {
-          if (sendAlert) {
-          // TODO Send Alert to an email or something
-            this.$swal({
-              text: 'Reporte enviado! Estaremos arreglando el error lo mas pronto posible, perdón los inconvenientes',
-              icon: 'success',
-              closeOnEsc: false,
-              closeOnClickOutside: false
-            }).then(value => {
-              self.$router.go(-1)
-            })
-          } else {
-            this.$swal({
-              text: 'Retornando a la pagina anterior!',
-              closeOnEsc: false,
-              closeOnClickOutside: false
-            }).then(value => {
-              self.$router.go(-1)
-            })
-          }
-        })
-      }
     },
     isLoading (val) {
       console.log('Loading changed ' + val)
@@ -137,6 +134,9 @@ export default {
         }
       }
       return lValue
+    },
+    backPage: function () {
+      this.$router.go(-1)
     },
     logout: function () {
       this.submitted = true
