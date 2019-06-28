@@ -48,16 +48,16 @@
                       >
                         <v-text-field
                           v-if="fieldDefinition.fieldType === 1"
-                          v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
+                          v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
                           :label="fieldDefinition.label.labelValueEsEs"
                           :disabled="!fieldDefinition.editable"
                           @change="executeFieldChangeEvent(fieldDefinition.onChangeEvent)"
                         />
                         <v-autocomplete
                           v-if="fieldDefinition.fieldType === 2"
-                          ref="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
-                          v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
-                          :rules="[() => !! dataMap[section.entity][fieldDefinition.fieldDefinitionCode] || 'Este campo es requerido']"
+                          ref="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
+                          v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
+                          :rules="[() => !! getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode] || 'Este campo es requerido']"
                           :items="arrayItems(fieldDefinition.selectSource)"
                           :label="fieldDefinition.label.labelValueEsEs"
                           placeholder="Seleccione..."
@@ -82,14 +82,14 @@
                         </v-autocomplete>
                         <v-switch
                           v-if="fieldDefinition.fieldType === 3"
-                          v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
+                          v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
                           :label="fieldDefinition.label.labelValueEsEs"
                         />
                         <v-dialog
                           v-if="fieldDefinition.fieldType === 4"
                           ref="dialog"
                           v-model="fieldDefinition.modal"
-                          :return-value.sync="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
+                          :return-value.sync="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
                           persistent
                           lazy
                           full-width
@@ -97,8 +97,8 @@
                         >
                           <template v-slot:activator="{ on }">
                             <v-text-field
-                              model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
-                              :value="$parent.$parent.$parent.computedDateFormattedMomentjs(dataMap[section.entity][fieldDefinition.fieldDefinitionCode])"
+                              model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
+                              :value="$parent.$parent.$parent.computedDateFormattedMomentjs(getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode])"
                               :label="fieldDefinition.label.labelValueEsEs"
                               prepend-icon="mdi-calendar"
                               readonly
@@ -106,7 +106,7 @@
                             />
                           </template>
                           <v-date-picker
-                            v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
+                            v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
                             scrollable
                             locale="es"
                           >
@@ -121,7 +121,7 @@
                             <v-btn
                               flat
                               color="primary"
-                              @click="$refs.dialog[0].save(dataMap[section.entity][fieldDefinition.fieldDefinitionCode])"
+                              @click="$refs.dialog[0].save(getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode])"
                             >
                               OK
                             </v-btn>
@@ -129,7 +129,7 @@
                         </v-dialog>
                         <v-datetime-picker
                           v-if="fieldDefinition.fieldType === 5"
-                          v-model="dataMap[section.entity][fieldDefinition.fieldDefinitionCode]"
+                          v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
                           :label="fieldDefinition.label.labelValueEsEs"
                         >
                           <template v-slot:dateIcon>
@@ -552,7 +552,7 @@ export default {
     getPatientInfo: function () {
       console.log('DataView - method - getPatientInfo - begin')
       const dataContent = {
-        'documentNumber': this.dataMap.medicalAppointment.documentNumber
+        'documentNumber': this.dataMap.medicalAppointment.patient.documentNumber
       }
       const {
         requestPage
@@ -587,6 +587,14 @@ export default {
           // TOREMOVE
           eval(button.eventDefinition)
           break
+        case 3:
+            // TOREMOVE
+          var be = JSON.parse(button.eventDefinition)
+          for (var i = 0, len = be.uObjects.length; i < len; i++) {
+            var uObject = be.uObjects[i]
+            Object.assign(this.dataMap[uObject.sourceObject],uObject.updatedObject)
+          }
+          eval(be.action)
       }
     },
     goBackBrowse: function () {

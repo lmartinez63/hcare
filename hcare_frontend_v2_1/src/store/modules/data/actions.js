@@ -14,7 +14,7 @@ export default {
         error => {
           commit('general/setLoading', false, { root: true })
           commit('failureDetected', error)
-          dispatch('alert/error', error, { root: true })
+          dispatch('alert/error', error.message, { root: true })
         }
       )
   },
@@ -27,8 +27,9 @@ export default {
           commit('general/setLoading', false, { root: true })
         },
         error => {
+          commit('general/setLoading', false, { root: true })
           commit('failureDetected', error)
-          dispatch('alert/error', error, { root: true })
+          dispatch('alert/error', error.message, { root: true })
         }
       )
   },
@@ -44,8 +45,9 @@ export default {
             resolve({ status: 200 })
           },
           error => {
+            commit('general/setLoading', false, { root: true })
             commit('failureDetected', error)
-            dispatch('alert/error', error, { root: true })
+            dispatch('alert/error', error.message, { root: true })
           }
         )
     })
@@ -61,12 +63,17 @@ export default {
             commit('general/setLoading', false, { root: true })
             commit('saveEntitySuccess', content)
             dispatch('alert/success', 'Los datos fueron guardados satisfactoriamente', { root: true })
-            if (additionalActions && additionalActions !== '') {
-              eval(additionalActions)
+            if (additionalActions && Array.isArray(additionalActions)) {
+              for (var i = 0; i < additionalActions.length; i++) {
+                console.log('executingAdditionalActions: ' + additionalActions[i])
+                eval(additionalActions[i])
+              }
             }
             if (returnRoute && returnRoute !== '') {
               if (returnRoute === 'back') {
                 router.go(-1)
+              } else if (returnRoute === 'reloadPage') {
+                router.go()
               } else {
                 setTimeout(() => {
                   router.push(returnRoute)

@@ -26,11 +26,7 @@ export default {
     state.loading = false
     console.log('dataResponse - mutations - getPatientInfoByDocumentNumberOnMedAppointmentSuccess')
     if (content && content != null && content.dataContent.dataMap.patient) {
-      state.dataMap.medicalAppointment.firstName = content.dataContent.dataMap.patient.firstName
-      state.dataMap.medicalAppointment.lastName = content.dataContent.dataMap.patient.lastName
-      state.dataMap.medicalAppointment.celPhoneNumber = content.dataContent.dataMap.patient.celPhoneNumber
-      state.dataMap.medicalAppointment.emailAddress = content.dataContent.dataMap.patient.emailAddress
-      state.dataMap.medicalAppointment.historyCode = content.dataContent.dataMap.patient.historyCode
+      state.dataMap.medicalAppointment.patient = content.dataContent.dataMap.patient
     }
   },
   saveEntitySuccess (state, content) {

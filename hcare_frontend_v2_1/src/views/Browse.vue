@@ -263,6 +263,7 @@ export default {
           this.$router.push(routeObject)
           break
         case 'save':
+          eval(button.dataRowButtonEvent)
           break
         default:
           break
@@ -278,6 +279,36 @@ export default {
       //routeObject = JSON.parse('{"name":"' + this.detailComponent + '","params":{"' + this.entityIdName + '":"' + id + '"}}')
       this.$router.push(routeObject);
       */
+    },
+    saveObjectItemState: function (sParameters, rowData) {
+      var jParameters = JSON.parse(sParameters)
+      console.log('Browse - method - saveObjectItemState - begin')
+      var attributeArray = jParameters.sAttributeArray.split(',')
+      var dataContent = {}
+      for (var i = 0; i < attributeArray.length; i++) {
+        Object.defineProperty(dataContent, attributeArray[i], { value: rowData[attributeArray[i]], writable: true, enumerable: true, configurable: true })
+      }
+      const {
+        requestPage
+      } = this
+      const {
+        dispatch
+      } = this.$store
+      // this.$v.$touch()
+      /* if (this.$v.$invalid) {
+        dispatch('alert/warning', 'Por favor complete los campos requeridos')
+      } else {
+      */
+      dispatch('data/saveEntity', {
+        vm: this,
+        requestPage: requestPage,
+        processName: jParameters.processName,
+        dataContent: dataContent,
+        additionalActions: jParameters.additionalActions,
+        returnRoute: jParameters.returnRoute
+      })
+      // }
+      console.log('Browse - method - saveObjectItemState - end')
     },
     close () {
       this.dialog = false
