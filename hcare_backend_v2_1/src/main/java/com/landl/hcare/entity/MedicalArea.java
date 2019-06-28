@@ -1,11 +1,13 @@
 package com.landl.hcare.entity;
 
 import com.landl.hcare.model.AuditModel;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Audited
 @Table(name="medical_area")
 public class MedicalArea  extends AuditModel {
     @Id

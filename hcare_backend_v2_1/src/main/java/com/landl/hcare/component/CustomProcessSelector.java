@@ -49,7 +49,7 @@ public class CustomProcessSelector {
     SaveUserProfile saveUserProfile;
 
     @Autowired
-    RegisterMedicalAppointment registerMedicalAppointment;
+    DeleteRolePageSectionField deleteRolePageSectionField;
 
     @Autowired
     RetrieveMedicalHistoryInfo retrieveMedicalHistoryInfo;
@@ -138,9 +138,6 @@ public class CustomProcessSelector {
             case "SaveMedicalHistory":
                 customProcess = saveMedicalHistory;
                 break;
-            case "RegisterMedicalAppointment":
-                customProcess = registerMedicalAppointment;
-                break;
             case "SaveMedicalAppointment":
                 customProcess = saveMedicalAppointment;
                 break;
@@ -171,7 +168,9 @@ public class CustomProcessSelector {
             case "SaveProperty":
                 customProcess = saveProperty;
                 break;
-
+            case "DeleteRolePageSectionField":
+                customProcess = deleteRolePageSectionField;
+                break;
             default:
                     throw new Exception("Process "+customProcessName+" has not been found");
         }

@@ -96,17 +96,12 @@ public class ContentController {
         String username = authentication.getName();
         //Metadata
         MetadataContent metadataContent = new MetadataContent();
-        String requestPage = requestMap.get("requestPage").toString();
-        String processName = requestMap.get("processName").toString();
+        String requestPage = (String)requestMap.get("requestPage");
+        String processName = (String)requestMap.get("processName");
         Map requestDataMap = (Map)requestMap.get("data");
         requestDataMap.put("userAuthenticated",new UserAuthenticated((User) authentication.getPrincipal()));
         requestDataMap.put("userProfileAuthenticated",userService.findByUsername(username));
-        Page page = pageService.findPageSectionAndFieldsByPageCodeAndUserName(requestPage,username);
-        //Verify if use is authorizated
-        //pageService.verifyIfCurrentUserIsAuthorizated(page,dataContent.getDataMap());
-        if (page == null){
-            throw new AccessDeniedException("You are not allowed to view this page");
-        }
+
         Content content = new Content();
         content.setMetadataContent(metadataContent);
         //Choose the customProcess to get Data
@@ -121,8 +116,16 @@ public class ContentController {
             customProcess.getResultMap().put("userProfileAuthenticated",userService.findByUsername(username));
             customProcess.getResultMap().put("requestPage",requestPage);
             dataContent.setDataMap(customProcess.getResultMap());
-            pageService.processFields(page, dataContent.getDataMap());
-            metadataContent.setPage(page);
+            if( requestPage != null ) {
+                Page page = pageService.findPageSectionAndFieldsByPageCodeAndUserName(requestPage, username);
+                //Verify if use is authorizated
+                //pageService.verifyIfCurrentUserIsAuthorizated(page,dataContent.getDataMap());
+                if (page == null) {
+                    throw new AccessDeniedException("You are not allowed to view this page");
+                }
+                pageService.processFields(page, dataContent.getDataMap());
+                metadataContent.setPage(page);
+            }
             content.setDataContent(dataContent);
         }
         return content;

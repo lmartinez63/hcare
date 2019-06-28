@@ -25,31 +25,6 @@ public class MedicalAppointment  extends AuditModel {
     )
     private Long id;
 
-    @Column(name="history_code")
-    private Long historyCode;
-
-    @Column(name="first_name")
-    private String firstName;
-
-    @Column(name="last_name")
-    private String lastName;
-
-    @Transient
-    @NotAudited
-    private String fullName;
-
-    @Column(name="document_type")
-    private Integer documentType;
-
-    @Column(name="document_number")
-    private String documentNumber;
-
-    @Column(name="email_address")
-    private String emailAddress;
-
-    @Column(name="cel_phone_number")
-    private String celPhoneNumber;
-
     @Column(name="date_appointment")
     private Date dateAppointment;
 
@@ -85,8 +60,8 @@ public class MedicalAppointment  extends AuditModel {
     @Column(name="medical_appointment_type")
     private Integer medicalAppointmentType;
 
-    @Transient
-    @NotAudited
+    //Map one to one association between Person and Address
+    @OneToOne(cascade = CascadeType.MERGE)
     private Patient patient;
 
     @Transient
@@ -107,54 +82,6 @@ public class MedicalAppointment  extends AuditModel {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public Integer getDocumentType() {
-        return documentType;
-    }
-
-    public void setDocumentType(Integer documentType) {
-        this.documentType = documentType;
-    }
-
-    public String getDocumentNumber() {
-        return documentNumber;
-    }
-
-    public void setDocumentNumber(String documentNumber) {
-        this.documentNumber = documentNumber;
-    }
-
-    public String getEmailAddress() {
-        return emailAddress;
-    }
-
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
-
-    public String getCelPhoneNumber() {
-        return celPhoneNumber;
-    }
-
-    public void setCelPhoneNumber(String celPhoneNumber) {
-        this.celPhoneNumber = celPhoneNumber;
     }
 
     public Date getDateAppointment() {
@@ -227,18 +154,6 @@ public class MedicalAppointment  extends AuditModel {
 
     public void setAttachmentList(List<Attachment> attachmentList) {
         this.attachmentList = attachmentList;
-    }
-
-    public Long getHistoryCode() {
-        return historyCode;
-    }
-
-    public void setHistoryCode(Long historyCode) {
-        this.historyCode = historyCode;
-    }
-
-    public String getFullName() {
-        return UtilityTools.isNull(this.firstName) + " " + UtilityTools.isNull(this.lastName);
     }
 
     public String getDateAppointmentDateFormatted() {

@@ -1,10 +1,13 @@
 package com.landl.hcare.entity;
 
 import com.landl.hcare.model.AuditModel;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 
 @Entity
+@Audited
 @Table(name="page_button")
 public class PageButton extends AuditModel {
     @Id
@@ -20,7 +23,7 @@ public class PageButton extends AuditModel {
     @Column(name="visible_rule_exp")
     private String visibleRuleExp;
 
-    @Column(name="eventDefinition")
+    @Column(name="eventDefinition",length = 4000, nullable = true)
     private String eventDefinition;
 
     @Column(name="button_code")
@@ -34,7 +37,9 @@ public class PageButton extends AuditModel {
 
     @Column(name="icon")
     private String icon;
+
     @Transient
+    @NotAudited
     private String labelValue;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -42,6 +47,7 @@ public class PageButton extends AuditModel {
     private Label label;
 
     @Transient
+    @NotAudited
     private Boolean visible;
 
     public Boolean getVisible() {

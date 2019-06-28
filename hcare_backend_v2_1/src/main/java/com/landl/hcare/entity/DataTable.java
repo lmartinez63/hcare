@@ -1,6 +1,8 @@
 package com.landl.hcare.entity;
 
 import com.landl.hcare.model.AuditModel;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Audited
 @Table(name="data_table")
 public class DataTable extends AuditModel {
     @Id
@@ -43,6 +46,7 @@ public class DataTable extends AuditModel {
     private List<PageButton> pageButtons;
 
     @Transient
+    @NotAudited
     private List<DataColumn> dataColumns = new ArrayList<>();
 
     @OneToMany(

@@ -17,9 +17,9 @@ public interface MedicalAppointmentService {
 
     public MedicalAppointment createMedicalAppointment() throws  Exception;
 
-    public List<MedicalAppointment> findByHistoryCode(Long historyCode) throws Exception;
+    //public List<MedicalAppointment> findByHistoryCode(Long historyCode) throws Exception;
 
-    public List<MedicalAppointment> findByDocumentNumber(String documentNumber) throws Exception;
+    //public List<MedicalAppointment> findByDocumentNumber(String documentNumber) throws Exception;
 
     public List<MedicalAppointment> findByToday() throws Exception;
 

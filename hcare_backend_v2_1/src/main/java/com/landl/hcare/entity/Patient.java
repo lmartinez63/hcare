@@ -3,6 +3,8 @@ package com.landl.hcare.entity;
 import com.google.gson.JsonArray;
 import com.landl.hcare.common.UtilityTools;
 import com.landl.hcare.model.AuditModel;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @Entity
+@Audited
 @Table(name="patient")
 public class Patient extends AuditModel {
     @Id
@@ -33,6 +36,7 @@ public class Patient extends AuditModel {
     private String lastName;
 
     @Transient
+    @NotAudited
     private String fullName;
 
     @Column(name="document_number",unique=true)
@@ -66,9 +70,11 @@ public class Patient extends AuditModel {
     private Integer gender;
 
     @Transient
+    @NotAudited
     private Directory directory;
 
     @Transient
+    @NotAudited
     private List<Map> files;
 
     public Patient() {

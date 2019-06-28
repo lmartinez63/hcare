@@ -1,10 +1,13 @@
 package com.landl.hcare.entity;
 
 import com.landl.hcare.model.AuditModel;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 
 @Entity
+@Audited
 @Table(name="role_page_section_field")
 public class RolePageSectionField  extends AuditModel {
 
@@ -12,15 +15,19 @@ public class RolePageSectionField  extends AuditModel {
     private RolePageSectionFieldId id;
 
     @Transient
+    @NotAudited
     private Role role;
 
     @Transient
+    @NotAudited
     private Page page;
 
     @Transient
+    @NotAudited
     private Section section;
 
     @Transient
+    @NotAudited
     private FieldDefinition fieldDefinition;
 
     public RolePageSectionField() {

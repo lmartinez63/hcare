@@ -59,25 +59,4 @@ public class PatientServiceImpl implements PatientService{
         }
         return patient;
     }
-
-    public Patient createPatient(MedicalAppointment medicalAppointment) throws Exception{
-        Patient patient = new Patient();
-        patient.setDocumentNumber(medicalAppointment.getDocumentNumber());
-        patient.setDocumentType(medicalAppointment.getDocumentType());
-        patient.setLastName(medicalAppointment.getLastName());
-        patient.setFirstName(medicalAppointment.getFirstName());
-        patient.setCelPhoneNumber(medicalAppointment.getCelPhoneNumber());
-        patient.setEmailAddress(medicalAppointment.getEmailAddress());
-        return patient;
-    }
-
-    public Patient updatePatient(Patient patient, MedicalAppointment medicalAppointment) throws Exception{
-        patient.setDocumentNumber(medicalAppointment.getDocumentNumber());
-        patient.setDocumentType(medicalAppointment.getDocumentType());
-        patient.setLastName(medicalAppointment.getLastName());
-        patient.setFirstName(medicalAppointment.getFirstName());
-        patient.setCelPhoneNumber(medicalAppointment.getCelPhoneNumber());
-        patient.setEmailAddress(medicalAppointment.getEmailAddress());
-        return patient;
-    }
 }

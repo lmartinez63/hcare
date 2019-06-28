@@ -19,9 +19,6 @@ public class RetrieveMedicalAppointmentInfo extends CustomProcess {
         if(s_medicalAppointmentId != null) {
             Long l_medicalAppointmentId = Long.parseLong(s_medicalAppointmentId);
             medicalAppointment = medicalAppointmentService.findById(l_medicalAppointmentId);
-            if (medicalAppointment.getDocumentType() != null) {
-                medicalAppointment.setPatient(patientService.findByDocumentNumber(medicalAppointment.getDocumentNumber()));
-            }
             Directory directory = directoryService.findByEntityNameAndParentDirectoryIdIsNull("medical_appointment");
             directoryService.retrieveAttachmentInformation(directory,String.valueOf(medicalAppointment.getId()));
             medicalAppointment.setFiles(directoryService.convertDirectoryToFrontEndFormat(directory));

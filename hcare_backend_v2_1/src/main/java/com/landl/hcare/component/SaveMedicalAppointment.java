@@ -25,6 +25,7 @@ public class SaveMedicalAppointment extends CustomProcess {
         }
 
         //Update patient fields
+        /*
         Patient patient = patientService.findByDocumentNumber(medicalAppointment.getDocumentNumber());
         //Create patient if doesn't exits
         if(patient == null){
@@ -34,7 +35,7 @@ public class SaveMedicalAppointment extends CustomProcess {
             patient = patientService.updatePatient(patient,medicalAppointment);
         }
         patient = patientService.save(patient);
-
+        */
         //Send Notifications
         if (medicalAppointment.getId() == null) {
             //If is a new medical appointment send a reminder email
@@ -44,16 +45,14 @@ public class SaveMedicalAppointment extends CustomProcess {
         }
 
         //Create history code if doesn't exits
-        if (medicalAppointment.getStatus().compareTo("10")==0 && medicalAppointment.getHistoryCode() == null){
+        if (medicalAppointment.getStatus().compareTo("10")==0 && medicalAppointment.getPatient().getHistoryCode() == null){
             //Create Medical History set incoming patient with historyCode
-            MedicalHistory medicalHistory = medicalHistoryService.createMedicalHistory(patient);
-            medicalAppointment.setHistoryCode(patient.getHistoryCode());
+            MedicalHistory medicalHistory = medicalHistoryService.createMedicalHistory(medicalAppointment.getPatient());
         }
 
 
         //Actualizando Cita
         MedicalAppointment medicalAppointmentSaved = medicalAppointmentService.save(medicalAppointment);
-        medicalAppointmentSaved.setPatient(patient);
         //Not neccesary
         //medicalAppointmentSaved.setAttachmentList(attachmentService.findByEntityAndEntityId("medicalAppointment", medicalAppointmentSaved.getId()));
 

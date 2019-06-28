@@ -117,7 +117,7 @@
                             <div class="descrip">Tiene una cita programada: </div>
                             <div class="descrip">Fecha: ${MedicalAppointment.dateAppointmentDateFormatted}</div>
                             <div class="descrip">Hora: ${MedicalAppointment.dateAppointmentTimeFormatted}</div>
-                            <div class="descrip">Paciente: ${MedicalAppointment.fullName}</div>
+                            <div class="descrip">Paciente: ${MedicalAppointment.patient.fullName}</div>
 
                             <div class="descrip">Cualquier duda no dude en contactarnos</div>
 						</td>

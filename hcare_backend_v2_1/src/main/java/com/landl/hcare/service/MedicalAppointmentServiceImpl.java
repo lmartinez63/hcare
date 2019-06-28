@@ -29,19 +29,21 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
     }
     public MedicalAppointment createMedicalAppointment() throws  Exception{
         MedicalAppointment medicalAppointment = new MedicalAppointment();
+        Patient patient = new Patient();
         //TODO it should come from database
         //DefaultValues
         medicalAppointment.setStatus("0");
         medicalAppointment.setDateAppointment(new Date());
-        medicalAppointment.setEmailAddress("novaclinicarequipa@gmail.com");
+        patient.setEmailAddress("novaclinicarequipa@gmail.com");
         //TODO we Should use ENUMS
-        medicalAppointment.setDocumentType(1);
+        patient.setDocumentType(1);
         medicalAppointment.setMedicalAppointmentType(1);
-        medicalAppointment.setPatient(new Patient());
+        medicalAppointment.setPatient(patient);
         medicalAppointment.setAttachmentList(new ArrayList<>());
         return medicalAppointment;
     }
 
+    /*
     public List<MedicalAppointment> findByHistoryCode(Long historyCode) throws Exception{
         return medicalAppointmentRepository.findByHistoryCode(historyCode);
     }
@@ -49,6 +51,7 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
     public List<MedicalAppointment> findByDocumentNumber(String documentNumber) throws Exception{
         return medicalAppointmentRepository.findByDocumentNumber(documentNumber);
     }
+    */
 
     public List<MedicalAppointment> findByToday(){
         Date today = new Date();

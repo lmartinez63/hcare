@@ -1,6 +1,8 @@
 package com.landl.hcare.entity;
 
 import com.landl.hcare.model.AuditModel;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Entity
+@Audited
 @Table(name="page")
 public class Page extends AuditModel {
     @Id
@@ -36,6 +39,7 @@ public class Page extends AuditModel {
     private String subTitleDefinition;
 
     @Transient
+    @NotAudited
     private Boolean visible;
 
     @OneToOne(cascade = CascadeType.MERGE)

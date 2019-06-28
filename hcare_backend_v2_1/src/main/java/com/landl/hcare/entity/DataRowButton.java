@@ -1,10 +1,13 @@
 package com.landl.hcare.entity;
 
 import com.landl.hcare.model.AuditModel;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 //TODO Change to extends to frontEndButton class on extends
 @Entity
+@Audited
 @Table(name="data_row_button")
 public class DataRowButton extends AuditModel {
     @Id
@@ -24,6 +27,7 @@ public class DataRowButton extends AuditModel {
     private String visibilityCondition;
 
     @Transient
+    @NotAudited
     private String labelValue;
 
     @Column(name="data_row_button_event")

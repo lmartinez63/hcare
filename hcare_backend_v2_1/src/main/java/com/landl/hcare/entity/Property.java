@@ -2,10 +2,13 @@ package com.landl.hcare.entity;
 
 import com.landl.hcare.common.UtilityTools;
 import com.landl.hcare.model.AuditModel;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 
 @Entity
+@Audited
 @Table(name="property")
 public class Property extends AuditModel {
     @Id
@@ -28,6 +31,7 @@ public class Property extends AuditModel {
     private String propertyValue;
 
     @Transient
+    @NotAudited
     private String labelValue;
 
     //Map one to one association between Person and Address

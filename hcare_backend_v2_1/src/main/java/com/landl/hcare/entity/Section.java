@@ -1,12 +1,15 @@
 package com.landl.hcare.entity;
 
 import com.landl.hcare.model.AuditModel;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Map;
 
 @Entity
+@Audited
 @Table(name="section")
 public class Section extends AuditModel {
     @Id
@@ -35,6 +38,7 @@ public class Section extends AuditModel {
     private Integer visualizationOrder;
 
     @Transient
+    @NotAudited
     private Boolean visible;
 
     @OneToOne(cascade = CascadeType.MERGE)
@@ -42,12 +46,15 @@ public class Section extends AuditModel {
     private Label label;
 
     @Transient
+    @NotAudited
     private String labelValue;
 
     @Transient
+    @NotAudited
     private List<FieldDefinition> fieldDefinitionList;
 
     @Transient
+    @NotAudited
     private Map<String,FieldDefinition> fieldDefinitionMap;
 
     public Long getId() {

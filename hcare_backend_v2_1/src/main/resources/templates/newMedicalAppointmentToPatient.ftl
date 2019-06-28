@@ -114,7 +114,7 @@
 				<table style="background:#fff;border: 1px solid #41afb0;width: 100%;height: 100%; position:relative;">
 					<tr>
 						<td>
-                            <div class="subTitle">Estimado(a) Sr(a) ${MedicalAppointment.fullName}</div>
+                            <div class="subTitle">Estimado(a) Sr(a) ${MedicalAppointment.patient.fullName}</div>
 							<div class="descrip">Su cita ha sido programada exitosamente: </div>
                             <div class="descrip">Fecha: ${MedicalAppointment.dateAppointmentDateFormatted}</div>
                             <div class="descrip">Hora: ${MedicalAppointment.dateAppointmentTimeFormatted}</div>

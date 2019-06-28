@@ -3,12 +3,15 @@ package com.landl.hcare.entity;
 import com.landl.hcare.common.UtilityTools;
 import com.landl.hcare.model.AuditModel;
 import com.landl.hcare.rule.RuleManager;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Map;
 
 @Entity
+@Audited
 @Table(name="field_definition")
 public class FieldDefinition extends AuditModel {
     @Id
@@ -30,6 +33,7 @@ public class FieldDefinition extends AuditModel {
     private Label label;
 
     @Transient
+    @NotAudited
     private String labelValue;
 
     //$date{{medicalAppointment.dateEntered}}
@@ -37,6 +41,7 @@ public class FieldDefinition extends AuditModel {
     private String definition;
 
     @Transient
+    @NotAudited
     private Object objectValue;
 
     @Column(name="field_type")
@@ -64,15 +69,19 @@ public class FieldDefinition extends AuditModel {
     private Integer orderNumber;
 
     @Transient
+    @NotAudited
     private Boolean visible;
 
     @Transient
+    @NotAudited
     private Boolean editable;
 
     @Transient
+    @NotAudited
     private Boolean modal;
 
     @Transient
+    @NotAudited
     private List<Validation> validationList;
 
 

@@ -2,6 +2,8 @@ package com.landl.hcare.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.landl.hcare.common.UtilityTools;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Entity
+@Audited
 public class UserProfile {
 
     @Id
@@ -42,6 +45,7 @@ public class UserProfile {
     private String lastName;
 
     @Transient
+    @NotAudited
     private String fullName;
 
     @Column(name="phone_number")

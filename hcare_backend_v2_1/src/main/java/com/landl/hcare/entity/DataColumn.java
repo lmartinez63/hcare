@@ -2,10 +2,12 @@ package com.landl.hcare.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.landl.hcare.model.AuditModel;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 
 @Entity
+@Audited
 @Table(name="data_column")
 public class DataColumn extends AuditModel {
     @Id

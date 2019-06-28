@@ -1,9 +1,13 @@
 package com.landl.hcare.entity;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Audited
 @Table(name="directory")
 public class Directory {
     @Id
@@ -40,6 +44,7 @@ public class Directory {
     private Label label;
 
     @Transient
+    @NotAudited
     List<Attachment> attachmentList;
 
     public Long getId() {

@@ -1,8 +1,11 @@
 package com.landl.hcare.entity;
 
+import org.hibernate.envers.Audited;
+
 import javax.persistence.*;
 
 @Entity
+@Audited
 public class Role {
 
     @Id
