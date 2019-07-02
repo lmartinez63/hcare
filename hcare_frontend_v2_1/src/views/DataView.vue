@@ -37,14 +37,15 @@
                   <v-container py-6>
                     <v-layout
                       v-if="section.sectionType === 1 "
-                      wrap
+                      wrap row
                     >
                       <v-flex
-                        v-for="fieldDefinition in section.fieldDefinitionList"
+                        v-for="fieldDefinition in orderedFields(section.fieldDefinitionList)"
                         v-if="fieldDefinition.visible"
                         :key="fieldDefinition.fieldDefinitionCode"
-                        xs6
-                        :class="'order-md'+fieldDefinition.orderNumber"
+                        :xs12="fieldDefinition.fieldType === 8 ? true : false"
+                        :xs6="fieldDefinition.fieldType !== 8 ? true : false"
+                        :class="'order-xs'+orderCalculated(fieldDefinition.orderNumber,section.fieldDefinitionList.length)"
                       >
                         <v-text-field
                           v-if="fieldDefinition.fieldType === 1"
@@ -64,6 +65,8 @@
                           :return-object="getReturnObject(fieldDefinition.selectSource)"
                           :item-text="getItemText(fieldDefinition.selectSource)"
                           :item-value="getItemValue(fieldDefinition.selectSource)"
+                          :multiple="getMultiple(fieldDefinition.selectSource)"
+                          :chips="getMultiple(fieldDefinition.selectSource)"
                         >
                           {{ fieldDefinition.outterButton }}
                           <template
@@ -143,6 +146,15 @@
                             </v-icon>
                           </template>
                         </v-datetime-picker>
+                        <v-textarea
+                          v-if="fieldDefinition.fieldType === 8"
+                          v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
+                          box
+                          full-width="true"
+                          :label="fieldDefinition.label.labelValueEsEs"
+                          auto-grow
+                          :maxlength="getMaxFieldSize(fieldDefinition.fieldSize)"
+                        ></v-textarea>
                       </v-flex>
                     </v-layout>
                     <v-layout
@@ -430,6 +442,15 @@ export default {
     console.log('DataPage - mounted - end')
   },
   methods: {
+    getMaxFieldSize(fieldSize){
+      return !fieldSize || fieldSize === null ? 255 : fieldSize
+    },
+    orderedFields: function (fieldList) {
+      return _.orderBy(fieldList, 'orderNumber')
+    },
+    orderCalculated: function (orderNumber,size) {
+      return Math.round(orderNumber/Math.round(size/12))
+    },
     getReturnObject (selectSource) {
       if (selectSource && selectSource != null) {
         var selectSourceJSON = JSON.parse(selectSource)
@@ -458,6 +479,16 @@ export default {
         return 'value'
       }
       return 'value'
+    },
+    getMultiple (selectSource) {
+      if (selectSource && selectSource != null) {
+        var selectSourceJSON = JSON.parse(selectSource)
+        if (selectSourceJSON.multiple && selectSourceJSON.multiple === true) {
+          return selectSourceJSON.multiple
+        }
+        return false
+      }
+      return false
     },
     arrayItems (selectSource) {
       if (selectSource && selectSource != null) {
@@ -588,11 +619,11 @@ export default {
           eval(button.eventDefinition)
           break
         case 3:
-            // TOREMOVE
+          // TOREMOVE
           var be = JSON.parse(button.eventDefinition)
           for (var i = 0, len = be.uObjects.length; i < len; i++) {
             var uObject = be.uObjects[i]
-            Object.assign(this.dataMap[uObject.sourceObject],uObject.updatedObject)
+            Object.assign(this.dataMap[uObject.sourceObject], uObject.updatedObject)
           }
           eval(be.action)
       }
@@ -644,6 +675,10 @@ export default {
         dispatch('alert/warning', 'Por favor complete los campos requeridos')
       } else {
       */
+      //TODO change to use json properties
+      //if(dataContent.medicalAppointment && dataContent.medicalAppointment.allergies){
+      //  dataContent.medicalAppointment.allergies = dataContent.medicalAppointment.allergies.toString()
+      //}
       dispatch('data/saveEntity', {
         vm: this,
         requestPage: requestPage,

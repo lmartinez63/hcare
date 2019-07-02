@@ -117,6 +117,16 @@ export default {
         text: 'Administracion de Paginas'
       },
       {
+        to: '/browse/allLabels',
+        icon: 'mdi-clipboard-outline',
+        text: 'Administracion de Etiquetas'
+      },
+      {
+        to: '/browse/allDataTables',
+        icon: 'mdi-clipboard-outline',
+        text: 'Administracion de Tablas de Datos'
+      },
+      {
         to: '/browse/allRolePageSectionFieldPage',
         icon: 'mdi-clipboard-outline',
         text: 'Administracion de Roles'
