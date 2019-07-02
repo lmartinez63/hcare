@@ -37,6 +37,9 @@ public class DataColumn extends AuditModel {
 
     @Column(name="order_number")
     private Integer orderNumber;
+
+    @Column(name="data_table_id")
+    private Long dataTableId;
 /*
     Remove auto foring key
     @ManyToOne(fetch = FetchType.LAZY)
@@ -107,5 +110,13 @@ public class DataColumn extends AuditModel {
 
     public void setOrderNumber(Integer orderNumber) {
         this.orderNumber = orderNumber;
+    }
+
+    public Long getDataTableId() {
+        return dataTableId;
+    }
+
+    public void setDataTableId(Long dataTableId) {
+        this.dataTableId = dataTableId;
     }
 }

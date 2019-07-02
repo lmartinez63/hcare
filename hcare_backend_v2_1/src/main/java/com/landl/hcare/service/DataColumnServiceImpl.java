@@ -24,6 +24,12 @@ public class DataColumnServiceImpl implements DataColumnService {
         return dataColumnRepository.findAll();
     }
 
+    public DataColumn createDataColumnFromDataTable(Long dataTableId){
+        DataColumn dataColumn = new DataColumn();
+        dataColumn.setDataTableId(dataTableId);
+        return dataColumn;
+    }
+
     public DataColumn findById(Long dataColumnId){
         return dataColumnRepository.findById(dataColumnId).get();
     }

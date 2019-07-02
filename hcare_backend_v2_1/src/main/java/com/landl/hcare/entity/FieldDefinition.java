@@ -68,6 +68,9 @@ public class FieldDefinition extends AuditModel {
     @Column(name="order_number")
     private Integer orderNumber;
 
+    @Column(name="field_size")
+    private Integer fieldSize;
+
     @Transient
     @NotAudited
     private Boolean visible;
@@ -228,5 +231,13 @@ public class FieldDefinition extends AuditModel {
 
     public void setOrderNumber(Integer orderNumber) {
         this.orderNumber = orderNumber;
+    }
+
+    public Integer getFieldSize() {
+        return fieldSize;
+    }
+
+    public void setFieldSize(Integer fieldSize) {
+        this.fieldSize = fieldSize;
     }
 }

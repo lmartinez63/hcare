@@ -38,6 +38,12 @@ public class PageButton extends AuditModel {
     @Column(name="icon")
     private String icon;
 
+    @Column(name="page_id")
+    private Long pageId;
+
+    @Column(name="browse_id")
+    private Long browseId;
+
     @Transient
     @NotAudited
     private String labelValue;
@@ -128,5 +134,21 @@ public class PageButton extends AuditModel {
 
     public void setDisplayOrder(Integer displayOrder) {
         this.displayOrder = displayOrder;
+    }
+
+    public Long getPageId() {
+        return pageId;
+    }
+
+    public void setPageId(Long pageId) {
+        this.pageId = pageId;
+    }
+
+    public Long getBrowseId() {
+        return browseId;
+    }
+
+    public void setBrowseId(Long browseId) {
+        this.browseId = browseId;
     }
 }

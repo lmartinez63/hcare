@@ -3,6 +3,8 @@ package com.landl.hcare.entity;
 import com.google.gson.JsonArray;
 import com.landl.hcare.common.UtilityTools;
 import com.landl.hcare.model.AuditModel;
+import jdk.nashorn.internal.objects.annotations.Getter;
+import jdk.nashorn.internal.objects.annotations.Setter;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
@@ -47,6 +49,39 @@ public class Patient extends AuditModel {
 
     @Column(name="birthday")
     private Date birthday;
+
+    @Column(name="birthplace_province")
+    private Integer birthplaceProvince;
+
+    @Column(name="birthplace_department")
+    private Integer birthplaceDepartment;
+
+    @Column(name="birthplace_country")
+    private Integer birthplaceCountry;
+
+    @Column(name="insurance_type")
+    private Integer insuranceType;
+
+    @Column(name="insurance_number")
+    private String insuranceNumber;
+
+    @Column(name="breed")
+    private Integer breed;
+
+    @Column(name="occupation")
+    private String occupation;
+
+    @Column(name="degree_instruction")
+    private Integer degreeInstruction;
+
+    @Column(name="person_in_charge")
+    private String personInCharge;
+
+    @Column(name="phonenumber_person_in_charge")
+    private String phonenumberPersonInCharge;
+
+    @Column(name="religion")
+    private String religion;
 
     @Column(name="email_address")
     private String emailAddress;
@@ -210,5 +245,93 @@ public class Patient extends AuditModel {
 
     public void setFiles(List<Map> files) {
         this.files = files;
+    }
+
+    public Integer getBirthplaceProvince() {
+        return birthplaceProvince;
+    }
+
+    public void setBirthplaceProvince(Integer birthplaceProvince) {
+        this.birthplaceProvince = birthplaceProvince;
+    }
+
+    public Integer getBirthplaceDepartment() {
+        return birthplaceDepartment;
+    }
+
+    public void setBirthplaceDepartment(Integer birthplaceDepartment) {
+        this.birthplaceDepartment = birthplaceDepartment;
+    }
+
+    public Integer getBirthplaceCountry() {
+        return birthplaceCountry;
+    }
+
+    public void setBirthplaceCountry(Integer birthplaceCountry) {
+        this.birthplaceCountry = birthplaceCountry;
+    }
+
+    public Integer getInsuranceType() {
+        return insuranceType;
+    }
+
+    public void setInsuranceType(Integer insuranceType) {
+        this.insuranceType = insuranceType;
+    }
+
+    public String getInsuranceNumber() {
+        return insuranceNumber;
+    }
+
+    public void setInsuranceNumber(String insuranceNumber) {
+        this.insuranceNumber = insuranceNumber;
+    }
+
+    public Integer getBreed() {
+        return breed;
+    }
+
+    public void setBreed(Integer breed) {
+        this.breed = breed;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public Integer getDegreeInstruction() {
+        return degreeInstruction;
+    }
+
+    public void setDegreeInstruction(Integer degreeInstruction) {
+        this.degreeInstruction = degreeInstruction;
+    }
+
+    public String getPersonInCharge() {
+        return personInCharge;
+    }
+
+    public void setPersonInCharge(String personInCharge) {
+        this.personInCharge = personInCharge;
+    }
+
+    public String getPhonenumberPersonInCharge() {
+        return phonenumberPersonInCharge;
+    }
+
+    public void setPhonenumberPersonInCharge(String phonenumberPersonInCharge) {
+        this.phonenumberPersonInCharge = phonenumberPersonInCharge;
+    }
+
+    public String getReligion() {
+        return religion;
+    }
+
+    public void setReligion(String religion) {
+        this.religion = religion;
     }
 }

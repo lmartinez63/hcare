@@ -39,6 +39,11 @@ public class DataTableServiceImpl implements DataTableService {
         return dataTableRepository.findByDataTableCode(dataTableCode).get(0);
     }
 
+    public DataTable createDataTable(){
+        DataTable dataTable = new DataTable();
+        return dataTable;
+    }
+
     public DataTable findByDataTableCodeAndUsername(String dataTableCode, String username){
         DataTable dataTable = dataTableRepository.findByDataTableCode(dataTableCode).get(0);
         if ( dataTable != null){

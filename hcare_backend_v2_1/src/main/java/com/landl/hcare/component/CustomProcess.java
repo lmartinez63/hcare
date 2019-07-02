@@ -32,6 +32,15 @@ public abstract class  CustomProcess {
     PageService pageService;
 
     @Autowired
+    DataTableService dataTableService;
+
+    @Autowired
+    DataColumnService dataColumnService;
+
+    @Autowired
+    PageButtonService pageButtonService;
+
+    @Autowired
     PropertyService propertyService;
 
     @Autowired

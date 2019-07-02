@@ -6,6 +6,8 @@ import com.landl.hcare.entity.MedicalHistory;
 import com.landl.hcare.entity.Patient;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 
 @Component("saveMedicalAppointment")
@@ -23,7 +25,7 @@ public class SaveMedicalAppointment extends CustomProcess {
         } else {
             medicalAppointment = medicalAppointmentRequest;
         }
-
+        medicalAppointment.setAllergies(Arrays.toString(medicalAppointment.getAllergiesArray()));
         //Update patient fields
         /*
         Patient patient = patientService.findByDocumentNumber(medicalAppointment.getDocumentNumber());
@@ -47,6 +49,7 @@ public class SaveMedicalAppointment extends CustomProcess {
         //Create history code if doesn't exits
         if (medicalAppointment.getStatus().compareTo("10")==0 && medicalAppointment.getPatient().getHistoryCode() == null){
             //Create Medical History set incoming patient with historyCode
+            medicalAppointment.setDateAppointment(new Date());
             MedicalHistory medicalHistory = medicalHistoryService.createMedicalHistory(medicalAppointment.getPatient());
         }
 

@@ -1,5 +1,6 @@
 package com.landl.hcare.component;
 
+import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -58,6 +59,12 @@ public class CustomProcessSelector {
     RetrievePageInfo retrievePageInfo;
 
     @Autowired
+    RetrieveDataTableInfo retrieveDataTableInfo;
+
+    @Autowired
+    RetrieveDataColumnInfo retrieveDataColumnInfo;
+
+    @Autowired
     RetrieveSectionInfo retrieveSectionInfo;
 
     @Autowired
@@ -85,7 +92,19 @@ public class CustomProcessSelector {
     SaveProperty saveProperty;
 
     @Autowired
+    SaveDataTable saveDataTable;
+
+    @Autowired
+    SaveDataColumn saveDataColumn;
+
+    @Autowired
     RetrieveAllFieldDefinitions retrieveAllFieldDefinitions;
+
+    @Autowired
+    RetrievePageButtonInfo retrievePageButtonInfo;
+
+    @Autowired
+    SavePageButton savePageButton;
 
     public CustomProcess getCustomProcessClass(String customProcessName) throws Exception{
         CustomProcess customProcess = null;
@@ -171,6 +190,25 @@ public class CustomProcessSelector {
             case "DeleteRolePageSectionField":
                 customProcess = deleteRolePageSectionField;
                 break;
+            case "RetrieveDataTableInfo":
+                customProcess = retrieveDataTableInfo;
+                break;
+            case "RetrieveDataColumnInfo":
+                customProcess = retrieveDataColumnInfo;
+                break;
+            case "SaveDataTable":
+                customProcess = saveDataTable;
+                break;
+            case "SaveDataColumn":
+                customProcess = saveDataColumn;
+                break;
+            case "RetrievePageButtonInfo":
+                customProcess = retrievePageButtonInfo;
+                break;
+            case "SavePageButton":
+                customProcess = savePageButton;
+                break;
+
             default:
                     throw new Exception("Process "+customProcessName+" has not been found");
         }
