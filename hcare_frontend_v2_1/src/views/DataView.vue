@@ -26,32 +26,37 @@
               <v-tab
                 v-for="section in orderedSections"
                 :key="section.sectionCode"
+                v-if="getFieldCount(section.fieldDefinitionList) > 0"
               >
                 {{ $parent.$parent.$parent.getLabelValue(section.label) }}
               </v-tab>
               <v-tab-item
                 v-for="section in orderedSections"
                 :key="section.sectionCode"
+                v-if="getFieldCount(section.fieldDefinitionList) > 0"
               >
                 <v-form>
                   <v-container py-6>
                     <v-layout
-                      v-if="section.sectionType === 1 "
-                      wrap row
+                      v-if="section.sectionType === 1"
+                      wrap
+                      row
                     >
                       <v-flex
                         v-for="fieldDefinition in orderedFields(section.fieldDefinitionList)"
                         v-if="fieldDefinition.visible"
                         :key="fieldDefinition.fieldDefinitionCode"
                         :xs12="fieldDefinition.fieldType === 8 ? true : false"
-                        :xs6="fieldDefinition.fieldType !== 8 ? true : false"
-                        :class="'order-xs'+orderCalculated(fieldDefinition.orderNumber,section.fieldDefinitionList.length)"
+                        :class="['order-xs'+orderCalculated(fieldDefinition.orderNumber,section.fieldDefinitionList.length), fieldDefinition.xsSize ? 'xs' +fieldDefinition.xsSize : 'xs6']"
                       >
                         <v-text-field
                           v-if="fieldDefinition.fieldType === 1"
                           v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
                           :label="fieldDefinition.label.labelValueEsEs"
                           :disabled="!fieldDefinition.editable"
+                          :suffix="fieldDefinition.suffix"
+                          :prefix="fieldDefinition.prefix"
+                          :mask="fieldDefinition.mask"
                           @change="executeFieldChangeEvent(fieldDefinition.onChangeEvent)"
                         />
                         <v-autocomplete
@@ -154,7 +159,7 @@
                           :label="fieldDefinition.label.labelValueEsEs"
                           auto-grow
                           :maxlength="getMaxFieldSize(fieldDefinition.fieldSize)"
-                        ></v-textarea>
+                        />
                       </v-flex>
                     </v-layout>
                     <v-layout
@@ -442,14 +447,21 @@ export default {
     console.log('DataPage - mounted - end')
   },
   methods: {
-    getMaxFieldSize(fieldSize){
+    getMaxFieldSize (fieldSize) {
       return !fieldSize || fieldSize === null ? 255 : fieldSize
+    },
+    getFieldCount: function (fieldList) {
+      var count = 0;
+      fieldList.forEach(function(field){
+        count += field.visible ? 1 : 0;
+      });
+      return count;
     },
     orderedFields: function (fieldList) {
       return _.orderBy(fieldList, 'orderNumber')
     },
-    orderCalculated: function (orderNumber,size) {
-      return Math.round(orderNumber/Math.round(size/12))
+    orderCalculated: function (orderNumber, size) {
+      return Math.round(orderNumber / Math.ceil(size / 12))
     },
     getReturnObject (selectSource) {
       if (selectSource && selectSource != null) {
@@ -529,8 +541,8 @@ export default {
         return variable
       }
       var returnString = variable
-      for (var i = 0, len = variableArray.length; i < len; i++) {
-        var dataVariable = variableArray[i]
+      for (var i1 = 0, len1 = variableArray.length; i1 < len1; i1++) {
+        var dataVariable = variableArray[i1]
         returnString = returnString.replace(dataVariable, eval(dataVariable.match(/\$\{\{([^)]+)\}\}/)[1]))
       }
       return returnString
@@ -606,8 +618,8 @@ export default {
           var jsonString = button.eventDefinition
           var eventArray = button.eventDefinition.match(/\${{(.*?)}}/g)
           if (eventArray != null) {
-            for (var i = 0, len = eventArray.length; i < len; i++) {
-              var dataRouteVariable = eventArray[i]
+            for (var i2 = 0, len2 = eventArray.length; i2 < len2; i2++) {
+              var dataRouteVariable = eventArray[i2]
               jsonString = jsonString.replace(dataRouteVariable, eval(dataRouteVariable.match(/\$\{\{([^)]+)\}\}/)[1]))
             }
           }
@@ -621,8 +633,8 @@ export default {
         case 3:
           // TOREMOVE
           var be = JSON.parse(button.eventDefinition)
-          for (var i = 0, len = be.uObjects.length; i < len; i++) {
-            var uObject = be.uObjects[i]
+          for (var i3 = 0, len3 = be.uObjects.length; i3 < len3; i3++) {
+            var uObject = be.uObjects[i3]
             Object.assign(this.dataMap[uObject.sourceObject], uObject.updatedObject)
           }
           eval(be.action)
@@ -675,10 +687,10 @@ export default {
         dispatch('alert/warning', 'Por favor complete los campos requeridos')
       } else {
       */
-      //TODO change to use json properties
-      //if(dataContent.medicalAppointment && dataContent.medicalAppointment.allergies){
+      // TODO change to use json properties
+      // if(dataContent.medicalAppointment && dataContent.medicalAppointment.allergies){
       //  dataContent.medicalAppointment.allergies = dataContent.medicalAppointment.allergies.toString()
-      //}
+      // }
       dispatch('data/saveEntity', {
         vm: this,
         requestPage: requestPage,
