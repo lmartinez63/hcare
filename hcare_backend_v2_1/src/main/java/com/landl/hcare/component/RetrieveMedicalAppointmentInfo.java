@@ -21,7 +21,9 @@ public class RetrieveMedicalAppointmentInfo extends CustomProcess {
         if(s_medicalAppointmentId != null) {
             Long l_medicalAppointmentId = Long.parseLong(s_medicalAppointmentId);
             medicalAppointment = medicalAppointmentService.findById(l_medicalAppointmentId);
-            medicalAppointment.setAllergiesArray(ArrayUtils.toObject(Arrays.stream(medicalAppointment.getAllergies().substring(1, medicalAppointment.getAllergies().length()-1).split(",")).map(String::trim).mapToInt(Integer::parseInt).toArray()));
+            if (medicalAppointment.getAllergies().compareTo("null") != 0){
+                medicalAppointment.setAllergiesArray(ArrayUtils.toObject(Arrays.stream(medicalAppointment.getAllergies().substring(1, medicalAppointment.getAllergies().length()-1).split(",")).map(String::trim).mapToInt(Integer::parseInt).toArray()));
+            }
             Directory directory = directoryService.findByEntityNameAndParentDirectoryIdIsNull("medical_appointment");
             directoryService.retrieveAttachmentInformation(directory,String.valueOf(medicalAppointment.getId()));
             medicalAppointment.setFiles(directoryService.convertDirectoryToFrontEndFormat(directory));

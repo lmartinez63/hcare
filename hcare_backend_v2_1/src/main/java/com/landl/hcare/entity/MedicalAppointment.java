@@ -6,7 +6,6 @@ import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -168,7 +167,7 @@ public class MedicalAppointment  extends AuditModel {
     private String presumptiveCoherent;
 
     @Column(name="definitive_coherent", nullable = true)
-    private Integer definitiveCoherent;
+    private String definitiveCoherent;
 
     @Column(name="preferential_diagnostic", nullable = true)
     private Integer preferentialDiagnostic;
@@ -457,11 +456,11 @@ public class MedicalAppointment  extends AuditModel {
         this.presumptiveCoherent = presumptiveCoherent;
     }
 
-    public Integer getDefinitiveCoherent() {
+    public String getDefinitiveCoherent() {
         return definitiveCoherent;
     }
 
-    public void setDefinitiveCoherent(Integer definitiveCoherent) {
+    public void setDefinitiveCoherent(String definitiveCoherent) {
         this.definitiveCoherent = definitiveCoherent;
     }
 

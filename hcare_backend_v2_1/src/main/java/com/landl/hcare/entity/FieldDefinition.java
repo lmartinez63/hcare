@@ -65,6 +65,18 @@ public class FieldDefinition extends AuditModel {
     @Column(name="outter_button")
     private String outterButton;
 
+    @Column(name="mask")
+    private String mask;
+
+    @Column(name="preffix")
+    private String preffix;
+
+    @Column(name="suffix")
+    private String suffix;
+
+    @Column(name="xs_size")
+    private Integer xsSize;
+
     @Column(name="order_number")
     private Integer orderNumber;
 
@@ -239,5 +251,37 @@ public class FieldDefinition extends AuditModel {
 
     public void setFieldSize(Integer fieldSize) {
         this.fieldSize = fieldSize;
+    }
+
+    public String getMask() {
+        return mask;
+    }
+
+    public void setMask(String mask) {
+        this.mask = mask;
+    }
+
+    public String getPreffix() {
+        return preffix;
+    }
+
+    public void setPreffix(String preffix) {
+        this.preffix = preffix;
+    }
+
+    public String getSuffix() {
+        return suffix;
+    }
+
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
+    }
+
+    public Integer getXsSize() {
+        return xsSize;
+    }
+
+    public void setXsSize(Integer xsSize) {
+        this.xsSize = xsSize;
     }
 }
