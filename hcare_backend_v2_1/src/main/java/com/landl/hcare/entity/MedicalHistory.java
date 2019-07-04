@@ -39,56 +39,74 @@ public class MedicalHistory extends AuditModel {
     private Boolean historyActivity;
 
     //record
-    @Column(name="previous_surgeries")
-    private String previousSurgeries;
-
-    @Column(name="previous_diseases")
+    @Column(name="previous_diseases", nullable = true)
     private String previousDiseases;
 
-    @Column(name="hospitalizations")
-    private String hospitalizations;
-
-    @Column(name="medication_allergies")
-    private String medicationAllergies;
-
-    @Column(name="smoke")
+    @Column(name="smoke", nullable = true)
     private Boolean smoke;
 
-    @Column(name="packages_cigarettes_pday")
+    @Column(name="packages_cigarettes_pday", nullable = true)
     private Integer packagesCigarettesPday;
 
-    @Column(name="drink")
+    @Column(name="drink", nullable = true)
     private Boolean drink;
 
-    @Column(name="how_often_drink")
+    @Column(name="how_often_drink", nullable = true)
     private String howOftenDrink;
 
-    @Column(name="preferential_diet")
-    private String preferentialDiet;
-
-    @Column(name="hep_b_result")
+    @Column(name="hep_b_result", nullable = true)
     private Boolean hepBResult;
 
-    @Column(name="hep_b_year")
+    @Column(name="hep_b_year", nullable = true)
     private String hepBYear;
 
-    @Column(name="hep_c_result")
+    @Column(name="hep_c_result", nullable = true)
     private Boolean hepCResult;
 
-    @Column(name="hep_c_year")
+    @Column(name="hep_c_year", nullable = true)
     private String hepCYear;
 
-    @Column(name="vih_result")
+    @Column(name="vih_result", nullable = true)
     private Boolean vihResult;
 
-    @Column(name="vih_year")
+    @Column(name="vih_year", nullable = true)
     private String vihYear;
 
-    @Column(name="use_any_subtance")
-    private String useAnySubtance;
+    @Column(name="physiological", nullable = true)
+    private String physiological;
 
-    @Column(name="use_any_subtance_freq")
-    private String useAnySubtanceFreq;
+    @Column(name="psychomotor_development", nullable = true)
+    private String psychomotorDevelopment;
+
+    @Column(name="diseases_of_childhood", nullable = true)
+    private String diseasesOfChildhood;
+
+    @Column(name="taking_medication", nullable = true)
+    private String takingMedication;
+
+    @Column(name="usual_medication", nullable = true, length = 4000)
+    private String usualMedication;
+
+    @Column(name="other_harmful_habits", nullable = true)
+    private String otherHarmfulHabits;
+
+    @Column(name="chronic_diseases", nullable = true)
+    private Integer chronicDiseases;
+
+    @Column(name="other_chronic_diseases", nullable = true)
+    private String otherChronicDiseases;
+
+    @Column(name="surgical_interventions", nullable = true, length = 4000)
+    private String surgicalInterventions;
+
+    @Column(name="hospitalizations", nullable = true, length = 4000)
+    private String hospitalizations;
+
+    @Column(name="accidents", nullable = true)
+    private String accidents;
+
+    @Column(name="blood_transfusions", nullable = true)
+    private String bloodTransfusions;
 
     @Transient
     private Patient patient;
@@ -180,30 +198,6 @@ public class MedicalHistory extends AuditModel {
         this.vihYear = vihYear;
     }
 
-    public String getUseAnySubtance() {
-        return useAnySubtance;
-    }
-
-    public void setUseAnySubtance(String useAnySubtance) {
-        this.useAnySubtance = useAnySubtance;
-    }
-
-    public String getUseAnySubtanceFreq() {
-        return useAnySubtanceFreq;
-    }
-
-    public void setUseAnySubtanceFreq(String useAnySubtanceFreq) {
-        this.useAnySubtanceFreq = useAnySubtanceFreq;
-    }
-
-    public String getPreviousSurgeries() {
-        return previousSurgeries;
-    }
-
-    public void setPreviousSurgeries(String previousSurgeries) {
-        this.previousSurgeries = previousSurgeries;
-    }
-
     public String getPreviousDiseases() {
         return previousDiseases;
     }
@@ -218,14 +212,6 @@ public class MedicalHistory extends AuditModel {
 
     public void setHospitalizations(String hospitalizations) {
         this.hospitalizations = hospitalizations;
-    }
-
-    public String getMedicationAllergies() {
-        return medicationAllergies;
-    }
-
-    public void setMedicationAllergies(String medicationAllergies) {
-        this.medicationAllergies = medicationAllergies;
     }
 
     public Patient getPatient() {
@@ -258,14 +244,6 @@ public class MedicalHistory extends AuditModel {
 
     public void setHowOftenDrink(String howOftenDrink) {
         this.howOftenDrink = howOftenDrink;
-    }
-
-    public String getPreferentialDiet() {
-        return preferentialDiet;
-    }
-
-    public void setPreferentialDiet(String preferentialDiet) {
-        this.preferentialDiet = preferentialDiet;
     }
 
     public Long getHistoryCode() {
@@ -314,5 +292,93 @@ public class MedicalHistory extends AuditModel {
 
     public void setFiles(List<Map> files) {
         this.files = files;
+    }
+
+    public String getPhysiological() {
+        return physiological;
+    }
+
+    public void setPhysiological(String physiological) {
+        this.physiological = physiological;
+    }
+
+    public String getPsychomotorDevelopment() {
+        return psychomotorDevelopment;
+    }
+
+    public void setPsychomotorDevelopment(String psychomotorDevelopment) {
+        this.psychomotorDevelopment = psychomotorDevelopment;
+    }
+
+    public String getDiseasesOfChildhood() {
+        return diseasesOfChildhood;
+    }
+
+    public void setDiseasesOfChildhood(String diseasesOfChildhood) {
+        this.diseasesOfChildhood = diseasesOfChildhood;
+    }
+
+    public String getTakingMedication() {
+        return takingMedication;
+    }
+
+    public void setTakingMedication(String takingMedication) {
+        this.takingMedication = takingMedication;
+    }
+
+    public String getUsualMedication() {
+        return usualMedication;
+    }
+
+    public void setUsualMedication(String usualMedication) {
+        this.usualMedication = usualMedication;
+    }
+
+    public String getOtherHarmfulHabits() {
+        return otherHarmfulHabits;
+    }
+
+    public void setOtherHarmfulHabits(String otherHarmfulHabits) {
+        this.otherHarmfulHabits = otherHarmfulHabits;
+    }
+
+    public Integer getChronicDiseases() {
+        return chronicDiseases;
+    }
+
+    public void setChronicDiseases(Integer chronicDiseases) {
+        this.chronicDiseases = chronicDiseases;
+    }
+
+    public String getOtherChronicDiseases() {
+        return otherChronicDiseases;
+    }
+
+    public void setOtherChronicDiseases(String otherChronicDiseases) {
+        this.otherChronicDiseases = otherChronicDiseases;
+    }
+
+    public String getSurgicalInterventions() {
+        return surgicalInterventions;
+    }
+
+    public void setSurgicalInterventions(String surgicalInterventions) {
+        this.surgicalInterventions = surgicalInterventions;
+    }
+
+    public String getAccidents() {
+        return accidents;
+    }
+
+    public void setAccidents(String accidents) {
+        this.accidents = accidents;
+    }
+
+    public String getBloodTransfusions() {
+        return bloodTransfusions;
+    }
+
+    public void setBloodTransfusions(String bloodTransfusions) {
+        this.bloodTransfusions = bloodTransfusions;
     }
 }

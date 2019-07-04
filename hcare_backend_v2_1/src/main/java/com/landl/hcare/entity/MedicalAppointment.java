@@ -159,11 +159,11 @@ public class MedicalAppointment  extends AuditModel {
     @Column(name="neurological", nullable = true)
     private String neurological;
 
-    @Column(name="regional_clinic_exam", nullable = true,length = 4000)
+    @Column(name="regional_clinic_exam", nullable = true, length = 4000)
     private String regionalClinicExam;
 
     //Diagnostic
-    @Column(name="presumptive_coherent", nullable = true,length = 4000)
+    @Column(name="presumptive_coherent", nullable = true, length = 4000)
     private String presumptiveCoherent;
 
     @Column(name="definitive_coherent", nullable = true)
