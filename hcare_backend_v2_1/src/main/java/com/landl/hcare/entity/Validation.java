@@ -3,6 +3,7 @@ package com.landl.hcare.entity;
 import com.landl.hcare.model.AuditModel;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="validation")
@@ -17,34 +18,28 @@ public class Validation extends AuditModel {
     )
     private Long id;
 
-    @Column(name="label_code")
-    private String labelCode;
-
-    @Column(name="label_module")
-    private String labelModule;
-
-    @Column(name="label_sub_module")
-    private String labelSubModule;
-
-    @Column(name="field_definition_id")
-    private Long fieldDefinitionId;
+    //Map one to one association between Person and Address
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name="label_id")
+    private Label label;
 
     @Column(name="validation_type")
-    private String validationType;
+    private Integer validationType;
 
     @Transient
     private String validationMessage;
 
+    @MapsId("rolePageSectionFieldId")
+    @JoinColumns({
+            @JoinColumn(name="page_id", referencedColumnName="page_id"),
+            @JoinColumn(name="section_id", referencedColumnName="section_id"),
+            @JoinColumn(name="field_definition_id", referencedColumnName="field_definition_id"),
+            @JoinColumn(name="role_id", referencedColumnName="role_id")
+    })
+    @ManyToOne
+    private RolePageSectionField rolePageSectionField;
 
     public Validation() {
-    }
-
-    public Validation(Long id, Long fieldDefinitionId, String labelCode, String validationMessage, String validationType){
-        this.id = id;
-        this.fieldDefinitionId = fieldDefinitionId;
-        this.labelCode = labelCode;
-        this.validationMessage = validationMessage;
-        this.validationType = validationType;
     }
 
     public Long getId() {
@@ -55,43 +50,11 @@ public class Validation extends AuditModel {
         this.id = id;
     }
 
-    public String getLabelCode() {
-        return labelCode;
-    }
-
-    public void setLabelCode(String labelCode) {
-        this.labelCode = labelCode;
-    }
-
-    public String getLabelModule() {
-        return labelModule;
-    }
-
-    public void setLabelModule(String labelModule) {
-        this.labelModule = labelModule;
-    }
-
-    public String getLabelSubModule() {
-        return labelSubModule;
-    }
-
-    public void setLabelSubModule(String labelSubModule) {
-        this.labelSubModule = labelSubModule;
-    }
-
-    public Long getFieldDefinitionId() {
-        return fieldDefinitionId;
-    }
-
-    public void setFieldDefinitionId(Long fieldDefinitionId) {
-        this.fieldDefinitionId = fieldDefinitionId;
-    }
-
-    public String getValidationType() {
+    public Integer getValidationType() {
         return validationType;
     }
 
-    public void setValidationType(String validationType) {
+    public void setValidationType(Integer validationType) {
         this.validationType = validationType;
     }
 
@@ -101,5 +64,13 @@ public class Validation extends AuditModel {
 
     public void setValidationMessage(String validationMessage) {
         this.validationMessage = validationMessage;
+    }
+
+    public Label getLabel() {
+        return label;
+    }
+
+    public void setLabel(Label label) {
+        this.label = label;
     }
 }

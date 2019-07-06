@@ -27,6 +27,9 @@ public class MedicalAppointment  extends AuditModel {
     @Column(name="date_appointment")
     private Date dateAppointment;
 
+    @Column(name="date_attention")
+    private Date dateAttention;
+
     @Transient
     @NotAudited
     private String dateAppointmentDateFormatted;
@@ -37,6 +40,9 @@ public class MedicalAppointment  extends AuditModel {
 
     @Column(name="status")
     private String status;
+
+    @Transient
+    private String labelStatus;
 
     @Column(name="medical_area_id")
     private Long medicalAreaId;
@@ -598,5 +604,21 @@ public class MedicalAppointment  extends AuditModel {
 
     public void setAllergiesArray(Integer[] allergiesArray) {
         this.allergiesArray = allergiesArray;
+    }
+
+    public String getLabelStatus() {
+        return labelStatus;
+    }
+
+    public void setLabelStatus(String labelStatus) {
+        this.labelStatus = labelStatus;
+    }
+
+    public Date getDateAttention() {
+        return dateAttention;
+    }
+
+    public void setDateAttention(Date dateAttention) {
+        this.dateAttention = dateAttention;
     }
 }

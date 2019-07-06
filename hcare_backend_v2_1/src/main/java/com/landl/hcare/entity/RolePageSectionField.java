@@ -5,6 +5,7 @@ import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Audited
@@ -29,6 +30,8 @@ public class RolePageSectionField  extends AuditModel {
     @Transient
     @NotAudited
     private FieldDefinition fieldDefinition;
+
+    //Map one to one association between Person and Address
 
     public RolePageSectionField() {
     }
@@ -87,6 +90,4 @@ public class RolePageSectionField  extends AuditModel {
                     ));
         }
     }
-
-
 }

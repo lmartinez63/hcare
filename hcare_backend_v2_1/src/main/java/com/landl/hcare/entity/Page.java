@@ -35,6 +35,9 @@ public class Page extends AuditModel {
     @Column(name="title_definition")
     private String titleDefinition;
 
+    @Column(name="co_title_definition")
+    private String coTitleDefinition;
+
     @Column(name="sub_title_definition")
     private String subTitleDefinition;
 
@@ -156,5 +159,13 @@ public class Page extends AuditModel {
 
     public void setSubTitleDefinition(String subTitleDefinition) {
         this.subTitleDefinition = subTitleDefinition;
+    }
+
+    public String getCoTitleDefinition() {
+        return coTitleDefinition;
+    }
+
+    public void setCoTitleDefinition(String coTitleDefinition) {
+        this.coTitleDefinition = coTitleDefinition;
     }
 }

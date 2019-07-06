@@ -38,6 +38,11 @@ public class SaveMedicalAppointment extends CustomProcess {
         }
         patient = patientService.save(patient);
         */
+        //Update Patient Information
+        Patient patient = medicalAppointment.getPatient();
+        patient = patientService.save(patient);
+        medicalAppointment.setPatient(patient);
+
         //Send Notifications
         if (medicalAppointment.getId() == null) {
             //If is a new medical appointment send a reminder email
@@ -47,10 +52,12 @@ public class SaveMedicalAppointment extends CustomProcess {
         }
 
         //Create history code if doesn't exits
-        if (medicalAppointment.getStatus().compareTo("10")==0 && medicalAppointment.getPatient().getHistoryCode() == null){
-            //Create Medical History set incoming patient with historyCode
-            medicalAppointment.setDateAppointment(new Date());
-            MedicalHistory medicalHistory = medicalHistoryService.createMedicalHistory(medicalAppointment.getPatient());
+        if (medicalAppointment.getStatus().compareTo("10")==0){
+            medicalAppointment.setDateAttention(new Date());
+            if (medicalAppointment.getPatient().getHistoryCode() == null){
+                //Create Medical History set incoming patient with historyCode
+                MedicalHistory medicalHistory = medicalHistoryService.createMedicalHistory(medicalAppointment.getPatient());
+            }
         }
 
 
