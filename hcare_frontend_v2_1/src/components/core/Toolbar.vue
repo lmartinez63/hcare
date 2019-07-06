@@ -46,6 +46,7 @@
             mdi-view-dashboard
           </v-icon>
         </router-link>
+        <!--
         <v-menu
           bottom
           left
@@ -85,6 +86,7 @@
             </v-list>
           </v-card>
         </v-menu>
+        -->
         <router-link
           v-ripple
           class="toolbar-items"
@@ -93,6 +95,8 @@
           <v-icon color="tertiary">
             mdi-account
           </v-icon>
+          <v-spacer />
+          {{ user.userProfile.fullName }}
         </router-link>
         <v-btn
           block="block"
@@ -130,6 +134,11 @@ export default {
     responsive: false,
     responsiveInput: false
   }),
+  computed: {
+    user () {
+      return this.$store.state.authentication.user
+    }
+  },
 
   watch: {
     '$route' (val) {

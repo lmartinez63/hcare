@@ -57,7 +57,7 @@ function handleResponse (response) {
         if (response.status === 401) {
           // auto logout if 401 response returned from api
           if (data.message === '1') {
-            return Promise.reject(new Error({ code: 1, message: 'Usuario y/o Password incorrectos' }))
+            return Promise.reject(new Error('Usuario y/o Password incorrectos'))
           }
           logout()
           location.reload(true)

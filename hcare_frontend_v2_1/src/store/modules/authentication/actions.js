@@ -5,6 +5,7 @@ export default {
   login ({ dispatch, commit }, { username, password }) {
     commit('loginRequest', { username })
     commit('general/setLoading', true, { root: true })
+    console.log('Authenticating')
     userService.login(username, password)
       .then(
         user => {
@@ -23,8 +24,8 @@ export default {
         },
         error => {
           commit('general/setLoading', false, { root: true })
-          commit('loginFailure', error)
-          dispatch('alert/warning', error, { root: true })
+          commit('loginFailure')
+          dispatch('alert/warning', error.message, { root: true })
         }
       )
   },

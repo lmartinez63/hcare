@@ -31,7 +31,7 @@ export default [
   },
   {
     path: '/dataview/:processName/:requestPage',
-    name: 'Informacion del Paciente',
+    // name: 'Informacion del Paciente',
     view: 'DataView'
   },
   {

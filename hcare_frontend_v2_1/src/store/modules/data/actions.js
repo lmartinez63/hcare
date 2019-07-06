@@ -42,7 +42,7 @@ export default {
           content => {
             commit('uploadFileSuccess', content)
             commit('general/setLoading', false, { root: true })
-            resolve({ status: 200 })
+            router.go()
           },
           error => {
             commit('general/setLoading', false, { root: true })

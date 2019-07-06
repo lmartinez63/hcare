@@ -29,7 +29,7 @@
             />
           </v-list-tile-avatar>
           <v-list-tile-title class="title">
-            Vuetify MD
+            HCARE
           </v-list-tile-title>
         </v-list-tile>
         <v-divider />
@@ -57,6 +57,7 @@
             v-text="link.text"
           />
         </v-list-tile>
+        <!--
         <v-list-tile
           disabled
           active-class="primary"
@@ -70,6 +71,7 @@
             Upgrade To PRO
           </v-list-tile-title>
         </v-list-tile>
+        -->
       </v-layout>
     </v-img>
   </v-navigation-drawer>
@@ -91,26 +93,34 @@ export default {
         icon: 'mdi-view-dashboard',
         text: 'Dashboard'
       },
+      /*
       {
         to: '/user-profile',
         icon: 'mdi-account',
-        text: 'User Profile'
+        text: 'Informacion del Usuario'
       },
-      {
+            {
         to: '/table-list',
         icon: 'mdi-clipboard-outline',
         text: 'Table List'
       },
+*/
       {
         to: '/browse/allPatients',
         icon: 'mdi-clipboard-outline',
-        text: 'Administracion de Pacientes'
+        text: 'Listado de Pacientes'
       },
       {
         to: '/browse/medicalAppointmentsToday',
         icon: 'mdi-clipboard-outline',
-        text: 'Administracion de Citas'
+        text: 'Listado de  Citas de Hoy'
       },
+      {
+        to: '/browse/allMedAppHeaderView',
+        icon: 'mdi-clipboard-outline',
+        text: 'Lista de Citas Medicas'
+      }
+      /*
       {
         to: '/browse/allPages',
         icon: 'mdi-clipboard-outline',
@@ -135,8 +145,8 @@ export default {
         to: '/browse/allProperties',
         icon: 'mdi-clipboard-outline',
         text: 'Administracion de Propiedades'
-      },
-      {
+      }
+            {
         to: '/typography',
         icon: 'mdi-format-font',
         text: 'Typography'
@@ -156,6 +166,7 @@ export default {
         icon: 'mdi-bell',
         text: 'Notifications'
       }
+*/
     ],
     responsive: false
   }),

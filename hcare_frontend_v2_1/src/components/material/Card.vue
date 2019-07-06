@@ -22,14 +22,29 @@
           name="header"
         />
         <span v-else>
+          <v-layout>
+          <v-flex xs6>
           <h4
             class="title font-weight-light mb-2"
             v-text="title"
           />
+          </v-flex>
+          <v-flex xs6>
+          <h4
+            class="title font-weight-light mb-2"
+            v-text="coTitle"
+            align="right"
+          />
+          </v-flex>
+          </v-layout>
+          <v-layout>
+          <v-flex xs12>
           <p
             class="category font-weight-thin"
             v-text="text"
           />
+          </v-flex>
+          </v-layout>
         </span>
       </v-card>
       <slot
@@ -79,6 +94,10 @@ export default {
       default: 24
     },
     title: {
+      type: String,
+      default: undefined
+    },
+    coTitle: {
       type: String,
       default: undefined
     },

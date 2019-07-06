@@ -12,6 +12,7 @@
       <v-flex xs12>
         <material-card
           :title="getDataMapAttribute(dataMap,page.titleDefinition)"
+          :coTitle="getDataMapAttribute(dataMap,page.coTitleDefinition)"
           :text="getDataMapAttribute(dataMap,page.subTitleDefinition)"
         >
           <v-layout
@@ -25,15 +26,15 @@
             >
               <v-tab
                 v-for="section in orderedSections"
-                :key="section.sectionCode"
                 v-if="getFieldCount(section.fieldDefinitionList) > 0"
+                :key="section.sectionCode"
               >
                 {{ $parent.$parent.$parent.getLabelValue(section.label) }}
               </v-tab>
               <v-tab-item
                 v-for="section in orderedSections"
-                :key="section.sectionCode"
                 v-if="getFieldCount(section.fieldDefinitionList) > 0"
+                :key="section.sectionCode"
               >
                 <v-form>
                   <v-container py-6>
@@ -72,6 +73,7 @@
                           :item-value="getItemValue(fieldDefinition.selectSource)"
                           :multiple="getMultiple(fieldDefinition.selectSource)"
                           :chips="getMultiple(fieldDefinition.selectSource)"
+                          :readonly="!fieldDefinition.editable"
                         >
                           {{ fieldDefinition.outterButton }}
                           <template
@@ -100,7 +102,8 @@
                           :return-value.sync="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
                           persistent
                           lazy
-                          full-width
+                          full-width="true"
+                          :disabled="!fieldDefinition.editable"
                           width="290px"
                         >
                           <template v-slot:activator="{ on }">
@@ -117,6 +120,7 @@
                             v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
                             scrollable
                             locale="es"
+                            :readonly="!fieldDefinition.editable"
                           >
                             <v-spacer />
                             <v-btn
@@ -139,6 +143,7 @@
                           v-if="fieldDefinition.fieldType === 5"
                           v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
                           :label="fieldDefinition.label.labelValueEsEs"
+                          :disabled="!fieldDefinition.editable"
                         >
                           <template v-slot:dateIcon>
                             <v-icon>
@@ -451,11 +456,11 @@ export default {
       return !fieldSize || fieldSize === null ? 255 : fieldSize
     },
     getFieldCount: function (fieldList) {
-      var count = 0;
-      fieldList.forEach(function(field){
-        count += field.visible ? 1 : 0;
-      });
-      return count;
+      var count = 0
+      fieldList.forEach(function (field) {
+        count += field.visible ? 1 : 0
+      })
+      return count
     },
     orderedFields: function (fieldList) {
       return _.orderBy(fieldList, 'orderNumber')
