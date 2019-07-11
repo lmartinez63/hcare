@@ -16,4 +16,6 @@ public interface ValidationService {
 
     public List<Validation> getValidationsByFieldDefinition(FieldDefinition fieldDefinition);
 
+    public List<Validation> getValidationsByFieldDefinition(Long pageId, Long sectionId, Long fieldDefinitionId);
+
 }

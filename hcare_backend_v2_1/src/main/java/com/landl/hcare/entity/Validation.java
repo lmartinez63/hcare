@@ -29,12 +29,11 @@ public class Validation extends AuditModel {
     @Transient
     private String validationMessage;
 
-    @MapsId("rolePageSectionFieldId")
     @JoinColumns({
-            @JoinColumn(name="page_id", referencedColumnName="page_id"),
-            @JoinColumn(name="section_id", referencedColumnName="section_id"),
-            @JoinColumn(name="field_definition_id", referencedColumnName="field_definition_id"),
-            @JoinColumn(name="role_id", referencedColumnName="role_id")
+            @JoinColumn(name = "role_page_section_field_role_id" , referencedColumnName = "role_id" ),
+            @JoinColumn(name = "role_page_section_field_page_id" , referencedColumnName = "page_id" ),
+            @JoinColumn(name = "role_page_section_field_section_id" , referencedColumnName = "section_id" ),
+            @JoinColumn(name = "role_page_section_field_field_definition_id" , referencedColumnName = "field_definition_id" )
     })
     @ManyToOne
     private RolePageSectionField rolePageSectionField;

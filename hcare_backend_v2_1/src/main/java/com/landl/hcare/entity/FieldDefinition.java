@@ -99,6 +99,9 @@ public class FieldDefinition extends AuditModel {
     @NotAudited
     private List<Validation> validationList;
 
+    @Transient
+    @NotAudited
+    private Boolean required;
 
     public Long getId() {
         return id;
@@ -283,5 +286,13 @@ public class FieldDefinition extends AuditModel {
 
     public void setXsSize(Integer xsSize) {
         this.xsSize = xsSize;
+    }
+
+    public Boolean getRequired() {
+        return required;
+    }
+
+    public void setRequired(Boolean required) {
+        this.required = required;
     }
 }

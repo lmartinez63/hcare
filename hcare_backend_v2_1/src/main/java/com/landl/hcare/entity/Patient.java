@@ -41,7 +41,7 @@ public class Patient extends AuditModel {
     @NotAudited
     private String fullName;
 
-    @Column(name="document_number",unique=true)
+    @Column(name="document_number")
     private String documentNumber;
 
     @Column(name="document_type")

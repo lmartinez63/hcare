@@ -7,6 +7,8 @@ import com.landl.hcare.repository.LabelRepository;
 import com.landl.hcare.repository.ValidationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +56,13 @@ public class ValidationServiceImpl implements ValidationService{
             validationList.add(new Validation(((BigInteger)validationField[0]).longValue(), ((BigInteger)validationField[1]).longValue(), (String)validationField[2], (String)validationField[3], (String)validationField[4]));
         }
         */
+        return validationList;
+    }
+
+    public List<Validation> getValidationsByFieldDefinition(Long pageId, Long sectionId, Long fieldDefinitionId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        List<Validation> validationList = validationRepository.findByFieldDefinitionIdAndLabel(username,pageId,sectionId,fieldDefinitionId);
         return validationList;
     }
 }

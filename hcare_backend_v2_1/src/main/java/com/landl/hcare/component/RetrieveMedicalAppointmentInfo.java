@@ -23,7 +23,7 @@ public class RetrieveMedicalAppointmentInfo extends CustomProcess {
             medicalAppointment = medicalAppointmentService.findById(l_medicalAppointmentId);
             //TODO change to correct change
             medicalAppointment.setLabelStatus(labelService.getByLabelCodeAndUserLanguage(medicalAppointment.getStatus(),"MEDICAL_APPOINTMENT","STATUS").getLabelValueEsEs());
-            if (medicalAppointment.getAllergies().compareTo("null") != 0){
+            if (medicalAppointment.getAllergies()!= null && medicalAppointment.getAllergies().compareTo("null") != 0){
                 medicalAppointment.setAllergiesArray(ArrayUtils.toObject(Arrays.stream(medicalAppointment.getAllergies().substring(1, medicalAppointment.getAllergies().length()-1).split(",")).map(String::trim).mapToInt(Integer::parseInt).toArray()));
             }
             Directory directory = directoryService.findByEntityNameAndParentDirectoryIdIsNull("medical_appointment");

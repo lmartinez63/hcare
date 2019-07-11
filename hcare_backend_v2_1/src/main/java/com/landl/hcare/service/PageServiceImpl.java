@@ -1,16 +1,18 @@
 package com.landl.hcare.service;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.landl.hcare.common.UtilityTools;
 import com.landl.hcare.entity.*;
 import com.landl.hcare.repository.PageRepository;
 import com.landl.hcare.rule.RuleManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.validation.ValidatorAdapter;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +26,9 @@ public class PageServiceImpl implements PageService {
 
     @Autowired
     SectionService sectionService;
+
+    @Autowired
+    ValidationService validationService;
 
     @Autowired
     UserService userService;
@@ -91,6 +96,8 @@ public class PageServiceImpl implements PageService {
     }
 
     public void processFields(Page page, Map dataSource) throws Exception {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
         evaluateRules(page,dataSource);
         for(Section section:page.getSectionList()){
             sectionService.evaluateRules(section, dataSource);
@@ -99,6 +106,15 @@ public class PageServiceImpl implements PageService {
             for(FieldDefinition fieldDefinition:section.getFieldDefinitionList()){
                 fieldService.evaluateRules(fieldDefinition, dataSource);
                 fieldService.evaluateFields(fieldDefinition, dataSource);
+                for(Validation validation:validationService.getValidationsByFieldDefinition(page.getId(),section.getId(),fieldDefinition.getId())){
+                    if(validation.getValidationType().compareTo(1) ==0){
+                        fieldDefinition.setRequired(true);
+                    }
+                    if(validation.getValidationType().compareTo(1) ==0){
+                        fieldDefinition.setRequired(true);
+                    }
+                }
+                //fieldDefinition.setValidationList(validationService.getValidationsByFieldDefinition(page.getId(),section.getId(),fieldDefinition.getId()));
             }
             section.setFieldDefinitionMap(section.getFieldDefinitionList().stream().collect(Collectors.toMap(FieldDefinition::getFieldDefinitionCode, item -> item)));
         }
