@@ -27,6 +27,8 @@ export default {
     console.log('dataResponse - mutations - getPatientInfoByDocumentNumberOnMedAppointmentSuccess')
     if (content && content != null && content.dataContent.dataMap.patient) {
       state.dataMap.medicalAppointment.patient = content.dataContent.dataMap.patient
+    } else {
+      state.dataAlert = { message: 'Numero de Documento no encontrado, el paciente sera registrado', type: 'info', display: true }
     }
   },
   saveEntitySuccess (state, content) {

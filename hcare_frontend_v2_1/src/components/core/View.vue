@@ -1,6 +1,14 @@
 <template>
   <v-card>
     <v-content>
+      <v-alert
+        :value="alertVar.display"
+        :type="alertVar.type"
+        transition="scale-transition"
+        dismissible
+      >
+        {{ alertVar.message }}
+      </v-alert>
       <div id="core-view">
         <v-fade-transition mode="out-in">
           <!-- To reload same component
@@ -81,10 +89,13 @@ export default {
   }),
   metaInfo () {
     return {
-      title: 'Vuetify Material Dashboard by CreativeTim'
+      title: 'HCARE Medical Software'
     }
   },
   computed: {
+    alertVar () {
+      return this.$store.state.alert
+    },
     user () {
       return this.$store.state.authentication.user
     }

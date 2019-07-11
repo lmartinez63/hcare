@@ -6,20 +6,13 @@
       :on-cancel="onCancel"
       :is-full-page="fullPage"
     />
+
     <core-filter v-if="user" />
 
     <core-toolbar v-if="user" />
 
     <core-drawer v-if="user" />
-
     <core-view />
-    <v-alert
-      :value="alertVar.display"
-      :type="alertVar.type"
-      transition="scale-transition"
-    >
-      {{ alertVar.message }}
-    </v-alert>
     <v-dialog
       v-model="appErrorDialog"
       max-width="290"
@@ -75,9 +68,6 @@ export default {
     }
   },
   computed: {
-    alertVar () {
-      return this.$store.state.alert
-    },
     appErrorDialog () {
       return this.$store.state.alert.type === 'error'
     },

@@ -12,7 +12,7 @@
       <v-flex xs12>
         <material-card
           :title="getDataMapAttribute(dataMap,page.titleDefinition)"
-          :coTitle="getDataMapAttribute(dataMap,page.coTitleDefinition)"
+          :co-title="getDataMapAttribute(dataMap,page.coTitleDefinition)"
           :text="getDataMapAttribute(dataMap,page.subTitleDefinition)"
         >
           <v-layout
@@ -36,8 +36,16 @@
                 v-if="getFieldCount(section.fieldDefinitionList) > 0"
                 :key="section.sectionCode"
               >
-                <v-form>
+                <v-form ref="dataForm">
                   <v-container py-6>
+                    <v-alert
+                      :value="dataAlert.display"
+                      :type="dataAlert.type"
+                      transition="scale-transition"
+                      dismissible
+                    >
+                      {{ dataAlert.message }}
+                    </v-alert>
                     <v-layout
                       v-if="section.sectionType === 1"
                       wrap
@@ -54,6 +62,7 @@
                           v-if="fieldDefinition.fieldType === 1"
                           v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
                           :label="fieldDefinition.label.labelValueEsEs"
+                          :rules="[() => fieldDefinition.required === true && ( !! getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode] || 'Este campo es requerido' )]"
                           :disabled="!fieldDefinition.editable"
                           :suffix="fieldDefinition.suffix"
                           :prefix="fieldDefinition.prefix"
@@ -64,7 +73,7 @@
                           v-if="fieldDefinition.fieldType === 2"
                           ref="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
                           v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
-                          :rules="[() => !! getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode] || 'Este campo es requerido']"
+                          :rules="[() => fieldDefinition.required === true && ( !! getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode] || 'Este campo es requerido' )]"
                           :items="arrayItems(fieldDefinition.selectSource)"
                           :label="fieldDefinition.label.labelValueEsEs"
                           placeholder="Seleccione..."
@@ -110,6 +119,7 @@
                             <v-text-field
                               model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
                               :value="$parent.$parent.$parent.computedDateFormattedMomentjs(getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode])"
+                              :rules="[() => fieldDefinition.required === true && ( !! getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode] || 'Este campo es requerido' )]"
                               :label="fieldDefinition.label.labelValueEsEs"
                               prepend-icon="mdi-calendar"
                               readonly
@@ -142,8 +152,10 @@
                         <v-datetime-picker
                           v-if="fieldDefinition.fieldType === 5"
                           v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
+                          locale="es-es"
                           :label="fieldDefinition.label.labelValueEsEs"
                           :disabled="!fieldDefinition.editable"
+                          :rules="[() => fieldDefinition.required === true && ( !! getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode] || 'Este campo es requerido' )]"
                         >
                           <template v-slot:dateIcon>
                             <v-icon>
@@ -404,10 +416,22 @@ export default {
         txt: 'mdi-file-document-outline',
         xls: 'mdi-file-excel'
       },
-      tree: []
+      tree: [],
+      required: value => !!value || 'Campo es requerido.',
+      rules: {
+        required: value => !!value || 'Campo es requerido.',
+        counter: value => value.length <= 20 || 'Max 20 characters',
+        email: value => {
+          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          return pattern.test(value) || 'E-mail invalido.'
+        }
+      }
     }
   },
   computed: {
+    dataAlert () {
+      return this.$store.state.data.dataAlert
+    },
     filter () {
       return this.caseSensitive
         ? (item, search, textKey) => item[textKey].indexOf(search) > -1
@@ -589,6 +613,12 @@ export default {
       this.file = this.$refs.file.files[0]
     },
     executeFieldChangeEvent (changeEvent) {
+      if (this.$store.state.data.dataAlert.display) {
+        this.$store.state.data.dataAlert = {}
+      }
+      if (this.$store.state.alert.display) {
+        this.$store.dispatch('alert/clear')
+      }
       switch (changeEvent) {
         case 'getPatientInfo':
           this.getPatientInfo()
@@ -696,14 +726,25 @@ export default {
       // if(dataContent.medicalAppointment && dataContent.medicalAppointment.allergies){
       //  dataContent.medicalAppointment.allergies = dataContent.medicalAppointment.allergies.toString()
       // }
-      dispatch('data/saveEntity', {
-        vm: this,
-        requestPage: requestPage,
-        processName: jParameters.processName,
-        dataContent: dataContent,
-        additionalActions: jParameters.additionalActions,
-        returnRoute: jParameters.returnRoute
+      var validated = true
+      this.$refs.dataForm.forEach(function (elementForm) {
+        if (!elementForm.validate()) {
+          validated = false
+        }
       })
+      if (validated) {
+        dispatch('data/saveEntity', {
+          vm: this,
+          requestPage: requestPage,
+          processName: jParameters.processName,
+          dataContent: dataContent,
+          additionalActions: jParameters.additionalActions,
+          returnRoute: jParameters.returnRoute
+        })
+      } else {
+        dispatch('alert/warning', 'Por favor complete los campos requeridos')
+      }
+
       // }
       console.log('MedicalAppointmentPage - method - saveObjectState - end')
     },
