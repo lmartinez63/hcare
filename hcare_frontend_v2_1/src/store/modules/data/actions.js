@@ -2,6 +2,22 @@ import { dataResponseService } from '../../_services'
 import router from '../../../router'
 
 export default {
+  getDialogData ({ dispatch, commit }, { requestPage, processName, dataContent }) {
+    commit('general/setLoading', true, { root: true })
+    commit('pendingDialogRequest')
+    dataResponseService.getContent(requestPage, processName, dataContent)
+      .then(
+        content => {
+          commit('getDialogDataSuccess', content)
+          commit('general/setLoading', false, { root: true })
+        },
+        error => {
+          commit('general/setLoading', false, { root: true })
+          commit('failureDetected', error)
+          dispatch('alert/error', error.message, { root: true })
+        }
+      )
+  },
   getData ({ dispatch, commit }, { requestPage, processName, dataContent }) {
     commit('general/setLoading', true, { root: true })
     commit('pendingRequest')
@@ -18,31 +34,35 @@ export default {
         }
       )
   },
-  getPatientInfoByDocumentNumberOnMedAppointment ({ dispatch, commit }, { requestPage, processName, dataContent }) {
-    commit('general/setLoading', true, { root: true })
-    dataResponseService.getContent(requestPage, processName, dataContent)
-      .then(
-        content => {
-          commit('getPatientInfoByDocumentNumberOnMedAppointmentSuccess', content)
-          commit('general/setLoading', false, { root: true })
-        },
-        error => {
-          commit('general/setLoading', false, { root: true })
-          commit('failureDetected', error)
-          dispatch('alert/error', error.message, { root: true })
-        }
-      )
-  },
-  uploadFile ({ dispatch, commit }, { vm, formData }) {
+  saveDialogEntity ({ dispatch, commit }, { vm, requestPage, processName, dataContent, returnRoute, additionalActions }) {
     return new Promise((resolve, reject) => {
+      console.log('data-actions-saveDialogEntity')
       commit('general/setLoading', true, { root: true })
-      commit('pendingRequest')
-      dataResponseService.uploadAttachment(formData)
+      commit('pendingDialogRequest')
+      dataResponseService.getContent(requestPage, processName, dataContent, returnRoute, additionalActions)
         .then(
           content => {
-            commit('uploadFileSuccess', content)
             commit('general/setLoading', false, { root: true })
-            router.go()
+            commit('saveDialogEntitySuccess', content)
+            dispatch('alert/success', 'Los datos fueron guardados satisfactoriamente', { root: true })
+            if (additionalActions && Array.isArray(additionalActions)) {
+              for (var i = 0; i < additionalActions.length; i++) {
+                console.log('executingAdditionalActions: ' + additionalActions[i])
+                eval(additionalActions[i])
+              }
+            }
+            if (returnRoute && returnRoute !== '') {
+              if (returnRoute === 'back') {
+                router.go(-1)
+              } else if (returnRoute === 'reloadPage') {
+                router.go()
+              } else {
+                setTimeout(() => {
+                  router.push(returnRoute)
+                }, 5000)
+              }
+            }
+            resolve({ status: 200 })
           },
           error => {
             commit('general/setLoading', false, { root: true })
@@ -82,6 +102,40 @@ export default {
             }
 
             resolve({ status: 200 })
+          },
+          error => {
+            commit('general/setLoading', false, { root: true })
+            commit('failureDetected', error)
+            dispatch('alert/error', error.message, { root: true })
+          }
+        )
+    })
+  },
+  getPatientInfoByDocumentNumberOnMedAppointment ({ dispatch, commit }, { requestPage, processName, dataContent }) {
+    commit('general/setLoading', true, { root: true })
+    dataResponseService.getContent(requestPage, processName, dataContent)
+      .then(
+        content => {
+          commit('getPatientInfoByDocumentNumberOnMedAppointmentSuccess', content)
+          commit('general/setLoading', false, { root: true })
+        },
+        error => {
+          commit('general/setLoading', false, { root: true })
+          commit('failureDetected', error)
+          dispatch('alert/error', error.message, { root: true })
+        }
+      )
+  },
+  uploadFile ({ dispatch, commit }, { vm, formData }) {
+    return new Promise((resolve, reject) => {
+      commit('general/setLoading', true, { root: true })
+      commit('pendingRequest')
+      dataResponseService.uploadAttachment(formData)
+        .then(
+          content => {
+            commit('uploadFileSuccess', content)
+            commit('general/setLoading', false, { root: true })
+            router.go()
           },
           error => {
             commit('general/setLoading', false, { root: true })

@@ -7,10 +7,26 @@ export default {
     state.dataMap = {}
     state.metadata = {}
   },
+  pendingDialogRequest (state) {
+    console.log('dataResponse - mutations - pendingDialogRequest')
+    state.loading = true
+    state.dialgoDataMap = {}
+    state.dialogMetadata = {}
+  },
   failureDetected (state, error) {
     state.loading = false
     console.log('dataResponse - mutations - failureDetected - ' + error)
     state.error = error
+  },
+  getDialogDataSuccess (state, content) {
+    state.loading = false
+    console.log('dataResponse - mutations  - getDialogDataSuccess')
+    state.dialogDataMap = content.dataContent.dataMap
+    // Formats for dates
+    if (state.dataMap.patient) {
+      state.dataMap.patient.birthday = (new Date(state.dataMap.patient.birthday)).toISOString().substr(0, 10)
+    }
+    state.dialogMetadata = content.metadataContent
   },
   getDataSuccess (state, content) {
     state.loading = false

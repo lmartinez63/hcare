@@ -2,6 +2,8 @@ export default {
   loading: false,
   dataAlert: {},
   dataMap: {},
+  dialogDataMap: {},
   error: {},
-  metadata: {}
+  metadata: {},
+  dialogMetadata: {}
 }

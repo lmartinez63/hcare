@@ -119,8 +119,7 @@ export default {
         to: '/browse/allMedAppHeaderView',
         icon: 'mdi-clipboard-outline',
         text: 'Lista de Citas Medicas'
-      }
-      /*
+      },
       {
         to: '/browse/allPages',
         icon: 'mdi-clipboard-outline',
@@ -146,6 +145,7 @@ export default {
         icon: 'mdi-clipboard-outline',
         text: 'Administracion de Propiedades'
       }
+      /*
             {
         to: '/typography',
         icon: 'mdi-format-font',

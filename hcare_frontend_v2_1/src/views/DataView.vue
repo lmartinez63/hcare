@@ -19,7 +19,95 @@
             v-if="page.sectionList.length > 0"
             align-center
           >
+            <v-stepper
+              v-if="page.pageMode === 'step' "
+              vertical
+              style="width:100%;"
+            >
+            <div
+              v-for="section in orderedSections"
+              v-if="getFieldCount(section.fieldDefinitionList) > 0"
+              :key="section.sectionCode"
+            >
+              <v-stepper-step
+                :complete="section.stepCompleted"
+                :step="section.visualizationOrder"
+              >
+                {{ $parent.$parent.$parent.getLabelValue(section.label) }}
+                <!--<small>Summarize if needed</small>-->
+              </v-stepper-step>
+              <v-stepper-content :step="section.visualizationOrder">
+                <v-card
+                  color="grey lighten-1"
+                  class="mb-5"
+                  v-if="section.sectionType === 3"
+                >
+                <v-flex
+                  v-for="fieldDefinition in orderedFields(section.fieldDefinitionList)"
+                  v-if="fieldDefinition.visible"
+                  :key="fieldDefinition.fieldDefinitionCode"
+                >
+                  <div v-if="fieldDefinition.fieldType === 10">
+                      <v-toolbar color="primary">
+                        <!--<v-toolbar-side-icon></v-toolbar-side-icon>-->
+                        <v-toolbar-title>
+                          {{ $parent.$parent.$parent.getLabelValue(fieldDefinition.label) }}
+                        </v-toolbar-title>
+                        <v-spacer />
+                        <v-btn
+                          icon
+                          v-if="fieldDefinition.outterButton && fieldDefinition.outterButton != null && fieldDefinition.outterButton !== '' ">
+                          <v-icon
+                            :key="fieldDefinition.id"
+                            :color="JSON.parse(fieldDefinition.outterButton).color"
+                            @click="executeAction(JSON.parse(fieldDefinition.outterButton).button)"
+                            v-text="JSON.parse(fieldDefinition.outterButton).icon"
+                          />
+                        </v-btn>
+                      </v-toolbar>
+                      <v-list
+                        two-line
+                      >
+                          <template v-for="(dataElement,dataElementIndex) in getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]">
+                            <v-list-tile
+                              :key="dataElement.id"
+                              avatar
+                              ripple
+                              @click="executeAction(JSON.parse(fieldDefinition.selectSource).button,dataElement)"
+                            >
+                            <v-list-tile-content>
+                              <v-list-tile-title>{{ dataElement[JSON.parse(fieldDefinition.selectSource).title] }}</v-list-tile-title>
+                              <v-list-tile-sub-title class="text--primary">{{ dataElement[JSON.parse(fieldDefinition.selectSource).headline] }}</v-list-tile-sub-title>
+                              <v-list-tile-sub-title>{{ dataElement[JSON.parse(fieldDefinition.selectSource).subtitle] }}</v-list-tile-sub-title>
+                            </v-list-tile-content>
+                            <v-list-tile-action>
+                              <v-list-tile-action-text>{{ dataElement[JSON.parse(fieldDefinition.selectSource).action] }}</v-list-tile-action-text>
+
+                            </v-list-tile-action>
+                          </v-list-tile>
+                          <v-divider
+                            v-if="dataElementIndex + 1 < getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode].length"
+                            :key="dataElementIndex"
+                          ></v-divider>
+                        </template>
+                      </v-list>
+                    </div>
+                    </v-flex>
+                </v-card>
+                <v-btn
+                  color="primary"
+                  @click="executeAction()"
+                >
+                  Continue
+                </v-btn>
+                <v-btn flat>
+                  Cancel
+                </v-btn>
+              </v-stepper-content>
+            </div>
+            </v-stepper>
             <v-tabs
+              v-if="page.pageMode === 'tab' "
               v-model="tab"
               grow
               style="width:100%;"
@@ -61,7 +149,7 @@
                         <v-text-field
                           v-if="fieldDefinition.fieldType === 1"
                           v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
-                          :label="fieldDefinition.label.labelValueEsEs"
+                          :label="$parent.$parent.$parent.getLabelValue(fieldDefinition.label)"
                           :rules="[() => fieldDefinition.required === true && ( !! getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode] || 'Este campo es requerido' )]"
                           :disabled="!fieldDefinition.editable"
                           :suffix="fieldDefinition.suffix"
@@ -111,7 +199,7 @@
                           :return-value.sync="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
                           persistent
                           lazy
-                          full-width="true"
+                          full-width
                           :disabled="!fieldDefinition.editable"
                           width="290px"
                         >
@@ -172,7 +260,7 @@
                           v-if="fieldDefinition.fieldType === 8"
                           v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
                           box
-                          full-width="true"
+                          full-width
                           :label="fieldDefinition.label.labelValueEsEs"
                           auto-grow
                           :maxlength="getMaxFieldSize(fieldDefinition.fieldSize)"
@@ -286,17 +374,159 @@
               v-for="pageButton in page.pageButtons"
               v-if="pageButton.visible"
               :key="pageButton.buttonCode"
-              fab
               dark
               small
+              :fab="pageButton.fab"
+              :round="pageButton.round"
               color="green"
               @click="executeAction(pageButton)"
             >
               <v-icon>{{ pageButton.icon }}</v-icon>
+              {{ pageButton.round ? ' '+$parent.$parent.$parent.getLabelValue(pageButton.label) : ''}}
             </v-btn>
           </v-speed-dial>
         </material-card>
       </v-flex>
+      <!-- Popup Dialog -->
+      <v-dialog
+        v-if="createDataViewDialog"
+        v-model="dataViewDialog"
+        persistent
+        max-width="600px"
+      >
+        <v-card v-if="dialogPage && dialogDataMap">
+          <v-card-title>
+            <span class="headline">{{ dialogPage.label.labelValueEsEs }}</span>
+          </v-card-title>
+          <v-card-text>
+            <v-form ref="dialogDataForm">
+              <v-container
+                v-for="dialogSection in dialogPage.sectionList"
+                v-if="getFieldCount(dialogSection.fieldDefinitionList) > 0"
+                :key="dialogSection.sectionCode"
+                grid-list-md
+              >
+                <v-layout wrap>
+                  <v-flex
+                    v-for="dialogFieldDefinition in orderedFields(dialogSection.fieldDefinitionList)"
+                    v-if="dialogFieldDefinition.visible"
+                    :key="dialogFieldDefinition.fieldDefinitionCode"
+                    :xs12="dialogFieldDefinition.fieldType === 8 ? true : false"
+                    :class="['order-xs'+orderCalculated(dialogFieldDefinition.orderNumber,dialogSection.fieldDefinitionList.length), dialogFieldDefinition.xsSize ? 'xs' +dialogFieldDefinition.xsSize : 'xs6']"
+                  >
+                    <v-text-field
+                      v-if="dialogFieldDefinition.fieldType === 1"
+                      v-model="getDataMapAttribute(dialogDataMap,dialogSection.entity)[dialogFieldDefinition.fieldDefinitionCode]"
+                      :label="dialogFieldDefinition.label.labelValueEsEs"
+                      :rules="[() => dialogFieldDefinition.required === true && ( !! getDataMapAttribute(dialogDataMap,dialogSection.entity)[dialogFieldDefinition.fieldDefinitionCode] || 'Este campo es requerido' )]"
+                      :disabled="!dialogFieldDefinition.editable"
+                      :suffix="dialogFieldDefinition.suffix"
+                      :prefix="dialogFieldDefinition.prefix"
+                      :mask="dialogFieldDefinition.mask"
+                      @change="executeFieldChangeEvent(dialogFieldDefinition.onChangeEvent)"
+                    />
+                    <v-autocomplete
+                      v-if="dialogFieldDefinition.fieldType === 2"
+                      ref="getDataMapAttribute(dialogDataMap,section.entity)[dialogFieldDefinition.fieldDefinitionCode]"
+                      v-model="getDataMapAttribute(dialogDataMap,dialogSection.entity)[dialogFieldDefinition.fieldDefinitionCode]"
+                      :rules="[() => dialogFieldDefinition.required === true && ( !! getDataMapAttribute(dialogDataMap,dialogSection.entity)[dialogFieldDefinition.fieldDefinitionCode] || 'Este campo es requerido' )]"
+                      :items="arrayItems(dialogFieldDefinition.selectSource)"
+                      :label="dialogFieldDefinition.label.labelValueEsEs"
+                      placeholder="Seleccione..."
+                      :return-object="getReturnObject(dialogFieldDefinition.selectSource)"
+                      :item-text="getItemText(dialogFieldDefinition.selectSource)"
+                      :item-value="getItemValue(dialogFieldDefinition.selectSource)"
+                      :multiple="getMultiple(dialogFieldDefinition.selectSource)"
+                      :chips="getMultiple(dialogFieldDefinition.selectSource)"
+                      :readonly="!dialogFieldDefinition.editable"
+                    >
+                      {{ dialogFieldDefinition.outterButton }}
+                      <template
+                        v-if="dialogFieldDefinition.outterButton && dialogFieldDefinition.outterButton != null && dialogFieldDefinition.outterButton !== '' "
+                        v-slot:append-outer
+                      >
+                        <v-slide-x-reverse-transition mode="out-in">
+                          <v-icon
+                            :key="dialogFieldDefinition.id"
+                            :color="JSON.parse(dialogFieldDefinition.outterButton).color"
+                            @click="executeAction(JSON.parse(dialogFieldDefinition.outterButton).button)"
+                            v-text="JSON.parse(dialogFieldDefinition.outterButton).icon"
+                          />
+                        </v-slide-x-reverse-transition>
+                      </template>
+                    </v-autocomplete>
+                    <v-datetime-picker
+                      v-if="dialogFieldDefinition.fieldType === 5"
+                      v-model="getDataMapAttribute(dialogDataMap,dialogSection.entity)[dialogFieldDefinition.fieldDefinitionCode]"
+                      locale="es-es"
+                      :label="dialogFieldDefinition.label.labelValueEsEs"
+                      :disabled="!dialogFieldDefinition.editable"
+                      :rules="[() => dialogFieldDefinition.required === true && ( !! getDataMapAttribute(dialogDataMap,dialogSection.entity)[dialogFieldDefinition.fieldDefinitionCode] || 'Este campo es requerido' )]"
+                    >
+                      <template v-slot:dateIcon>
+                        <v-icon>
+                          mdi-calendar
+                        </v-icon>
+                      </template>
+                      <template v-slot:timeIcon>
+                        <v-icon>
+                          mdi-clock-outline
+                        </v-icon>
+                      </template>
+                    </v-datetime-picker>
+                    <v-textarea
+                      v-if="dialogFieldDefinition.fieldType === 8"
+                      v-model="getDataMapAttribute(dialogDataMap,dialogSection.entity)[dialogFieldDefinition.fieldDefinitionCode]"
+                      box
+                      full-width
+                      :label="dialogFieldDefinition.label.labelValueEsEs"
+                      auto-grow
+                      :maxlength="getMaxFieldSize(dialogFieldDefinition.fieldSize)"
+                    />
+                  </v-flex>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-speed-dial
+              v-model="dialogFab"
+              :top="dialogOptionButtonTop"
+              :bottom="dialogOptionButtonBottom"
+              :right="dialogOptionButtonRight"
+              :left="dialogOptionButtonLeft"
+              :direction="dialogOptionButtonDirection"
+              :open-on-hover="dialogOptionButtonHover"
+              :transition="dialogOptionButtonTransition"
+            >
+              <template v-slot:activator>
+                <v-btn
+                  v-model="fab"
+                  color="darken-2"
+                  dark
+                  fab
+                >
+                  <v-icon>mdi-dots-vertical</v-icon>
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </template>
+              <v-btn
+                v-for="dialogPageButton in dialogPage.pageButtons"
+                v-if="dialogPageButton.visible"
+                :key="dialogPageButton.buttonCode"
+                fab
+                dark
+                small
+                color="green"
+                @click="executeAction(dialogPageButton)"
+              >
+                <v-icon>{{ dialogPageButton.icon }}</v-icon>
+              </v-btn>
+            </v-speed-dial>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
       <!-- Upload Attachment -->
       <v-dialog
         v-if="createUploadFileDialog"
@@ -388,9 +618,19 @@ export default {
       optionButtonBottom: false,
       optionButtonLeft: false,
       optionButtonTransition: 'slide-y-reverse-transition',
+      dialogFab: false,
+      dialogOptionButtonHover: false,
+      dialogOptionButtonTop: false,
+      dialogOptionButtonRight: false,
+      dialogOptionButtonBottom: true,
+      dialogOptionButtonLeft: true,
+      dialogOptionButtonDirection: 'right',
+      dialogOptionButtonTransition: 'slide-y-reverse-transition',
       requestPage: '',
       createUploadFileDialog: false,
       uploadFileDialog: true,
+      createDataViewDialog: false,
+      dataViewDialog: false,
       fileTitle: '',
       file: '',
       attachment: {
@@ -446,6 +686,12 @@ export default {
     page () {
       return this.$store.state.data.metadata.page
     },
+    dialogDataMap () {
+      return this.$store.state.data.dialogDataMap
+    },
+    dialogPage () {
+      return this.$store.state.data.dialogMetadata.page
+    },
     treeviewItems () {
       return this.dataMap[this.page.entity].files
     },
@@ -476,6 +722,29 @@ export default {
     console.log('DataPage - mounted - end')
   },
   methods: {
+    openDataDialogEntity (dialogProcessName, dialogRequestPage, dialogParams) {
+      const { dispatch } = this.$store
+      var dialogParamsString = dialogParams
+      var dialogParamsArray = dialogParams.match(/\${{(.*?)}}/g)
+      if (dialogParamsArray != null) {
+        for (var d2 = 0, dlen2 = dialogParamsArray.length; d2 < dlen2; d2++) {
+          dialogParamsString = dialogParamsString.replace(dialogParamsArray[d2], eval(dialogParamsArray[d2].match(/\$\{\{([^)]+)\}\}/)[1]))
+        }
+      }
+      dispatch('data/getDialogData', {
+        requestPage: dialogRequestPage,
+        processName: dialogProcessName,
+        dataContent: JSON.parse(dialogParamsString)
+      })
+      this.createDataViewDialog = true
+      this.dataViewDialog = true
+    },
+    closeDataDialogEntity () {
+      this.createDataViewDialog = false
+      this.dataViewDialog = false
+      this.$store.state.data.dialogData = {}
+      this.$store.state.data.dialogDataMap = {}
+    },
     getMaxFieldSize (fieldSize) {
       return !fieldSize || fieldSize === null ? 255 : fieldSize
     },
@@ -645,7 +914,7 @@ export default {
       })
       console.log('DataView - method - getPatientInfo - end')
     },
-    executeAction: function (button) {
+    executeAction: function (button,elementSource) {
       let selfVue = this
       switch (button.buttonType) {
         case 1:
@@ -703,6 +972,59 @@ export default {
         })
     },
     */
+    saveDialogObjectState: function (sParameters, sAttributeArray, processName, additionalActions) {
+      var djParameters = JSON.parse(sParameters)
+      console.log('DataView - method - saveDialogObjectState - begin')
+      var dialogAttributeArray = djParameters.sAttributeArray.split(',')
+      var dialogDataContent = {}
+      for (var di = 0; di < dialogAttributeArray.length; di++) {
+        Object.defineProperty(dialogDataContent, dialogAttributeArray[di], { value: this.dialogDataMap[dialogAttributeArray[di]], writable: true, enumerable: true, configurable: true })
+      }
+      const {
+        requestPage
+      } = this
+      const {
+        dispatch
+      } = this.$store
+      // this.$v.$touch()
+      /* if (this.$v.$invalid) {
+        dispatch('alert/warning', 'Por favor complete los campos requeridos')
+      } else {
+      */
+      // TODO change to use json properties
+      // if(dataContent.medicalAppointment && dataContent.medicalAppointment.allergies){
+      //  dataContent.medicalAppointment.allergies = dataContent.medicalAppointment.allergies.toString()
+      // }
+      var dialogValidated = true
+      if (Array.isArray(this.$refs.dialogDataForm)) {
+        this.$refs.dialogDataForm.forEach(function (dialogElementForm) {
+          if (!dialogElementForm.validate()) {
+            dialogValidated = false
+          }
+        })
+      } else {
+        if (!this.$refs.dialogDataForm.validate()) {
+          dialogValidated = false
+        }
+      }
+
+      if (dialogValidated) {
+        dispatch('data/saveDialogEntity', {
+          vm: this,
+          requestPage: requestPage,
+          processName: djParameters.processName,
+          dataContent: dialogDataContent,
+          additionalActions: djParameters.additionalActions,
+          returnRoute: djParameters.returnRoute
+        }).then(() => {
+          console.log('MedicalAppointmentPage - method - saveDialogObjectState - closing popup dialog')
+          this.closeDataDialogEntity()
+        })
+      } else {
+        dispatch('alert/warning', 'Por favor complete los campos requeridos')
+      }
+      console.log('MedicalAppointmentPage - method - saveDialogObjectState - end')
+    },
     saveObjectState: function (sParameters, sAttributeArray, processName, additionalActions) {
       var jParameters = JSON.parse(sParameters)
       console.log('DataView - method - saveObjectState - begin')
