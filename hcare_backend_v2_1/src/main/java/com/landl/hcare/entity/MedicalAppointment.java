@@ -57,6 +57,9 @@ public class MedicalAppointment  extends AuditModel {
     @Column(name="medical_appointment_type")
     private Integer medicalAppointmentType;
 
+    @Column(name="parent_medical_appointment_id")
+    private Long parentMedicalAppointmentId;
+
     //Anamnesis
     @Column(name="main_symptoms", nullable = true,length = 4000)
     private String mainSymptoms;
@@ -185,6 +188,11 @@ public class MedicalAppointment  extends AuditModel {
     //Map one to one association between Person and Address
     @OneToOne(cascade = CascadeType.MERGE)
     private Patient patient;
+
+
+    @OneToMany
+    @JoinColumn(name = "medical_appointment_id")
+    private List<PageButton> pageButtons;
 
     @Transient
     @NotAudited
@@ -620,5 +628,13 @@ public class MedicalAppointment  extends AuditModel {
 
     public void setDateAttention(Date dateAttention) {
         this.dateAttention = dateAttention;
+    }
+
+    public Long getParentMedicalAppointmentId() {
+        return parentMedicalAppointmentId;
+    }
+
+    public void setParentMedicalAppointmentId(Long parentMedicalAppointmentId) {
+        this.parentMedicalAppointmentId = parentMedicalAppointmentId;
     }
 }

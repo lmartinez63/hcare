@@ -26,6 +26,9 @@ public class Page extends AuditModel {
     @Column(name="page_code")
     private String pageCode;
 
+    @Column(name="page_mode")
+    private String pageMode;
+
     @Column(name="entity")
     private String entity;
 
@@ -167,5 +170,13 @@ public class Page extends AuditModel {
 
     public void setCoTitleDefinition(String coTitleDefinition) {
         this.coTitleDefinition = coTitleDefinition;
+    }
+
+    public String getPageMode() {
+        return pageMode;
+    }
+
+    public void setPageMode(String pageMode) {
+        this.pageMode = pageMode;
     }
 }

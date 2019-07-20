@@ -44,6 +44,12 @@ public class PageButton extends AuditModel {
     @Column(name="browse_id")
     private Long browseId;
 
+    @Column(name="fab")
+    private Boolean fab;
+
+    @Column(name="round")
+    private Boolean round;
+
     @Transient
     @NotAudited
     private String labelValue;
@@ -150,5 +156,21 @@ public class PageButton extends AuditModel {
 
     public void setBrowseId(Long browseId) {
         this.browseId = browseId;
+    }
+
+    public Boolean getFab() {
+        return fab;
+    }
+
+    public void setFab(Boolean fab) {
+        this.fab = fab;
+    }
+
+    public Boolean getRound() {
+        return round;
+    }
+
+    public void setRound(Boolean round) {
+        this.round = round;
     }
 }

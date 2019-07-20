@@ -23,6 +23,12 @@ public abstract class  CustomProcess {
     MedicalAppointmentService medicalAppointmentService;
 
     @Autowired
+    MedicalSurgeryService medicalSurgeryService;
+
+    @Autowired
+    MedicalAnalysisService medicalAnalysisService;
+
+    @Autowired
     MedicalAreaService medicalAreaService;
 
     @Autowired

@@ -31,6 +31,13 @@ public class RetrieveMedicalAppointmentInfo extends CustomProcess {
             medicalAppointment.setFiles(directoryService.convertDirectoryToFrontEndFormat(directory));
         } else {
             medicalAppointment = medicalAppointmentService.createMedicalAppointment();
+            //Create new additional medical appointment
+            if (requestMap.containsKey("parentMedicalAppointmentId")){
+                Integer i_parentMedicalAppointmentId = (Integer)requestMap.get("parentMedicalAppointmentId");
+                Integer i_doctorId = (Integer)requestMap.get("doctorId");
+                medicalAppointment.setParentMedicalAppointmentId(i_parentMedicalAppointmentId.longValue());
+                medicalAppointment.setDoctorId(i_doctorId.longValue());
+            }
         }
         addDataToResultMap("medicalAppointment",medicalAppointment);
     }

@@ -53,7 +53,7 @@ public class FieldDefinition extends AuditModel {
     @Column(name="edit_rule_exp")
     private String editRuleExp;
 
-    @Column(name="select_source")
+    @Column(name="select_source",length = 4000, nullable = true)
     private String selectSource;
 
     @Column(name="on_click_event")
@@ -62,7 +62,7 @@ public class FieldDefinition extends AuditModel {
     @Column(name="on_change_event")
     private String onChangeEvent;
 
-    @Column(name="outter_button")
+    @Column(name="outter_button",length = 4000, nullable = true)
     private String outterButton;
 
     @Column(name="mask")

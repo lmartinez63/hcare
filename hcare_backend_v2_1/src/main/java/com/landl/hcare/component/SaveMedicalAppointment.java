@@ -3,6 +3,7 @@ package com.landl.hcare.component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.landl.hcare.entity.MedicalAppointment;
 import com.landl.hcare.entity.MedicalHistory;
+import com.landl.hcare.entity.MedicalSurgery;
 import com.landl.hcare.entity.Patient;
 import org.springframework.stereotype.Component;
 
@@ -17,10 +18,11 @@ public class SaveMedicalAppointment extends CustomProcess {
 
         final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
         final MedicalAppointment medicalAppointmentRequest = mapper.convertValue(requestMap.get("medicalAppointment"), MedicalAppointment.class);
-
+        String originalStatus = null;
         MedicalAppointment medicalAppointment = null;
         if (medicalAppointmentRequest.getId() != null){
             medicalAppointment = medicalAppointmentService.findById(medicalAppointmentRequest.getId());
+            originalStatus = medicalAppointment.getStatus();
             copyNonNullProperties(medicalAppointmentRequest, medicalAppointment);
         } else {
             medicalAppointment = medicalAppointmentRequest;
@@ -59,7 +61,18 @@ public class SaveMedicalAppointment extends CustomProcess {
                 MedicalHistory medicalHistory = medicalHistoryService.createMedicalHistory(medicalAppointment.getPatient());
             }
         }
-
+        if (medicalAppointment.getStatus().compareTo("10")==0){
+            medicalAppointment.setDateAttention(new Date());
+            if (medicalAppointment.getPatient().getHistoryCode() == null){
+                //Create Medical History set incoming patient with historyCode
+                MedicalHistory medicalHistory = medicalHistoryService.createMedicalHistory(medicalAppointment.getPatient());
+            }
+        }
+        //
+        if (medicalAppointment.getStatus().compareTo("15")==0 && originalStatus.compareTo("10")==0){
+            MedicalSurgery medicalSurgery = medicalSurgeryService.createMedicalSurgery(medicalAppointment);
+            medicalSurgeryService.save(medicalSurgery);
+        }
 
         //Actualizando Cita
         MedicalAppointment medicalAppointmentSaved = medicalAppointmentService.save(medicalAppointment);

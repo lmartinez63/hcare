@@ -1,6 +1,5 @@
 package com.landl.hcare.component;
 
-import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +8,12 @@ public class CustomProcessSelector {
 
     @Autowired
     RetrieveMedicalAppointmentInfo retrieveMedicalAppointmentInfo;
+
+    @Autowired
+    RetrieveMedicalSurgeryInfo retrieveMedicalSurgeryInfo;
+
+    @Autowired
+    RetrieveMedicalAnalysisInfo retrieveMedicalAnalysisInfo;
 
     @Autowired
     RetrievePatientInfo retrievePatientInfo;
@@ -24,6 +29,12 @@ public class CustomProcessSelector {
 
     @Autowired
     SaveMedicalAppointment saveMedicalAppointment;
+
+    @Autowired
+    SaveMedicalSurgery saveMedicalSurgery;
+
+    @Autowired
+    SaveMedicalAnalysis saveMedicalAnalysis;
 
     @Autowired
     SavePatient savePatient;
@@ -109,6 +120,12 @@ public class CustomProcessSelector {
     public CustomProcess getCustomProcessClass(String customProcessName) throws Exception{
         CustomProcess customProcess = null;
         switch(customProcessName){
+            case "RetrieveMedicalAnalysisInfo":
+                customProcess = retrieveMedicalAnalysisInfo;
+                break;
+            case "RetrieveMedicalSurgeryInfo":
+                customProcess = retrieveMedicalSurgeryInfo;
+                break;
             case "RetrieveMedicalAppointmentInfo":
                 customProcess = retrieveMedicalAppointmentInfo;
                 break;
@@ -159,6 +176,12 @@ public class CustomProcessSelector {
                 break;
             case "SaveMedicalAppointment":
                 customProcess = saveMedicalAppointment;
+                break;
+            case "SaveMedicalSurgery":
+                customProcess = saveMedicalSurgery;
+                break;
+            case "SaveMedicalAnalysis":
+                customProcess = saveMedicalAnalysis;
                 break;
             case "SavePatient":
                 customProcess = savePatient;
