@@ -52,6 +52,9 @@ public class Section extends AuditModel {
     @Column(name="step_rule_Exp")
     private String stepRuleExp;
 
+    @Column(name="step_complete_rule_exp")
+    private String stepCompleteRuleExp;
+
     @Transient
     @NotAudited
     private List<FieldDefinition> fieldDefinitionList;
@@ -154,5 +157,13 @@ public class Section extends AuditModel {
 
     public void setStepRuleExp(String stepRuleExp) {
         this.stepRuleExp = stepRuleExp;
+    }
+
+    public String getStepCompleteRuleExp() {
+        return stepCompleteRuleExp;
+    }
+
+    public void setStepCompleteRuleExp(String stepCompleteRuleExp) {
+        this.stepCompleteRuleExp = stepCompleteRuleExp;
     }
 }

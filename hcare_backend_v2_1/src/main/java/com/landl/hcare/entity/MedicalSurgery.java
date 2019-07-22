@@ -7,6 +7,7 @@ import org.hibernate.envers.NotAudited;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Audited
@@ -42,9 +43,9 @@ public class MedicalSurgery extends AuditModel {
     @Audited
     private Date surgeryEndDatetime;
 
-    @Column(name="internal_surgery_area_id")
-    @Audited
-    private Long internalSurgeryAreaId;
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name="surgery_area_id")
+    private SurgeryArea surgeryArea;
 
     @OneToMany
     @JoinColumn(name = "medical_surgery_id")
@@ -64,6 +65,11 @@ public class MedicalSurgery extends AuditModel {
 
     @Transient
     private Patient patient;
+
+    //Format for directories frontEnd
+    @Transient
+    @NotAudited
+    private List<Map> files;
 
     public Long getId() {
         return id;
@@ -113,12 +119,12 @@ public class MedicalSurgery extends AuditModel {
         this.surgeryEndDatetime = surgeryEndDatetime;
     }
 
-    public Long getInternalSurgeryAreaId() {
-        return internalSurgeryAreaId;
+    public SurgeryArea getSurgeryArea() {
+        return surgeryArea;
     }
 
-    public void setInternalSurgeryAreaId(Long internalSurgeryAreaId) {
-        this.internalSurgeryAreaId = internalSurgeryAreaId;
+    public void setSurgeryArea(SurgeryArea surgeryArea) {
+        this.surgeryArea = surgeryArea;
     }
 
     public List<SurgeryDoctor> getSurgeryDoctors() {
@@ -159,5 +165,13 @@ public class MedicalSurgery extends AuditModel {
 
     public void setPatient(Patient patient) {
         this.patient = patient;
+    }
+
+    public List<Map> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<Map> files) {
+        this.files = files;
     }
 }

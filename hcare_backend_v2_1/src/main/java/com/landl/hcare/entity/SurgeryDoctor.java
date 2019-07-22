@@ -1,12 +1,13 @@
 package com.landl.hcare.entity;
 
+import com.landl.hcare.model.AuditModel;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 
 @Entity
 @Audited
-public class SurgeryDoctor {
+public class SurgeryDoctor   extends AuditModel {
 
     @Id
     @Audited

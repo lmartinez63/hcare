@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.landl.hcare.entity.MedicalAnalysis;
 import com.landl.hcare.entity.MedicalSurgery;
 import com.landl.hcare.entity.type.MedicalAnalysisStatus;
+import com.landl.hcare.entity.type.MedicalSurgeryStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -27,6 +28,13 @@ public class SaveMedicalAnalysis extends CustomProcess {
         if (medicalAnalysis.getId() == null && medicalAnalysis.getRequiredDate() != null) {
             medicalAnalysis.setStatus(MedicalAnalysisStatus.SCHEDULED);
         }
+
+        if (medicalAnalysis.getStatus().compareTo(MedicalAnalysisStatus.APPROVED)==0 && originalStatus.compareTo(MedicalAnalysisStatus.SCHEDULED)==0){
+            MedicalSurgery medicalSurgery = medicalSurgeryService.findById(medicalAnalysis.getMedicalSurgeryId());
+            medicalSurgery.setStatus(MedicalSurgeryStatus.TO_CONFIRM);
+            medicalSurgeryService.save(medicalSurgery);
+        }
+
         //Actualizando Cita
         MedicalAnalysis medicalAnalysisSaved = medicalAnalysisService.save(medicalAnalysis);
 

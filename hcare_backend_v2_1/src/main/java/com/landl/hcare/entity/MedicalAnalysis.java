@@ -7,6 +7,7 @@ import org.hibernate.envers.NotAudited;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Audited
@@ -61,9 +62,10 @@ public class MedicalAnalysis extends AuditModel {
     @Column(name="medical_surgery_id")
     private Long medicalSurgeryId;
 
+    //Format for directories frontEnd
     @Transient
     @NotAudited
-    private List<Attachment> attachmentList;
+    private List<Map> files;
 
     public MedicalAnalysis() {
     }
@@ -156,11 +158,11 @@ public class MedicalAnalysis extends AuditModel {
         this.medicalSurgeryId = medicalSurgeryId;
     }
 
-    public List<Attachment> getAttachmentList() {
-        return attachmentList;
+    public List<Map> getFiles() {
+        return files;
     }
 
-    public void setAttachmentList(List<Attachment> attachmentList) {
-        this.attachmentList = attachmentList;
+    public void setFiles(List<Map> files) {
+        this.files = files;
     }
 }
