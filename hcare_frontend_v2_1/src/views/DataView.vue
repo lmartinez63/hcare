@@ -22,89 +22,241 @@
             <v-stepper
               v-if="page.pageMode === 'step' "
               vertical
+              non-linear
               style="width:100%;"
             >
-            <div
-              v-for="section in orderedSections"
-              v-if="getFieldCount(section.fieldDefinitionList) > 0"
-              :key="section.sectionCode"
-            >
-              <v-stepper-step
-                :complete="section.stepCompleted"
-                :step="section.visualizationOrder"
+              <div
+                v-for="section in orderedSections"
+                v-if="getFieldCount(section.fieldDefinitionList) > 0"
+                :key="section.sectionCode"
               >
-                {{ $parent.$parent.$parent.getLabelValue(section.label) }}
+                <v-stepper-step
+                  :step="section.visualizationOrder"
+                  :complete="evaluateExp(section.stepCompleteRuleExp)"
+                  :editable="evaluateExp(section.stepRuleExp)"
+                >
+                  {{ $parent.$parent.$parent.getLabelValue(section.label) }}
                 <!--<small>Summarize if needed</small>-->
-              </v-stepper-step>
-              <v-stepper-content :step="section.visualizationOrder">
-                <v-card
-                  color="grey lighten-1"
-                  class="mb-5"
-                  v-if="section.sectionType === 3"
-                >
-                <v-flex
-                  v-for="fieldDefinition in orderedFields(section.fieldDefinitionList)"
-                  v-if="fieldDefinition.visible"
-                  :key="fieldDefinition.fieldDefinitionCode"
-                >
-                  <div v-if="fieldDefinition.fieldType === 10">
-                      <v-toolbar color="primary">
-                        <!--<v-toolbar-side-icon></v-toolbar-side-icon>-->
-                        <v-toolbar-title>
-                          {{ $parent.$parent.$parent.getLabelValue(fieldDefinition.label) }}
-                        </v-toolbar-title>
-                        <v-spacer />
-                        <v-btn
-                          icon
-                          v-if="fieldDefinition.outterButton && fieldDefinition.outterButton != null && fieldDefinition.outterButton !== '' ">
-                          <v-icon
-                            :key="fieldDefinition.id"
-                            :color="JSON.parse(fieldDefinition.outterButton).color"
-                            @click="executeAction(JSON.parse(fieldDefinition.outterButton).button)"
-                            v-text="JSON.parse(fieldDefinition.outterButton).icon"
-                          />
-                        </v-btn>
-                      </v-toolbar>
-                      <v-list
-                        two-line
-                      >
-                          <template v-for="(dataElement,dataElementIndex) in getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]">
-                            <v-list-tile
-                              :key="dataElement.id"
-                              avatar
-                              ripple
-                              @click="executeAction(JSON.parse(fieldDefinition.selectSource).button,dataElement)"
+                </v-stepper-step>
+                <v-stepper-content :step="section.visualizationOrder">
+                  <div v-if="section.sectionType === 1">
+                    <v-form ref="dataForm">
+                      <v-container py-6>
+                        <v-alert
+                          :value="dataAlert.display"
+                          :type="dataAlert.type"
+                          transition="scale-transition"
+                          dismissible
+                        >
+                          {{ dataAlert.message }}
+                        </v-alert>
+                        <v-layout
+                          v-if="section.sectionType === 1"
+                          wrap
+                          row
+                        >
+                          <v-flex
+                            v-for="fieldDefinition in orderedFields(section.fieldDefinitionList)"
+                            v-if="fieldDefinition.visible"
+                            :key="fieldDefinition.fieldDefinitionCode"
+                            :xs12="fieldDefinition.fieldType === 8 ? true : false"
+                            :class="['order-xs'+orderCalculated(fieldDefinition.orderNumber,section.fieldDefinitionList.length), fieldDefinition.xsSize ? 'xs' +fieldDefinition.xsSize : 'xs6']"
+                          >
+                            <v-text-field
+                              v-if="fieldDefinition.fieldType === 1"
+                              v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
+                              :label="$parent.$parent.$parent.getLabelValue(fieldDefinition.label)"
+                              :rules="[() => fieldDefinition.required === true && ( !! getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode] || 'Este campo es requerido' )]"
+                              :disabled="!fieldDefinition.editable"
+                              :suffix="fieldDefinition.suffix"
+                              :prefix="fieldDefinition.prefix"
+                              :mask="fieldDefinition.mask"
+                              @change="executeFieldChangeEvent(fieldDefinition.onChangeEvent)"
+                            />
+                            <v-autocomplete
+                              v-if="fieldDefinition.fieldType === 2"
+                              ref="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
+                              v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
+                              :rules="[() => fieldDefinition.required === true && ( !! getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode] || 'Este campo es requerido' )]"
+                              :items="arrayItems(fieldDefinition.selectSource)"
+                              :label="fieldDefinition.label.labelValueEsEs"
+                              placeholder="Seleccione..."
+                              :return-object="getReturnObject(fieldDefinition.selectSource)"
+                              :item-text="getItemText(fieldDefinition.selectSource)"
+                              :item-value="getItemValue(fieldDefinition.selectSource)"
+                              :multiple="getMultiple(fieldDefinition.selectSource)"
+                              :chips="getMultiple(fieldDefinition.selectSource)"
+                              :readonly="!fieldDefinition.editable"
                             >
-                            <v-list-tile-content>
-                              <v-list-tile-title>{{ dataElement[JSON.parse(fieldDefinition.selectSource).title] }}</v-list-tile-title>
-                              <v-list-tile-sub-title class="text--primary">{{ dataElement[JSON.parse(fieldDefinition.selectSource).headline] }}</v-list-tile-sub-title>
-                              <v-list-tile-sub-title>{{ dataElement[JSON.parse(fieldDefinition.selectSource).subtitle] }}</v-list-tile-sub-title>
-                            </v-list-tile-content>
-                            <v-list-tile-action>
-                              <v-list-tile-action-text>{{ dataElement[JSON.parse(fieldDefinition.selectSource).action] }}</v-list-tile-action-text>
-
-                            </v-list-tile-action>
-                          </v-list-tile>
-                          <v-divider
-                            v-if="dataElementIndex + 1 < getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode].length"
-                            :key="dataElementIndex"
-                          ></v-divider>
-                        </template>
-                      </v-list>
-                    </div>
-                    </v-flex>
-                </v-card>
-                <v-btn
-                  color="primary"
-                  @click="executeAction()"
-                >
-                  Continue
-                </v-btn>
-                <v-btn flat>
-                  Cancel
-                </v-btn>
-              </v-stepper-content>
-            </div>
+                              {{ fieldDefinition.outterButton }}
+                              <template
+                                v-if="fieldDefinition.outterButton && fieldDefinition.outterButton != null && fieldDefinition.outterButton !== '' "
+                                v-slot:append-outer
+                              >
+                                <v-slide-x-reverse-transition mode="out-in">
+                                  <v-icon
+                                    :key="fieldDefinition.id"
+                                    :color="JSON.parse(fieldDefinition.outterButton).color"
+                                    @click="executeAction(JSON.parse(fieldDefinition.outterButton).button)"
+                                    v-text="JSON.parse(fieldDefinition.outterButton).icon"
+                                  />
+                                </v-slide-x-reverse-transition>
+                              </template>
+                            </v-autocomplete>
+                            <v-switch
+                              v-if="fieldDefinition.fieldType === 3"
+                              v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
+                              :label="fieldDefinition.label.labelValueEsEs"
+                            />
+                            <v-dialog
+                              v-if="fieldDefinition.fieldType === 4"
+                              ref="dialog"
+                              v-model="fieldDefinition.modal"
+                              :return-value.sync="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
+                              persistent
+                              lazy
+                              full-width
+                              :disabled="!fieldDefinition.editable"
+                              width="290px"
+                            >
+                              <template v-slot:activator="{ on }">
+                                <v-text-field
+                                  model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
+                                  :value="$parent.$parent.$parent.computedDateFormattedMomentjs(getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode])"
+                                  :rules="[() => fieldDefinition.required === true && ( !! getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode] || 'Este campo es requerido' )]"
+                                  :label="fieldDefinition.label.labelValueEsEs"
+                                  prepend-icon="mdi-calendar"
+                                  readonly
+                                  v-on="on"
+                                />
+                              </template>
+                              <v-date-picker
+                                v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
+                                scrollable
+                                locale="es"
+                                :readonly="!fieldDefinition.editable"
+                              >
+                                <v-spacer />
+                                <v-btn
+                                  flat
+                                  color="primary"
+                                  @click="fieldDefinition.modal = false"
+                                >
+                                  Cancelar
+                                </v-btn>
+                                <v-btn
+                                  flat
+                                  color="primary"
+                                  @click="$refs.dialog[0].save(getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode])"
+                                >
+                                  OK
+                                </v-btn>
+                              </v-date-picker>
+                            </v-dialog>
+                            <v-datetime-picker
+                              v-if="fieldDefinition.fieldType === 5"
+                              v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
+                              locale="es-es"
+                              :label="fieldDefinition.label.labelValueEsEs"
+                              :disabled="!fieldDefinition.editable"
+                              :rules="[() => fieldDefinition.required === true && ( !! getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode] || 'Este campo es requerido' )]"
+                            >
+                              <template v-slot:dateIcon>
+                                <v-icon>
+                                  mdi-calendar
+                                </v-icon>
+                              </template>
+                              <template v-slot:timeIcon>
+                                <v-icon>
+                                  mdi-clock-outline
+                                </v-icon>
+                              </template>
+                            </v-datetime-picker>
+                            <v-textarea
+                              v-if="fieldDefinition.fieldType === 8"
+                              v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
+                              box
+                              full-width
+                              :label="fieldDefinition.label.labelValueEsEs"
+                              auto-grow
+                              :maxlength="getMaxFieldSize(fieldDefinition.fieldSize)"
+                            />
+                          </v-flex>
+                        </v-layout>
+                      </v-container>
+                    </v-form>
+                  </div>
+                  <div v-if="section.sectionType === 3">
+                    <v-card
+                      color="grey lighten-1"
+                      class="mb-5"
+                    >
+                      <v-flex
+                        v-for="fieldDefinition in orderedFields(section.fieldDefinitionList)"
+                        v-if="fieldDefinition.visible"
+                        :key="fieldDefinition.fieldDefinitionCode"
+                      >
+                        <div v-if="fieldDefinition.fieldType === 10">
+                          <v-toolbar color="primary">
+                            <!--<v-toolbar-side-icon></v-toolbar-side-icon>-->
+                            <v-toolbar-title>
+                              {{ $parent.$parent.$parent.getLabelValue(fieldDefinition.label) }}
+                            </v-toolbar-title>
+                            <v-spacer />
+                            <v-btn
+                              v-if="fieldDefinition.outterButton && fieldDefinition.outterButton != null && fieldDefinition.outterButton !== '' "
+                              icon
+                            >
+                              <v-icon
+                                :key="fieldDefinition.id"
+                                :color="JSON.parse(fieldDefinition.outterButton).color"
+                                @click="executeAction(JSON.parse(fieldDefinition.outterButton).button)"
+                                v-text="JSON.parse(fieldDefinition.outterButton).icon"
+                              />
+                            </v-btn>
+                          </v-toolbar>
+                          <v-list
+                            two-line
+                          >
+                            <template v-for="(dataElement,dataElementIndex) in getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]">
+                              <v-list-tile
+                                :key="dataElement.id"
+                                avatar
+                                ripple
+                                @click="executeAction(JSON.parse(fieldDefinition.selectSource).button,dataElement)"
+                              >
+                                <v-list-tile-content>
+                                  <v-list-tile-title>{{ dataElement[JSON.parse(fieldDefinition.selectSource).title] }}</v-list-tile-title>
+                                  <v-list-tile-sub-title class="text--primary">
+                                    {{ dataElement[JSON.parse(fieldDefinition.selectSource).headline] }}
+                                  </v-list-tile-sub-title>
+                                  <v-list-tile-sub-title>{{ dataElement[JSON.parse(fieldDefinition.selectSource).subtitle] }}</v-list-tile-sub-title>
+                                </v-list-tile-content>
+                                <v-list-tile-action>
+                                  <v-list-tile-action-text>{{ dataElement[JSON.parse(fieldDefinition.selectSource).action] }}</v-list-tile-action-text>
+                                </v-list-tile-action>
+                              </v-list-tile>
+                              <v-divider
+                                v-if="dataElementIndex + 1 < getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode].length"
+                                :key="dataElementIndex"
+                              />
+                            </template>
+                          </v-list>
+                        </div>
+                      </v-flex>
+                    </v-card>
+                  </div>
+                  <v-btn
+                    color="primary"
+                    @click="executeAction()"
+                  >
+                    Continue
+                  </v-btn>
+                  <v-btn flat>
+                    Cancel
+                  </v-btn>
+                </v-stepper-content>
+              </div>
             </v-stepper>
             <v-tabs
               v-if="page.pageMode === 'tab' "
@@ -382,7 +534,7 @@
               @click="executeAction(pageButton)"
             >
               <v-icon>{{ pageButton.icon }}</v-icon>
-              {{ pageButton.round ? ' '+$parent.$parent.$parent.getLabelValue(pageButton.label) : ''}}
+              {{ pageButton.round ? ' '+$parent.$parent.$parent.getLabelValue(pageButton.label) : '' }}
             </v-btn>
           </v-speed-dial>
         </material-card>
@@ -739,6 +891,14 @@ export default {
       this.createDataViewDialog = true
       this.dataViewDialog = true
     },
+    evaluateExp (expression) {
+      try {
+        return eval(expression)
+      } catch (err) {
+        console.log(err.message)
+        return false
+      }
+    },
     closeDataDialogEntity () {
       this.createDataViewDialog = false
       this.dataViewDialog = false
@@ -914,7 +1074,7 @@ export default {
       })
       console.log('DataView - method - getPatientInfo - end')
     },
-    executeAction: function (button,elementSource) {
+    executeAction: function (button, elementSource) {
       let selfVue = this
       switch (button.buttonType) {
         case 1:

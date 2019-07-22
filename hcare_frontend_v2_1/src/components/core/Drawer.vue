@@ -141,6 +141,11 @@ export default {
         text: 'Administracion de Roles'
       },
       {
+        to: '/browse/allSurgeryAreas',
+        icon: 'mdi-clipboard-outline',
+        text: 'Administracion de Areas de Cirugia'
+      },
+      {
         to: '/browse/allProperties',
         icon: 'mdi-clipboard-outline',
         text: 'Administracion de Propiedades'
