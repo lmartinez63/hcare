@@ -1,18 +1,28 @@
 package com.landl.hcare.common;
 
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class DateUtils {
 
-    /**
-     * <p>Checks if two dates are on the same day ignoring time.</p>
-     * @param date1  the first date, not altered, not null
-     * @param date2  the second date, not altered, not null
-     * @return true if they represent the same day
-     * @throws IllegalArgumentException if either date is <code>null</code>
-     */
+
+    public static Date fromISO8601( String string ) {
+        try{
+            DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");;
+            df1.setTimeZone(TimeZone.getTimeZone("UTC"));
+            return df1.parse(string);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+
     public static boolean isSameDay(Date date1, Date date2) {
         if (date1 == null || date2 == null) {
             throw new IllegalArgumentException("The dates must not be null");

@@ -6,8 +6,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,6 +22,12 @@ public abstract class  CustomProcess {
 
     @Autowired
     MedicalSurgeryService medicalSurgeryService;
+
+    @Autowired
+    SurgeryAreaService surgeryAreaService;
+
+    @Autowired
+    EventService eventService;
 
     @Autowired
     MedicalAnalysisService medicalAnalysisService;
@@ -82,6 +86,8 @@ public abstract class  CustomProcess {
 
     private Map<String,Object> resultMap  = new HashMap<String,Object>();
 
+    private Map<String,Object> parentResultMap  = new HashMap<String,Object>();
+
     public CustomProcess() {
         this.processStatus = ProcessStatus.INITIALIZED;
     }
@@ -137,6 +143,18 @@ public abstract class  CustomProcess {
 
     public void addDataToResultMap(String objectName,Object objectResult) {
         this.resultMap.put(objectName,objectResult);
+    }
+
+    public Map<String, Object> getParentResultMap() {
+        return parentResultMap;
+    }
+
+    public void setParentResultMap(Map<String, Object> parentResultMap) {
+        this.parentResultMap = parentResultMap;
+    }
+
+    public void addDataToParentResultMap(String objectName,Object objectResult) {
+        this.parentResultMap.put(objectName,objectResult);
     }
 
     public UserAuthenticated getUserAuthenticated() {

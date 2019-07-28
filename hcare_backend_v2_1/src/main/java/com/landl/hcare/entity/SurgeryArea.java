@@ -3,82 +3,57 @@ package com.landl.hcare.entity;
 import com.landl.hcare.model.AuditModel;
 import org.hibernate.envers.Audited;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @Audited
 public class SurgeryArea extends AuditModel {
 
     @Id
-    @Audited
+    @GeneratedValue(generator = "surgery_area_generator")
+    @SequenceGenerator(
+            name = "surgery_area_generator",
+            sequenceName = "surgery_area_sequence",
+            allocationSize = 1,
+            initialValue = 1000
+    )
     private Long id;
 
     @Column(name="surgery_area_code")
     @Audited
     private String surgeryAreaCode;
 
-    @Column(name="status")
+    @Column(name="activation_status")
     @Audited
-    private Integer status;
+    private Boolean activationStatus;
 
-    @Column(name="monday_start_time_surgeries")
-    @Audited
-    private LocalTime mondayStartTimeSurgeries;
-
-    @Column(name="monday_end_time_surgeries")
-    @Audited
-    private LocalTime mondayEndTimeSurgeries;
-
-    @Column(name="tuesday_start_time_surgeries")
-    @Audited
-    private LocalTime tuesdayStartTimeSurgeries;
-
-    @Column(name="tuesday_end_time_surgeries")
-    @Audited
-    private LocalTime tuesdayEndTimeSurgeries;
-
-    @Column(name="wednesday_start_time_surgeries")
-    @Audited
-    private LocalTime wednesdayStartTimeSurgeries;
-
-    @Column(name="wednesday_end_time_surgeries")
-    @Audited
-    private LocalTime wednesdayEndTimeSurgeries;
-
-    @Column(name="thursday_start_time_surgeries")
-    @Audited
-    private LocalTime thursdayStartTimeSurgeries;
-
-    @Column(name="thursday_end_time_surgeries")
-    @Audited
-    private LocalTime thursdayEndTimeSurgeries;
-
-    @Column(name="friday_start_time_surgeries")
-    @Audited
-    private LocalTime fridayStartTimeSurgeries;
-
-    @Column(name="friday_end_time_surgeries")
-    @Audited
-    private LocalTime fridayEndTimeSurgeries;
-
-    @Column(name="saturday_start_time_surgeries")
-    @Audited
-    private LocalTime saturdayStartTimeSurgeries;
-
-    @Column(name="saturday_end_time_surgeries")
-    @Audited
-    private LocalTime saturdayEndTimeSurgeries;
-
-    @Column(name="sunday_start_time_surgeries")
-    @Audited
-    private LocalTime sundayStartTimeSurgeries;
-
-    @Column(name="sunday_end_time_surgeries")
-    @Audited
-    private LocalTime sundayEndTimeSurgeries;
+    @Transient
+    private List<EventGroup> eventList;
 
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getSurgeryAreaCode() {
+        return surgeryAreaCode;
+    }
+
+    public void setSurgeryAreaCode(String surgeryAreaCode) {
+        this.surgeryAreaCode = surgeryAreaCode;
+    }
+
+    public Boolean getActivationStatus() {
+        return activationStatus;
+    }
+
+    public void setActivationStatus(Boolean activationStatus) {
+        this.activationStatus = activationStatus;
+    }
 }

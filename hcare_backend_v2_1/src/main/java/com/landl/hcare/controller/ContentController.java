@@ -116,6 +116,8 @@ public class ContentController {
             customProcess.getResultMap().put("userProfileAuthenticated",userService.findByUsername(username));
             customProcess.getResultMap().put("requestPage",requestPage);
             dataContent.setDataMap(customProcess.getResultMap());
+            if(customProcess.getParentResultMap() != null)
+                dataContent.setParentDataMap(customProcess.getParentResultMap());
             if( requestPage != null ) {
                 Page page = pageService.findPageSectionAndFieldsByPageCodeAndUserName(requestPage, username);
                 //Verify if use is authorizated

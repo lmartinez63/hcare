@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class DataContent {
     Map<String, Object> dataMap;
+    Map<String, Object> parentDataMap;
 
     public DataContent() {
         this.dataMap = new HashMap<String, Object>();
@@ -19,5 +20,13 @@ public class DataContent {
     }
     public void addData(String stringData, Object entityData) {
         this.dataMap.put(stringData, entityData);
+    }
+
+    public Map<String, Object> getParentDataMap() {
+        return parentDataMap;
+    }
+
+    public void setParentDataMap(Map<String, Object> parentDataMap) {
+        this.parentDataMap = parentDataMap;
     }
 }

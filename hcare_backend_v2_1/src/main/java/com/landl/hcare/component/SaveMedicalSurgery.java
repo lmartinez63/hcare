@@ -20,7 +20,8 @@ public class SaveMedicalSurgery extends CustomProcess {
         } else {
             medicalSurgery = medicalSurgeryRequest;
         }
-        addDataToResultMap("medicalSurgery",medicalSurgery);
+        MedicalSurgery medicalSurgerySaved = medicalSurgeryService.save(medicalSurgery);
+        addDataToResultMap("medicalSurgery",medicalSurgerySaved);
 
     }
 

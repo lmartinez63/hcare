@@ -7,6 +7,18 @@ import org.springframework.stereotype.Component;
 public class CustomProcessSelector {
 
     @Autowired
+    RetrieveEventInfo retrieveEventInfo;
+
+    @Autowired
+    SaveEvent saveEvent;
+
+    @Autowired
+    RetrieveSurgeryAreaInfo retrieveSurgeryAreaInfo;
+
+    @Autowired
+    SaveSurgeryArea saveSurgeryArea;
+
+    @Autowired
     RetrieveMedicalAppointmentInfo retrieveMedicalAppointmentInfo;
 
     @Autowired
@@ -120,6 +132,18 @@ public class CustomProcessSelector {
     public CustomProcess getCustomProcessClass(String customProcessName) throws Exception{
         CustomProcess customProcess = null;
         switch(customProcessName){
+            case "RetrieveEventInfo":
+                customProcess = retrieveEventInfo;
+                break;
+            case "SaveEvent":
+                customProcess = saveEvent;
+                break;
+            case "RetrieveSurgeryAreaInfo":
+                customProcess = retrieveSurgeryAreaInfo;
+                break;
+            case "SaveSurgeryArea":
+                customProcess = saveSurgeryArea;
+                break;
             case "RetrieveMedicalAnalysisInfo":
                 customProcess = retrieveMedicalAnalysisInfo;
                 break;
