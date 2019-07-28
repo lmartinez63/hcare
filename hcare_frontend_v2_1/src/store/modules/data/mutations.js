@@ -10,7 +10,7 @@ export default {
   pendingDialogRequest (state) {
     console.log('dataResponse - mutations - pendingDialogRequest')
     state.loading = true
-    state.dialgoDataMap = {}
+    state.dialogDataMap = {}
     state.dialogMetadata = {}
   },
   failureDetected (state, error) {
@@ -22,10 +22,6 @@ export default {
     state.loading = false
     console.log('dataResponse - mutations  - getDialogDataSuccess')
     state.dialogDataMap = content.dataContent.dataMap
-    // Formats for dates
-    if (state.dataMap.patient) {
-      state.dataMap.patient.birthday = (new Date(state.dataMap.patient.birthday)).toISOString().substr(0, 10)
-    }
     state.dialogMetadata = content.metadataContent
   },
   getDataSuccess (state, content) {
@@ -47,9 +43,21 @@ export default {
       state.dataAlert = { message: 'Numero de Documento no encontrado, el paciente sera registrado', type: 'info', display: true }
     }
   },
+  saveDialogEntitySuccess (state, content) {
+    state.loading = false
+    console.log('processResponse - mutations  - saveDialogEntitySuccess')
+    state.dialogDataMap = content.dataContent.dataMap
+    if (content.dataContent.parentDataMap) {
+      Object.keys(content.dataContent.parentDataMap).forEach(function (key, index) {
+        // key: the name of the object key
+        // index: the ordinal position of the key within the object
+        state.dataMap[key] = content.dataContent.parentDataMap[key]
+      })
+    }
+  },
   saveEntitySuccess (state, content) {
     state.loading = false
-    console.log('processResponse - mutations  - getDataSuccess')
+    console.log('processResponse - mutations  - saveEntitySuccess')
     state.dataMap = content.dataContent.dataMap
   },
   uploadFileSuccess (state, content) {

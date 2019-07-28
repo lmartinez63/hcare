@@ -496,6 +496,65 @@
                         </v-layout>
                       </v-card>
                     </v-layout>
+                    <v-layout v-if="section.sectionType === 4">
+                      <v-flex>
+                        <full-calendar
+                          ref="calendar"
+                          :config="config"
+                          :timezone="timeZone"
+                          :event-sources="eventSources"
+                          @event-selected="eventSelected"
+                          @event-receive="eventReceive"
+                          @event-created="eventCreated"
+                        />
+                        <!-- Vuetify v-calendar
+                        <v-sheet>
+                          <v-calendar
+                            ref="calendar"
+                            v-model="todayDate"
+                            :type="type"
+                            :now="todayDate"
+                            :value="todayDate"
+                            color="primary"
+                          >
+                            <template
+                              slot="dayBody"
+                              slot-scope="{ date, timeToY, minutesToPixels }"
+                            >
+                              <template v-for="event in eventsMap[date]">
+                                <div
+                                  v-if="event.time"
+                                  :key="event.title"
+                                  :style="{ top: timeToY(event.time) + 'px', height: minutesToPixels(event.duration) + 'px' }"
+                                  class="vueti-my-event with-time"
+                                  v-html="event.title"
+                                />
+                              </template>
+                            </template>
+                          </v-calendar>
+                        </v-sheet>
+                        -->
+                        <!--Toastui calendar
+                        <calendar
+                          :schedules="getDataMapAttribute(dataMap,section.entity)"
+                          :view="view"
+                          :task-view="taskView"
+                          :schedule-view="scheduleView"
+                          :usage-statistics="false"
+                          :week="week"
+                          :month="month"
+                          :timezones="timezones"
+                          :disable-dbl-click="disableDblClick"
+                          :is-read-only="isReadOnly"
+                          :template="template"
+                          :use-creation-popup="useCreationPopup"
+                          :use-detail-popup="useDetailPopup"
+                          @beforeCreateSchedule="onBeforeCreateSchedule"
+                          @clickSchedule="onClickSchedule"
+                        />
+                        -->
+                      </v-flex>
+                    </v-layout>
                   </v-container>
                 </v-form>
               </v-tab-item>
@@ -752,11 +811,24 @@
 <script>
 
 import _ from 'lodash'
+import $ from 'jquery'
+/* For ToatUI Calendar
+import 'tui-calendar/dist/tui-calendar.css'
+import { Calendar } from '@toast-ui/vue-calendar'
+*/
+// For FullCalendarIO
+import { FullCalendar } from 'vue-full-calendar'
+import 'fullcalendar/dist/fullcalendar.min.css'
+import moment from 'moment'
+import 'fullcalendar/dist/locale/es'
 
 let installed = false
 
 export default {
   name: 'DataView',
+  components: {
+    FullCalendar
+  },
   data () {
     return {
       modal: false,
@@ -809,7 +881,7 @@ export default {
         xls: 'mdi-file-excel'
       },
       tree: [],
-      required: value => !!value || 'Campo es requerido.',
+      //      required: value => !!value || 'Campo es requerido.',
       rules: {
         required: value => !!value || 'Campo es requerido.',
         counter: value => value.length <= 20 || 'Max 20 characters',
@@ -817,10 +889,55 @@ export default {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
           return pattern.test(value) || 'E-mail invalido.'
         }
+      },
+      // For Testing V-calendar
+      /* 'YYYY-MM-DD' */
+      /*
+      todayDate: new Date().toISOString().substr(0, 10) ,
+      type: 'week',
+      events: [{
+        title: 'Weekly Meeting',
+        date: '2019-07-25',
+        time: '09:00',
+        duration: 45
+      },
+      {
+        title: 'Mash Potatoes',
+        date: '2019-07-26',
+        time: '12:30',
+        duration: 180
+      }
+      ]
+      */
+      calendarEvent: new Date(),
+      timeZone: 'local',
+      events: [
+        {
+          title: 'test',
+          allDay: true,
+          start: moment(),
+          end: moment().add(1, 'd')
+        },
+        {
+          title: 'another test',
+          start: moment().add(2, 'd'),
+          end: moment().add(2, 'd').add(2, 'h')
+        }
+      ],
+      config: {
+        defaultView: 'month',
+        locale: 'es',
+        timezone: 'local',
+        eventRender: function (event, element) {
+          console.log(event)
+        }
       }
     }
   },
   computed: {
+    eventSources () {
+      return this.$store.state.data.dataMap.eventGroupList
+    },
     dataAlert () {
       return this.$store.state.data.dataAlert
     },
@@ -863,6 +980,7 @@ export default {
     const queryParams = this.$route.query
     const { dispatch } = this.$store
     dispatch('data/getData', {
+      vm: this,
       requestPage: requestPage,
       processName: processName,
       dataContent: JSON.parse(JSON.stringify(queryParams))
@@ -871,9 +989,24 @@ export default {
   },
   mounted: function () {
     console.log('DataPage - mounted - begin')
+    // this.$refs.calendar[0].fireMethod('option', 'timezone', 'local')
     console.log('DataPage - mounted - end')
   },
   methods: {
+    eventReceive (event, jsEvent, view) {
+      console.log('eventReceive')
+    },
+    eventSelected (event, jsEvent, view) {
+      console.log('eventSelected')
+    },
+    eventCreated (event) {
+      // alert(event)
+      console.log('eventCreated')
+      this.calendarEvent = event
+      this.calendarEvent.start.isoDate = this.calendarEvent.start.local().toDate().toISOString()
+      this.calendarEvent.end.isoDate = this.calendarEvent.end.local().toDate().toISOString()
+      this.openDataDialogEntity('RetrieveEventInfo', 'addEventDialog', '{"surgeryAreaId":${{this.dataMap.surgeryArea.id}},"start":"${{this.calendarEvent.start.isoDate}}","end":"${{this.calendarEvent.end.isoDate}}"}')
+    },
     openDataDialogEntity (dialogProcessName, dialogRequestPage, dialogParams) {
       const { dispatch } = this.$store
       var dialogParamsString = dialogParams
@@ -884,6 +1017,7 @@ export default {
         }
       }
       dispatch('data/getDialogData', {
+        vm: this,
         requestPage: dialogRequestPage,
         processName: dialogProcessName,
         dataContent: JSON.parse(dialogParamsString)
@@ -1139,7 +1273,15 @@ export default {
       var dialogDataContent = {}
       for (var di = 0; di < dialogAttributeArray.length; di++) {
         Object.defineProperty(dialogDataContent, dialogAttributeArray[di], { value: this.dialogDataMap[dialogAttributeArray[di]], writable: true, enumerable: true, configurable: true })
+        Object.keys(dialogDataContent[dialogAttributeArray[di]]).forEach(function (dKey, dIndex) {
+          // key: the name of the object key
+          // index: the ordinal position of the key within the object
+          if (dialogDataContent[dialogAttributeArray[di]][dKey] instanceof Date) {
+            console.log(dKey)
+          }
+        })
       }
+
       const {
         requestPage
       } = this

@@ -2,7 +2,7 @@ import { dataResponseService } from '../../_services'
 import router from '../../../router'
 
 export default {
-  getDialogData ({ dispatch, commit }, { requestPage, processName, dataContent }) {
+  getDialogData ({ dispatch, commit }, { vm, requestPage, processName, dataContent }) {
     commit('general/setLoading', true, { root: true })
     commit('pendingDialogRequest')
     dataResponseService.getContent(requestPage, processName, dataContent)
@@ -18,12 +18,13 @@ export default {
         }
       )
   },
-  getData ({ dispatch, commit }, { requestPage, processName, dataContent }) {
+  getData ({ dispatch, commit }, { vm, requestPage, processName, dataContent }) {
     commit('general/setLoading', true, { root: true })
     commit('pendingRequest')
     dataResponseService.getContent(requestPage, processName, dataContent)
       .then(
         content => {
+          let selfVm = vm
           commit('getDataSuccess', content)
           commit('general/setLoading', false, { root: true })
         },
@@ -42,6 +43,7 @@ export default {
       dataResponseService.getContent(requestPage, processName, dataContent, returnRoute, additionalActions)
         .then(
           content => {
+            let selfVm = vm
             commit('general/setLoading', false, { root: true })
             commit('saveDialogEntitySuccess', content)
             dispatch('alert/success', 'Los datos fueron guardados satisfactoriamente', { root: true })
