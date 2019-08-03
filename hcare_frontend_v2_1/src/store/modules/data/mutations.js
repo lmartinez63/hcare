@@ -34,6 +34,24 @@ export default {
     }
     state.metadata = content.metadataContent
   },
+  getSurgeryAreaListByRequiredDateSuccess (state, content) {
+    state.loading = false
+    console.log('dataResponse - mutations - getSurgeryAreaListByRequiredDateSuccess')
+    if (content && content != null && content.dataContent.dataMap.surgeryAreaList && content.dataContent.dataMap.surgeryAreaList.length > 0) {
+      state.dataMap.surgeryAreaList = content.dataContent.dataMap.surgeryAreaList
+    } else {
+      state.dataAlert = { message: 'No hay salas disponibles, porfavor seleccione otro dia', type: 'info', display: true }
+    }
+  },
+  getAvailableDatesOnSurgeryAreaSuccess (state, content) {
+    state.loading = false
+    console.log('dataResponse - mutations - getAvailableDatesOnSurgeryAreaSuccess')
+    if (content && content != null && content.dataContent.dataMap.eventGroupList && content.dataContent.dataMap.eventGroupList.length > 0) {
+      state.dataMap.eventGroupList = content.dataContent.dataMap.eventGroupList
+    } else {
+      state.dataAlert = { message: 'No hay horarios disponibles, porfavor seleccione otro dia', type: 'info', display: true }
+    }
+  },
   getPatientInfoByDocumentNumberOnMedAppointmentSuccess (state, content) {
     state.loading = false
     console.log('dataResponse - mutations - getPatientInfoByDocumentNumberOnMedAppointmentSuccess')

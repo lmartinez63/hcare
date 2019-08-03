@@ -19,12 +19,14 @@ export default {
     state.metadata.dataColumns.forEach(function (columnDefinition) {
       var columnHeaderText = columnDefinition.dataColumnName
       var columnHeaderValue = columnDefinition.dataColumnCode
+      var columnHeaderType = columnDefinition.columnType
       var columnHeaderAlign = 'left'
       var columnHeaderSortable = true
       var columnHeaderClass = null
       var columnHeaderWidth = null
       var jsonObject = {
         text: columnHeaderText,
+        type: columnHeaderType,
         value: columnHeaderValue,
         align: columnHeaderAlign,
         sortable: columnHeaderSortable,

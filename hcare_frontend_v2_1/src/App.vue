@@ -100,6 +100,7 @@ export default {
       this.$store.dispatch('general/loadProperties')
       this.$store.dispatch('general/getLabels')
       this.$store.dispatch('general/getMedicalAreas')
+      this.$store.dispatch('general/getSurgeryTypes')
       this.$store.dispatch('general/getDoctors')
       this.$store.dispatch('general/getRoles')
       this.$store.dispatch('general/getPages')
@@ -113,7 +114,7 @@ export default {
     computedDateFormattedMomentjs (date) {
       // TODO this property should come from a userProfile locale
       this.$moment.locale('es')
-      return date ? this.$moment(date).format('LLLL') : ''
+      return date ? this.$moment(date).format('LL') : ''
     },
     getLabelValue: function (label) {
       var lValue = ''

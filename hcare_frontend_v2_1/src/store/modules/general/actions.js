@@ -142,5 +142,16 @@ export default {
         medicalAreas => commit('getMedicalAreasSuccess', medicalAreas),
         error => commit('failureDetected', error)
       )
+  },
+  getSurgeryTypes ({
+    dispatch,
+    commit
+  }) {
+    commit('getSurgeryTypesRequest')
+    generalService.getSurgeryTypes()
+      .then(
+        surgeryTypes => commit('getSurgeryTypesSuccess', surgeryTypes),
+        error => commit('failureDetected', error)
+      )
   }
 }

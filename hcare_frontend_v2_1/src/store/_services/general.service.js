@@ -11,7 +11,8 @@ export const generalService = {
   getLabels,
   getPages,
   getSections,
-  getFieldDefinitions
+  getFieldDefinitions,
+  getSurgeryTypes
 }
 
 function loadProperties () {
@@ -108,6 +109,18 @@ function getMedicalAreas () {
     .then(medicalAreas => {
       localStorage.setItem('medicalAreas', JSON.stringify(medicalAreas))
       return medicalAreas
+    })
+}
+function getSurgeryTypes () {
+  console.log('generalService - getSurgeryTypes')
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader()
+  }
+  return fetch(`${config.apiUrl}/getSurgeryTypes`, requestOptions).then(handleResponse)
+    .then(surgeryTypes => {
+      localStorage.setItem('surgeryTypes', JSON.stringify(surgeryTypes))
+      return surgeryTypes
     })
 }
 

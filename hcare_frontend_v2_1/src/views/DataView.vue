@@ -87,8 +87,10 @@
                               :multiple="getMultiple(fieldDefinition.selectSource)"
                               :chips="getMultiple(fieldDefinition.selectSource)"
                               :readonly="!fieldDefinition.editable"
+                              @change="executeFieldChangeEvent(fieldDefinition.onChangeEvent)"
                             >
-                              {{ fieldDefinition.outterButton }}
+                              <!-- Is this neccesary -->
+                              <!-- {{ fieldDefinition.outterButton }} -->
                               <template
                                 v-if="fieldDefinition.outterButton && fieldDefinition.outterButton != null && fieldDefinition.outterButton !== '' "
                                 v-slot:append-outer
@@ -110,7 +112,7 @@
                             />
                             <v-dialog
                               v-if="fieldDefinition.fieldType === 4"
-                              ref="dialog"
+                              :ref="page.id +'_'+ section.id +'_'+ fieldDefinition.id"
                               v-model="fieldDefinition.modal"
                               :return-value.sync="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
                               persistent
@@ -121,8 +123,8 @@
                             >
                               <template v-slot:activator="{ on }">
                                 <v-text-field
-                                  model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
-                                  :value="$parent.$parent.$parent.computedDateFormattedMomentjs(getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode])"
+                                  v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
+                                  :value="computedDateFormattedMomentjs(getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode])"
                                   :rules="[() => fieldDefinition.required === true && ( !! getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode] || 'Este campo es requerido' )]"
                                   :label="fieldDefinition.label.labelValueEsEs"
                                   prepend-icon="mdi-calendar"
@@ -147,7 +149,7 @@
                                 <v-btn
                                   flat
                                   color="primary"
-                                  @click="$refs.dialog[0].save(getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode])"
+                                  @click="$refs[page.id +'_'+ section.id +'_'+ fieldDefinition.id][0].save(getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]); executeFieldChangeEvent(fieldDefinition.onChangeEvent)"
                                 >
                                   OK
                                 </v-btn>
@@ -172,6 +174,71 @@
                                 </v-icon>
                               </template>
                             </v-datetime-picker>
+                            <v-dialog
+                              v-if="fieldDefinition.fieldType === 6"
+                              ref="dialogTime"
+                              v-model="fieldDefinition.modal"
+                              :return-value.sync="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
+                              persistent
+                              full-width
+                              width="290px"
+                            >
+                              <template v-slot:activator="{ onTime }">
+                                <v-text-field
+                                  v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
+                                  :value="computedDateFormattedMomentjs(getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode])"
+                                  :rules="[() => fieldDefinition.required === true && ( !! getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode] || 'Este campo es requerido' )]"
+                                  :label="fieldDefinition.label.labelValueEsEs"
+                                  prepend-icon="mdi-calendar"
+                                  readonly
+                                  v-on="onTime"
+                                />
+                              </template>
+                              <v-time-picker
+                                v-if="fieldDefinition.modal"
+                                v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
+                                full-width
+                                locale="es"
+                                :readonly="!fieldDefinition.editable"
+                                @change="executeFieldChangeEvent(fieldDefinition.onChangeEvent)"
+                              >
+                                <v-spacer />
+                                <v-btn
+                                  flat
+                                  color="primary"
+                                  @click="fieldDefinition.modal = false"
+                                >
+                                  Cancelar
+                                </v-btn>
+                                <v-btn
+                                  flat
+                                  color="primary"
+                                  @click="$refs.dialogTime[0].save(getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode])"
+                                >
+                                  OK
+                                </v-btn>
+                              </v-time-picker>
+                            </v-dialog>
+                            <v-combobox
+                              v-if="fieldDefinition.fieldType === 7"
+                              v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
+                              :items="arrayItems(fieldDefinition.selectSource)"
+                              :label="fieldDefinition.label.labelValueEsEs"
+                            >
+                              <template
+                                v-if="fieldDefinition.outterButton && fieldDefinition.outterButton != null && fieldDefinition.outterButton !== '' "
+                                v-slot:append-outer
+                              >
+                                <v-slide-x-reverse-transition mode="out-in">
+                                  <v-icon
+                                    :key="fieldDefinition.id"
+                                    :color="JSON.parse(fieldDefinition.outterButton).color"
+                                    @click="executeAction(JSON.parse(fieldDefinition.outterButton).button)"
+                                    v-text="JSON.parse(fieldDefinition.outterButton).icon"
+                                  />
+                                </v-slide-x-reverse-transition>
+                              </template>
+                            </v-combobox>
                             <v-textarea
                               v-if="fieldDefinition.fieldType === 8"
                               v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
@@ -295,7 +362,7 @@
                         v-for="fieldDefinition in orderedFields(section.fieldDefinitionList)"
                         v-if="fieldDefinition.visible"
                         :key="fieldDefinition.fieldDefinitionCode"
-                        :xs12="fieldDefinition.fieldType === 8 ? true : false"
+                        :xs12="(fieldDefinition.fieldType === 8 || fieldDefinition.fieldType === 9) ? true : false"
                         :class="['order-xs'+orderCalculated(fieldDefinition.orderNumber,section.fieldDefinitionList.length), fieldDefinition.xsSize ? 'xs' +fieldDefinition.xsSize : 'xs6']"
                       >
                         <v-text-field
@@ -323,6 +390,7 @@
                           :multiple="getMultiple(fieldDefinition.selectSource)"
                           :chips="getMultiple(fieldDefinition.selectSource)"
                           :readonly="!fieldDefinition.editable"
+                          @change="executeFieldChangeEvent(fieldDefinition.onChangeEvent)"
                         >
                           {{ fieldDefinition.outterButton }}
                           <template
@@ -358,7 +426,7 @@
                           <template v-slot:activator="{ on }">
                             <v-text-field
                               model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
-                              :value="$parent.$parent.$parent.computedDateFormattedMomentjs(getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode])"
+                              :value="computedDateFormattedMomentjs(getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode])"
                               :rules="[() => fieldDefinition.required === true && ( !! getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode] || 'Este campo es requerido' )]"
                               :label="fieldDefinition.label.labelValueEsEs"
                               prepend-icon="mdi-calendar"
@@ -371,6 +439,7 @@
                             scrollable
                             locale="es"
                             :readonly="!fieldDefinition.editable"
+                            @change="executeFieldChangeEvent(fieldDefinition.onChangeEvent)"
                           >
                             <v-spacer />
                             <v-btn
@@ -408,6 +477,26 @@
                             </v-icon>
                           </template>
                         </v-datetime-picker>
+                        <v-combobox
+                          v-if="fieldDefinition.fieldType === 7"
+                          v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
+                          :items="arrayItems(fieldDefinition.selectSource)"
+                          :label="fieldDefinition.label.labelValueEsEs"
+                        >
+                          <template
+                            v-if="fieldDefinition.outterButton && fieldDefinition.outterButton != null && fieldDefinition.outterButton !== '' "
+                            v-slot:append-outer
+                          >
+                            <v-slide-x-reverse-transition mode="out-in">
+                              <v-icon
+                                :key="fieldDefinition.id"
+                                :color="JSON.parse(fieldDefinition.outterButton).color"
+                                @click="executeAction(JSON.parse(fieldDefinition.outterButton).button)"
+                                v-text="JSON.parse(fieldDefinition.outterButton).icon"
+                              />
+                            </v-slide-x-reverse-transition>
+                          </template>
+                        </v-combobox>
                         <v-textarea
                           v-if="fieldDefinition.fieldType === 8"
                           v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
@@ -416,6 +505,16 @@
                           :label="fieldDefinition.label.labelValueEsEs"
                           auto-grow
                           :maxlength="getMaxFieldSize(fieldDefinition.fieldSize)"
+                        />
+                        <full-calendar
+                          v-if="fieldDefinition.fieldType === 9"
+                          :ref="page.id +'_'+ section.id +'_'+ fieldDefinition.id"
+                          :config="config"
+                          :timezone="timeZone"
+                          :event-sources="eventSources(fieldDefinition.selectSource)"
+                          @event-selected="eventSelected"
+                          @event-receive="eventReceive"
+                          @event-created="eventCreated"
                         />
                       </v-flex>
                     </v-layout>
@@ -495,65 +594,6 @@
                           </v-flex>
                         </v-layout>
                       </v-card>
-                    </v-layout>
-                    <v-layout v-if="section.sectionType === 4">
-                      <v-flex>
-                        <full-calendar
-                          ref="calendar"
-                          :config="config"
-                          :timezone="timeZone"
-                          :event-sources="eventSources"
-                          @event-selected="eventSelected"
-                          @event-receive="eventReceive"
-                          @event-created="eventCreated"
-                        />
-                        <!-- Vuetify v-calendar
-                        <v-sheet>
-                          <v-calendar
-                            ref="calendar"
-                            v-model="todayDate"
-                            :type="type"
-                            :now="todayDate"
-                            :value="todayDate"
-                            color="primary"
-                          >
-                            <template
-                              slot="dayBody"
-                              slot-scope="{ date, timeToY, minutesToPixels }"
-                            >
-                              <template v-for="event in eventsMap[date]">
-                                <div
-                                  v-if="event.time"
-                                  :key="event.title"
-                                  :style="{ top: timeToY(event.time) + 'px', height: minutesToPixels(event.duration) + 'px' }"
-                                  class="vueti-my-event with-time"
-                                  v-html="event.title"
-                                />
-                              </template>
-                            </template>
-                          </v-calendar>
-                        </v-sheet>
-                        -->
-                        <!--Toastui calendar
-                        <calendar
-                          :schedules="getDataMapAttribute(dataMap,section.entity)"
-                          :view="view"
-                          :task-view="taskView"
-                          :schedule-view="scheduleView"
-                          :usage-statistics="false"
-                          :week="week"
-                          :month="month"
-                          :timezones="timezones"
-                          :disable-dbl-click="disableDblClick"
-                          :is-read-only="isReadOnly"
-                          :template="template"
-                          :use-creation-popup="useCreationPopup"
-                          :use-detail-popup="useDetailPopup"
-                          @beforeCreateSchedule="onBeforeCreateSchedule"
-                          @clickSchedule="onClickSchedule"
-                        />
-                        -->
-                      </v-flex>
                     </v-layout>
                   </v-container>
                 </v-form>
@@ -694,7 +734,16 @@
                       auto-grow
                       :maxlength="getMaxFieldSize(dialogFieldDefinition.fieldSize)"
                     />
-                  </v-flex>
+                    <full-calendar
+                      v-if="dialogFieldDefinition.fieldType === 9"
+                      :ref="dialogPage.id +'_'+ dialogSection.id +'_'+ dialogFieldDefinition.id"
+                      :config="config"
+                      :timezone="timeZone"
+                      :event-sources="getComputedDataMapAttribute('dialogDataMap',[dialogSection.entity,dialogFieldDefinition.fieldDefinitionCode])"
+                      @event-selected="executeCalendarAction($event, dialogFieldDefinition.onClickEvent)"
+                      @event-receive="eventReceive"
+                      @event-created="eventCreated"
+                    />
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -911,23 +960,11 @@ export default {
       */
       calendarEvent: new Date(),
       timeZone: 'local',
-      events: [
-        {
-          title: 'test',
-          allDay: true,
-          start: moment(),
-          end: moment().add(1, 'd')
-        },
-        {
-          title: 'another test',
-          start: moment().add(2, 'd'),
-          end: moment().add(2, 'd').add(2, 'h')
-        }
-      ],
       config: {
-        defaultView: 'month',
+        defaultView: 'agendaWeek',
         locale: 'es',
         timezone: 'local',
+        header: false,
         eventRender: function (event, element) {
           console.log(event)
         }
@@ -935,8 +972,35 @@ export default {
     }
   },
   computed: {
+    /*
     eventSources () {
       return this.$store.state.data.dataMap.eventGroupList
+    },*/
+    eventSources: function () {
+      var vm = this
+      return function (sEventSource) {
+        return this.$store.state.data.dialogDataMap[sEventSource]
+      }
+    },
+    getComputedDataMapAttribute: function () {
+      var vm = this
+      return function (dataMap, aAttributeArray){
+        var attributeValue = ''
+        var dataSource = vm[dataMap]
+        for (var ai = 0; ai < aAttributeArray.length; ai++) {
+          if (aAttributeArray[ai] && aAttributeArray[ai] !== null) {
+            var attributeArray = aAttributeArray[ai].split('.')
+            if (attributeArray.length > 0) {
+              var finalAttribute = dataSource[attributeArray[0]]
+              for (var i = 1; i < attributeArray.length; i++) {
+                finalAttribute = finalAttribute[attributeArray[i]]
+              }
+            }
+            attributeValue = finalAttribute
+          }
+        }
+        return attributeValue
+      }
     },
     dataAlert () {
       return this.$store.state.data.dataAlert
@@ -993,11 +1057,20 @@ export default {
     console.log('DataPage - mounted - end')
   },
   methods: {
+    closeCurrentDialog () {
+      this.dataViewDialog = false;
+    },
     eventReceive (event, jsEvent, view) {
       console.log('eventReceive')
     },
-    eventSelected (event, jsEvent, view) {
-      console.log('eventSelected')
+    executeCalendarAction (event, button) {
+      this.$store.state.data.dataMap.event = {}
+      this.$store.state.data.dataMap.event.id = null
+      this.$store.state.data.dataMap.event.start = event.start.local().toDate().toISOString()
+      this.$store.state.data.dataMap.event.end = event.end.local().toDate().toISOString()
+      this.$store.state.data.dataMap.event.surgeryAreaId = event.surgeryAreaId
+      this.executeAction(JSON.parse(button));
+      //this.saveObjectState('{\"sAttributeArray\":\"event\",\"processName\":\"SaveEvent\"}')
     },
     eventCreated (event) {
       // alert(event)
@@ -1006,6 +1079,11 @@ export default {
       this.calendarEvent.start.isoDate = this.calendarEvent.start.local().toDate().toISOString()
       this.calendarEvent.end.isoDate = this.calendarEvent.end.local().toDate().toISOString()
       this.openDataDialogEntity('RetrieveEventInfo', 'addEventDialog', '{"surgeryAreaId":${{this.dataMap.surgeryArea.id}},"start":"${{this.calendarEvent.start.isoDate}}","end":"${{this.calendarEvent.end.isoDate}}"}')
+    },
+    computedDateFormattedMomentjs (date) {
+      // TODO this property should come from a userProfile locale
+      this.$moment.locale('es')
+      return date ? this.$moment(date).format('LL') : ''
     },
     openDataDialogEntity (dialogProcessName, dialogRequestPage, dialogParams) {
       const { dispatch } = this.$store
@@ -1065,7 +1143,7 @@ export default {
       return false
     },
     getItemText (selectSource) {
-      if (selectSource && selectSource != null) {
+      if (selectSource && selectSource !== null) {
         var selectSourceJSON = JSON.parse(selectSource)
         if (selectSourceJSON.itemText && selectSourceJSON.itemText !== '') {
           return selectSourceJSON.itemText
@@ -1075,7 +1153,7 @@ export default {
       return 'text'
     },
     getItemValue (selectSource) {
-      if (selectSource && selectSource != null) {
+      if (selectSource && selectSource !== null) {
         var selectSourceJSON = JSON.parse(selectSource)
         if (selectSourceJSON.itemValue && selectSourceJSON.itemValue !== '') {
           return selectSourceJSON.itemValue
@@ -1176,6 +1254,7 @@ export default {
       this.file = this.$refs.file.files[0]
     },
     executeFieldChangeEvent (changeEvent) {
+      console.log('executeFieldChangeEvent: ' + changeEvent)
       if (this.$store.state.data.dataAlert.display) {
         this.$store.state.data.dataAlert = {}
       }
@@ -1186,10 +1265,40 @@ export default {
         case 'getPatientInfo':
           this.getPatientInfo()
           break
+        case 'getSurgeryAreaListByRequiredDate':
+          this.getSurgeryAreaListByRequiredDate()
+          break
+        case 'getAvailableDatesOnSurgeryArea':
+          this.getAvailableDatesOnSurgeryArea()
+          break
         default:
+              eval(changeEvent);
           break
       }
     },
+    // TODO this methods should be dinamic
+    getSurgeryAreaListByRequiredDate: function () {
+      console.log('DataView - method - getSurgeryAreaListByRequiredDate - begin')
+      if (this.dataMap.medicalSurgery.requiredDate && this.dataMap.medicalSurgery.surgeryType.id) {
+        const dataContent = {
+          'requiredDate': this.dataMap.medicalSurgery.requiredDate,
+          'surgeryTypeId': this.dataMap.medicalSurgery.surgeryType.id
+        }
+        const {
+          requestPage
+        } = this
+        const {
+          dispatch
+        } = this.$store
+        dispatch('data/getSurgeryAreaListByRequiredDate', {
+          requestPage: requestPage,
+          processName: 'GetSurgeryAreaListByRequiredDate',
+          dataContent: dataContent
+        })
+        console.log('DataView - method - getSurgeryAreaListByRequiredDate - end')
+      }
+    },
+    // TODO this methods should be dinamic
     getPatientInfo: function () {
       console.log('DataView - method - getPatientInfo - begin')
       const dataContent = {
@@ -1207,6 +1316,31 @@ export default {
         dataContent: dataContent
       })
       console.log('DataView - method - getPatientInfo - end')
+    },
+    // TODO this methods should be dinamic
+    getAvailableDatesOnSurgeryArea: function () {
+      console.log('DataView - method - getAvailableDatesOnSurgeryArea - begin')
+      if (this.dataMap.medicalSurgery.requiredDate && this.dataMap.medicalSurgery.surgeryType.id && this.dataMap.medicalSurgery.surgeryArea.id) {
+        const dataContent = {
+          'requiredDate': this.dataMap.medicalSurgery.requiredDate,
+          'surgeryTypeId': this.dataMap.medicalSurgery.surgeryType.id,
+          'surgeryAreaId': this.dataMap.medicalSurgery.surgeryArea.id
+        }
+        const {
+          requestPage
+        } = this
+        const {
+          dispatch
+        } = this.$store
+        dispatch('data/getAvailableDatesOnSurgeryArea', {
+          vm: this,
+          calendarRef: '1021_1024_1191',
+          requestPage: requestPage,
+          processName: 'GetAvailableDatetimeListOnSurgeryArea',
+          dataContent: dataContent
+        })
+        console.log('DataView - method - getAvailableDatesOnSurgeryArea - end')
+      }
     },
     executeAction: function (button, elementSource) {
       let selfVue = this
@@ -1230,7 +1364,17 @@ export default {
           break
         case 3:
           // TOREMOVE
-          var be = JSON.parse(button.eventDefinition)
+          var jsonString = button.eventDefinition
+          var eventArray = button.eventDefinition.match(/\${{(.*?)}}/g)
+          if (eventArray != null) {
+            for (var i2 = 0, len2 = eventArray.length; i2 < len2; i2++) {
+              var dataRouteVariable = eventArray[i2]
+              jsonString = jsonString.replace(dataRouteVariable, eval(dataRouteVariable.match(/\$\{\{([^)]+)\}\}/)[1]))
+            }
+          }
+          var be = JSON.parse(jsonString)
+
+          // var be = JSON.parse(button.eventDefinition)
           for (var i3 = 0, len3 = be.uObjects.length; i3 < len3; i3++) {
             var uObject = be.uObjects[i3]
             Object.assign(this.dataMap[uObject.sourceObject], uObject.updatedObject)

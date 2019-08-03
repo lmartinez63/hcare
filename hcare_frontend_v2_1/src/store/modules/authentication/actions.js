@@ -14,6 +14,7 @@ export default {
           commit('loginSuccess', user)
           dispatch('general/loadProperties', null, { root: true })
           dispatch('general/getMedicalAreas', null, { root: true })
+          dispatch('general/getSurgeryTypes', null, { root: true })
           dispatch('general/getDoctors', null, { root: true })
           dispatch('general/getRoles', null, { root: true })
           dispatch('general/getPages', null, { root: true })

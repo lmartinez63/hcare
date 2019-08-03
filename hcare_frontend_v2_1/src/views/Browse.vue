@@ -38,7 +38,7 @@
                 :key="header.dataColumnCode"
               >
                 <div v-if="header.value !== 'optionsButtons'">
-                  {{ myprops.item[header.value] }}
+                  {{ header.type === 'date' ? localDateTimeFromIso(myprops.item[header.value]) : myprops.item[header.value] }}
                 </div>
                 <div v-else>
                   <div
@@ -138,6 +138,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   data: () => ({
     search: '',
@@ -183,7 +185,11 @@ export default {
     },
     pageButtons () {
       return this.$store.state.browse.metadata.pageButtons
+    },
+    datetimeFormat () {
+      return this.$store.state.general.properties.items.CONFIGURATION.dateformat[0].value + ' ' + this.$store.state.general.properties.items.CONFIGURATION.timeformat[0].value
     }
+
   },
 
   watch: {
@@ -217,6 +223,11 @@ export default {
   },
 
   methods: {
+    localDateTimeFromIso (isoDatetime) {
+      // return this.$moment.utc(isoDatetime).local().format(this.datetimeFormat)
+      this.$moment.locale('es')
+      return this.$moment.utc(isoDatetime).local().format('LLLL')
+    },
     executeAction: function (button) {
       let selfVue = this
       switch (button.buttonType) {
