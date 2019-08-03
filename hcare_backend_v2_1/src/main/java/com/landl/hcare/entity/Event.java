@@ -53,6 +53,18 @@ public class Event extends AuditModel {
     @Audited
     private Long surgeryAreaId;
 
+    public Event() {
+    }
+
+    public Event(Long id, Date start, Date end, Long surgeryAreaId, Long groupId, Boolean editable) {
+        this.id = id;
+        this.editable = editable;
+        this.start = start;
+        this.end = end;
+        this.surgeryAreaId = surgeryAreaId;
+        this.groupId = groupId;
+    }
+
     public Long getId() {
         return id;
     }

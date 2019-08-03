@@ -27,6 +27,9 @@ public abstract class  CustomProcess {
     SurgeryAreaService surgeryAreaService;
 
     @Autowired
+    SurgeryTypeService surgeryTypeService;
+
+    @Autowired
     EventService eventService;
 
     @Autowired

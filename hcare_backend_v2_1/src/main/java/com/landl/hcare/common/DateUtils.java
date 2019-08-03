@@ -22,6 +22,18 @@ public class DateUtils {
 
     }
 
+    public static String toISO8601Date( Date date ) {
+        try{
+            DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");;
+            df1.setTimeZone(TimeZone.getTimeZone("UTC"));
+            return df1.format(date);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
 
     public static boolean isSameDay(Date date1, Date date2) {
         if (date1 == null || date2 == null) {

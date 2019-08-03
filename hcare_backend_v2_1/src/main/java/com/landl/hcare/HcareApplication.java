@@ -54,6 +54,7 @@ public class HcareApplication {
 				registry.addMapping("/api/getSections").allowedOrigins(frontEndUrl);
 				registry.addMapping("/api/getFieldDefinitions").allowedOrigins(frontEndUrl);
 				registry.addMapping("/api/getMedicalAreas").allowedOrigins(frontEndUrl);
+				registry.addMapping("/api/getSurgeryTypes").allowedOrigins(frontEndUrl);
 				registry.addMapping("/api/generate-token").allowedOrigins(frontEndUrl);
 				registry.addMapping("/api/uploadAttachment").allowedOrigins(frontEndUrl);
 				registry.addMapping("/api/downloadAttachment").allowedOrigins(frontEndUrl);

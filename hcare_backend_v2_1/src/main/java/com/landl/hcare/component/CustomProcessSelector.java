@@ -40,6 +40,15 @@ public class CustomProcessSelector {
     GetPatientByDocumentNumber getPatientByDocumentNumber;
 
     @Autowired
+    GetSurgeryAreaListByRequiredDate getSurgeryAreaListByRequiredDate;
+
+    @Autowired
+    GetAvailableDatetimeListOnSurgeryArea getAvailableDatetimeListOnSurgeryArea;
+
+    @Autowired
+    GetAvailableDatetimeListBySurgeryType getAvailableDatetimeListBySurgeryType;
+
+    @Autowired
     SaveMedicalAppointment saveMedicalAppointment;
 
     @Autowired
@@ -194,6 +203,15 @@ public class CustomProcessSelector {
                 break;
             case "GetPatientByDocumentNumber":
                 customProcess = getPatientByDocumentNumber;
+                break;
+            case "GetSurgeryAreaListByRequiredDate":
+                customProcess = getSurgeryAreaListByRequiredDate;
+                break;
+            case "GetAvailableDatetimeListOnSurgeryArea":
+                customProcess = getAvailableDatetimeListOnSurgeryArea;
+                break;
+            case "GetAvailableDatetimeListBySurgeryType":
+                customProcess = getAvailableDatetimeListBySurgeryType;
                 break;
             case "SaveMedicalHistory":
                 customProcess = saveMedicalHistory;

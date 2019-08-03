@@ -56,10 +56,10 @@ public class FieldDefinition extends AuditModel {
     @Column(name="select_source",length = 4000, nullable = true)
     private String selectSource;
 
-    @Column(name="on_click_event")
+    @Column(name="on_click_event",length = 4000, nullable = true)
     private String onClickEvent;
 
-    @Column(name="on_change_event")
+    @Column(name="on_change_event",length = 4000, nullable = true)
     private String onChangeEvent;
 
     @Column(name="outter_button",length = 4000, nullable = true)

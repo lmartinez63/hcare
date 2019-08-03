@@ -63,6 +63,11 @@ public class Section extends AuditModel {
     @NotAudited
     private Map<String,FieldDefinition> fieldDefinitionMap;
 
+    @OneToMany
+    @OrderBy("display_order")
+    @JoinColumn(name = "section_id")
+    private List<PageButton> pageButtons;
+
     public Long getId() {
         return id;
     }

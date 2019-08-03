@@ -23,9 +23,9 @@ public class MedicalSurgery extends AuditModel {
     )
     private Long id;
 
-    @Column(name="surgery_type")
-    @Audited
-    private Integer surgeryType;
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name="surgery_type_id")
+    private SurgeryArea surgeryType;
 
     @Column(name="status")
     @Audited
@@ -79,11 +79,11 @@ public class MedicalSurgery extends AuditModel {
         this.id = id;
     }
 
-    public Integer getSurgeryType() {
+    public SurgeryArea getSurgeryType() {
         return surgeryType;
     }
 
-    public void setSurgeryType(Integer surgeryType) {
+    public void setSurgeryType(SurgeryArea surgeryType) {
         this.surgeryType = surgeryType;
     }
 

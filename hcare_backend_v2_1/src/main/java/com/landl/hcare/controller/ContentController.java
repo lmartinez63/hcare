@@ -63,6 +63,9 @@ public class ContentController {
     private MedicalAreaService medicalAreaService;
 
     @Autowired
+    private SurgeryTypeService surgeryTypeService;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -207,6 +210,11 @@ public class ContentController {
     @GetMapping("/getMedicalAreas")
     public List<AutoCompleteField> getMedicalAreas() throws Exception{
         return medicalAreaService.findIdAndAreaNameForAutoCompleteFields();
+    }
+
+    @GetMapping("/getSurgeryTypes")
+    public List<SurgeryType> getSurgeryTypes() throws Exception{
+        return surgeryTypeService.findAll();
     }
 
     @GetMapping("/getDoctors")

@@ -3,8 +3,10 @@ package com.landl.hcare.component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.landl.hcare.entity.MedicalArea;
 import com.landl.hcare.entity.MedicalSurgery;
+import com.landl.hcare.entity.SurgeryType;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 
 @Component("retrieveMedicalSurgeryInfo")
