@@ -19,7 +19,10 @@ public class RetrieveMedicalAnalysisInfo extends CustomProcess {
         if(s_medicalAnalysisId != null){
             Long l_medicalAnalysisId = Long.parseLong(s_medicalAnalysisId);
             medicalAnalysis = medicalAnalysisService.findById(l_medicalAnalysisId);
-
+            medicalAnalysis.setLabelStatus(labelService.getByLabelCodeAndUserLanguage(medicalAnalysis.getStatus().toString(),"MEDICAL_ANALYSIS","STATUS").getLabelValueEsEs());
+            if(medicalAnalysis.getAnalysisType() != null) {
+                medicalAnalysis.setLabelAnalysisType(labelService.getByLabelCodeAndUserLanguage(medicalAnalysis.getAnalysisType().toString(), "MEDICAL_ANALYSIS", "ANALYSIS_TYPE").getLabelValueEsEs());
+            }
             Directory directory = directoryService.findByEntityNameAndParentDirectoryIdIsNull("medical_analysis");
             directoryService.retrieveAttachmentInformation(directory,String.valueOf(medicalAnalysis.getId()));
             medicalAnalysis.setFiles(directoryService.convertDirectoryToFrontEndFormat(directory));

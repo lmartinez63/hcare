@@ -50,6 +50,9 @@ public class PageButton extends AuditModel {
     @Column(name="round")
     private Boolean round;
 
+    @Column(name="section_id")
+    private Long sectionId;
+
     @Transient
     @NotAudited
     private String labelValue;
@@ -172,5 +175,13 @@ public class PageButton extends AuditModel {
 
     public void setRound(Boolean round) {
         this.round = round;
+    }
+
+    public Long getSectionId() {
+        return sectionId;
+    }
+
+    public void setSectionId(Long sectionId) {
+        this.sectionId = sectionId;
     }
 }

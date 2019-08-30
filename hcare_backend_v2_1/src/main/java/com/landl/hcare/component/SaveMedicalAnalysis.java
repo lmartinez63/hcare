@@ -29,7 +29,7 @@ public class SaveMedicalAnalysis extends CustomProcess {
             medicalAnalysis.setStatus(MedicalAnalysisStatus.SCHEDULED);
         }
 
-        if (medicalAnalysis.getStatus().compareTo(MedicalAnalysisStatus.APPROVED)==0 && originalStatus.compareTo(MedicalAnalysisStatus.SCHEDULED)==0){
+        if (medicalAnalysis.getStatus().compareTo(MedicalAnalysisStatus.APPROVED)==0 && originalStatus.compareTo(MedicalAnalysisStatus.APPROVED)<0){
             MedicalSurgery medicalSurgery = medicalSurgeryService.findById(medicalAnalysis.getMedicalSurgeryId());
             medicalSurgery.setStatus(MedicalSurgeryStatus.TO_CONFIRM);
             medicalSurgeryService.save(medicalSurgery);

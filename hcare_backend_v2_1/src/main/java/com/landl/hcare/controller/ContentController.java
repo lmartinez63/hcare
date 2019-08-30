@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.persistence.Tuple;
 import java.util.List;
@@ -96,6 +97,7 @@ public class ContentController {
         try {
         //Credential from Authorization
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        ServletUriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentRequestUri();
         String username = authentication.getName();
         //Metadata
         MetadataContent metadataContent = new MetadataContent();
@@ -104,6 +106,9 @@ public class ContentController {
         Map requestDataMap = (Map)requestMap.get("data");
         requestDataMap.put("userAuthenticated",new UserAuthenticated((User) authentication.getPrincipal()));
         requestDataMap.put("userProfileAuthenticated",userService.findByUsername(username));
+        //TODO Pending pass currentURL
+        //requestDataMap.put("requestUrl",builder.);
+
 
         Content content = new Content();
         content.setMetadataContent(metadataContent);
@@ -143,7 +148,7 @@ public class ContentController {
     }
 
     @PostMapping("/uploadAttachment")
-    public Attachment uploadAttachment(@RequestParam("file") MultipartFile file, @RequestParam("fileTitle") String fileTitle, @RequestParam("entity") String entity, @RequestParam("entityId") Long entityId) throws Exception{
+    public Attachment uploadAttachment(@RequestParam("file") MultipartFile file, @RequestParam("fileTitle") String fileTitle, @RequestParam("entity") String entity, @RequestParam("entityId") Long entityId, @RequestParam("fieldToMatchEntiyId") String fieldToMatchEntiyId) throws Exception{
         //attachment.setEntity();
         //attachment.setEntityId();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -151,7 +156,11 @@ public class ContentController {
         attachment.setContent(file.getBytes());
         attachment.setContentType(file.getContentType());
         attachment.setInternalFileName(file.getOriginalFilename());
-        return attachmentService.save(attachment);
+        if (fieldToMatchEntiyId != null)
+            attachment.setFieldToMatchEntiyId(fieldToMatchEntiyId);
+        Attachment attachmentSaved = attachmentService.save(attachment);
+        //fieldToMatchEntiyId
+        return attachmentSaved;
     }
 
     @GetMapping(value = "/downloadAttachment/{attachmentId}")

@@ -1,7 +1,5 @@
 package com.landl.hcare.service;
 
-
-import com.landl.hcare.entity.AutoCompleteField;
 import com.landl.hcare.entity.Event;
 import com.landl.hcare.entity.MedicalAppointment;
 import com.landl.hcare.entity.MedicalSurgery;
@@ -16,6 +14,8 @@ public interface MedicalSurgeryService {
     public List<MedicalSurgery> findAll() throws Exception;
 
     public MedicalSurgery findById(Long medicalSurgeryId) throws Exception;
+
+    public void getObjectLabeled(MedicalSurgery medicalSurgery) throws Exception;
 
     public MedicalSurgery createMedicalSurgery(MedicalAppointment medicalAppointment) throws  Exception;
 

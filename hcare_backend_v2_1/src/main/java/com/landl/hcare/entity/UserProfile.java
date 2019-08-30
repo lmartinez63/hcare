@@ -25,6 +25,7 @@ public class UserProfile {
     private Long id;
     @Column
     private String username;
+
     @Column
     @JsonIgnore
     private String password;

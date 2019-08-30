@@ -39,7 +39,7 @@ public class MedicalAppointment  extends AuditModel {
     private String dateAppointmentTimeFormatted;
 
     @Column(name="status")
-    private String status;
+    private Integer status;
 
     @Transient
     private String labelStatus;
@@ -222,11 +222,11 @@ public class MedicalAppointment  extends AuditModel {
         this.dateAppointment = dateAppointment;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

@@ -12,10 +12,13 @@ public class RetrieveUserProfileInfo extends CustomProcess {
     public void executeCustomProcess(Map<String, Object> requestMap) throws Exception{
 
         final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
-        final UserProfile userProfileRequest = mapper.convertValue(requestMap.get("userProfile"), UserProfile.class);
-        UserProfile userProfile;
-        if(userProfileRequest.getId() != null) {
-            userProfile = userService.findById(userProfileRequest.getId());
+        String s_userProfileId = (String)requestMap.get("userProfileId");
+        UserProfile userProfile = null;
+        if(s_userProfileId != null){
+            Long l_userProfileId = Long.parseLong(s_userProfileId);
+            //final Patient patientRequest = mapper.convertValue(requestMap.get("patient"), Patient.class);
+
+            userProfile = userService.findById(l_userProfileId);
         } else {
             userProfile = userService.createUserProfile();
         }

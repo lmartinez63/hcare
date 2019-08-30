@@ -1,6 +1,7 @@
 package com.landl.hcare.component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.landl.hcare.common.DateUtils;
 import com.landl.hcare.entity.Event;
 import com.landl.hcare.entity.EventGroup;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,7 @@ public class GetAvailableDatetimeListBySurgeryType extends CustomProcess {
             eventGroupList.add(surgeryAreaEventGroup);
         }
         addDataToResultMap("eventGroupList",eventGroupList);
+        addDataToResultMap("defaultDateCalendar", DateUtils.toISO8601Date(requiredDate));
     }
 
 

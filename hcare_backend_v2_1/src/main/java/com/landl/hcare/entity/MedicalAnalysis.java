@@ -27,9 +27,15 @@ public class MedicalAnalysis extends AuditModel {
     @Audited
     private Integer analysisType;
 
+    @Transient
+    private String labelAnalysisType;
+
     @Column(name="status")
     @Audited
     private Integer status;
+
+    @Transient
+    private String labelStatus;
 
     @Column(name="type")
     @Audited
@@ -164,5 +170,21 @@ public class MedicalAnalysis extends AuditModel {
 
     public void setFiles(List<Map> files) {
         this.files = files;
+    }
+
+    public String getLabelAnalysisType() {
+        return labelAnalysisType;
+    }
+
+    public void setLabelAnalysisType(String labelAnalysisType) {
+        this.labelAnalysisType = labelAnalysisType;
+    }
+
+    public String getLabelStatus() {
+        return labelStatus;
+    }
+
+    public void setLabelStatus(String labelStatus) {
+        this.labelStatus = labelStatus;
     }
 }

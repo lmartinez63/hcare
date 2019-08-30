@@ -3,7 +3,9 @@ package com.landl.hcare.service;
 import com.landl.hcare.common.UtilityTools;
 import com.landl.hcare.entity.FieldDefinition;
 import com.landl.hcare.entity.Label;
+import com.landl.hcare.entity.PageButton;
 import com.landl.hcare.entity.Section;
+import com.landl.hcare.repository.PageButtonRepository;
 import com.landl.hcare.repository.SectionRepository;
 import com.landl.hcare.rule.RuleManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ public class SectionServiceImpl implements SectionService{
     SectionRepository sectionRepository;
 
     @Autowired
-    LabelService labelService;
+    PageButtonRepository pageButtonRepository;
 
     @Autowired
     FieldService fieldService;
@@ -44,6 +46,7 @@ public class SectionServiceImpl implements SectionService{
         for(Section section:sectionList){
             section.setFieldDefinitionList(fieldService.getFieldsByPageSectionCodeAndUsername(pageCode, section.getSectionCode(), username));
             section.setFieldDefinitionMap(section.getFieldDefinitionList().stream().collect(Collectors.toMap(FieldDefinition::getFieldDefinitionCode, item -> item)));
+            section.setSectionButtons(pageButtonRepository.findBySectionId(section.getId()));
         }
         return sectionList;
     }
@@ -67,6 +70,18 @@ public class SectionServiceImpl implements SectionService{
             } catch(Exception e){
                 e.printStackTrace();
                 section.setVisible(false);
+            }
+        }
+
+        for (PageButton sectionButton:section.getSectionButtons()) {
+            sectionButton.setVisible(true);
+            if(!UtilityTools.isEmpty(sectionButton.getVisibleRuleExp())){
+                try{
+                    sectionButton.setVisible(RuleManager.evaluateExpression(sectionButton.getVisibleRuleExp(),dataSource));
+                } catch(Exception e){
+                    //e.printStackTrace();
+                    sectionButton.setVisible(false);
+                }
             }
         }
 

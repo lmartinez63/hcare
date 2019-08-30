@@ -5,6 +5,7 @@ import com.landl.hcare.entity.MedicalAppointment;
 import com.landl.hcare.entity.MedicalHistory;
 import com.landl.hcare.entity.MedicalSurgery;
 import com.landl.hcare.entity.Patient;
+import com.landl.hcare.entity.type.MedicalAppointmentStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -18,7 +19,7 @@ public class SaveMedicalAppointment extends CustomProcess {
 
         final ObjectMapper mapper = new ObjectMapper(); // jackson's objectmapper
         final MedicalAppointment medicalAppointmentRequest = mapper.convertValue(requestMap.get("medicalAppointment"), MedicalAppointment.class);
-        String originalStatus = null;
+        Integer originalStatus = null;
         MedicalAppointment medicalAppointment = null;
         if (medicalAppointmentRequest.getId() != null){
             medicalAppointment = medicalAppointmentService.findById(medicalAppointmentRequest.getId());
@@ -50,18 +51,18 @@ public class SaveMedicalAppointment extends CustomProcess {
             //If is a new medical appointment send a reminder email
             int emailPatientStatus = emailService.sendEmailToPatient(medicalAppointment);
             int emailDoctorStatus = emailService.sendEmailToDoctor(medicalAppointment);
-            medicalAppointment.setStatus("5");
+            medicalAppointment.setStatus(MedicalAppointmentStatus.SCHEDULED);
         }
 
         //Create history code if doesn't exits
-        if (medicalAppointment.getStatus().compareTo("10")==0){
+        if (medicalAppointment.getStatus().compareTo(MedicalAppointmentStatus.IN_ATENTION)==0){
             medicalAppointment.setDateAttention(new Date());
             if (medicalAppointment.getPatient().getHistoryCode() == null){
                 //Create Medical History set incoming patient with historyCode
                 MedicalHistory medicalHistory = medicalHistoryService.createMedicalHistory(medicalAppointment.getPatient());
             }
         }
-        if (medicalAppointment.getStatus().compareTo("10")==0){
+        if (medicalAppointment.getStatus().compareTo(MedicalAppointmentStatus.IN_ATENTION)==0){
             medicalAppointment.setDateAttention(new Date());
             if (medicalAppointment.getPatient().getHistoryCode() == null){
                 //Create Medical History set incoming patient with historyCode
@@ -69,7 +70,7 @@ public class SaveMedicalAppointment extends CustomProcess {
             }
         }
         //
-        if (medicalAppointment.getStatus().compareTo("15")==0 && originalStatus.compareTo("10")==0){
+        if (medicalAppointment.getStatus().compareTo(MedicalAppointmentStatus.OPERATION_REQUEST)==0 && originalStatus.compareTo(MedicalAppointmentStatus.IN_ATENTION)==0){
             MedicalSurgery medicalSurgery = medicalSurgeryService.createMedicalSurgery(medicalAppointment);
             medicalSurgeryService.save(medicalSurgery);
         }

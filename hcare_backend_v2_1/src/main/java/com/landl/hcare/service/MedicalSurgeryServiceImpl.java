@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class MedicalSurgeryServiceImpl implements MedicalSurgeryService {
+public class MedicalSurgeryServiceImpl extends ObjectServiceImpl implements MedicalSurgeryService {
 
     @Autowired
     MedicalSurgeryRepository medicalSurgeryRepository;
@@ -20,10 +20,16 @@ public class MedicalSurgeryServiceImpl implements MedicalSurgeryService {
     SurgeryTypeService surgeryTypeService;
 
     @Autowired
+    PatientService patientService;
+
+    @Autowired
     SurgeryAreaService surgeryAreaService;
 
     @Autowired
     EventService eventService;
+
+    @Autowired
+    MedicalAppointmentService medicalAppointmentService;
 
     public MedicalSurgery save(MedicalSurgery medicalAppointment) throws Exception{
         return medicalSurgeryRepository.save(medicalAppointment);
@@ -36,6 +42,12 @@ public class MedicalSurgeryServiceImpl implements MedicalSurgeryService {
     public MedicalSurgery findById(Long medicalAppointmentId) throws Exception{
         return medicalSurgeryRepository.findById(medicalAppointmentId).get();
     }
+
+    public void getObjectLabeled(MedicalSurgery medicalSurgery) throws Exception{
+        transformObjectLabels(medicalSurgery);
+        medicalAppointmentService.getObjectLabeled(medicalSurgery.getMedicalAppointment());
+    }
+
     public MedicalSurgery createMedicalSurgery(MedicalAppointment medicalAppointment) throws  Exception{
         MedicalSurgery medicalSurgery = new MedicalSurgery();
         medicalSurgery.setStatus(MedicalSurgeryStatus.PENDING);

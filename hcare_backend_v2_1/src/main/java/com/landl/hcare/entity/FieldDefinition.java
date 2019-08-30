@@ -1,14 +1,11 @@
 package com.landl.hcare.entity;
 
-import com.landl.hcare.common.UtilityTools;
 import com.landl.hcare.model.AuditModel;
-import com.landl.hcare.rule.RuleManager;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @Audited
@@ -50,6 +47,9 @@ public class FieldDefinition extends AuditModel {
     @Column(name="visible_rule_exp")
     private String visibleRuleExp;
 
+    @Column(name="custom_features",length = 4000, nullable = true)
+    private String customFeatures;
+
     @Column(name="edit_rule_exp")
     private String editRuleExp;
 
@@ -61,6 +61,9 @@ public class FieldDefinition extends AuditModel {
 
     @Column(name="on_change_event",length = 4000, nullable = true)
     private String onChangeEvent;
+
+    @Column(name="prepend_button",length = 4000, nullable = true)
+    private String prependButton;
 
     @Column(name="outter_button",length = 4000, nullable = true)
     private String outterButton;
@@ -294,5 +297,21 @@ public class FieldDefinition extends AuditModel {
 
     public void setRequired(Boolean required) {
         this.required = required;
+    }
+
+    public String getPrependButton() {
+        return prependButton;
+    }
+
+    public void setPrependButton(String prependButton) {
+        this.prependButton = prependButton;
+    }
+
+    public String getCustomFeatures() {
+        return customFeatures;
+    }
+
+    public void setCustomFeatures(String customFeatures) {
+        this.customFeatures = customFeatures;
     }
 }

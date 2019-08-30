@@ -34,6 +34,9 @@ public class Attachment extends AuditModel {
     @Column(name="entity")
     private String entity;
 
+    @Transient
+    private String fieldToMatchEntiyId;
+
     @Column(name="internal_file_name")
     private String internalFileName;
 
@@ -111,5 +114,13 @@ public class Attachment extends AuditModel {
 
     public void setContentType(String contentType) {
         this.contentType = contentType;
+    }
+
+    public String getFieldToMatchEntiyId() {
+        return fieldToMatchEntiyId;
+    }
+
+    public void setFieldToMatchEntiyId(String fieldToMatchEntiyId) {
+        this.fieldToMatchEntiyId = fieldToMatchEntiyId;
     }
 }

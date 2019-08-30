@@ -26,7 +26,7 @@ public class RetrieveSurgeryAreaInfo extends CustomProcess {
             surgeryAreaEventGroup.setEvents(surgeryAreaEventList);
             surgeryAreaEventGroup.setGroupClassName("surgeryArea");
             eventGroupList.add(surgeryAreaEventGroup);
-            addDataToResultMap("eventGroupList",eventGroupList);
+            addDataToResultMap("surgeryAreaEventGroupList",eventGroupList);
         } else {
             surgeryArea = surgeryAreaService.createSurgeryArea();
         }

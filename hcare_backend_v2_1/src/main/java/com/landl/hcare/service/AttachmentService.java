@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface AttachmentService {
 
-    public Attachment save(Attachment patient);
+    public Attachment save(Attachment patient) throws Exception;
 
     public List<Attachment> findAll();
 

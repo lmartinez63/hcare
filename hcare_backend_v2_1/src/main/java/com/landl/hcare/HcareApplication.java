@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -40,6 +41,11 @@ public class HcareApplication {
 			@Autowired
 			PropertyService propertyService;
 
+			@Override
+			public void addResourceHandlers(ResourceHandlerRegistry registry) {
+				registry
+						.addResourceHandler("/reportfiles/**").addResourceLocations("file:/Users/luis/Documents/GitHub/hcare/hcare_backend_v2_1/reports/out/");
+			}
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 

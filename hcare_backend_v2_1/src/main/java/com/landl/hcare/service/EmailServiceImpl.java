@@ -3,6 +3,7 @@ package com.landl.hcare.service;
 
 import com.landl.hcare.common.UtilityTools;
 import com.landl.hcare.entity.*;
+import com.landl.hcare.entity.type.MedicalAppointmentStatus;
 import com.landl.hcare.repository.EmailRepository;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
@@ -115,7 +116,7 @@ public class EmailServiceImpl implements EmailService {
         // email to Patient
         EmailTemplate emailTemplate = null;
         switch (medicalAppointment.getStatus()){
-            case "0":
+            case MedicalAppointmentStatus.NEW:
                 emailTemplate = emailTemplateService.findByTemplateType("newMedicalAppointmentToPatient");
                 break;
             default:
@@ -141,7 +142,7 @@ public class EmailServiceImpl implements EmailService {
         // email to Patient
         EmailTemplate emailTemplate = null;
         switch (medicalAppointment.getStatus()){
-            case "0":
+            case 0:
                 emailTemplate = emailTemplateService.findByTemplateType("newMedicalAppointmentToDoctor");
                 break;
             default:

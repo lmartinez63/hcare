@@ -63,7 +63,7 @@ public class PageServiceImpl implements PageService {
     public Page findPageSectionAndFieldsByPageCodeAndUserName(String pageCode, String username) throws Exception{
         UserProfile userProfile = userService.getPageAndFieldsAssigned(username);
         Page page = findByPageCode(pageCode);
-        page.setSectionList(sectionService.getSectionsByPageCodeAndUsername(pageCode, username));
+            page.setSectionList(sectionService.getSectionsByPageCodeAndUsername(pageCode, username));
         page.setSectionMap(page.getSectionList().stream().collect(Collectors.toMap(Section::getSectionCode, item -> item)));
         return page;
     }

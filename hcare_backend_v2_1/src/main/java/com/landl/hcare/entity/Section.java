@@ -66,7 +66,7 @@ public class Section extends AuditModel {
     @OneToMany
     @OrderBy("display_order")
     @JoinColumn(name = "section_id")
-    private List<PageButton> pageButtons;
+    private List<PageButton> sectionButtons;
 
     public Long getId() {
         return id;
@@ -170,5 +170,13 @@ public class Section extends AuditModel {
 
     public void setStepCompleteRuleExp(String stepCompleteRuleExp) {
         this.stepCompleteRuleExp = stepCompleteRuleExp;
+    }
+
+    public List<PageButton> getSectionButtons() {
+        return sectionButtons;
+    }
+
+    public void setSectionButtons(List<PageButton> sectionButtons) {
+        this.sectionButtons = sectionButtons;
     }
 }

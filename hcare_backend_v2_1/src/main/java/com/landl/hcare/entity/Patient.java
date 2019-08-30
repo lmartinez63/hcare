@@ -1,15 +1,13 @@
 package com.landl.hcare.entity;
 
-import com.google.gson.JsonArray;
 import com.landl.hcare.common.UtilityTools;
 import com.landl.hcare.model.AuditModel;
-import jdk.nashorn.internal.objects.annotations.Getter;
-import jdk.nashorn.internal.objects.annotations.Setter;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +47,10 @@ public class Patient extends AuditModel {
 
     @Column(name="birthday")
     private Date birthday;
+
+    @Transient
+    @NotAudited
+    private Integer age;
 
     @Column(name="birthplace_province")
     private Integer birthplaceProvince;
@@ -103,6 +105,9 @@ public class Patient extends AuditModel {
 
     @Column(name="gender")
     private Integer gender;
+
+    @Transient
+    private String labelGender;
 
     @Transient
     @NotAudited
@@ -212,7 +217,12 @@ public class Patient extends AuditModel {
     }
 
     public String getFullName() {
-        return UtilityTools.isNull(this.firstName) + " " + UtilityTools.isNull(this.lastName);
+        //return UtilityTools.isNull(this.firstName) + " " + UtilityTools.isNull(this.lastName);
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = UtilityTools.isNull(this.firstName) + " " + UtilityTools.isNull(this.lastName);
     }
 
     public Long getId() {
@@ -333,5 +343,23 @@ public class Patient extends AuditModel {
 
     public void setReligion(String religion) {
         this.religion = religion;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        if(this.birthday != null){
+            this.age = Period.between(this.birthday.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()).getYears();
+        }
+    }
+
+    public String getLabelGender() {
+        return labelGender;
+    }
+
+    public void setLabelGender(String labelGender) {
+        this.labelGender = labelGender;
     }
 }

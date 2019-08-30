@@ -1,5 +1,6 @@
 package com.landl.hcare.component;
 
+import com.landl.hcare.entity.SurgeryAnesthesia;
 import com.landl.hcare.entity.UserAuthenticated;
 import com.landl.hcare.service.*;
 import org.springframework.beans.BeanUtils;
@@ -18,10 +19,25 @@ public abstract class  CustomProcess {
     RolePageSectionFieldService rolePageSectionFieldService;
 
     @Autowired
+    DocumentTemplateService documentTemplateService;
+
+    @Autowired
+    DocumentGenerationService documentGenerationService;
+
+    @Autowired
     MedicalAppointmentService medicalAppointmentService;
 
     @Autowired
     MedicalSurgeryService medicalSurgeryService;
+
+    @Autowired
+    SurgeryDoctorService surgeryDoctorService;
+
+    @Autowired
+    SurgeryAnesthesiaService surgeryAnesthesiaService;
+
+    @Autowired
+    SurgeryNurseService surgeryNurseService;
 
     @Autowired
     SurgeryAreaService surgeryAreaService;

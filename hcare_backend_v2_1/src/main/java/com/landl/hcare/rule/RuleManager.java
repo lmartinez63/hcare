@@ -3,6 +3,7 @@ package com.landl.hcare.rule;
 import com.landl.hcare.common.UtilityTools;
 import com.landl.hcare.entity.MedicalAppointment;
 import com.landl.hcare.entity.Patient;
+import com.landl.hcare.entity.type.MedicalAppointmentStatus;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -27,7 +28,7 @@ public class RuleManager {
         try {
             Map<String, Object> entityMap = new HashMap<String, Object>();
             MedicalAppointment medicalAppointment = new MedicalAppointment();
-            medicalAppointment.setStatus("20");
+            medicalAppointment.setStatus(MedicalAppointmentStatus.PENDING_ANALYSIS_RESULTS);
             entityMap.put("medicalAppointment",medicalAppointment);
 
             Patient patient = new Patient();

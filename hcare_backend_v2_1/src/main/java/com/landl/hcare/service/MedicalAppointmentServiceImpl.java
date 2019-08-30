@@ -3,6 +3,7 @@ package com.landl.hcare.service;
 import com.landl.hcare.entity.Attachment;
 import com.landl.hcare.entity.MedicalAppointment;
 import com.landl.hcare.entity.Patient;
+import com.landl.hcare.entity.type.MedicalAppointmentStatus;
 import com.landl.hcare.repository.MedicalAppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +12,13 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Service
-public class MedicalAppointmentServiceImpl implements MedicalAppointmentService {
+public class MedicalAppointmentServiceImpl extends ObjectServiceImpl implements MedicalAppointmentService {
 
     @Autowired
     MedicalAppointmentRepository medicalAppointmentRepository;
+
+    @Autowired
+    PatientService patientService;
 
     public MedicalAppointment save(MedicalAppointment medicalAppointment) throws Exception{
         return medicalAppointmentRepository.save(medicalAppointment);
@@ -22,6 +26,11 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
 
     public List<MedicalAppointment> findAll() throws Exception{
         return medicalAppointmentRepository.findAll();
+    }
+
+    public void getObjectLabeled(MedicalAppointment medicalAppointment) throws  Exception{
+        transformObjectLabels(medicalAppointment);
+        patientService.getObjectLabeled(medicalAppointment.getPatient());
     }
 
     public MedicalAppointment findById(Long medicalAppointmentId) throws Exception{
@@ -32,7 +41,7 @@ public class MedicalAppointmentServiceImpl implements MedicalAppointmentService 
         Patient patient = new Patient();
         //TODO it should come from database
         //DefaultValues
-        medicalAppointment.setStatus("0");
+        medicalAppointment.setStatus(MedicalAppointmentStatus.NEW);
         medicalAppointment.setDateAppointment(new Date());
         patient.setEmailAddress("novaclinicarequipa@gmail.com");
         //TODO we Should use ENUMS

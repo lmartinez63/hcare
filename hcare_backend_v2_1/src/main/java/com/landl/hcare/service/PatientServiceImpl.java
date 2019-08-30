@@ -1,6 +1,5 @@
 package com.landl.hcare.service;
 
-import com.landl.hcare.entity.MedicalAppointment;
 import com.landl.hcare.entity.Patient;
 import com.landl.hcare.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +7,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class PatientServiceImpl implements PatientService{
+public class PatientServiceImpl extends ObjectServiceImpl implements PatientService {
 
     @Autowired
     PatientRepository patientRepository;
@@ -38,6 +36,11 @@ public class PatientServiceImpl implements PatientService{
 
     public Patient findById(Long patientId) throws  Exception{
         return patientRepository.findById(patientId).get();
+    }
+
+    public void getObjectLabeled(Patient patient) throws  Exception{
+        transformObjectLabels(patient);
+        patient.setFullName("");
     }
 
     public Patient createPatient() throws  Exception{
