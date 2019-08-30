@@ -106,6 +106,11 @@ export default {
       },
 */
       {
+        to: '/browse/allUserProfiles',
+        icon: 'mdi-clipboard-outline',
+        text: 'Listado de Usuarios'
+      },
+      {
         to: '/browse/allPatients',
         icon: 'mdi-clipboard-outline',
         text: 'Listado de Pacientes'
@@ -119,6 +124,11 @@ export default {
         to: '/browse/allMedAppHeaderView',
         icon: 'mdi-clipboard-outline',
         text: 'Lista de Citas Medicas'
+      },
+      {
+        to: '/browse/medicalSurgeriesScheduled',
+        icon: 'mdi-clipboard-outline',
+        text: 'Lista de Operaciones Programadas'
       },
       {
         to: '/browse/allPages',

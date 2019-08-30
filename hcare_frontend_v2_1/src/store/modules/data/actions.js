@@ -1,5 +1,6 @@
 import { dataResponseService } from '../../_services'
 import router from '../../../router'
+import config from 'config'
 
 export default {
   getDialogData ({ dispatch, commit }, { vm, requestPage, processName, dataContent }) {
@@ -18,15 +19,32 @@ export default {
         }
       )
   },
-  getData ({ dispatch, commit }, { vm, requestPage, processName, dataContent }) {
+  getData ({ dispatch, commit }, { vm, requestPage, processName, dataContent, returnRoute }) {
+    console.log('data-actions-getData')
     commit('general/setLoading', true, { root: true })
     commit('pendingRequest')
     dataResponseService.getContent(requestPage, processName, dataContent)
       .then(
         content => {
           let selfVm = vm
-          commit('getDataSuccess', content)
           commit('general/setLoading', false, { root: true })
+          if (returnRoute && returnRoute !== '') {
+            if (returnRoute === 'back') {
+              router.go(-1)
+            } else if (returnRoute === 'reloadPage') {
+              router.go()
+            } else if (returnRoute === 'goToResultUrl') {
+              commit('restoreDataMap')
+              commit('restoreMetadata')
+              window.open(`${config.backendUrl}${content.dataContent.dataMap.resultUrl}`, '_blank')
+            } else {
+              setTimeout(() => {
+                router.push(returnRoute)
+              }, 5000)
+            }
+          } else {
+            commit('getDataSuccess', content)
+          }
         },
         error => {
           commit('general/setLoading', false, { root: true })

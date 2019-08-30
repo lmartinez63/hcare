@@ -4,8 +4,20 @@ export default {
   pendingRequest (state) {
     console.log('dataResponse - mutations - pendingRequest')
     state.loading = true
+    state.oldDataMap = state.dataMap
+    state.oldMetadata = state.metadata
     state.dataMap = {}
     state.metadata = {}
+  },
+  restoreDataMap (state) {
+    console.log('dataResponse - mutations - reloadDataMap')
+    state.loading = true
+    state.dataMap = state.oldDataMap
+  },
+  restoreMetadata (state) {
+    console.log('dataResponse - mutations - reloadDataMap')
+    state.loading = true
+    state.metadata = state.oldMetadata
   },
   pendingDialogRequest (state) {
     console.log('dataResponse - mutations - pendingDialogRequest')
@@ -27,11 +39,9 @@ export default {
   getDataSuccess (state, content) {
     state.loading = false
     console.log('dataResponse - mutations  - getDataSuccess')
+    // state.dataMap = Object.assign(state.dataMap, content.dataContent.dataMap)
+    // state.metadata = Object.assign(state.metadata, content.metadataContent)
     state.dataMap = content.dataContent.dataMap
-    // Formats for dates
-    if (state.dataMap.patient) {
-      state.dataMap.patient.birthday = (new Date(state.dataMap.patient.birthday)).toISOString().substr(0, 10)
-    }
     state.metadata = content.metadataContent
   },
   getSurgeryAreaListByRequiredDateSuccess (state, content) {
@@ -79,7 +89,8 @@ export default {
     state.dataMap = content.dataContent.dataMap
   },
   uploadFileSuccess (state, content) {
+    console.log('processResponse - mutations  - uploadFileSuccess - start')
     state.loading = false
-    console.log('processResponse - mutations  - uploadFileSuccess')
+    console.log('processResponse - mutations  - uploadFileSuccess - end')
   }
 }

@@ -59,9 +59,19 @@
                             v-for="fieldDefinition in orderedFields(section.fieldDefinitionList)"
                             v-if="fieldDefinition.visible"
                             :key="fieldDefinition.fieldDefinitionCode"
-                            :xs12="fieldDefinition.fieldType === 8 ? true : false"
+                            :xs12="( fieldDefinition.fieldType === 8 || fieldDefinition.fieldType === 10 || fieldDefinition.fieldType === 11 || fieldDefinition.fieldType === 0  ) ? true : false"
                             :class="['order-xs'+orderCalculated(fieldDefinition.orderNumber,section.fieldDefinitionList.length), fieldDefinition.xsSize ? 'xs' +fieldDefinition.xsSize : 'xs6']"
                           >
+                            <v-subheader
+                              v-if="fieldDefinition.fieldType === 0"
+                              inset
+                            >
+                              {{ $parent.$parent.$parent.getLabelValue(fieldDefinition.label) }}
+                            </v-subheader>
+                            <v-divider
+                              v-if="fieldDefinition.fieldType === 0"
+                              inset
+                            />
                             <v-text-field
                               v-if="fieldDefinition.fieldType === 1"
                               v-model="getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]"
@@ -70,8 +80,13 @@
                               :disabled="!fieldDefinition.editable"
                               :suffix="fieldDefinition.suffix"
                               :prefix="fieldDefinition.prefix"
+                              :type="fieldDefinition.customFeatures ? JSON.parse(fieldDefinition.customFeatures).type : ''"
                               :mask="fieldDefinition.mask"
+                              :append-outer-icon="fieldDefinition.outterButton ? JSON.parse(fieldDefinition.outterButton).icon : ''"
+                              :prepend-icon="fieldDefinition.prependButton ? JSON.parse(fieldDefinition.prependButton).icon : ''"
                               @change="executeFieldChangeEvent(fieldDefinition.onChangeEvent)"
+                              @click:append-outer="fieldDefinition.outterButton ? executeAction(JSON.parse(fieldDefinition.outterButton).button) :''"
+                              @click:prepend="fieldDefinition.prependButton ? executeAction(JSON.parse(fieldDefinition.prependButton).button) :''"
                             />
                             <v-autocomplete
                               v-if="fieldDefinition.fieldType === 2"
@@ -92,7 +107,7 @@
                               <!-- Is this neccesary -->
                               <!-- {{ fieldDefinition.outterButton }} -->
                               <template
-                                v-if="fieldDefinition.outterButton && fieldDefinition.outterButton != null && fieldDefinition.outterButton !== '' "
+                                v-if="fieldDefinition.outterButton && fieldDefinition.outterButton !== null && fieldDefinition.outterButton !== '' "
                                 v-slot:append-outer
                               >
                                 <v-slide-x-reverse-transition mode="out-in">
@@ -248,6 +263,80 @@
                               auto-grow
                               :maxlength="getMaxFieldSize(fieldDefinition.fieldSize)"
                             />
+                            <div v-if="fieldDefinition.fieldType === 10">
+                              <v-toolbar color="primary">
+                                <!--<v-toolbar-side-icon></v-toolbar-side-icon>-->
+                                <v-toolbar-title>
+                                  {{ $parent.$parent.$parent.getLabelValue(fieldDefinition.label) }}
+                                </v-toolbar-title>
+                                <v-spacer />
+                                <v-btn
+                                  v-if="fieldDefinition.outterButton && fieldDefinition.outterButton != null && fieldDefinition.outterButton !== '' "
+                                  icon
+                                >
+                                  <v-icon
+                                    :key="fieldDefinition.id"
+                                    :color="JSON.parse(fieldDefinition.outterButton).color"
+                                    @click="executeAction(JSON.parse(fieldDefinition.outterButton).button)"
+                                    v-text="JSON.parse(fieldDefinition.outterButton).icon"
+                                  />
+                                </v-btn>
+                              </v-toolbar>
+                              <v-list
+                                two-line
+                              >
+                                <template v-for="(dataElement,dataElementIndex) in getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode]">
+                                  <v-list-tile
+                                    :key="dataElement.id"
+                                    avatar
+                                    ripple
+                                    @click="executeAction(JSON.parse(fieldDefinition.selectSource).button,dataElement)"
+                                  >
+                                    <v-list-tile-content>
+                                      <v-list-tile-title>{{ dataElement[JSON.parse(fieldDefinition.selectSource).title] }}</v-list-tile-title>
+                                      <v-list-tile-sub-title class="text--primary">
+                                        {{ dataElement[JSON.parse(fieldDefinition.selectSource).headline] }}
+                                      </v-list-tile-sub-title>
+                                      <v-list-tile-sub-title>{{ dataElement[JSON.parse(fieldDefinition.selectSource).subtitle] }}</v-list-tile-sub-title>
+                                    </v-list-tile-content>
+                                    <v-list-tile-action>
+                                      <v-list-tile-action-text>{{ dataElement[JSON.parse(fieldDefinition.selectSource).action] }}</v-list-tile-action-text>
+                                    </v-list-tile-action>
+                                  </v-list-tile>
+                                  <v-divider
+                                    v-if="dataElementIndex + 1 < getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode].length"
+                                    :key="dataElementIndex"
+                                  />
+                                </template>
+                              </v-list>
+                            </div>
+                            <v-toolbar
+                              v-if="fieldDefinition.fieldType === 11"
+                            >
+                              <v-toolbar-side-icon
+                                v-if="fieldDefinition.prependButton && fieldDefinition.prependButton != null && fieldDefinition.prependButton !== '' "
+                                @click="executeAction(JSON.parse(fieldDefinition.prependButton).button)"
+                              >
+                                <v-icon
+                                  :color="JSON.parse(fieldDefinition.prependButton).color"
+                                  v-text="JSON.parse(fieldDefinition.prependButton).icon"
+                                />
+                              </v-toolbar-side-icon>
+                              <v-toolbar-title>{{ $parent.$parent.$parent.getLabelValue(fieldDefinition.label) }}</v-toolbar-title>
+                              <v-spacer />
+                              <template v-for="(outterButton,outterButtonIndex) in JSON.parse(fieldDefinition.outterButton)">
+                                <v-btn
+                                  v-if="outterButton && outterButton != null && outterButton !== '' && evaluateVisibility(outterButton.button)"
+                                  icon
+                                >
+                                  <v-icon
+                                    :color="outterButton.color"
+                                    @click="executeAction(outterButton.button)"
+                                    v-text="outterButton.icon"
+                                  />
+                                </v-btn>
+                              </template>
+                            </v-toolbar>
                           </v-flex>
                         </v-layout>
                       </v-container>
@@ -263,6 +352,7 @@
                         v-if="fieldDefinition.visible"
                         :key="fieldDefinition.fieldDefinitionCode"
                       >
+                        <!-- TODO This should be removed and moved to section 1-->
                         <div v-if="fieldDefinition.fieldType === 10">
                           <v-toolbar color="primary">
                             <!--<v-toolbar-side-icon></v-toolbar-side-icon>-->
@@ -314,13 +404,18 @@
                     </v-card>
                   </div>
                   <v-btn
-                    color="primary"
-                    @click="executeAction()"
+                    v-for="sectionButton in section.sectionButtons"
+                    v-if="sectionButton.visible"
+                    :key="sectionButton.buttonCode"
+                    dark
+                    small
+                    :fab="sectionButton.fab"
+                    :round="sectionButton.round"
+                    color="green"
+                    @click="executeAction(sectionButton)"
                   >
-                    Continue
-                  </v-btn>
-                  <v-btn flat>
-                    Cancel
+                    <v-icon>{{ sectionButton.icon }}</v-icon>
+                    {{ sectionButton.round ? ' '+$parent.$parent.$parent.getLabelValue(sectionButton.label) : '' }}
                   </v-btn>
                 </v-stepper-content>
               </div>
@@ -371,6 +466,7 @@
                           :label="$parent.$parent.$parent.getLabelValue(fieldDefinition.label)"
                           :rules="[() => fieldDefinition.required === true && ( !! getDataMapAttribute(dataMap,section.entity)[fieldDefinition.fieldDefinitionCode] || 'Este campo es requerido' )]"
                           :disabled="!fieldDefinition.editable"
+                          :type="fieldDefinition.customFeatures ? JSON.parse(fieldDefinition.customFeatures).type : ''"
                           :suffix="fieldDefinition.suffix"
                           :prefix="fieldDefinition.prefix"
                           :mask="fieldDefinition.mask"
@@ -511,10 +607,10 @@
                           :ref="page.id +'_'+ section.id +'_'+ fieldDefinition.id"
                           :config="config"
                           :timezone="timeZone"
-                          :event-sources="eventSources(fieldDefinition.selectSource)"
-                          @event-selected="eventSelected"
+                          :event-sources="getComputedDataMapAttribute('dataMap',[section.entity,fieldDefinition.fieldDefinitionCode])"
+                          @event-selected="executeCalendarAction($event, fieldDefinition.onClickEvent)"
                           @event-receive="eventReceive"
-                          @event-created="eventCreated"
+                          @event-created="executeCalendarAction($event, fieldDefinition.onChangeEvent)"
                         />
                       </v-flex>
                     </v-layout>
@@ -739,7 +835,7 @@
                       :ref="dialogPage.id +'_'+ dialogSection.id +'_'+ dialogFieldDefinition.id"
                       :config="config"
                       :timezone="timeZone"
-                      :event-sources="getComputedDataMapAttribute('dialogDataMap',[dialogSection.entity,dialogFieldDefinition.fieldDefinitionCode])"
+                      :event-sources="getComputedDataMapAttribute('dialogDataMap',[dialogSection.entity,dialogFieldDefinition.fieldDefinitionCode],dialogPage.id +'_'+ dialogSection.id +'_'+ dialogFieldDefinition.id)"
                       @event-selected="executeCalendarAction($event, dialogFieldDefinition.onClickEvent)"
                       @event-receive="eventReceive"
                       @event-created="eventCreated"
@@ -909,7 +1005,8 @@ export default {
       attachment: {
         entityCode: 0,
         entityId: 0,
-        entity: ''
+        entity: '',
+        returnEntiyId: ''
       },
       active: [],
       // Testing
@@ -975,7 +1072,7 @@ export default {
     /*
     eventSources () {
       return this.$store.state.data.dataMap.eventGroupList
-    },*/
+    }, */
     eventSources: function () {
       var vm = this
       return function (sEventSource) {
@@ -984,7 +1081,10 @@ export default {
     },
     getComputedDataMapAttribute: function () {
       var vm = this
-      return function (dataMap, aAttributeArray){
+      return function (dataMap, aAttributeArray, calendarRef) {
+        /* if(vm.$refs[calendarRef]){
+          vm.$refs[calendarRef][0].$emit('reload-events')
+        } */
         var attributeValue = ''
         var dataSource = vm[dataMap]
         for (var ai = 0; ai < aAttributeArray.length; ai++) {
@@ -1057,8 +1157,36 @@ export default {
     console.log('DataPage - mounted - end')
   },
   methods: {
+    evaluateVisibility (button){
+      if(button.visibility && button.visibility !== ''){
+        return eval(button.visibility)
+      }
+      return true
+    },
+    base64ToArrayBuffer (base64) {
+      var binaryString = window.atob(base64)
+      var binaryLen = binaryString.length
+      var bytes = new Uint8Array(binaryLen)
+      for (var i = 0; i < binaryLen; i++) {
+        var ascii = binaryString.charCodeAt(i)
+        bytes[i] = ascii
+      }
+      return bytes
+    },
+    downloadFile (attachment) {
+      console.log('downloadFile')
+      if (attachment.contentType === 'application/pdf') {
+        // var bytes = new Uint8Array(attachment.content); // pass your byte response to this constructor
+        var bytes = this.base64ToArrayBuffer(attachment.content)
+        var blob = new Blob([bytes], { type: 'application/pdf' })// change resultByte to bytes
+        var link = document.createElement('a')
+        link.href = window.URL.createObjectURL(blob)
+        link.download = attachment.internalFileName
+        link.click()
+      }
+    },
     closeCurrentDialog () {
-      this.dataViewDialog = false;
+      this.dataViewDialog = false
     },
     eventReceive (event, jsEvent, view) {
       console.log('eventReceive')
@@ -1069,23 +1197,16 @@ export default {
       this.$store.state.data.dataMap.event.start = event.start.local().toDate().toISOString()
       this.$store.state.data.dataMap.event.end = event.end.local().toDate().toISOString()
       this.$store.state.data.dataMap.event.surgeryAreaId = event.surgeryAreaId
-      this.executeAction(JSON.parse(button));
-      //this.saveObjectState('{\"sAttributeArray\":\"event\",\"processName\":\"SaveEvent\"}')
-    },
-    eventCreated (event) {
-      // alert(event)
-      console.log('eventCreated')
-      this.calendarEvent = event
-      this.calendarEvent.start.isoDate = this.calendarEvent.start.local().toDate().toISOString()
-      this.calendarEvent.end.isoDate = this.calendarEvent.end.local().toDate().toISOString()
-      this.openDataDialogEntity('RetrieveEventInfo', 'addEventDialog', '{"surgeryAreaId":${{this.dataMap.surgeryArea.id}},"start":"${{this.calendarEvent.start.isoDate}}","end":"${{this.calendarEvent.end.isoDate}}"}')
+      this.executeAction(JSON.parse(button))
+      // this.saveObjectState('{\"sAttributeArray\":\"event\",\"processName\":\"SaveEvent\"}')
     },
     computedDateFormattedMomentjs (date) {
       // TODO this property should come from a userProfile locale
       this.$moment.locale('es')
       return date ? this.$moment(date).format('LL') : ''
     },
-    openDataDialogEntity (dialogProcessName, dialogRequestPage, dialogParams) {
+    openDataDialogEntity (dialogProcessName, dialogRequestPage, dialogParams, postActions) {
+      let selfVue = this
       const { dispatch } = this.$store
       var dialogParamsString = dialogParams
       var dialogParamsArray = dialogParams.match(/\${{(.*?)}}/g)
@@ -1111,11 +1232,17 @@ export default {
         return false
       }
     },
-    closeDataDialogEntity () {
+    closeDataDialogEntity (additionalActions) {
       this.createDataViewDialog = false
       this.dataViewDialog = false
-      this.$store.state.data.dialogData = {}
       this.$store.state.data.dialogDataMap = {}
+      this.$store.state.data.dialogMetadata = {}
+      if (additionalActions) {
+        for (var aA = 0; aA < additionalActions.length; aA++) {
+          var additionalAction = additionalActions[aA]
+          eval(additionalAction)
+        }
+      }
     },
     getMaxFieldSize (fieldSize) {
       return !fieldSize || fieldSize === null ? 255 : fieldSize
@@ -1226,7 +1353,9 @@ export default {
       formData.append('entity', this.getValueFromVariable(this.attachment.entity))
       formData.append('entityId', this.getValueFromVariable(this.attachment.entityId))
       formData.append('entityCode', this.getValueFromVariable(this.attachment.entityCode))
-
+      if (this.attachment.fieldToMatchEntiyId && this.attachment.fieldToMatchEntiyId != '') {
+        formData.append('fieldToMatchEntiyId', this.getValueFromVariable(this.attachment.fieldToMatchEntiyId))
+      }
       const {
         dispatch
       } = this.$store
@@ -1265,37 +1394,9 @@ export default {
         case 'getPatientInfo':
           this.getPatientInfo()
           break
-        case 'getSurgeryAreaListByRequiredDate':
-          this.getSurgeryAreaListByRequiredDate()
-          break
-        case 'getAvailableDatesOnSurgeryArea':
-          this.getAvailableDatesOnSurgeryArea()
-          break
         default:
-              eval(changeEvent);
+          eval(changeEvent)
           break
-      }
-    },
-    // TODO this methods should be dinamic
-    getSurgeryAreaListByRequiredDate: function () {
-      console.log('DataView - method - getSurgeryAreaListByRequiredDate - begin')
-      if (this.dataMap.medicalSurgery.requiredDate && this.dataMap.medicalSurgery.surgeryType.id) {
-        const dataContent = {
-          'requiredDate': this.dataMap.medicalSurgery.requiredDate,
-          'surgeryTypeId': this.dataMap.medicalSurgery.surgeryType.id
-        }
-        const {
-          requestPage
-        } = this
-        const {
-          dispatch
-        } = this.$store
-        dispatch('data/getSurgeryAreaListByRequiredDate', {
-          requestPage: requestPage,
-          processName: 'GetSurgeryAreaListByRequiredDate',
-          dataContent: dataContent
-        })
-        console.log('DataView - method - getSurgeryAreaListByRequiredDate - end')
       }
     },
     // TODO this methods should be dinamic
@@ -1316,31 +1417,6 @@ export default {
         dataContent: dataContent
       })
       console.log('DataView - method - getPatientInfo - end')
-    },
-    // TODO this methods should be dinamic
-    getAvailableDatesOnSurgeryArea: function () {
-      console.log('DataView - method - getAvailableDatesOnSurgeryArea - begin')
-      if (this.dataMap.medicalSurgery.requiredDate && this.dataMap.medicalSurgery.surgeryType.id && this.dataMap.medicalSurgery.surgeryArea.id) {
-        const dataContent = {
-          'requiredDate': this.dataMap.medicalSurgery.requiredDate,
-          'surgeryTypeId': this.dataMap.medicalSurgery.surgeryType.id,
-          'surgeryAreaId': this.dataMap.medicalSurgery.surgeryArea.id
-        }
-        const {
-          requestPage
-        } = this
-        const {
-          dispatch
-        } = this.$store
-        dispatch('data/getAvailableDatesOnSurgeryArea', {
-          vm: this,
-          calendarRef: '1021_1024_1191',
-          requestPage: requestPage,
-          processName: 'GetAvailableDatetimeListOnSurgeryArea',
-          dataContent: dataContent
-        })
-        console.log('DataView - method - getAvailableDatesOnSurgeryArea - end')
-      }
     },
     executeAction: function (button, elementSource) {
       let selfVue = this
@@ -1377,6 +1453,9 @@ export default {
           // var be = JSON.parse(button.eventDefinition)
           for (var i3 = 0, len3 = be.uObjects.length; i3 < len3; i3++) {
             var uObject = be.uObjects[i3]
+            if (!this.dataMap[uObject.sourceObject]) {
+              this.dataMap[uObject.sourceObject] = {}
+            }
             Object.assign(this.dataMap[uObject.sourceObject], uObject.updatedObject)
           }
           eval(be.action)
@@ -1514,7 +1593,32 @@ export default {
       }
 
       // }
-      console.log('MedicalAppointmentPage - method - saveObjectState - end')
+      console.log('DataView - method - saveObjectState - end')
+    },
+    getData: function (sParameters, sAttributeArray, processName, additionalActions) {
+      var jParameters = JSON.parse(sParameters)
+      console.log('DataView - method - getData - begin')
+      var attributeArray = jParameters.sAttributeArray.split(',')
+      var dataContent = {}
+      for (var i = 0; i < attributeArray.length; i++) {
+        Object.defineProperty(dataContent, attributeArray[i], { value: this.dataMap[attributeArray[i]], writable: true, enumerable: true, configurable: true })
+      }
+      const {
+        requestPage
+      } = this
+      const {
+        dispatch
+      } = this.$store
+      dispatch('data/getData', {
+        vm: this,
+        requestPage: requestPage,
+        processName: jParameters.processName,
+        dataContent: dataContent,
+        additionalActions: jParameters.additionalActions,
+        returnRoute: jParameters.returnRoute
+      })
+      // }
+      console.log('DataView - method - getData - end')
     },
     viewMedicalHistory: function (historyCode) {
       this.$router.push({

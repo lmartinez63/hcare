@@ -226,7 +226,8 @@ export default {
     localDateTimeFromIso (isoDatetime) {
       // return this.$moment.utc(isoDatetime).local().format(this.datetimeFormat)
       this.$moment.locale('es')
-      return this.$moment.utc(isoDatetime).local().format('LLLL')
+      if (isoDatetime !== null) { return this.$moment.utc(isoDatetime).local().format('LLLL') }
+      return ''
     },
     executeAction: function (button) {
       let selfVue = this

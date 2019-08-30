@@ -3,9 +3,11 @@
   border-radius: $border-radius-base;
   margin-bottom: $margin-general;
 
+  /* Removed for DataView.vue fieldDefinition type 11
   &:not(.v-toolbar--fixed) .v-toolbar__content {
     margin-left: $toolbar-margin-left;
   }
+  */
 
   @include toolbar-colors('bg-danger', $brand-danger);
   @include toolbar-colors('bg-warning', $brand-warning);
