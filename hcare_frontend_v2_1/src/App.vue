@@ -102,6 +102,7 @@ export default {
       this.$store.dispatch('general/getMedicalAreas')
       this.$store.dispatch('general/getSurgeryTypes')
       this.$store.dispatch('general/getDoctors')
+      this.$store.dispatch('general/getNurses')
       this.$store.dispatch('general/getRoles')
       this.$store.dispatch('general/getPages')
       this.$store.dispatch('general/getSections')

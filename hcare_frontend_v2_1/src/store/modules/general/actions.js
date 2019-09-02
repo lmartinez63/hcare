@@ -77,6 +77,17 @@ export default {
         error => commit('failureDetected', error)
       )
   },
+  getNurses ({
+    dispatch,
+    commit
+  }) {
+    commit('getNursesRequest')
+    generalService.getNurses()
+      .then(
+        nurses => commit('getNursesSuccess', nurses),
+        error => commit('failureDetected', error)
+      )
+  },
   getDoctors ({
     dispatch,
     commit

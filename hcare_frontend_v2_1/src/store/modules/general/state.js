@@ -1,6 +1,7 @@
 const properties = JSON.parse(localStorage.getItem('properties'))
 const labels = JSON.parse(localStorage.getItem('labels'))
 const doctors = JSON.parse(localStorage.getItem('doctors'))
+const nurses = JSON.parse(localStorage.getItem('nurses'))
 const medicalAreas = JSON.parse(localStorage.getItem('medicalAreas'))
 const surgeryTypes = JSON.parse(localStorage.getItem('surgeryTypes'))
 const roles = JSON.parse(localStorage.getItem('roles'))
@@ -17,6 +18,11 @@ const initialStateDoctors = doctors ? {
   doctors
 } : {
   doctors: null
+}
+const initialStateNurses = nurses ? {
+  nurses
+} : {
+  nurses: null
 }
 const initialStateMedicalAreas = medicalAreas ? {
   medicalAreas
@@ -57,6 +63,7 @@ const initialStateLabels = labels ? {
 export default {
   properties: initialStateProperties,
   doctors: initialStateDoctors,
+  nurses: initialStateNurses,
   medicalAreas: initialStateMedicalAreas,
   surgeryTypes: initialStateSurgeryTypes,
   roles: initialStateRoles,

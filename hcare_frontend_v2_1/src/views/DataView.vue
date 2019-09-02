@@ -293,7 +293,9 @@
                                     @click="executeAction(JSON.parse(fieldDefinition.selectSource).button,dataElement)"
                                   >
                                     <v-list-tile-content>
-                                      <v-list-tile-title>{{ dataElement[JSON.parse(fieldDefinition.selectSource).title] }}</v-list-tile-title>
+                                      <v-list-tile-title>
+                                        {{ getObjectData(dataElement,JSON.parse(fieldDefinition.selectSource).title) }}
+                                      </v-list-tile-title>
                                       <v-list-tile-sub-title class="text--primary">
                                         {{ dataElement[JSON.parse(fieldDefinition.selectSource).headline] }}
                                       </v-list-tile-sub-title>
@@ -1157,6 +1159,9 @@ export default {
     console.log('DataPage - mounted - end')
   },
   methods: {
+    getObjectData (jsonObject, stringAttribute) {
+      return _.get(jsonObject, stringAttribute)
+    },
     evaluateVisibility (button){
       if(button.visibility && button.visibility !== ''){
         return eval(button.visibility)
@@ -1210,7 +1215,7 @@ export default {
       const { dispatch } = this.$store
       var dialogParamsString = dialogParams
       var dialogParamsArray = dialogParams.match(/\${{(.*?)}}/g)
-      if (dialogParamsArray != null) {
+      if (dialogParamsArray !== null) {
         for (var d2 = 0, dlen2 = dialogParamsArray.length; d2 < dlen2; d2++) {
           dialogParamsString = dialogParamsString.replace(dialogParamsArray[d2], eval(dialogParamsArray[d2].match(/\$\{\{([^)]+)\}\}/)[1]))
         }
@@ -1440,15 +1445,15 @@ export default {
           break
         case 3:
           // TOREMOVE
-          var jsonString = button.eventDefinition
-          var eventArray = button.eventDefinition.match(/\${{(.*?)}}/g)
-          if (eventArray != null) {
-            for (var i2 = 0, len2 = eventArray.length; i2 < len2; i2++) {
-              var dataRouteVariable = eventArray[i2]
-              jsonString = jsonString.replace(dataRouteVariable, eval(dataRouteVariable.match(/\$\{\{([^)]+)\}\}/)[1]))
+          var jsonString3 = button.eventDefinition
+          var eventArray3 = button.eventDefinition.match(/\${{(.*?)}}/g)
+          if (eventArray3 != null) {
+            for (var it3 = 0, lent3 = eventArray3.length; it3 < lent3; it3++) {
+              var dataRouteVariable = eventArray3[it3]
+              jsonString3 = jsonString3.replace(dataRouteVariable, eval(dataRouteVariable.match(/\$\{\{([^)]+)\}\}/)[1]))
             }
           }
-          var be = JSON.parse(jsonString)
+          var be = JSON.parse(jsonString3)
 
           // var be = JSON.parse(button.eventDefinition)
           for (var i3 = 0, len3 = be.uObjects.length; i3 < len3; i3++) {

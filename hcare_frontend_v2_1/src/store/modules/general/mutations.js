@@ -47,6 +47,13 @@ export default {
       loading: true
     }
   },
+  getNursesRequest (state) {
+    state.loading = true
+    console.log('generalStore - mutations - getNursesRequest')
+    state.nurses = {
+      loading: true
+    }
+  },
   getRolesRequest (state) {
     state.loading = true
     console.log('generalStore - mutations - getRolesRequest')
@@ -115,6 +122,13 @@ export default {
     console.log('generalStore - mutations - getDoctorsSuccess')
     state.doctors = {
       items: doctors
+    }
+  },
+  getNursesSuccess (state, nurses) {
+    state.loading = false
+    console.log('generalStore - mutations - getNursesSuccess')
+    state.nurses = {
+      items: nurses
     }
   },
   getMedicalAreasSuccess (state, medicalAreas) {
