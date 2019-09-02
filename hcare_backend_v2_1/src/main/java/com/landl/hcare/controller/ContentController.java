@@ -231,6 +231,11 @@ public class ContentController {
         return userService.findByRoleForAutoCompleteFields("DOCTOR");
     }
 
+    @GetMapping("/getNurses")
+    public List<AutoCompleteField> getNurses() throws Exception{
+        return userService.findByRoleForAutoCompleteFields("NURSE");
+    }
+
     @GetMapping("/getLabels")
     public List<Label> getLabels() throws Exception{
         return labelService.findAll();

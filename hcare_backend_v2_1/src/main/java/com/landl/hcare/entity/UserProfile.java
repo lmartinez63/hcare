@@ -6,6 +6,7 @@ import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -55,11 +56,11 @@ public class UserProfile {
     @Column(name="address")
     private String address;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "USER_ROLES", joinColumns = {
             @JoinColumn(name = "USER_ID") }, inverseJoinColumns = {
             @JoinColumn(name = "ROLE_ID") })
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
     @Transient
     private Map pageSectionMap;

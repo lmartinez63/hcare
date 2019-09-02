@@ -19,6 +19,9 @@ public abstract class  CustomProcess {
     RolePageSectionFieldService rolePageSectionFieldService;
 
     @Autowired
+    EvolutionLogService evolutionLogService;
+
+    @Autowired
     DocumentTemplateService documentTemplateService;
 
     @Autowired

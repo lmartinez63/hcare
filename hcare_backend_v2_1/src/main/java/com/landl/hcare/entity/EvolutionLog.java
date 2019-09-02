@@ -27,6 +27,10 @@ public class EvolutionLog extends AuditModel {
     @Column(name="evolution_notes",length = 4000, nullable = true)
     private String evolutionNotes;
 
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name="registered_by")
+    private UserProfile registeredBy;
+
     @Column(name="medical_surgery_id")
     private Long medicalSurgeryId;
 
@@ -60,5 +64,13 @@ public class EvolutionLog extends AuditModel {
 
     public void setMedicalSurgeryId(Long medicalSurgeryId) {
         this.medicalSurgeryId = medicalSurgeryId;
+    }
+
+    public UserProfile getRegisteredBy() {
+        return registeredBy;
+    }
+
+    public void setRegisteredBy(UserProfile registeredBy) {
+        this.registeredBy = registeredBy;
     }
 }

@@ -13,5 +13,7 @@ public interface RoleService {
 
     public List<Role> findAll();
 
+    public String[] getRolesArray();
+
     public Role findById(Long roleId);
 }

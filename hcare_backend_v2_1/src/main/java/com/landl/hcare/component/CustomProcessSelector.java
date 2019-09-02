@@ -7,6 +7,12 @@ import org.springframework.stereotype.Component;
 public class CustomProcessSelector {
 
     @Autowired
+    RetrieveEvolutionLogInfo retrieveEvolutionLogInfo;
+
+    @Autowired
+    SaveEvolutionLog saveEvolutionLog;
+
+    @Autowired
     SaveSurgeryAnesthesia saveSurgeryAnesthesia;
 
     @Autowired
@@ -162,6 +168,12 @@ public class CustomProcessSelector {
     public CustomProcess getCustomProcessClass(String customProcessName) throws Exception{
         CustomProcess customProcess = null;
         switch(customProcessName){
+            case "SaveEvolutionLog":
+                customProcess = saveEvolutionLog;
+                break;
+            case "RetrieveEvolutionLogInfo":
+                customProcess = retrieveEvolutionLogInfo;
+                break;
             case "GenerateDocumentFromTemplate":
                 customProcess = generateDocumentFromTemplate;
                 break;
