@@ -117,6 +117,14 @@ public class Patient extends AuditModel {
     @NotAudited
     private List<Map> files;
 
+    @PostLoad
+    private void postLoad() {
+        this.fullName = UtilityTools.isNull(this.firstName) + " " + UtilityTools.isNull(this.lastName);
+        if(this.birthday != null){
+            this.age = Period.between(this.birthday.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()).getYears();
+        }
+    }
+
     public Patient() {
     }
 
@@ -217,12 +225,12 @@ public class Patient extends AuditModel {
     }
 
     public String getFullName() {
-        //return UtilityTools.isNull(this.firstName) + " " + UtilityTools.isNull(this.lastName);
         return fullName;
+        // return fullName;
     }
 
     public void setFullName(String fullName) {
-        this.fullName = UtilityTools.isNull(this.firstName) + " " + UtilityTools.isNull(this.lastName);
+        this.fullName = fullName;
     }
 
     public Long getId() {
@@ -346,13 +354,11 @@ public class Patient extends AuditModel {
     }
 
     public Integer getAge() {
-        return age;
+        return this.age;
     }
 
     public void setAge(Integer age) {
-        if(this.birthday != null){
-            this.age = Period.between(this.birthday.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()).getYears();
-        }
+        this.age = age;
     }
 
     public String getLabelGender() {

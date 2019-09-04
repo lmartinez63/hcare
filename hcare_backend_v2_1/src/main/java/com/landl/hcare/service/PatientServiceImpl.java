@@ -40,7 +40,6 @@ public class PatientServiceImpl extends ObjectServiceImpl implements PatientServ
 
     public void getObjectLabeled(Patient patient) throws  Exception{
         transformObjectLabels(patient);
-        patient.setFullName("");
     }
 
     public Patient createPatient() throws  Exception{

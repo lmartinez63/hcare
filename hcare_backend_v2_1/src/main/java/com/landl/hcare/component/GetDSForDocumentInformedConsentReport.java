@@ -31,7 +31,7 @@ public class GetDSForDocumentInformedConsentReport {
         Patient patient = medicalSurgery.getMedicalAppointment().getPatient();
         dataSourceParameters.put("patient",patient);
         dataSourceParameters.put("medicalSurgery",medicalSurgery);
-        reportParameters.put("reportTitle","Informe de Anestesia");
+        reportParameters.put("reportTitle","Consentimiento Informado");
         resultDSMap.put("dataSourceParameters",dataSourceParameters);
         resultDSMap.put("reportParameters",reportParameters);
         return resultDSMap;
