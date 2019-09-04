@@ -42,6 +42,54 @@
             color="purple"
           />
         </v-list-tile>
+        <template
+          v-for="(link, i) in links"
+        >
+          <v-list-tile
+            v-if="!link.links"
+            :to="link.to"
+            :active-class="color"
+            avatar
+            class="v-list-item"
+          >
+            <v-list-tile-action>
+              <v-icon>{{ link.icon }}</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-title
+              v-text="link.text"
+            />
+          </v-list-tile>
+          <v-list-group
+            v-else
+            value="false"
+            :prepend-icon="link.icon"
+          >
+            <template v-slot:activator>
+              <v-list-tile>
+                <v-list-tile-title
+                  v-text="link.text"
+                />
+              </v-list-tile>
+            </template>
+            <v-list-tile
+              v-for="(subLink, si) in link.links"
+              :key="si"
+              :to="subLink.to"
+              :active-class="color"
+              avatar
+              class="v-list-item"
+            >
+              <v-list-tile-action>
+                <v-icon>{{ subLink.icon }}</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-title
+                v-text="subLink.text"
+              />
+            </v-list-tile>
+          </v-list-group>
+        </template>
+
+        <!--
         <v-list-tile
           v-for="(link, i) in links"
           :key="i"
@@ -57,6 +105,7 @@
             v-text="link.text"
           />
         </v-list-tile>
+      -->
         <!--
         <v-list-tile
           disabled
@@ -106,60 +155,96 @@ export default {
       },
 */
       {
-        to: '/browse/allUserProfiles',
         icon: 'mdi-clipboard-outline',
-        text: 'Listado de Usuarios'
+        text: 'Usuarios',
+        links: [
+          {
+            to: '/browse/allUserProfiles',
+            icon: 'mdi-clipboard-outline',
+            text: 'Listado de Usuarios'
+          }
+        ]
       },
       {
-        to: '/browse/allPatients',
         icon: 'mdi-clipboard-outline',
-        text: 'Listado de Pacientes'
+        text: 'Pacientes',
+        links: [
+          {
+            to: '/browse/allPatients',
+            icon: 'mdi-clipboard-outline',
+            text: 'Listado de Pacientes'
+          },
+          {
+            to: '/browse/allRolePageSectionFieldPage',
+            icon: 'mdi-clipboard-outline',
+            text: 'Administracion de Roles'
+          },
+        ]
       },
       {
-        to: '/browse/medicalAppointmentsToday',
         icon: 'mdi-clipboard-outline',
-        text: 'Listado de  Citas de Hoy'
+        text: 'Citas Medicas',
+        links: [
+          {
+            to: '/browse/medicalAppointmentsToday',
+            icon: 'mdi-clipboard-outline',
+            text: 'Listado de  Citas de Hoy'
+          },
+          {
+            to: '/browse/allMedAppHeaderView',
+            icon: 'mdi-clipboard-outline',
+            text: 'Lista de Citas Medicas'
+          },
+        ]
       },
       {
-        to: '/browse/allMedAppHeaderView',
         icon: 'mdi-clipboard-outline',
-        text: 'Lista de Citas Medicas'
+        text: 'Operaciones',
+        links: [
+          {
+            to: '/browse/medicalSurgeriesScheduled',
+            icon: 'mdi-clipboard-outline',
+            text: 'Lista de Operaciones Programadas'
+          },
+          {
+            to: '/browse/allMedicalSurgeries',
+            icon: 'mdi-clipboard-outline',
+            text: 'Lista de Operaciones'
+          },
+        ]
       },
       {
-        to: '/browse/medicalSurgeriesScheduled',
         icon: 'mdi-clipboard-outline',
-        text: 'Lista de Operaciones Programadas'
+        text: 'Gestion del Sistema',
+        links: [
+          {
+            to: '/browse/allPages',
+            icon: 'mdi-clipboard-outline',
+            text: 'Administracion de Paginas'
+          },
+          {
+            to: '/browse/allProperties',
+            icon: 'mdi-clipboard-outline',
+            text: 'Administracion de Propiedades'
+          },
+          {
+            to: '/browse/allLabels',
+            icon: 'mdi-clipboard-outline',
+            text: 'Administracion de Etiquetas'
+          },
+          {
+            to: '/browse/allDataTables',
+            icon: 'mdi-clipboard-outline',
+            text: 'Administracion de Tablas de Datos'
+          },
+          {
+            to: '/browse/allSurgeryAreas',
+            icon: 'mdi-clipboard-outline',
+            text: 'Administracion de Areas de Cirugia'
+          }
+        ]
       },
-      {
-        to: '/browse/allPages',
-        icon: 'mdi-clipboard-outline',
-        text: 'Administracion de Paginas'
-      },
-      {
-        to: '/browse/allLabels',
-        icon: 'mdi-clipboard-outline',
-        text: 'Administracion de Etiquetas'
-      },
-      {
-        to: '/browse/allDataTables',
-        icon: 'mdi-clipboard-outline',
-        text: 'Administracion de Tablas de Datos'
-      },
-      {
-        to: '/browse/allRolePageSectionFieldPage',
-        icon: 'mdi-clipboard-outline',
-        text: 'Administracion de Roles'
-      },
-      {
-        to: '/browse/allSurgeryAreas',
-        icon: 'mdi-clipboard-outline',
-        text: 'Administracion de Areas de Cirugia'
-      },
-      {
-        to: '/browse/allProperties',
-        icon: 'mdi-clipboard-outline',
-        text: 'Administracion de Propiedades'
-      }
+
       /*
             {
         to: '/typography',

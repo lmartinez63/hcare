@@ -27,5 +27,6 @@ module.exports = {
     'no-template-curly-in-string': 'off',
     'vue/no-use-v-if-with-v-for': 'off',
     'no-eval': 'off',
+    'vue/valid-v-for': 'off',
   }
 }

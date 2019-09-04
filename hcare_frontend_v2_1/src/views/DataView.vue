@@ -59,7 +59,7 @@
                             v-for="fieldDefinition in orderedFields(section.fieldDefinitionList)"
                             v-if="fieldDefinition.visible"
                             :key="fieldDefinition.fieldDefinitionCode"
-                            :xs12="( fieldDefinition.fieldType === 8 || fieldDefinition.fieldType === 10 || fieldDefinition.fieldType === 11 || fieldDefinition.fieldType === 0  ) ? true : false"
+                            :xs12="( fieldDefinition.fieldType === 8 || fieldDefinition.fieldType === 10 || fieldDefinition.fieldType === 11 || fieldDefinition.fieldType === 0 ) ? true : false"
                             :class="['order-xs'+orderCalculated(fieldDefinition.orderNumber,section.fieldDefinitionList.length), fieldDefinition.xsSize ? 'xs' +fieldDefinition.xsSize : 'xs6']"
                           >
                             <v-subheader
@@ -241,7 +241,7 @@
                               :label="fieldDefinition.label.labelValueEsEs"
                             >
                               <template
-                                v-if="fieldDefinition.outterButton && fieldDefinition.outterButton != null && fieldDefinition.outterButton !== '' "
+                                v-if="fieldDefinition.outterButton && fieldDefinition.outterButton !== null && fieldDefinition.outterButton !== '' "
                                 v-slot:append-outer
                               >
                                 <v-slide-x-reverse-transition mode="out-in">
@@ -271,7 +271,7 @@
                                 </v-toolbar-title>
                                 <v-spacer />
                                 <v-btn
-                                  v-if="fieldDefinition.outterButton && fieldDefinition.outterButton != null && fieldDefinition.outterButton !== '' "
+                                  v-if="fieldDefinition.outterButton && fieldDefinition.outterButton !== null && fieldDefinition.outterButton !== '' "
                                   icon
                                 >
                                   <v-icon
@@ -316,7 +316,7 @@
                               v-if="fieldDefinition.fieldType === 11"
                             >
                               <v-toolbar-side-icon
-                                v-if="fieldDefinition.prependButton && fieldDefinition.prependButton != null && fieldDefinition.prependButton !== '' "
+                                v-if="fieldDefinition.prependButton && fieldDefinition.prependButton !== null && fieldDefinition.prependButton !== '' "
                                 @click="executeAction(JSON.parse(fieldDefinition.prependButton).button)"
                               >
                                 <v-icon
@@ -326,9 +326,9 @@
                               </v-toolbar-side-icon>
                               <v-toolbar-title>{{ $parent.$parent.$parent.getLabelValue(fieldDefinition.label) }}</v-toolbar-title>
                               <v-spacer />
-                              <template v-for="(outterButton,outterButtonIndex) in JSON.parse(fieldDefinition.outterButton)">
+                              <template v-for="outterButton in JSON.parse(fieldDefinition.outterButton)">
                                 <v-btn
-                                  v-if="outterButton && outterButton != null && outterButton !== '' && evaluateVisibility(outterButton.button)"
+                                  v-if="outterButton && outterButton !== null && outterButton !== '' && evaluateVisibility(outterButton.button)"
                                   icon
                                 >
                                   <v-icon
@@ -363,7 +363,7 @@
                             </v-toolbar-title>
                             <v-spacer />
                             <v-btn
-                              v-if="fieldDefinition.outterButton && fieldDefinition.outterButton != null && fieldDefinition.outterButton !== '' "
+                              v-if="fieldDefinition.outterButton && fieldDefinition.outterButton !== null && fieldDefinition.outterButton !== '' "
                               icon
                             >
                               <v-icon
@@ -492,7 +492,7 @@
                         >
                           {{ fieldDefinition.outterButton }}
                           <template
-                            v-if="fieldDefinition.outterButton && fieldDefinition.outterButton != null && fieldDefinition.outterButton !== '' "
+                            v-if="fieldDefinition.outterButton && fieldDefinition.outterButton !== null && fieldDefinition.outterButton !== '' "
                             v-slot:append-outer
                           >
                             <v-slide-x-reverse-transition mode="out-in">
@@ -582,7 +582,7 @@
                           :label="fieldDefinition.label.labelValueEsEs"
                         >
                           <template
-                            v-if="fieldDefinition.outterButton && fieldDefinition.outterButton != null && fieldDefinition.outterButton !== '' "
+                            v-if="fieldDefinition.outterButton && fieldDefinition.outterButton !== null && fieldDefinition.outterButton !== '' "
                             v-slot:append-outer
                           >
                             <v-slide-x-reverse-transition mode="out-in">
@@ -791,7 +791,7 @@
                     >
                       {{ dialogFieldDefinition.outterButton }}
                       <template
-                        v-if="dialogFieldDefinition.outterButton && dialogFieldDefinition.outterButton != null && dialogFieldDefinition.outterButton !== '' "
+                        v-if="dialogFieldDefinition.outterButton && dialogFieldDefinition.outterButton !== null && dialogFieldDefinition.outterButton !== '' "
                         v-slot:append-outer
                       >
                         <v-slide-x-reverse-transition mode="out-in">
@@ -1162,8 +1162,8 @@ export default {
     getObjectData (jsonObject, stringAttribute) {
       return _.get(jsonObject, stringAttribute)
     },
-    evaluateVisibility (button){
-      if(button.visibility && button.visibility !== ''){
+    evaluateVisibility (button) {
+      if (button.visibility && button.visibility !== '') {
         return eval(button.visibility)
       }
       return true
@@ -1266,7 +1266,7 @@ export default {
       return Math.round(orderNumber / Math.ceil(size / 12))
     },
     getReturnObject (selectSource) {
-      if (selectSource && selectSource != null) {
+      if (selectSource && selectSource !== null) {
         var selectSourceJSON = JSON.parse(selectSource)
         if (selectSourceJSON.returnObject && selectSourceJSON.returnObject !== '') {
           return selectSourceJSON.returnObject
@@ -1295,7 +1295,7 @@ export default {
       return 'value'
     },
     getMultiple (selectSource) {
-      if (selectSource && selectSource != null) {
+      if (selectSource && selectSource !== null) {
         var selectSourceJSON = JSON.parse(selectSource)
         if (selectSourceJSON.multiple && selectSourceJSON.multiple === true) {
           return selectSourceJSON.multiple
@@ -1305,7 +1305,7 @@ export default {
       return false
     },
     arrayItems (selectSource) {
-      if (selectSource && selectSource != null) {
+      if (selectSource && selectSource !== null) {
         var selectSourceJSON = JSON.parse(selectSource)
         var source = selectSourceJSON.source
         var finalSelectSource = this.$store.state
@@ -1358,7 +1358,7 @@ export default {
       formData.append('entity', this.getValueFromVariable(this.attachment.entity))
       formData.append('entityId', this.getValueFromVariable(this.attachment.entityId))
       formData.append('entityCode', this.getValueFromVariable(this.attachment.entityCode))
-      if (this.attachment.fieldToMatchEntiyId && this.attachment.fieldToMatchEntiyId != '') {
+      if (this.attachment.fieldToMatchEntiyId && this.attachment.fieldToMatchEntiyId !== '') {
         formData.append('fieldToMatchEntiyId', this.getValueFromVariable(this.attachment.fieldToMatchEntiyId))
       }
       const {
@@ -1430,10 +1430,9 @@ export default {
           var routeObject = {}
           var jsonString = button.eventDefinition
           var eventArray = button.eventDefinition.match(/\${{(.*?)}}/g)
-          if (eventArray != null) {
+          if (eventArray !== null) {
             for (var i2 = 0, len2 = eventArray.length; i2 < len2; i2++) {
-              var dataRouteVariable = eventArray[i2]
-              jsonString = jsonString.replace(dataRouteVariable, eval(dataRouteVariable.match(/\$\{\{([^)]+)\}\}/)[1]))
+              jsonString = jsonString.replace(eventArray[i2], eval(eventArray[i2].match(/\$\{\{([^)]+)\}\}/)[1]))
             }
           }
           routeObject = JSON.parse(jsonString)
@@ -1447,10 +1446,9 @@ export default {
           // TOREMOVE
           var jsonString3 = button.eventDefinition
           var eventArray3 = button.eventDefinition.match(/\${{(.*?)}}/g)
-          if (eventArray3 != null) {
+          if (eventArray3 !== null) {
             for (var it3 = 0, lent3 = eventArray3.length; it3 < lent3; it3++) {
-              var dataRouteVariable = eventArray3[it3]
-              jsonString3 = jsonString3.replace(dataRouteVariable, eval(dataRouteVariable.match(/\$\{\{([^)]+)\}\}/)[1]))
+              jsonString3 = jsonString3.replace(eventArray3[it3], eval(eventArray3[it3].match(/\$\{\{([^)]+)\}\}/)[1]))
             }
           }
           var be = JSON.parse(jsonString3)
