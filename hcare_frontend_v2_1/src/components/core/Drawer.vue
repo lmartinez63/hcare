@@ -202,14 +202,24 @@ export default {
         text: 'Operaciones',
         links: [
           {
+            to: '/browse/medicalSurgeriesToConfirm',
+            icon: 'mdi-clipboard-outline',
+            text: 'Pendiente de Confirmacion'
+          },
+          {
             to: '/browse/medicalSurgeriesScheduled',
             icon: 'mdi-clipboard-outline',
-            text: 'Lista de Operaciones Programadas'
+            text: 'Programadas'
+          },
+          {
+            to: '/browse/medicalSurgeriesInProgress',
+            icon: 'mdi-clipboard-outline',
+            text: 'En Progreso'
           },
           {
             to: '/browse/allMedicalSurgeries',
             icon: 'mdi-clipboard-outline',
-            text: 'Lista de Operaciones'
+            text: 'Todas las Operaciones'
           },
         ]
       },
